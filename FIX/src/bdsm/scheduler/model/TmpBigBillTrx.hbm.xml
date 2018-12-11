@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="bdsm.scheduler.model.TmpBigBillTrx" table="TMP_BIG_BILL_TRX" lazy="false">
+        <id column="RECORD_ID"  name="recordId"  type="long" >
+            <generator class="increment"/>
+        </id>
+        
+        <property column="BATCHNO"        name="batchNo"         type="string"  />
+        <property column="CUST_ID_PEL"    name="custIdPel"       type="string"  />
+        <property column="TYPE_TRX"       name="typeTrx"         type="string"  />
+        <property column="AMT_FLAGGING"   name="amountFlagging"  type="big_decimal" />
+        <property column="IDCREATEDBY"    name="idCreatedBy"     type="string" />
+        <property column="DTMCREATEDBY"   name="dtmCreated"      type="timestamp"  /> 
+        <property column="IDCREATEDSPV"   name="idCreatedSpv"    type="string" />
+        <property column="DTMCREATEDSPV"  name="dtmCreatedSpv"   type="timestamp"  />
+        <property column="FLAG_STATUS"    name="flagStatus"      type="string" />
+        <property column="STATUS_REASON"  name="statusReason"    type="string" />         
+    </class> 
+</hibernate-mapping>

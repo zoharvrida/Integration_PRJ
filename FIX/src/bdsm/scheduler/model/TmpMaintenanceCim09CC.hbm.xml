@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class lazy="false" name="bdsm.scheduler.model.TmpMaintenanceCim09CC" table="TMP_CIM09_CORPCUST">
+        <composite-id class="bdsm.scheduler.model.TmpMaintenanceCim09CCPK" name="compositeId">
+            <key-property column="BATCHNO" name="batchiId" type="string"/>
+            <key-property column="RECORDID" name="recordId" type="integer"/>
+            <key-property column="COD_CUST_ID" name="cif" type="integer"/>
+        </composite-id>
+    
+        <property column="DAT_INCORPORATED" name="datRegistered" type="date"/>
+        <property column="COD_BUSINESS_REGNO" name="registrationNo" type="string"/>
+        <property column="COD_BUSINESS_CAT" name="codBussCat" type="integer"/>
+        <property column="NAM_SIGNATORY1" name="signName1" type="string"/>
+        <property column="NAM_SIGNATORY2" name="signName2" type="string"/>
+        <property column="NAM_SIGNATORY3" name="signName3" type="string"/>
+        <property column="NAM_SIGNATORY4" name="signName4" type="string"/>
+        <property column="NAM_SIGNATORY5" name="signName5" type="string"/>
+        <property column="TXT_DESGN_SIGNTRY1" name="signDesgn1" type="string"/>
+        <property column="TXT_DESGN_SIGNTRY2" name="signDesgn2" type="string"/>
+        <property column="TXT_DESGN_SIGNTRY3" name="signDesgn3" type="string"/>
+        <property column="TXT_DESGN_SIGNTRY4" name="signDesgn4" type="string"/>
+        <property column="TXT_DESGN_SIGNTRY5" name="signDesgn5" type="string"/>
+        <property column="NAM_DIRECTOR1" name="signDirect1" type="string"/>
+        <property column="NAM_DIRECTOR2" name="signDirect2" type="string"/>
+        <property column="NAM_DIRECTOR3" name="signDirect3" type="string"/>
+        <property column="NAM_DIRECTOR4" name="signDirect4" type="string"/>
+        <property column="NAM_DIRECTOR5" name="signDirect5" type="string"/>
+        <property column="IDCREATEDBY"     name="idCreatedBy"  type="string"/>
+        <property column="DTMCREATEDBY"    name="dtmCreated"   type="timestamp"  /> 
+        <property column="IDCREATEDSPV"    name="idCreatedSpv" type="string"/>
+        <property column="DTMCREATEDSPV"   name="dtmCreatedSpv" type="timestamp"  />
+        <property column="FLAG_STATUS"     name="flagStatus"   type="string"/>
+        <property column="STATUS_REASON"   name="statusReason" type="string"/>
+    
+    
+    
+   
+    
+    </class>
+</hibernate-mapping>

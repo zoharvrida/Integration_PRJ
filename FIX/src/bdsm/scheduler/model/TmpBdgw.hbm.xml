@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="property">
+	<!-- Model -->
+	<class name="bdsm.scheduler.model.TmpBdgwParent" abstract="true" lazy="false" >
+		<composite-id name="id" class="bdsm.scheduler.model.TmpBdgwPK">
+			<key-property name="recordId" column="RECORDID" type="long" />
+			<key-property name="fileId" column="FILEID" type="string" />
+		</composite-id>
+		
+		<property name="moduleName" column="MODULENAME" type="string" />
+		<property name="target" column="TARGET" type="string" />
+		<property name="dateTimeProcessStart" column="DTMPROCSTART" type="time" />
+		<property name="dateTimeProcessFinish" column="DTMPROCFINISH" type="time" />
+		<property name="recId" column="RECID" type="integer" />
+		<property name="recordType" column="RECORDTYPE" type="string" />
+		<property name="recordName" column="RECORDNAME" type="string" />
+		<property name="length" column="LENGTH" type="long" />
+		<property name="comments" column="COMMENTS" type="string" />
+		<property name="recordStatus" column="RECORDSTATUS" type="string" />
+		<property name="parentRecordId" column="PARENTRECID" type="long" />
+
+		<union-subclass name="bdsm.scheduler.model.TmpBdgwHeader" table="TMP_BDGW_HEADER">
+			<property name="profileName" column="PROFILENAME" type="string" />
+			<property name="businessDate" column="BUSDAT" type="string" />
+			<property name="interfaceType" column="INTRFCETYP" type="string" />
+			<property name="GLNo" column="GLNO" type="string" />
+			<property name="customerCenter" column="CSTCNTR" type="string" />
+			<property name="applicationCode" column="APPLCOD" type="string" />
+			<property name="accountNo" column="ACCTNO" type="string" />
+			<property name="transactionCurrency" column="TRANSCCY" type="string" />
+			<property name="amount" column="AMNT" type="string" />
+			<property name="localCurrencyAmountOfTransaction" column="LCEOFTRANS" type="string" />
+			<property name="amountFee" column="AMNTFEE" type="string" />
+			<property name="description1" column="DESC1" type="string" />
+			<property name="description2" column="DESC2" type="string" />
+			<property name="status" column="STATUS" type="string" />
+			<property name="rejectCode" column="REJCOD" type="string" />
+			<property name="feeProcessingIndicatorDB" column="FEEPROCESSINGINDICATOR" type="character" access="property" />
+			<property name="description3" column="DESC3" type="string" />
+		</union-subclass>
+		
+		<union-subclass name="bdsm.scheduler.model.TmpBdgwDetail" table="TMP_BDGW_DETAIL">
+			<property name="transactionCode" column="TRANSCOD" type="string" />
+			<property name="applicationCode" column="APPLCOD" type="string" />
+			<property name="accountNo" column="ACCTNO" type="string" />
+			<property name="transactionAmount" column="TRANSAMT" type="string" />
+			<property name="transactionCurrency" column="TRANSCCY" type="string" />
+			<property name="localCurrencyAmountOfTransaction" column="LCEOFTRANS" type="string" />
+			<property name="foreignExchangeRate" column="FOREIGNEXCHGRAT" type="string" />
+			<property name="customerCenter" column="CSTCNTR" type="string" />
+			<property name="reference" column="REF" type="string" />
+			<property name="description1" column="DESC1" type="string" />
+			<property name="description2" column="DESC2" type="string" />
+			<property name="amountFee" column="AMNTFEE" type="string" />
+			<property name="status" column="STATUS" type="string" />
+			<property name="rejectCode" column="REJCOD" type="string" />
+			<property name="shortName" column="SHRTNAME" type="string" />
+		</union-subclass>
+		
+		<union-subclass name="bdsm.scheduler.model.TmpBdgwFooter" table="TMP_BDGW_FOOTER">
+			<property name="noRecord" column="NOREC" type="string" />
+		</union-subclass>
+		
+	</class>
+</hibernate-mapping>

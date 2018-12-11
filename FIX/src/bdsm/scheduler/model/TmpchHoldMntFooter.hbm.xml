@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="bdsm.scheduler.model.TmpchHoldMntFooter" table="TMP_CHHOLDMNT_FOOTER" lazy="false">
+        <composite-id name="compositeId"     class="bdsm.scheduler.model.TmpchHoldMntPK">
+            <key-property name="idBatch"     column="fileid"         type="string" />
+            <key-property name="recid" column="recordid"        type="integer" />
+            <key-property name="parentID" column="parentrecid"        type="integer" />
+        </composite-id>
+		
+        <property name="rectype"             column="rectype"        type="integer" />
+        <property name="noOfRec"            column="noofrec"             type="integer" />
+        <property name="recordtype"         column="recordtype"        type="string" />
+        <property name="recordname"         column="recordname"  type="string" />
+        <property name="data"             column="data"             type="string" />
+        <property name="length"          column="length"      type="integer" />
+        <property name="comments"        column="comments"   type="string" />
+        <property name="gefustatus"        column="recordstatus"   type="string" />
+        <property name="dtmProcStart"        column="dtm_proc_start"   type="timestamp" />
+        <property name="dtmProcFinish"        column="dtm_proc_finish"   type="timestamp" />
+    </class>
+    </hibernate-mapping>

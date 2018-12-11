@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="bdsm.scheduler.model.TmpKabAcct" table="TMP_KAB_ACCT" lazy="false">
+		<composite-id name="compositeId"     class="bdsm.scheduler.model.TmpKabAcctPK">
+			<key-property name="batchNo"     column="BATCHNO"         type="string" />
+			<key-property name="account"     column="ACCOUNT"         type="string" />
+			<key-property name="typeAccount" column="TYP_ACCT"        type="string" />
+		</composite-id>
+		
+		<property name="taxFlag"             column="TAX_FLAG"        type="integer" />
+		<property name="cif"                 column="CIF"             type="string" />
+		<property name="currency"            column="CCY"             type="string" />
+		<property name="flagAccount"         column="FLG_ACCT"        type="string" />
+		<property name="dateEffStart"        column="DATE_EFF_START"  type="date" />
+		<property name="command"             column="CMD"             type="string" />
+		<property name="flagStatus"          column="FLG_STATUS"      type="string" />
+		<property name="statusReason"        column="STATUS_REASON"   type="string" />
+		<property name="idCreatedBy"         column="idCreatedBy"     type="string" />
+		<property name="idCreatedSpv"        column="idCreatedSpv"    type="string" />
+		<property name="dtmCreated"          column="dtmCreated"      type="timestamp" />
+		<property name="dtmCreatedSpv"       column="dtmCreatedSpv"   type="timestamp" />
+		<property name="idUpdatedBy"         column="idUpdatedBy"     type="string" />
+		<property name="idUpdatedSpv"        column="idUpdatedSpv"    type="string" />
+		<property name="dtmUpdated"          column="dtmUpdated"      type="timestamp" />
+		<property name="dtmUpdatedSpv"       column="dtmUpdatedSpv"   type="timestamp" />
+	</class>
+</hibernate-mapping>

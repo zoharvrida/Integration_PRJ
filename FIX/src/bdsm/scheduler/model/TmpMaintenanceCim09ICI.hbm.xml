@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.scheduler.model.TmpMaintenanceCim09ICI" table="TMP_CIM09_INDVDL_CUSTOMERINFO">
+    <composite-id class="bdsm.scheduler.model.TmpMaintenanceCim09ICIPK" name="compositeId">
+      <key-property column="BATCHNO" name="batchiId" type="string"/>
+      <key-property column="RECORDID" name="recordId" type="integer"/>
+      <key-property column="COD_CUST_ID" name="cif" type="integer"/>
+    </composite-id>
+    
+    <property column="COD_CUST_STAT" name="statusIC" type="string"/>
+    <property column="COD_SIGN_TYP" name="signTypIC" type="string"/>
+    <property column="TXT_ETHNIC_ORIGIN" name="ethnicIC" type="string"/>
+    <property column="TXT_CUST_RESIDENCE" name="countryResidenIC" type="string"/>
+    <property column="TXT_CUST_SEX" name="sexIC" type="string"/>
+    <property column="TXT_PROFESS_CAT" name="profesCodeIC" type="integer"/>
+    <property column="COD_CUST_INTRODUCER_ID" name="srcCrteriaIC" type="integer"/>
+    <property column="TXT_CUST_DESGN" name="designationIC" type="string"/>
+    <property column="DAT_BIRTH_CUST" name="dobIC" type="date"/>
+    <property column="TXT_CUST_NATNLTY" name="nationalityIC" type="string"/>
+    <property column="TXT_CUST_EDUCN" name="educationIC" type="string"/>
+    <property column="COD_CUST_MARSTAT" name="maritalStatus" type="integer"/>
+    <property column="CTR_CUST_SPOUSES" name="noOfSpouseIC" type="integer"/>
+    <property column="IDCREATEDBY"     name="idCreatedBy"  type="string"/>
+    <property column="DTMCREATEDBY"    name="dtmCreated"   type="timestamp"  /> 
+    <property column="IDCREATEDSPV"    name="idCreatedSpv" type="string"/>
+    <property column="DTMCREATEDSPV"   name="dtmCreatedSpv" type="timestamp"  />
+    <property column="FLAG_STATUS"     name="flagStatus"   type="string"/>
+    <property column="STATUS_REASON"   name="statusReason" type="string"/>
+    
+    
+    
+   
+    
+  </class>
+</hibernate-mapping>

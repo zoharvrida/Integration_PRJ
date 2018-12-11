@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.scheduler.model.TmpVAHeader" table="TMP_VA_HEADER" lazy="false">
+		<composite-id name="id" class="bdsm.scheduler.model.TmpVAPK">
+			<key-property name="batchNo" column="BATCH_NO" type="string" />
+			<key-property name="rowNo" column="ROW_NO" type="integer" />
+		</composite-id>
+		
+		<property name="profileName" column="PROFILE_NAME" type="string" />
+		<property name="businessDate" column="BUS_DAT" type="date" />
+		<property name="interfaceType" column="INTRFCE_TYP" type="string" />
+		<property name="GLNo" column="GL_NO" type="string" />
+		<property name="customerCenter" column="CST_CNTR" type="string" />
+		<property name="applicationCode" column="APPL_COD" type="string" />
+		<property name="accountNo" column="ACCT_NO" type="string" />
+		<property name="transactionCurrency" column="TRANS_CCY" type="string" />
+		<property name="amount" column="AMNT" type="big_decimal" />
+		<property name="localCurrencyAmountOfTransaction" column="LCE_OF_TRANS" type="big_decimal" />
+		<property name="amountFee" column="AMNT_FEE" type="big_decimal" />
+		<property name="description1" column="DESC_1" type="string" />
+		<property name="description2" column="DESC_2" type="string" />
+		<property name="statusDB" column="STATUS" type="character" access="property" />
+		<property name="rejectCode" column="REJ_COD" type="string" />
+		<property name="referenceNo" column="REF_NO" type="string" />
+		<property name="x" column="X" type="character" />
+		<property name="dtmProcessStart" column="DTM_PROCESS_START" type="time" />
+		<property name="dtmProcessEnd" column="DTM_PROCESS_END" type="time" />
+		<property name="lengthInFile" column="LENGTH_IN_FILE" type="integer" />
+		<property name="BDGWRecordId" column="BDGW_RECORDID" type="long" />
+		<property name="checksum" column="STR_CHECKSUM" type="string" />
+		
+		<property name="dtmCreated" column="DT_CREATED" type="timestamp" />
+	</class>
+	
+	<class name="bdsm.scheduler.model.TmpVADetail" table="TMP_VA_DETAIL" lazy="false">
+		<composite-id name="id" class="bdsm.scheduler.model.TmpVAPK">
+			<key-property name="batchNo" column="BATCH_NO" type="string" />
+			<key-property name="rowNo" column="ROW_NO" type="integer" />
+		</composite-id>
+		
+		<property name="transactionCode" column="TRANS_COD" type="string" />
+		<property name="applicationCode" column="APPL_COD" type="string" />
+		<property name="accountNo" column="ACCT_NO" type="string" />
+		<property name="transactionAmount" column="TRANS_AMT" type="big_decimal" />
+		<property name="transactionCurrency" column="TRANS_CCY" type="string" />
+		<property name="localCurrencyAmountOfTransaction" column="LCE_OF_TRANS" type="big_decimal" />
+		<property name="foreignExchangeRate" column="FOREIGN_EXCHG_RAT" type="big_decimal" />
+		<property name="customerCenter" column="CST_CNTR" type="string" />
+		<property name="referenceNo" column="REF_NO" type="string" />
+		<property name="description1" column="DESC_1" type="string" />
+		<property name="description2" column="DESC_2" type="string" />
+		<property name="amountFee" column="AMNT_FEE" type="big_decimal" />
+		<property name="statusDB" column="STATUS" type="character" access="property" />
+		<property name="rejectCode" column="REJ_COD" type="string" />
+		<property name="shortName" column="SHRT_NAME" type="string" />
+		<property name="virtualAccountNo" column="VRT_ACCT_NO" type="string" />
+		<property name="accountNoToTransfer" column="ACCT_NO_TO_TRANSFER" type="string" />
+		<property name="flagTransactionDB" column="FLAG_TRX" type="character" access="property" />
+		<property name="reason" column="REASON" type="string" />
+		<property name="rowNoHeader" column="ROW_NO_HEADER" type="integer" />
+		<property name="lengthInFile" column="LENGTH_IN_FILE" type="integer" />
+		<property name="BDGWRecordId" column="BDGW_RECORDID" type="long" />
+	</class>
+	
+	<class name="bdsm.scheduler.model.TmpVAFooter" table="TMP_VA_FOOTER" lazy="false">
+		<composite-id name="id" class="bdsm.scheduler.model.TmpVAPK">
+			<key-property name="batchNo" column="BATCH_NO" type="string" />
+			<key-property name="rowNo" column="ROW_NO" type="integer" />
+		</composite-id>
+		
+		<property name="rowNoHeader" column="ROW_NO_HEADER" type="integer" />
+		<property name="lengthInFile" column="LENGTH_IN_FILE" type="integer" />
+		<property name="noOfRecord" column="NO_REC" type="integer" />
+	</class>
+	
+	
+	<!-- Query -->
+	<sql-query name="TmpVA#getVirtualAccountFromRealAccount">
+		<query-param name="binDummy" type="string" />
+		<query-param name="realAcctNo" type="string" />
+		<return-scalar column="VA_NO" type="string" />
+		<return-scalar column="VA_NAME" type="string" />
+		
+		<![CDATA[
+			SELECT 
+				va.va_no AS VA_NO, 
+				va.va_own_name AS VA_NAME 
+			FROM ch_va_acct_mast VA
+			WHERE	va.va_status = 'A' 
+				AND va.flg_mnt_status = 'A' 
+				AND va.exp_date > (SELECT dat_process FROM ba_bank_mast WHERE flg_mnt_status = 'A')
+				AND	va.va_no = (:binDummy || :realAcctNo)
+		]]>
+	</sql-query>
+	
+	<sql-query name="TmpVA#getRealAccountFromVirtualAccount">
+		<query-param name="vaNo" type="string" />
+		<return-scalar column="REAL_ACCT" type="string" />
+		<return-scalar column="VA_NAME" type="string" />
+		<return-scalar column="BIN_TYPE" type="string" />
+		
+		<![CDATA[
+			SELECT 
+				CASE bin.bin_type 
+					WHEN 'N' THEN bin.cod_acct_no 
+					WHEN 'F' THEN 
+						CASE 
+							WHEN va.va_no IS NULL THEN NULL
+							ELSE bin.cod_acct_no 
+						END 
+					ELSE NULL 
+				END AS REAL_ACCT, 
+				NVL(va.va_own_name, bin.bin_title) AS VA_NAME,
+				bin.bin_type AS BIN_TYPE 
+			FROM 
+				( 
+					SELECT * FROM ch_bin_casa_xref 
+					WHERE bin_status = 'A' AND flg_mnt_status = 'A' 
+				) BIN 
+					LEFT JOIN 
+				( 
+					SELECT * FROM ch_va_acct_mast 
+					WHERE va_status = 'A' AND flg_mnt_status = 'A' 
+						AND exp_date > (SELECT dat_process FROM ba_bank_mast WHERE flg_mnt_status = 'A') 
+				) VA 
+					ON bin.bin_no = va.bin_no 
+						AND bin.bin_type = 'F'
+						AND va.va_no = :vaNo 
+			WHERE 	bin.bin_no = SUBSTR(:vaNo, 1, 4)
+		]]>
+	</sql-query>
+	
+	<sql-query name="TmpVA#getBinDetailByBinNo">
+		<query-param name="binNo" type="string" />
+		<return-scalar column="COD_ACCT_NO" type="string" />
+		<return-scalar column="BIN_TYPE" type="string" />
+		<return-scalar column="BIN_TITLE" type="string" />
+		
+		<![CDATA[
+			SELECT cod_acct_no, bin_type, bin_title 
+			FROM ch_bin_casa_xref 
+			WHERE bin_status = 'A' 
+				AND flg_mnt_status = 'A'
+				AND bin_no = :binNo
+		]]>
+	</sql-query>
+	
+	<query name="TmpVA#getVAHeaderByChecksum">
+		<![CDATA[
+			FROM TmpVAHeader WHERE checksum = :checksum
+		]]>
+	</query>
+	
+</hibernate-mapping>

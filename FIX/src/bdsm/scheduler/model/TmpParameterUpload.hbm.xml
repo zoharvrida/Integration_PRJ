@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		
+<hibernate-mapping default-access="field">
+	<class name="bdsm.scheduler.model.TmpParameterUpload" table="TMP_PARAMETER_UPLOAD" lazy="false">
+		<composite-id>
+			<key-property name="batchNo"   column="BATCHNO"        type="string" />
+			<key-property name="codeParam" column="CDPARAM"        type="string" />
+		</composite-id>
+		
+		<property name="oldValue"          column="OLD_VALUE"      type="string" />
+		<property name="value"             column="VALUE"          type="string" />
+		<property name="newValue"          column="NEW_VALUE"      type="string" />
+		<property name="typeParameterDB"   column="TYP_PRM"        type="character"  access="property" />
+		<property name="commandDB"         column="CMD"            type="character"  access="property" />
+		<property name="flagStatusDB"      column="FLG_STATUS"     type="character"  access="property" />
+		<property name="statusReason"      column="STATUS_REASON"  type="string" />
+	</class>
+</hibernate-mapping>

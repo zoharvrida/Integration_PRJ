@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+      <class  name="bdsm.scheduler.model.UfcrLtaTmpSrc" table="ufcrlta_tmp_src" lazy="false">
+        <id       name="id"        column="id"        type="int" >
+            <generator class="increment"/>
+        </id>
+        <property name="macroName"  column="MACRO_NAME"  type="string"/>
+        <property name="macroValue"  column="MACRO_VALUE"  type="string"/>
+        <property name="macroValueOld"  column="MACRO_VALUE_OLD"  type="string"/>
+        <property name="status"  column="STATUS"  type="string"/>
+        <property name="statusreason"  column="STATUSREASON"  type="string"/>
+        <property name="nobatch"  column="NOBATCH"  type="string"/>
+    </class>
+</hibernate-mapping>

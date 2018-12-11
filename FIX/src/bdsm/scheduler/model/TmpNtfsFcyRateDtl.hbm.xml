@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+      <class  name="bdsm.scheduler.model.TmpNtfsFcyRateDtl" table="tmp_ntfs_fcy_ratedtl" lazy="false">
+        <id       name="id"        column="id"        type="int" >
+            <generator class="increment"/>
+        </id>
+        <property name="BdsmBatch"  column="BDSMBATCH"  type="string"/>
+        <property name="Identifier"  column="IDENTIFIER"  type="string"/>
+        <property name="refTxnNo"  column="REF_TXN_NO"  type="string"/>
+        <property name="codOrgBrn"  column="COD_ORG_BRN"  type="int"/>
+		<property name="refSysTrAudNo"  column="REF_SYS_TR_AUD_NO"  type="int"/>
+        <property name="refSubseqNo"  column="REF_SUBSEQ_NO"  type="int"/>
+        <property name="datValue"  column="DAT_VALUE"  type="date"/>
+        <property name="datPost"  column="DAT_POST"  type="date"/>
+		<property name="infoType"  column="INFO_TYPE"  type="string"/>
+        <property name="rateConvTxn"  column="RAT_CONV_TXN"  type="double"/>
+        <property name="ratConvBds"  column="RAT_CONV_BDS"  type="double"/>
+        <property name="codTask"  column="COD_TASK"  type="string"/>
+		<property name="codTxnMnemonic"  column="COD_TXN_MNEMONIC"  type="int"/>
+        <property name="buyCcyShortNam"  column="BUY_CCY_SHORT_NAM"  type="string"/>
+        <property name="buyAmt"  column="BUY_AMT"  type="double"/>
+        <property name="soldCcyShortNam"  column="SOLD_CCY_SHORT_NAM"  type="string"/>
+		<property name="codPurOrSell"  column="COD_PUR_OR_SELL"  type="string"/>
+        <property name="codLob"  column="COD_LOB"  type="int"/>
+        <property name="namCustShrt"  column="NAM_CUST_SHRT"  type="string"/>
+        <property name="respCode"  column="RESPCODE"  type="string"/>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping 
+		PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.scheduler.model.TmpTxnUploadParent" abstract="true" polymorphism="explicit">
+		<composite-id name="compositeId" class="bdsm.scheduler.model.TmpTxnUploadPK">
+			<key-property name="fileId"    column="FILEID"    type="string" />
+			<key-property name="recordId"  column="RECORDID"  type="integer" />
+		</composite-id>
+		
+		<property name="moduleName"     column="MODULENAME"      type="string" />
+		<property name="target"         column="TARGET"          type="string" />
+		<property name="dtmProcStart"   column="DTMPROCSTART"    type="timestamp" />
+		<property name="dtmProcFinish"  column="DTMPROCFINISH"   type="timestamp" />
+		<property name="recType"        column="RECTYPE"         type="byte" />
+		<property name="recordType"     column="RECORDTYPE"      type="string" />
+		<property name="recordName"     column="RECORDNAME"      type="string" />
+		<property name="data"           column="DATA"            type="string" />
+		<property name="length"         column="LENGTH"          type="short" />
+		<property name="comments"       column="COMMENTS"        type="string" />
+		<property name="recordStatus"   column="RECORDSTATUS"    type="string" />
+		<property name="parentRecId"    column="PARENTRECID"     type="integer" />
+		<property name="codEntityVpd"   column="COD_ENTITY_VPD"  type="integer" />
+		
+		
+		<!-- SubModel -->
+		<union-subclass name="bdsm.scheduler.model.TmpTxnUploadHeader" table="TMP_TXNUPLOAD_HEADER" dynamic-insert="true">
+			<property name="dateCreate" column="DATECREATE" type="string" />
+		</union-subclass>
+		
+		<union-subclass name="bdsm.scheduler.model.TmpTxnUploadDetail" table="TMP_TXNUPLOAD_DETAIL" dynamic-insert="true">
+			<property name="typTxn"       column="TYPTXN"       type="integer" />
+			<property name="codAcctNo"    column="CODACCTNO"    type="string" />
+			<property name="codCcBrn"     column="CODCCBRN"     type="integer" />
+			<property name="codLob"       column="CODLOB"       type="integer" />
+			<property name="codUserId"    column="CODUSERID"    type="string" />
+			<property name="txnType"      column="TXNTYPE"      type="integer" />
+			<property name="codTxn"       column="CODTXN"       type="string" />
+			<property name="prodCod"      column="PRODCOD"      type="integer" />
+			<property name="datTxn"       column="DATTXN"       type="string" />
+			<property name="codDrCr"      column="CODDRCR"      type="string" />
+			<property name="datValue"     column="DATVALUE"     type="string" />
+			<property name="txnCurrency"  column="TXNCURRENCY"  type="string" />
+			<property name="amtTxnLcy"    column="AMTTXNLCY"    type="big_decimal" />
+			<property name="amtTxnTcy"    column="AMTTXNTCY"    type="big_decimal" />
+			<property name="convRate"     column="CONVRATE"     type="big_decimal" />
+			<property name="referenceNo"  column="REFERENCENO"  type="string" />
+			<property name="refDocNo"     column="REFDOCNO"     type="string" />
+			<property name="txtTxnDesc"   column="TXTTXNDESC"   type="string" />
+		</union-subclass>
+		
+		<union-subclass name="bdsm.scheduler.model.TmpTxnUploadFooter" table="TMP_TXNUPLOAD_FOOTER" dynamic-insert="true">
+			<property name="noOfDr"  column="NOOFDR"  type="integer" />
+			<property name="amtDr"   column="AMTDR"   type="big_decimal" />
+			<property name="noOfCr"  column="NOOFCR"  type="integer" />
+			<property name="amtCr"   column="AMTCR"   type="big_decimal" />
+		</union-subclass>
+	</class>
+	
+</hibernate-mapping>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class lazy="false" name="bdsm.scheduler.model.TmpStRoutingNoDtls" table="TMP_ST_ROUTING_NO_DTLS">
+		<composite-id class="bdsm.scheduler.model.TmpStRoutingNoDtlsPK" name="compositeId">
+			<key-property column="BATCH_NO" name="batchNo" type="string"/>
+			<key-property column="RECORD_ID" name="recordId" type="integer"/>
+		</composite-id>
+		<property column="COD_ROUTING_NO" name="codRoutingNo" type="integer"/>
+		<property column="COD_BI_OFF_CODE" name="codBiOffCode" type="integer"/>
+		<property column="COD_SECTOR" name="codSector" type="integer"/>
+		<property column="COD_CITY" name="codCity" type="integer"/>
+		<property column="COD_PROVINCE" name="codProvince" type="integer"/>
+		<property column="COD_BANK_TYPE" name="codBankType" type="integer"/>
+		<property column="FLG_MNT_STATUS" name="flgMntStatus" type="string"/>
+		<property column="CTR_UPDAT_SRLNO" name="ctrUpdatSrlNo" type="integer"/>
+		<property column="COD_ENTITY_VPD" name="codEntityVpd" type="integer"/>
+		<property column="FLG_STATUS" name="flgstatus" type="string"/>
+		<property column="STATUS_REASON" name="statusReason" type="string"/>
+		<property column="CMD" name="cmd" type="string"/>
+		<property column="cod_last_mnt_makerid" name="codLastMntMakerid" type="string"/>
+
+	</class>
+</hibernate-mapping>

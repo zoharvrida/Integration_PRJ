@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.scheduler.model.ExtMfcDetails" table="EXT_MFC_DETAILS">
+    <id column="RecordId" name="recordId" type="long">
+      <generator class="increment"/>
+    </id>
+    <property column="BatchId" name="batchId" type="string"/>
+    <property column="RecType" name="recType" type="string"/>
+    <property column="NoCif" name="noCif" type="string"/>
+    <property column="NoAcct" name="noAcct" type="string"/>
+    <property column="RefTxn" name="refTxn" type="string"/>
+    <property column="TypMsg" name="typMsg" type="string"/>
+    <property column="TypAcct" name="typAcct" type="string"/>
+    <property column="DtPost" name="dtPost" type="string"/>
+    <property column="DtValue" name="dtValue" type="string"/>
+    <property column="DtmTxn" name="dtmTxn" type="string"/>
+    <property column="CcyTxn" name="ccyTxn" type="string"/>
+    <property column="AmtTxn" name="amtTxn" type="string"/>
+    <property column="RatFcyIdr" name="ratFcyIdr" type="string"/>
+    <property column="AmtTxnLcy" name="amtTxnLcy" type="string"/>
+    <property column="TxnDesc" name="txnDesc" type="string"/>
+    <property column="TxnBranch" name="txnBranch" type="string"/>
+    <property column="NoUd" name="noUd" type="string"/>
+    <property column="UdLmtAmt" name="udLmtAmt" type="string"/>
+    <property column="UdDtExp" name="udDtExp" type="string"/>
+    <property column="RespCode" name="respCode" type="string"/>
+    <property column="Comments" name="comments" type="string"/>
+    <property column="Data" name="data" type="string"/>
+  </class>
+</hibernate-mapping>

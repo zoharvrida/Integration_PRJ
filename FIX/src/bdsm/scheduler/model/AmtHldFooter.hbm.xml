@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping
+		PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">             
+<hibernate-mapping>
+    <class name="bdsm.scheduler.model.AmtHldFooter" table="ext_chholdmnt_footerrecbdsm" lazy="false">
+        <composite-id name="compositeId" class="bdsm.scheduler.model.AmtHldKey">           
+            <key-property name="fileid" column="FILEID" type="string" />
+            <key-property name="recId" column="RECORDID" type="integer" />
+        </composite-id>
+        <property name="rectype" column="RECTYPE" type="integer" />
+        <property name="noOfRec" column="NOOFREC" type="integer" />
+        <property name="recordtype" column="RECORDTYPE" type="string" />
+        <property name="recordname" column="RECORDNAME" type="string" />
+        <property name="data" column="DATA" type="string" />
+        <property name="length" column="LENGTH" type="integer" />
+        <property name="comments" column="COMMENTS" type="string" />
+        <property name="recordstatus" column="RECORDSTATUS" type="string" />
+        <property name="parentrecid" column="PARENTRECID" type="integer" />	
+    </class>	
+</hibernate-mapping>

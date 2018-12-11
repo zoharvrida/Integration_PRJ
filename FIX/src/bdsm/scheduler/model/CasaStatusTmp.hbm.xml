@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="bdsm.scheduler.model.CasaStatusTmp" table="Tmp_CasaStatus" lazy="false">
+        <id name="id" column="id" type="int" >
+            <generator class="increment"/>
+        </id>
+        <property name="codAcctNo" column="COD_ACCT_NO" type="string"/>
+        <property name="codCCBrn" column="COD_CC_BRN" type="string"/>
+        <property name="codAcctStatCurr" column="COD_ACCT_STAT_CURR" type="int"/>
+        <property name="codAcctStatNew" column="COD_ACCT_STAT_NEW" type="int"/>
+        <property name="datApplied" column="DAT_APPLIED" type="date"/>
+        <property name="status" column="STATUS" type="string"/>
+        <property name="statusReason" column="STATUSREASON" type="string"/>
+        <property name="noBatch" column="NOBATCH" type="string"/>
+</class>
+</hibernate-mapping>

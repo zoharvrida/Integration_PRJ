@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.scheduler.model.OtpCustFooter" table="TMP_OTP_FOOTER">	
+	<id column="ID" name="id" type="integer">
+      <generator class="increment"/>
+    </id>
+    <property column="BATCHID" name="batchID" type="string"/>
+        <property column="TYPERECORD" name="typerecord" type="string"/>
+    <property column="NORECORDPELUNASAN" name="norecordpelunasan" type="string"/>
+    <property column="NORECORDPENCAIRAN" name="norecordpencairan" type="string"/>
+    <property column="STATUS" name="status" type="string"/>
+
+  </class>
+</hibernate-mapping>

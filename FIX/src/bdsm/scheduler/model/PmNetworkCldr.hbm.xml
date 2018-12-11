@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="bdsm.scheduler.model.PmNetworkCldr" table="PM_NETWORK_CLDR" lazy="false">
+        <composite-id class="bdsm.scheduler.model.FixCalendarPK" name="pkID">
+            <key-property column="COD_NETWORK_ID" name="Module_Name" type="string"/>
+            <key-property column="FK_NETWORK_ID_STATUS" name="flgType" type="string"/>
+            <key-property column="CTR_CLDR_YEAR" name="YEAR" type="integer"/>
+            <key-property column="CTR_CLDR_MONTH" name="Month" type="integer"/>
+        </composite-id>
+        <property name="monthDAy"        column="FLG_MONTH_DAYS"         type="string" />
+        <property name="namNetwork"        column="NAM_NETWORK"         type="string" />
+    </class>
+</hibernate-mapping>

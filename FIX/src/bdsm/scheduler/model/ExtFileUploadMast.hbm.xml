@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.scheduler.model.ExtFileUploadMast" table="EXT_FILE_UPLOAD_MAST" lazy="false">
+        <id       name="codFileId"        column="cod_File_Id"        type="string" >
+            <generator class="assigned"/>
+        </id>
+        <property name="fileType"  column="file_Type"  type="string"/>
+        <property name="codFileStatus"  column="cod_File_Status"  type="string"/>     
+
+    </class>
+</hibernate-mapping>

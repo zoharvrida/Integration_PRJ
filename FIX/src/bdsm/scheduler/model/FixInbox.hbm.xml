@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.scheduler.model.FixInbox" table="FIXINBOX" lazy="false">
+        <composite-id name="fixInboxPK" class="bdsm.scheduler.model.FixInboxPK">
+            <key-property name="subject"   column="subject"   type="string"/>
+            <key-property name="inboxId"   column="inboxId"   type="string"/>
+            <key-property name="dtPost"   column="dtPost"   type="timestamp"/>
+        </composite-id>        
+        <property name="sender"  column="sender"  type="string"/>        
+        <property name="flgProcess"  column="flgProcess"  type="string"/>
+        <property name="reason"    column="reason"    type="string"  />
+        <property name="dtmReceive"    column="dtmReceive"    type="timestamp"  />
+        <property name="flgAttach"    column="flgAttach"    type="string"  />
+        <property name="emailAttachment"  column="emailAttachment"  type="string"/>
+        <property name="itemIdLink"    column="itemIdLink"    type="string"  />
+        <property name="noBatch"    column="noBatch"    type="string"  />
+
+    </class>
+</hibernate-mapping>

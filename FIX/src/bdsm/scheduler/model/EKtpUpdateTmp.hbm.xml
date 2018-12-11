@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+      <class  name="bdsm.scheduler.model.EKtpUpdateTmp" table="tmp_ektp" lazy="false">
+        <id       name="id"        column="id"        type="int" >
+            <generator class="increment"/>
+        </id>
+        <property name="UserId"  column="IDUSER"  type="string"/>
+        <property name="namuser"  column="NAMUSER"  type="string"/>
+        <property name="nikuser"  column="NIKUSER"  type="string"/>        
+        <property name="ktpuser"  column="KTPUSER"  type="string"/>
+        <property name="ktppwd"  column="KTPPWD"  type="string"/>
+        <property name="ktpdtmupdated"  column="KTPDTMUPDATED"  type="date"/>
+        <property name="ipuser"  column="IPUSER"  type="string"/>
+		<property name="status"  column="STATUS"  type="string"/>
+        <property name="statusreason"  column="STATUSREASON"  type="string"/>
+        <property name="nobatch"  column="NOBATCH"  type="string"/>
+        <property name="cmd"  column="CMD"  type="string"/>
+		<property name="ktpMaxQuery"  column="KTPMAXQUERY"  type="string"/>
+    <property name="source"  column="SOURCE"  type="string"/>
+    </class>
+</hibernate-mapping>

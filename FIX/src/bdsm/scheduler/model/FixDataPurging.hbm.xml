@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.scheduler.model.FixDataPurging" table="FixDataPurging" lazy="false">
+        <id name="idpurging" column="IDPURGING" type="int">
+            <generator class="increment" />
+        </id>
+        <property name="dataloc"              column="DATALOC"                 type="string" />
+        <property name="filepattern"          column="FILEPATTERN"             type="string" />
+        <property name="fileSizeLessOrEqual"  column="FILESIZE_LESS_OR_EQUAL"  type="long" /> 
+        <property name="flgstat"              column="FLGSTAT"                 type="string" />
+        <property name="flgtyp"               column="FLGTYP"                  type="string" />
+        <property name="dtmeff"               column="DTMEFF"                  type="timestamp" />
+        <property name="retperiod"            column="RETPERIOD"               type="double" />
+        <property name="lastsuccesspurging"   column="LASTSUCCESSPURGING"      type="timestamp" />
+        <property name="nextpurgingplan"      column="NEXTPURGINGPLAN"         type="timestamp" />
+        <property name="histTable"      column="histTable"         type="string" />
+    </class>
+</hibernate-mapping>

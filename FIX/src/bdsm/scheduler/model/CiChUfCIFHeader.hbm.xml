@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.scheduler.model.CiChufCIFHeader" table="TMP_DDFCIF_HEADER">
+    <id column="ID" name="rec_ID" type="integer">
+      <generator class="increment"/>
+    </id>
+    <property column="Record_Id" name="recordId" type="integer"/>
+    <property column="ID_BATCH" name="batchId" type="string"/>
+    <property column="Rec_type" name="recType" type="string"/>
+    <property column="filename" name="fileName" type="string"/>  
+    <property column="RecCount" name="recCount" type="integer"/>
+    <property column="RESPCODE" name="respCode" type="integer"/>
+    <property column="Comments" name="comments" type="string"/>
+    <property column="Data" name="data" type="string"/>
+    <property column="FILE_DATE" name="fileDate" type="date"/>
+    <property column="FLG_UPDT" name="flgUpdate" type="string"/>
+    <property column="DTM_RECEIVE" name="dtmReceive" type="timestamp"/>
+  </class>
+</hibernate-mapping>

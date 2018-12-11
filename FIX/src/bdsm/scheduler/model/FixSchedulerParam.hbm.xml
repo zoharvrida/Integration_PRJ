@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class lazy="false" name="bdsm.scheduler.model.FixSchedulerParam" table="FIX_REPORT_SCHEDULE_PARAM">
+        <composite-id class="bdsm.scheduler.model.FixSchedulerPK" name="pkID">
+            <key-property column="idTemplate" name="idTemplate" type="integer"/>
+            <key-property column="idScheduler" name="idScheduler" type="integer"/>
+            <key-property column="Module_Name" name="namScheduler" type="string"/>
+        </composite-id>
+        <property column="ReportName" name="Module_Name" type="string"/>
+        <property column="YEAR" name="YEAR" type="integer"/>
+        <property column="Month" name="Month" type="integer"/>
+        <property column="Days" name="Days" type="integer"/>
+        <property column="Hour" name="Hour" type="integer"/>
+        <property column="MINUTES" name="Minutes" type="integer"/>
+        <property column="SECOND" name="Second" type="integer"/>
+        <property column="BatchPrefix" name="BatchPrefix" type="string"/>
+        <property column="module_pattern" name="module_pattern" type="string"/>
+        <property column="flg_mnt_status" name="flg_mnt_status" type="string"/>
+        <property column="ActiveCode" name="ActiveDays" type="string"/>
+        <property column="flg_WorkingDays" name="flgWorkday" type="string"/>
+        <property column="flg_Parameter" name="flgParam" type="string"/>
+        <property column="flg_HolidaySkip" name="flgHolidaySkip" type="string"/>
+        <property column="datPatternInq" name="datPattern" type="string"/>
+        <property column="flgPrivateCal" name="flgCalendar" type="string"/>
+        <property column="flgType" name="flgType" type="string"/>
+    </class>
+</hibernate-mapping>

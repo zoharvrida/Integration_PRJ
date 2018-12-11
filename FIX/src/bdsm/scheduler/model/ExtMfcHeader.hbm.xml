@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.scheduler.model.ExtMfcHeader" table="EXT_MFC_HEADER">
+    <id column="RecordId" name="recordId" type="long">
+      <generator class="increment"/>
+    </id>
+    <property column="BatchId" name="batchId" type="string"/>
+    <property column="RecType" name="recType" type="string"/>
+    <property column="SrcSystem" name="srcSystem" type="string"/>
+    <property column="NoBatch" name="noBatch" type="string"/>
+    <property column="RecCount" name="recCount" type="string"/>
+    <property column="RespCode" name="respCode" type="string"/>
+    <property column="Comments" name="comments" type="string"/>
+    <property column="Data" name="data" type="string"/>
+  </class>
+</hibernate-mapping>

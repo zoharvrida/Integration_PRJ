@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.scheduler.model.FixLog" table="FIXLOG" lazy="false">
+
+        <composite-id class="bdsm.scheduler.model.FixLogPK" name="fixLogPK">
+            <key-property name="inboxId"  column="inboxId"  type="string"/>
+            <key-property column="dtPost" name="dtPost" type="timestamp"/>
+            <key-property column="fileName" name="fileName" type="string"/>
+            <key-property name="typFix"  column="typFix"  type="string"/>
+        </composite-id>
+        <property name="logId"  column="logId"  type="integer"/>
+        <property name="idScheduler"    column="idScheduler"    type="integer"  />        
+        <property name="grpId"  column="grpId"  type="string"/>
+        <property name="flgAuth"    column="flgAuth"    type="string"  />
+        <property name="flgProcess"  column="flgProcess"  type="string"/>        
+        <property name="reason"    column="reason"    type="string"  />
+        <property name="sender"  column="sender"  type="string"/>
+        <property name="dtmReceive"    column="dtmReceive"    type="timestamp"  />
+        <property name="senderSpv"    column="senderSpv"    type="string"  />
+        <property name="dtmAuth"    column="dtmAuth"    type="timestamp"  />
+        <property name="fileSize"    column="fileSize"    type="integer"  />
+        <property name="fcrFileName"  column="fcrFileName"  type="string"/>
+        <property name="dtmStartProcess"  column="dtmStartProcess"  type="timestamp"/>
+        <property name="dtmEndProcess"  column="dtmEndProcess"  type="timestamp"/>
+    </class>
+</hibernate-mapping>

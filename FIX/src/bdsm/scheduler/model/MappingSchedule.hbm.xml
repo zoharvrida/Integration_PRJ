@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+      <class  name="bdsm.scheduler.model.MappingSchedule" table="SCHTIMER" lazy="false">
+        <id column="NAMMODULE" name="ModuleName" type="string"></id>
+        <property name="DateFrom"  column="LO"  type="timestamp"/>
+        <property name="DateTo"  column="HI"  type="timestamp"/>
+        <property name="Status"  column="STATUS"  type="string"/>
+    </class>
+</hibernate-mapping>

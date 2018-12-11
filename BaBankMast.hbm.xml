@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+	<class name="bdsm.fcr.model.BaBankMast" table="BA_BANK_MAST" lazy="false">
+		<composite-id name="compositeId" class="bdsm.fcr.model.BaBankMastPK">
+			<key-property name="codBank"       column="COD_BANK"        type="integer" />
+			<key-property name="flgMntStatus"  column="FLG_MNT_STATUS"  type="string" />
+			<key-property name="codEntityVPD"  column="COD_ENTITY_VPD"  type="integer" />
+		</composite-id>
+		
+		<property name="namBank"         column="NAM_BANK"          type="string" />
+		<property name="namBankShrt"     column="NAM_BANK_SHRT"     type="string" />
+		<property name="datLastProcess"  column="DAT_LAST_PROCESS"  type="date" />
+		<property name="datProcess"      column="DAT_PROCESS"       type="date" />
+		<property name="datNextProcess"  column="DAT_NEXT_PROCESS"  type="date" />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+	<class name="bdsm.fcr.model.BaHoCollAcctXref" table="BA_HO_COLL_ACCT_XREF" lazy="false">
+        <composite-id name="acctXrefPK" class="bdsm.fcr.model.BaHoCollAcctXrefPK">
+            <key-property name="codColl"       column="COD_COLL"        type="integer" />
+            <key-property name="codCollatId"  column="COD_COLLAT_ID"  type="string" />
+            <key-property name="codAcctNo"  column="COD_ACCT_NO"  type="string" />
+            <key-property name="codDepNo"  column="COD_DEP_NO"  type="integer" />
+            <key-property name="codEntityVpd"  column="COD_ENTITY_VPD"  type="integer" />
+       </composite-id>
+		<property name="codProd"      column="COD_PROD"       type="integer" />
+		<property name="codCcBrn"      column="COD_CC_BRN"       type="integer" />
+		<property name="codLastMntMakerid"      column="COD_LAST_MNT_MAKERID"       type="string" />
+		<property name="codLastMntChkrid"      column="COD_LAST_MNT_CHKRID"       type="string" />
+		<property name="datLastMnt"      column="DAT_LAST_MNT"       type="timestamp" />
+		
+	</class>
+</hibernate-mapping>

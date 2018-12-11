@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class lazy="false" name="bdsm.fcr.model.BaMoveCustomers" table="BA_MOVE_CUSTOMER">
+        <composite-id name="baMoveCustomersPK" class="bdsm.fcr.model.BaMoveCustomersPK">
+            <key-property name="codCustId"       column="COD_CUST_ID"    type="integer" />
+            <key-property name="flagMntStatus"  column="FLG_MNT_STATUS"  type="string" />
+            <key-property name="datProcess"  column="DAT_PROCESS"  type="date" />
+        </composite-id>
+        <property column="COD_CC_BRN" name="codCcBrn" type="integer"/>
+        <property column="COD_XFER_BRN" name="codXferBrn" type="integer"/>
+        <property column="COD_MNT_ACTION" name="codMntAction" type="string"/>
+        <property column="COD_LAST_MNT_MAKERID" name="codLastMntMakerId" type="string"/>
+        <property column="COD_LAST_MNT_CHKRID" name="codLastMntChkrId" type="string"/>
+        <property column="DAT_LAST_MNT" name="datLastMnt" type="timestamp"/>
+        <property column="CTR_UPDAT_SRLNO" name="ctrUpdtSrlNo" type="integer"/>
+        <property column="FLG_BRANCH" name="flagBranch" type="string"/>
+        <property column="FLG_PROCESS" name="flagProcess" type="string"/>
+        <property column="COD_STREAM" name="codStream" type="integer"/>
+    </class>
+</hibernate-mapping>

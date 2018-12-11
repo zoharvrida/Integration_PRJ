@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class name="bdsm.fcr.model.ChChqbkIssue" table="ch_chqbk_issue" lazy="false">
+		<composite-id name="compositeId" class="bdsm.fcr.model.ChChqbkIssuePK">
+			<key-property name="codAcct"       column="cod_acct_no"        type="string" />
+			<key-property name="flgMntStatus"  column="FLG_MNT_STATUS"  type="string" />
+			<key-property name="codEntityVPD"  column="COD_ENTITY_VPD"  type="integer" />
+			<key-property name="chqkStart"  column="ref_chq_start_no"  type="string" />
+			<key-property name="chqkEnd"  column="ref_chq_end_no"  type="string" />
+		</composite-id>
+		
+		<property name="chqkStat"         column="chq_book_status"          type="string" />
+		<property name="chqkSerial"     column="chq_srlno"     type="integer" />
+		<property name="datchqkIssue"  column="dat_chq_issue"  type="date" />
+		<property name="chqkPaid"      column="chq_paid_status"       type="string" />
+	</class>
+</hibernate-mapping>

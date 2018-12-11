@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<!-- Model -->
+	<class name="bdsm.fcr.model.BDSMBICloseRate" table="BDSM_BI_CLOSE_RATE" lazy="false">
+		<composite-id name="compositeId" class="bdsm.fcr.model.BDSMBICloseRatePK">
+			<key-property name="ccyNamShrt"   column="CCY_NAM_SHRT"   type="string" />
+			<key-property name="BICloseDate"  column="BI_CLOSE_DATE"  type="date" />
+		</composite-id>
+		
+		<property name="ccyCod"         column="CCY_COD"         type="integer" />
+		<property name="midRate"        column="MID_RATE"        type="double" />
+		<property name="conversionUSD"  column="CONVERSION_USD"  type="double" />
+		<property name="dtmInsertLog"   column="DTM_INSERT_LOG"  type="timestamp" />
+	</class>
+
+
+	<!-- Query -->
+	<query name="BDSMBICloseRate#getByCodCcy">
+		<![CDATA[
+			SELECT b
+			  FROM BaCcyCode a, BDSMBICloseRate b
+			 WHERE a.namCcyShort        = b.compositeId.ccyNamShrt
+			   AND a.compositeId.codCcy = :ccy
+			 ORDER BY b.compositeId.BICloseDate DESC
+		]]>
+	</query>
+
+	<query name="BDSMBICloseRate#getByCodCcyAndCloseDate">
+		<![CDATA[
+			SELECT b
+			  FROM BaCcyCode a, BDSMBICloseRate b
+			 WHERE a.namCcyShort             =  b.compositeId.ccyNamShrt
+			   AND a.compositeId.codCcy      =  :ccy
+			   AND b.compositeId.BICloseDate <= :closeDate
+			 ORDER BY b.compositeId.BICloseDate DESC
+		]]>
+	</query>
+	
+
+</hibernate-mapping>

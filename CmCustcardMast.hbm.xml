@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+    <class name="bdsm.fcr.model.CmCustcardMast" table="CM_CUSTCARD_MAST" lazy="false">
+        <composite-id name="cmCustcardMastPK" class="bdsm.fcr.model.CmCustcardMastPK">
+            <key-property name="codCustId"       column="COD_CUST_ID"    type="integer" />
+            <key-property name="codEntityVpd"  column="COD_ENTITY_VPD"  type="integer" />
+            <key-property name="flgMntStatus"  column="FLG_MNT_STATUS"  type="string" />
+        </composite-id>
+        <property name="codCcHomeBrn"  column="COD_CC_HOME_BRN"  type="integer" />
+        <property name="codCardNo"  column="COD_CARD_NO"  type="string" />
+        <property name="namCustEmbossed"  column="NAM_CUST_EMBOSSED"  type="string" />
+        <property name="codCardProd"  column="COD_CARD_PROD"  type="integer" />
+        <property name="typCard"  column="TYP_CARD"  type="integer" />
+        <property name="flgCardStatus"  column="FLG_CARD_STATUS"  type="string" />
+        <property name="datIssue"  column="DAT_ISSUE"  type="date" />
+        <property name="datExpiry"  column="DAT_EXPIRY"  type="date" />
+        <property name="codLang"  column="COD_LANG"  type="string" />
+        <property name="codReason"  column="COD_REASON"  type="integer" />
+        <property name="codCccollBrn"  column="COD_CC_COLL_BRN"  type="integer" />
+        <property name="codMntAction"  column="COD_MNT_ACTION"  type="string" />
+        <property name="codLastMntMakerid"  column="COD_LAST_MNT_MAKERID"  type="string" />
+        <property name="codLastMntChkrid"  column="COD_LAST_MNT_CHKRID"  type="string" />
+        <property name="datLastMnt"  column="DAT_LAST_MNT"  type="timestamp" />
+        <property name="ctrUpdtSrlNo"  column="CTR_UPDAT_SRLNO"  type="integer" />
+        
+    </class>
+</hibernate-mapping>

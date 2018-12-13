@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+	<class name="bdsm.fcr.model.BaMoveAccounts" table="BA_MOVE_ACCOUNTS" lazy="false">
+        <composite-id name="baMoveAccountsPK" class="bdsm.fcr.model.BaMoveAccountsPK">
+            <key-property name="codAcctNo"       column="COD_ACCT_NO"    type="string" />
+            <key-property name="flgMntStatus"  column="FLG_MNT_STATUS"  type="string" />
+            <key-property name="codEntityVpd"  column="COD_ENTITY_VPD"  type="integer" />
+        </composite-id>
+        <property name="codModule"      column="COD_MODULE"       type="string" />
+        <property name="codCcBrn"      column="COD_CC_BRN"       type="integer" />
+		<property name="codXferBrn"      column="COD_XFER_BRN"       type="integer" />
+        <property name="codProd"      column="COD_PROD"       type="integer" />
+		<property name="datProcess"      column="DAT_PROCESS"       type="date" />
+		<property name="codMntAction"      column="COD_MNT_ACTION"       type="string" />
+		<property name="codLastMntMakerid"      column="COD_LAST_MNT_MAKERID"       type="string" />
+		<property name="codLastMntChkrid"      column="COD_LAST_MNT_CHKRID"       type="string" />
+		<property name="datLastMnt"      column="DAT_LAST_MNT"       type="timestamp" />
+		<property name="ctrUpdSrlNo"      column="CTR_UPDAT_SRLNO"       type="integer" />
+		<property name="flgBranch"      column="FLG_BRANCH"       type="string" />
+		<property name="flgProcess"      column="FLG_PROCESS"       type="string" />
+		<property name="codStream"      column="COD_STREAM"       type="integer" />
+		
+	</class>
+</hibernate-mapping>

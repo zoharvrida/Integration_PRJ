@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+	<class name="bdsm.fcr.model.ExtEventData" table="EXT_EVENT_DATA" lazy="false">
+		<id name="eventId" column="EVENT_ID" type="integer">
+			<generator class="assigned" />
+		</id>
+		<property name="eventType"    column="EVENT_TYPE"    type="string" />
+		<property name="postingDate"  column="POSTING_DATE"  type="integer" />
+		<property name="systemDate"   column="SYSTEM_DATE"   type="timestamp" />
+	</class>
+</hibernate-mapping>

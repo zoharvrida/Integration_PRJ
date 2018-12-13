@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.fcr.model.BaCcyCode" table="BA_CCY_CODE" lazy="false">
+		<composite-id name="compositeId" class="bdsm.fcr.model.BaCcyCodePK">
+			<key-property name="codCcy"        column="COD_CCY"         type="integer" />            
+			<key-property name="flgMntStatus"  column="FLG_MNT_STATUS"  type="string" />
+			<key-property name="codEntityVPD"  column="COD_ENTITY_VPD"  type="integer" />
+		</composite-id>
+		
+		<property name="namCcyShort"  column="NAM_CCY_SHORT"  type="string" />
+		<property name="namCurrency"  column="NAM_CURRENCY"   type="string" />
+		<property name="ctrCcyDec"    column="CTR_CCY_DEC"    type="byte" />
+		<property name="codCcySwift"  column="COD_CCY_SWIFT"  type="short" />
+	</class>
+</hibernate-mapping>

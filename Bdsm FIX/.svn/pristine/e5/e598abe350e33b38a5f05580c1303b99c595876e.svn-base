@@ -1,0 +1,36 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package main;
+
+import bdsm.util.HibernateUtil;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.hibernate.Session;
+
+/**
+ *
+ * @author bdsm
+ */
+public class SessionTest {
+    public static void main(String[] args) {
+        Runnable r = new Runnable() {
+
+            public void run() {
+                try {
+                    Session session = HibernateUtil.getSession();
+                    Thread.sleep(120000);
+                    System.out.println(session.isOpen());
+                    HibernateUtil.closeSession(session);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(SessionTest.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };
+        Thread t = new Thread(r);
+        t.start();
+    }
+
+
+}

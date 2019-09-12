@@ -1,0 +1,107 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package main;
+
+import bdsm.util.HibernateUtil;
+import java.lang.management.ManagementFactory;
+import java.lang.management.OperatingSystemMXBean;
+import java.lang.management.ThreadMXBean;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import org.hibernate.Session;
+
+/**
+ *
+ * @author bdsm
+ */
+public class CPUTest {
+
+    private static void printUsage() {
+
+        OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();
+        for (Method method : operatingSystemMXBean.getClass().getDeclaredMethods()) {
+            method.setAccessible(true);
+            if (method.getName().startsWith("get")
+                    && Modifier.isPublic(method.getModifiers())) {
+                Object value;
+                try {
+                    value = method.invoke(operatingSystemMXBean);
+                } catch (Exception e) {
+                    value = e;
+                }
+                System.out.println(method.getName() + " = " + value);
+            }
+        }
+        System.out.println("---------------------------------------");
+    }
+
+    public static void main(String[] args) {
+        Thread t = new Thread(new Runnable() {
+
+            public void run() {
+                while (true) {
+                    System.out.println(Thread.currentThread().getId());
+
+                    System.out.println("Start : " + ManagementFactory.getThreadMXBean().getThreadCpuTime(Thread.currentThread().getId()));
+                    printUsage();
+                    System.out.println("End : " + ManagementFactory.getThreadMXBean().getThreadCpuTime(Thread.currentThread().getId()));
+                    try {
+                        Thread.sleep(20000);
+                    } catch (InterruptedException ex) {
+                    }
+
+                }
+            }
+        });
+
+        t.start();
+        
+        long[] x = ManagementFactory.getThreadMXBean().getAllThreadIds();
+        for (int y = 0; y < x.length; y++) {
+            System.out.print(x[y] + " ");
+            System.out.println(ManagementFactory.getThreadMXBean().getThreadCpuTime(x[y]));
+        }
+        
+//
+//        Thread t2 = new Thread(new Runnable() {
+//
+//            public void run() {
+//                int i = 0;
+//                boolean run = true;
+//                while (run) {
+//                    System.out.println("Start : " + ManagementFactory.getThreadMXBean().getThreadCpuTime(Thread.currentThread().getId()));
+//                    i++;
+//                    for (int j = 0; j < i; j++) {
+//                        System.out.println(j);
+//                    }
+//                    System.out.println("End : " + ManagementFactory.getThreadMXBean().getThreadCpuTime(Thread.currentThread().getId()));
+//                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException ex) {
+//                    }
+//
+//                }
+//            }
+//        });
+
+//        t2.start();
+        int i = 0;
+//
+//        while (true) {
+//            System.out.println("Start Main Thread : " + ManagementFactory.getThreadMXBean().getThreadCpuTime(Thread.currentThread().getId()));
+//            if(i%2==0){
+//                Session session = HibernateUtil.getSession();
+//                HibernateUtil.closeSession(session);
+//            }
+//            System.out.println("End Main Thread: " + ManagementFactory.getThreadMXBean().getThreadCpuTime(Thread.currentThread().getId()));
+//            try {
+//                Thread.sleep(10000);
+//            } catch (InterruptedException ex) {
+//            }
+//            i++;
+//        }
+
+    }
+}

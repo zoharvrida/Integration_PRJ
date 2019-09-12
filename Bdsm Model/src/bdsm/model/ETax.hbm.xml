@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <!-- Model -->
+    <class name="bdsm.model.ETaxWSAuditTrail" table="ETAX_WS_AUDIT_TRAIL" lazy="false">
+        <composite-id>
+            <key-property name="refNo"       column="REF_NO"       type="string" />
+            <key-property name="profileName" column="PROFILE_NAME" type="string" />
+            <key-property name="methodName"  column="METHOD_NAME"  type="string" />
+            <key-property name="typeReqDB"   column="TYPE_REQ"     type="character" access="property" />
+        </composite-id>
+        <property name="content" type="text">
+            <column name="CONTENT" sql-type="CLOB" />
+        </property>
+        <property name="dtmCreated" column="DTM_LOG" type="timestamp" />
+    </class>
+    <class lazy="false" name="bdsm.model.ETaxCurrency" table="ETAX_M_CURRENCY">
+        <id name="id" column="ID_CCY" type="string">
+            <generator class="assigned"/>
+        </id>
+        <property column="CURR_CODE" name="currCode" type="string"/>
+        <property column="CURR_NAME" name="currName" type="string"/>
+        <property column="CURR_CODE_NCBS" name="currCodeNcbs" type="string"/>
+        <property column="IDCREATEDBY" name="idCreatedBy" type="string"/>
+        <property column="IDCREATEDBY" name="idCreatedSpv" type="string" update="false" insert="false"/>
+        <property column="DTMCREATED" name="dtmCreated" type="timestamp" update="false" insert="false"/>
+        <property column="DTMCREATEDSPV" name="dtmCreatedSpv" type="timestamp" update="false" insert="false"/>
+        <property column="IDUPDATEDBY" name="idUpdatedBy" type="string" update="false" insert="false"/>
+        <property column="IDUPDATEDSPV" name="idUpdatedSpv" type="string" update="false" insert="false"/>
+        <property column="DTMUPDATED" name="dtmUpdated" type="timestamp" update="false" insert="false"/>
+        <property column="DTMUPDATEDSPV" name="dtmUpdatedSpv" type="timestamp" update="false" insert="false"/>
+        <property column="ORDERING" name="ordering" type="integer" update="false" insert="false"/>
+    </class>
+    <!-- Query -->
+    
+</hibernate-mapping>

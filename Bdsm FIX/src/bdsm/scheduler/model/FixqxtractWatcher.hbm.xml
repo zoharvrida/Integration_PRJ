@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping> 
+  <class name="bdsm.scheduler.model.FixqxtractWatcher" table="FIXQXTRACT_WATCHER" lazy="false">
+        <composite-id name="FixqxtractWatcherPK"     class="bdsm.scheduler.model.FixqxtractWatcherPK">
+            <key-property name="qid"     column="QID"         type="integer" />
+            <key-property name="typeProcess" column="TYPE_PROCESS"        type="integer" />
+            <key-property name="namProcess" column="NAM_PROCESS"        type="string" />
+        </composite-id>
+        <property name="idScheduler"  column="IDSCHEDULER"  type="integer"/>
+        <property name="dtmProcess"    column="DTM_PROCESS"    type="timestamp"  />
+        <property name="dtmStartProc"    column="DTM_START_PROC"    type="timestamp"  />
+        <property name="dtmFinish"    column="DTM_FINISH"    type="timestamp"  />
+        <property name="processStatus"    column="PROCESS_STATUS"    type="string"  />
+        <property name="flgProcess"    column="QXTRACT_STATUS"    type="string"  />
+        <property name="costumparam"    column="COSTUMPARAM"    type="string"  />
+        <property name="param1"    column="param1"    type="string"  />
+        <property name="param2"    column="param2"    type="string"  />
+        <property name="param3"    column="param3"    type="string"  />
+        <property name="param4"    column="param4"    type="string"  />
+        <property name="param5"    column="param5"    type="string"  />
+        <property name="param6"    column="IDBATCH"    type="string"  />
+        <property name="costumField"    column="COSTUMFIELD"    type="string"  />
+        <property name="qidRef"  column="QIDREF"  type="integer"/>
+    </class>
+    
+</hibernate-mapping>

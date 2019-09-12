@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="bdsm.rpt.model.XrefReportTemplate" table="XREFREPORTTEMPLATE" lazy="false">
+        <composite-id name="compositeId" class="bdsm.rpt.model.XrefReportTemplatePK">
+            <key-property name="idTemplate"         column="idTemplate"         type="string" />
+            <key-property name="idMasterReport"     column="idMasterReport"     type="string" />
+        </composite-id>
+      <property name="idXref"           column="idXref"             type="integer"/>
+      <property name="idCreatedBy"      column="idCreatedBy"        type="string"/>
+      <property name="idCreatedSpv"     column="idCreatedSpv"       type="string"/>
+      <property name="dtmCreated"       column="dtmCreated"         type="timestamp"  />
+      <property name="dtmCreatedSpv"    column="dtmCreatedSpv"      type="timestamp"  />
+    </class>
+</hibernate-mapping>

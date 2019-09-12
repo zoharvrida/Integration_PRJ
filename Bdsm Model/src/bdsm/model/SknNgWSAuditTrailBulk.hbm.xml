@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping 
+		PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.SknNgWSAuditTrailBulkBatch" table="SKNNG_WS_AUDIT_TRAIL_BULK_BTC">
+		<id name="batchNo" column="BATCH_NO" type="string" />
+		
+		<property name="type"              column="TYPE"               type="byte" />
+		<property name="filenameFixin"     column="FILENAME_FIXIN"     type="string" />
+		<property name="batchNoOriginal"   column="BATCH_NO_ORIGINAL"  type="string" />
+		<property name="filenameOriginal"  column="FILENAME_ORIGINAL"  type="string" />
+		<property name="dtmCreated"        column="DTM_CREATED"        type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.SknNgWSAuditTrailBulkHeader" table="SKNNG_WS_AUDIT_TRAIL_BULK_HDR">
+		<composite-id name="compositeId" class="bdsm.model.SknNgPK">
+			<key-property name="batchNo"   column="BATCH_NO"   type="string" />
+			<key-property name="recordId"  column="RECORD_ID"  type="integer" />
+		</composite-id>
+		
+		<property name="batchId"                           column="BATCH_ID"                        type="string" />
+		<property name="identitasPesertaPengirim"          column="IDENTITAS_PESERTA_PENGIRIM"      type="string" />
+		<property name="jamTanggalMessage"                 column="JAM_TANGGAL_MESSAGE"             type="string" />
+		<property name="batchIdOriginal"                   column="BATCH_ID_ORI"                    type="string" />
+		<property name="identitasPesertaPengirimOriginal"  column="IDENTITAS_PESERTA_PENGIRIM_ORI"  type="string" />
+		<property name="jumlahRecords"                     column="JUMLAH_RECORDS"                  type="string" />
+		<property name="tanggalBatch"                      column="TANGGAL_BATCH"                   type="string" />
+		<property name="CRC"                               column="CRC"                             type="string" />
+		<property name="status"                            column="STATUS"                          type="string" />
+		<property name="rejectCode"                        column="REJECT_CODE"                     type="string" />
+		<property name="dtmStart"                          column="DTM_START"                       type="timestamp" />
+		<property name="dtmFinish"                         column="DTM_FINISH"                      type="timestamp" />
+		<property name="flagErrorDB"                       column="FLAG_ERROR"                      type="character"  access="property" />
+	</class>
+	
+	<class name="bdsm.model.SknNgWSAuditTrailBulkDKE" table="SKNNG_WS_AUDIT_TRAIL_BULK_DKE">
+		<composite-id name="compositeId" class="bdsm.model.SknNgPK">
+			<key-property name="batchNo"   column="BATCH_NO"   type="string" />
+			<key-property name="recordId"  column="RECORD_ID"  type="integer" />
+		</composite-id>
+		
+		<property name="parentRecordId"     column="PARENT_RECORD_ID"     type="integer" />
+		<property name="nomorReferensiDKE"  column="NOMOR_REFERENSI_DKE"  type="string" />
+		<property name="SOR"                column="SOR"                  type="string" />
+		<property name="status"             column="STATUS"               type="string" />
+		<property name="rejectCode"         column="REJECT_CODE"          type="string" />
+		<property name="dtmCreated"         column="DTM_CREATED"          type="timestamp" />
+		<property name="dtmUpdated"         column="DTM_UPDATED"          type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.SknNgWSAuditTrailBulkDetail" table="SKNNG_WS_AUDIT_TRAIL_BULK_DTL">
+		<composite-id name="compositeId" class="bdsm.model.SknNgPK">
+			<key-property name="batchNo"   column="BATCH_NO"   type="string" />
+			<key-property name="recordId"  column="RECORD_ID"  type="integer" />
+		</composite-id>
+		
+		<property name="parentRecordId"      column="PARENT_RECORD_ID"  type="integer" />
+		<property name="nomorUrutTransaksi"  column="NOMOR_URUT_TRX"    type="string" />
+		<property name="status"              column="STATUS"            type="string" />
+		<property name="rejectCode"          column="REJECT_CODE"       type="string" />
+		<property name="dtmCreated"          column="DTM_CREATED"       type="timestamp" />
+		<property name="dtmUpdated"          column="DTM_UPDATED"       type="timestamp" />
+	</class>
+	
+	
+	
+	<!-- Query -->
+	<query name="SknNgWSAuditTrailBulkHeader#byBatchNoAndBatchId">
+		<![CDATA[
+			 FROM SknNgWSAuditTrailBulkHeader
+			WHERE compositeId.batchNo = :batchNo
+			  AND batchId             = :batchId
+		]]>
+	</query>
+	
+	<query name="SknNgWSAuditTrailBulkDKE#byBatchNoAndNomorReferensi">
+		<![CDATA[
+			 FROM SknNgWSAuditTrailBulkDKE
+			WHERE compositeId.batchNo = :batchNo
+			  AND nomorReferensiDKE   = :nomorReferensi
+			  AND parentRecordId      = :parentRecordId
+		]]>
+	</query>
+	
+	<query name="SknNgWSAuditTrailBulkDetail#byBatchNoAndNomorUrut">
+		<![CDATA[
+			 FROM SknNgWSAuditTrailBulkDetail
+			WHERE compositeId.batchNo = :batchNo
+			  AND nomorUrutTransaksi  = :nomorUrut
+			  AND parentRecordId      = :parentRecordId
+		]]>
+	</query>
+	
+	<query name="SknNgWSAuditTrailBulkDKE#updateStatusAndRejectCode">
+		<![CDATA[
+			UPDATE SknNgWSAuditTrailBulkDKE
+			   SET status     = :status, 
+			       rejectCode = :rejectCode,
+			       dtmUpdated = COALESCE(:dtmUpdated, current_timestamp())
+			 WHERE :batchNo   = compositeId.batchNo 
+			   AND status     IS NULL
+		]]>
+	</query>
+	
+	<query name="SknNgWSAuditTrailBulkDetail#updateStatusAndRejectCode">
+		<![CDATA[
+			UPDATE SknNgWSAuditTrailBulkDetail
+			   SET status     = :status, 
+			       rejectCode = :rejectCode,
+			       dtmUpdated = COALESCE(:dtmUpdated, current_timestamp())
+			 WHERE :batchNo   = compositeId.batchNo 
+			   AND status     IS NULL
+		]]>
+	</query>
+</hibernate-mapping>

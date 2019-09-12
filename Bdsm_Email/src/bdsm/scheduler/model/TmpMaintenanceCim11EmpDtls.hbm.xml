@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class lazy="false" name="bdsm.scheduler.model.TmpMaintenanceCim11EmpDtls" table="TMP_CIM11_EMP_DTLS">
+        <composite-id class="bdsm.scheduler.model.TmpMaintenanceCim11EmpDtlsPK" name="compositeId">
+            <key-property column="BATCHNO" name="batchiId" type="string"/>
+            <key-property column="RECORDID" name="recordId" type="integer"/>
+            <key-property column="COD_CUST_ID" name="cif" type="integer"/>
+        </composite-id>
+    
+        <property column="TXT_CUST_OCCUPTN" name="occupation" type="string"/>
+        <property column="TXT_TENR_OCCUPTN" name="tenure" type="integer"/>
+        <property column="TXT_DESIGNATION" name="designation" type="string"/>
+        <property column="NAM_CUST_EMP" name="name" type="string"/>
+        <property column="TXT_EMPADR_ADD1" name="address1" type="string"/>
+        <property column="TXT_EMPADR_ADD2" name="address2" type="string"/>
+        <property column="TXT_EMPADR_ADD3" name="address3" type="string"/>
+        <property column="NAM_EMPADR_CITY" name="city" type="string"/>
+        <property column="NAM_EMPADR_STATE" name="state" type="string"/>
+        <property column="TXT_EMPADR_ZIP" name="postalCode" type="string"/>
+        <property column="REF_CUST_EMP_MOBILE" name="mobile" type="string"/>
+        <property column="REF_CUST_EMP_EMAIL" name="emailID" type="string"/>
+        <property column="REF_CUST_EMP_PHONE" name="phone" type="string"/>
+        <property column="NAM_EMPADR_CNTRY" name="country" type="string"/>
+        <property column="REF_CUST_EMP_TELEX" name="telexNo" type="string"/>
+        <property column="REF_CUST_EMP_FAX" name="faxNo" type="string"/>
+        <property column="CTR_AGE_RETIRE" name="retirementAge" type="integer"/>
+        <property column="CTR_YRS_JOB" name="noOfYears" type="integer"/>
+        <property column="IDCREATEDBY"     name="idCreatedBy"  type="string"/>
+        <property column="DTMCREATEDBY"    name="dtmCreated"   type="timestamp"  /> 
+        <property column="IDCREATEDSPV"    name="idCreatedSpv" type="string"/>
+        <property column="DTMCREATEDSPV"   name="dtmCreatedSpv" type="timestamp"  />
+        <property column="FLAG_STATUS"     name="flagStatus"   type="string"/>
+        <property column="STATUS_REASON"   name="statusReason" type="string"/>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,91 @@
+package bdsm.scheduler.fix;
+
+import bdsm.scheduler.*;
+import bdsm.scheduler.dao.FixQXtractDao;
+import bdsm.scheduler.dao.FixSchedulerXtractDao;
+import bdsm.scheduler.model.FixQXtract;
+import bdsm.scheduler.model.FixSchedulerXtract;
+import bdsm.scheduler.processor.XtractJobProcessor;
+import bdsm.scheduler.processor.XtractProcessor;
+import bdsm.scheduler.processor.XtractSchedulerProcessor;
+import bdsm.scheduler.util.MailUtil;
+import bdsm.scheduler.util.SchedulerUtil;
+import bdsm.util.HibernateUtil;
+import java.util.HashMap;
+import java.util.List;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+public class FixExport extends BdsmScheduler {
+
+    private int maxJob;
+    private static final String adminEmail = PropertyPersister.adminEmail;
+
+    public FixExport(long timeout, long sleep, long btsleep, int threadcount) {
+        super(timeout, sleep, btsleep, threadcount);
+        this.maxJob = threadcount;
+    }
+
+    @Override
+    protected void execute() {
+        Session session = HibernateUtil.getSession();
+        FixSchedulerXtractDao fixSchedulerXtractDao = new FixSchedulerXtractDao(session);
+        List<FixSchedulerXtract> listFixSchedulerXtract = fixSchedulerXtractDao.getAllXtractSchedule(this.maxJob);
+        FixSchedulerXtract executedFixSchedulerXtract;
+        //set maximum thread assign
+        int max = listFixSchedulerXtract.size() > this.maxJob ? this.maxJob : listFixSchedulerXtract.size();
+
+        HashMap hashMap;
+        XtractProcessor xtractProcessor;
+
+        //assign thread
+        getLogger().info(">>>>>FixSchedulerXtract<<<<<");
+        for (int i = 0; i < max; i++) {
+            xtractProcessor = new XtractSchedulerProcessor();
+            hashMap = new HashMap();
+            executedFixSchedulerXtract = fixSchedulerXtractDao.get(Integer.parseInt(listFixSchedulerXtract.get(i).getEmailTo()));
+            hashMap.put(MapKey.model, executedFixSchedulerXtract);
+            if (this.assign(hashMap, xtractProcessor) == null) {
+                try {
+                    MailUtil.sentNewMessage(adminEmail, "", "Alert FixQXtract", "Not Enough Thread", null, session, ScheduleDefinition.emailOnly);
+                } catch (Exception ex) {
+                    getLogger().error(ex);
+                }
+                break;
+            }
+        }
+
+        FixQXtractDao fixQXtractDao = new FixQXtractDao(session);
+        List<FixQXtract> listFixQXtract = fixQXtractDao.getAllQXtractList(this.maxJob);
+
+        //set maximum thread assign
+        max = listFixQXtract.size() > this.maxJob ? this.maxJob : listFixQXtract.size();
+
+        //assign thread
+        getLogger().info(">>>>>FixQXtract<<<<<");
+        Transaction tx = session.beginTransaction();
+        for (int i = 0; i < max; i++) {
+            xtractProcessor = new XtractJobProcessor();
+            hashMap = new HashMap();
+            FixQXtract fixQXtract = listFixQXtract.get(i);
+            fixQXtract.setFlgProcess(StatusDefinition.PROCESS);
+            fixQXtract.setDtmProcess(SchedulerUtil.getTime());
+            hashMap.put(MapKey.model, fixQXtract);
+            if (this.assign(hashMap, xtractProcessor) == null) {
+                try {
+                    MailUtil.sentNewMessage(adminEmail, "", "Alert FixQXtract", "Not Enough Thread", null, session, ScheduleDefinition.emailOnly);
+                } catch (Exception ex) {
+                    getLogger().error(ex);
+                }
+                break;
+            } else {
+                fixQXtractDao.update(fixQXtract);
+            }
+        }
+        session.flush();
+        tx.commit();
+        getLogger().info(">>>>>FixExport Done<<<<<");
+        HibernateUtil.closeSession(session);
+
+    }
+}

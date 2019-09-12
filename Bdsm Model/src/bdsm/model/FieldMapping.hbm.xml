@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.model.FieldMapping" table="FIELD_MAPPING">
+    <composite-id class="bdsm.model.FieldMappingPK" name="pk">
+      <key-property column="field_name" name="namField" type="string"/>
+      <key-property column="field_type" name="classType" type="string"/>
+      <key-property column="field_type_comp" name="classTypeToComp" type="string"/>
+      <key-property column="field_value" name="values" type="string"/>
+    </composite-id>
+    <property column="field_index" name="fieldIndex" type="string"/>
+    <property column="field_value_comp" name="fieldValueToComp" type="string"/>
+    <property column="field_index_comp" name="fieldIndexToComp" type="string"/>
+    <property column="dtmcreated" name="dtmCreated" type="date"/>
+    <property column="dtmupdate" name="dtmUpdated" type="date"/>
+    <property column="type_process" name="type" type="string"/>
+    <property column="createdby" name="idCreatedBy" type="string"/>
+    <property column="updatedby" name="idUpdatedBy" type="string"/>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.model.ARParamProfileInterface" table="INT_PARAM_PROFILE" lazy="false">
+      <composite-id>
+         <key-property column="IDIMPORT" name="idSchedulerImport" type="integer"/>
+         <key-property column="IDXTRACT" name="idSchedulerXtract" type="integer"/>
+      </composite-id>
+      <property name="profileName"   column="PROFILE_NAME"   type="string"/>
+      <property name="validationFunction"   column="VALIDATION_PACKAGE"   type="string"/>
+      <property name="processFunction"   column="PROCESS_PACKAGE"   type="string"/>
+      <property name="rejectFunction"   column="REJECT_PACKAGE"   type="string"/>
+      <property name="trackingFlag"   column="FLG_TRACKING"   type="string"/>
+      <property name="validateFlag"   column="FLG_VALIDATION"   type="string"/>
+	  <property name="dataSource"   column="DATASOURCE"   type="string"/> 
+      <property name="flgSameName"   column="FLG_SAME_NAME"   type="string"/>
+      <property name="optExt"   column="OPTEXT"   type="string"/>
+    </class>
+</hibernate-mapping>

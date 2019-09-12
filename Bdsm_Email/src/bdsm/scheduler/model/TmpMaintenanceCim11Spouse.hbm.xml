@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class lazy="false" name="bdsm.scheduler.model.TmpMaintenanceCim11Spouse" table="TMP_CIM11_SPOUSE">
+        <composite-id class="bdsm.scheduler.model.TmpMaintenanceCim11SpousePK" name="compositeId">
+            <key-property column="BATCHNO" name="batchiId" type="string"/>
+            <key-property column="RECORDID" name="recordId" type="integer"/>
+            <key-property column="COD_CUST_ID" name="cif" type="integer"/>
+        </composite-id>
+    
+        <property column="NAM_SPOUSE_CUST" name="spouseParentName" type="string"/>
+        <property column="COD_NATL_ID_SPOUSE" name="spouseParentIc" type="string"/>
+        <property column="TXT_OCCPN_SPOUSE" name="spouseParentOccp" type="integer"/>
+        <property column="TXT_SPO_DESGN" name="spouseParentDesgn" type="string"/>
+        <property column="DAT_DOB_SPOUSE" name="spouseParentBirthDate" type="date"/>
+        <property column="NAM_SPO_EMPLOYER" name="spouseParentDtls" type="string"/>
+        <property column="TXT_ADDR1_SPO_EMP" name="address1" type="string"/>
+        <property column="TXT_ADDR2_SPO_EMP" name="address2" type="string"/>
+        <property column="TXT_ADDR3_SPO_EMP" name="address3" type="string"/>
+        <property column="REF_SPO_EMP_PHONE" name="phoneNo" type="string"/>
+        <property column="IDCREATEDBY"     name="idCreatedBy"  type="string"/>
+        <property column="DTMCREATEDBY"    name="dtmCreated"   type="timestamp"  /> 
+        <property column="IDCREATEDSPV"    name="idCreatedSpv" type="string"/>
+        <property column="DTMCREATEDSPV"   name="dtmCreatedSpv" type="timestamp"  />
+        <property column="FLAG_STATUS"     name="flagStatus"   type="string"/>
+        <property column="STATUS_REASON"   name="statusReason" type="string"/>
+    
+    
+    
+   
+    
+    </class>
+</hibernate-mapping>

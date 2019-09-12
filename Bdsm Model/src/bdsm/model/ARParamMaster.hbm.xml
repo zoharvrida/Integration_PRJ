@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.model.ARParamMaster" table="AR_PARAM_MASTER" lazy="false">
+      <id       name="idScheduler"    column="IDSCHEDULER"    type="integer" >
+         <generator class="assigned"/>
+      </id>
+      <property name="tableName"   column="TABLENAME"   type="string"/>
+      <property name="validationFunction"   column="VALFUNCTION"   type="string"/>
+      <property name="processFunction"   column="PROCFUNCTION"   type="string"/>
+      <property name="rejectFunction"   column="REJECTFUNCTION"   type="string"/>
+      <property name="idBefore"   column="idBefore"   type="integer"/>
+      <property name="idAfter"   column="idAfter"   type="integer"/>
+      <property name="trackingFlag"   column="trackingFlag"   type="string"/>
+      <property name="queryRet"   column="queryRet"   type="string"/>
+      <property name="dataSource"   column="dataSource"   type="string"/>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+   <class name="bdsm.model.EktpLog" table="EKTP_LOG" lazy="false">
+      <id       name="idLog"       column="idLog"       type="string"    >
+         <generator class="assigned"/>
+      </id>
+      <property name="idUser"      column="idUser"      type="string"   />
+      <property name="ktpUser"     column="ktpUser"     type="string"   />
+      <property name="inputNik"    column="input_nik"   type="string"   />
+      <property name="dtmRequest"  column="dtmRequest"  type="timestamp"/>
+      <property name="dtmResponse" column="dtmResponse" type="timestamp"/>
+      <property name="datPost"     column="datPost"     type="date"     />
+      <property name="datLog"      column="datLog"      type="date"     />
+      <property name="response"            column="response"            type="string"   />
+      <property name="flgRespFromExternal" column="flgrespfromexternal" type="string"   />
+      <property name="clientIp"            column="clientIp"            type="string"   />
+      <property name="serverIp"            column="serverIp"            type="string"   />
+      <property name="flg_Nik_Found"         column="flg_nik_found"       type="string"   />
+      <property name="cdBranch"         column="cdBranch"       type="string"   />
+      <property name="System_Src"         column="System_src"       type="string"   />
+      <property name="MenuSrc"         column="Menu_src"       type="string"   />
+      <property name="largeResp"           column="largeresp"           type="clob"     />
+   </class>
+
+   
+
+</hibernate-mapping>

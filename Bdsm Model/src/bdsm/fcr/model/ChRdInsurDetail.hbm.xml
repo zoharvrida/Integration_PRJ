@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+	<class name="bdsm.fcr.model.ChRdInsurDetail" table="CH_RD_INSUR_DETAIL" lazy="false">
+		<composite-id name="chRdInsurDetailPK" class="bdsm.fcr.model.ChRdInsurDetailPK">
+			<key-property name="codInsurAcctNo"       column="COD_INSUR_ACCT_NO"        type="string" />
+			<key-property name="flgMntStatus"  column="FLG_MNT_STATUS"  type="string" />
+			<key-property name="codEntityVpd"  column="COD_ENTITY_VPD"  type="integer" />
+		</composite-id>
+		<property name="codCcBrn"      column="COD_CC_BRN"       type="integer" />
+		<property name="codRdAcctNo"      column="COD_RD_ACCT_NO"       type="string" />
+		<property name="codMntAction"      column="COD_MNT_ACTION"       type="string" />
+		<property name="codLastMntMakerid"      column="COD_LAST_MNT_MAKERID"       type="string" />
+		<property name="codLastMntChkrid"      column="COD_LAST_MNT_CHKRID"       type="string" />
+		<property name="datLastMnt"     column="DAT_LAST_MNT"       type="timestamp" />
+		<property name="ctrUpdtSrlno"      column="CTR_UPDAT_SRLNO"       type="integer" />
+		
+	</class>
+</hibernate-mapping>

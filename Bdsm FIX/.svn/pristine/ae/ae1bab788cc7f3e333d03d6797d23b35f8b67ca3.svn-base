@@ -1,0 +1,33 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bdsm.scheduler.util;
+
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.UUID;
+
+/**
+ *
+ * @author bdsm
+ */
+public class SchedulerUtil {
+
+    public static Timestamp getTime() {
+        Calendar calendar = Calendar.getInstance();
+        return new Timestamp(calendar.getTime().getTime());
+    }
+
+    public static String getDate(String format) throws ParseException {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(new Timestamp(calendar.getTime().getTime()));
+    }
+
+    public static String generateUUID() {
+        return UUID.randomUUID().toString();
+    }
+}

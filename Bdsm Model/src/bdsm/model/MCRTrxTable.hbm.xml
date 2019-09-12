@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+    <!-- Model -->
+    <class name="bdsm.model.MCRTrxTable" table="MCR_TRX_TABLE">
+        <id name="refNetworkNo" column="REF_NO" type="string" />
+        <property name="acctNo" column="ACCT_NO" type="string" />
+        <property name="codOrgBrn" column="COD_BRN" type="integer"/>
+        <property name="idUser" column="IDUSER" type="string"/>
+        <property name="datTxn" column="DAT_TXN" type="timestamp"/>
+        <property name="oriCcy" column="CCY_ORG" type="string"/>
+        <property name="oriAmt" column="ORG_AMT" type="integer"/>
+        <property name="usdAmt" column="USD_AMT" type="integer"/>
+        <property name="desCcy" column="CCY_DEST" type="string"/>
+        <property name="desAmt" column="DEST_AMT" type="big_decimal"/>
+		<property name="desRet" column="CCY_DEST_RET" type="big_decimal"/>
+		<property name="codAcctTitle" column="ACCT_TITTLE" type="string"/>
+    </class>
+    
+    <query name="MCRTrxTable#MCR_getByRefNo">
+        <![CDATA[
+                  FROM MCRTrxTable a
+                 WHERE a.refNetworkNo = :refNetworkNo
+                   AND a.codOrgBrn    = :codOrgBrn
+        ]]>
+    </query>
+    
+</hibernate-mapping>

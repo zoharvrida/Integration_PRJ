@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.rpt.model.FixReportParam" table="FIXREPORTPARAM">
+    <composite-id class="bdsm.rpt.model.FixReportParamPK" name="compositeId">
+      <key-property column="idReport" name="idReport" type="string"/>
+      <key-property column="seq" name="seq" type="integer"/>
+    </composite-id>
+    <property column="title" name="title" type="string"/>
+    <property column="format" name="format" type="string"/>
+    <property column="maxLength" name="maxLength" type="string"/>
+    <property column="manDatory" name="manDatory" type="string"/>
+    <property column="regExp" name="regExp" type="string"/>
+  </class>
+</hibernate-mapping>

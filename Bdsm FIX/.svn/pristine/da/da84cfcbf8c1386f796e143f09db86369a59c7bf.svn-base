@@ -1,0 +1,39 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package main;
+
+import bdsm.scheduler.util.MailUtil;
+import bdsm.util.HibernateUtil;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author USER
+ */
+public class MailTest {
+    public static void main(String[] args){
+        String emailbody="<html dir=\"ltr\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; chars\n" +
+"et=utf-8\"><meta name=\"GENERATOR\" content=\"MSHTML 9.00.8112.16421\"><style title=\"owaParaStyle\">P {\n" +
+"        MARGIN-TOP: 0px; MARGIN-BOTTOM: 0px\n" +
+"}\n" +
+"</style></head><body ocsi=\"x\"><div dir=\"ltr\"><font color=\"#000000\" size=\"2\" face=\"Tahoma\">ok</font></div><div style=\"DIRECTION: ltr\" id=\"divRpF777245\"><hr tabindex=\"-1\"\n" +
+"><font size=\"2\" face=\"Tahoma\"><b>From:</b> BDSMuat Autoreply<br><b>Sent:</b> Tuesday, October 01, 2013 5:30 PM<br><b>To:</b> user test05; user test01<br><b>Subject:</b>\n" +
+" RE: UDFULC UDFULC20130930002yy.zip<br></font><br></div><div></div><div>Dear Sir/Madam,<br><br>\n" +
+"Your approval is required for the attached file to be processed further. <br><br>\n" +
+"Please reply this email with:<br><b>Ok</b>, if you approve the file to be processed, or<br><b>Not ok</b>, if otherwise.<br><br>\n" +
+"Thanks &amp; regards,<br>\n" +
+"- BDSM -</div></body></html>";
+        emailbody = emailbody.replaceAll("\n", " ").replaceFirst(".{0,}/head>", "").replaceFirst("</html>.{0,}", "\"").replaceAll("<[^>]*>", "\t");//.replaceFirst("From.{0,}", "\"").replaceFirst("</p>.{0,}", "\"").replaceFirst(".{0,}\"IN\"", "").replaceFirst("</span>.{0,}", "\"").replaceAll(".{0,}\">", "\"").replaceAll("<.{0,}", "\"").replaceAll("\"{1,}", "");
+        //String[] emailbody2 = emailbody.split("\t");
+        //System.out.println(emailbody2[3]);
+        StringTokenizer st = new StringTokenizer(emailbody);
+        System.out.println(st.countTokens());
+        System.out.println(st.nextToken());
+        //emailbody = emailbody.replaceFirst(".{0,}/head>", "").replaceAll("<[^>]*>", "");//.replaceFirst("From.{0,}", "\"").replaceFirst("</p>.{0,}", "\"").replaceFirst(".{0,}\"IN\"", "").replaceFirst("</span>.{0,}", "\"").replaceAll(".{0,}\">", "\"").replaceAll("<.{0,}", "\"").replaceAll("\"{1,}", "");
+        //System.out.println(emailbody);
+    }
+}

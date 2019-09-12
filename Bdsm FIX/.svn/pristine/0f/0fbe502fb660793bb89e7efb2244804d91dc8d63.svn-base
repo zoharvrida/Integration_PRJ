@@ -1,0 +1,43 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package main;
+
+import bdsm.scheduler.util.EncryptionUtil;
+import bdsm.scheduler.util.FCREncryption;
+import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.Cipher;
+import java.security.*;
+
+/**
+ *
+ * @author USER
+ */
+public class FCREncryptionTest {
+
+    public static void main(String[] args) {
+        FCREncryption e = new FCREncryption("AES/CBC/PKCS5Padding");
+        File paramFile1 = new File("d:\\DaftarPassword.xls");
+        File paramFile2 = new File("d:\\DaftarPassword2.xls");
+        File paramFile3 = new File("d:\\DaftarPassword3.xls");
+        try {
+            //e.encryptFile("P@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rd", paramFile1, paramFile2);
+            //e.decryptFile("P@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rdP@ssw0rd", paramFile2, paramFile3);
+            EncryptionUtil.AESAlgo("d:\\DaftarPassword.xls", "d:\\DaftarPassword2.xls", "P@ssw0rdP@ssw0rd", Cipher.ENCRYPT_MODE);
+        } catch (Exception ex) {
+            Logger.getLogger(FCREncryptionTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+//
+//        for (Provider provider : Security.getProviders()) {
+//            System.out.println(provider.getName());
+//            for (String key : provider.stringPropertyNames()) {
+//                System.out.println("\t" + key + "\t" + provider.getProperty(key));
+//            }
+//        }
+
+    }
+}

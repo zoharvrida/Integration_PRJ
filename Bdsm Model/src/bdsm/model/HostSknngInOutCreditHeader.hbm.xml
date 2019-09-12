@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.model.HostSknngInOutCreditHeader" table="TMP_SKNNG_IN_OUT_CREDIT_HEADER">
+    <composite-id class="bdsm.model.HostSknngInOutHFPK" name="compositeId">
+      <key-property column="BATCH_NO" name="batchNo" type="string"/>
+      <key-property column="PARENT_RECORD_ID" name="parentRecordId" type="integer"/>
+    </composite-id>
+    <property column="TIPE_RECORD" name="tipeRecord" type="string"/>
+    <property column="KODE_DKE" name="kodeDKE" type="string"/>
+    <property column="BATCH_ID" name="batchId" type="string"/>
+    <property column="JAM_TANGGAL_MESSAGE" name="jamTanggalMessage" type="string"/>
+    <property column="JUMLAH_RECORDS" name="jumlahRecords" type="integer"/>
+    <property column="TOTAL_NOMINAL" name="totalNominal" type="string"/>
+    <property column="TANGGAL_BATCH" name="tanggalBatch" type="string"/>
+    <property column="JENIS_SETELMEN" name="jenisSetelmen" type="string"/>
+    <property column="IDENTITAS_PESERTA_PENGIRIM" name="identitasPesertaPengirim" type="string"/>
+    <property column="SANDI_KOTA_PENGIRIM" name="sandiKotaPengirim" type="string"/>
+    <property column="TYPE" name="type" type="string"/>
+    <property column="EXTRACT_STATUS" name="extractStatus" type="string"/>
+    <property column="MESSAGE" name="message" type="string"/>
+    <property column="FLG_REJECT" name="flgReject" type="string"/>
+    <property column="ID_CREATED_BY" name="idCreatedBy" type="string"/>
+    <property column="ID_CREATED_SPV" name="idCreatedSpv" type="string"/>
+    <property column="DTM_CREATED" name="dtmCreated" type="timestamp"/>
+    <property column="DTM_CREATED_SPV" name="dtmCreatedSpv" type="timestamp"/>
+    <property column="ID_UPDATED_BY" name="idUpdatedBy" type="string"/>
+    <property column="ID_UPDATED_SPV" name="idUpdatedSpv" type="string"/>
+    <property column="DTM_UPDATED" name="dtmUpdated" type="timestamp"/>
+    <property column="DTM_UPDATED_SPV" name="dtmUpdatedSpv" type="timestamp"/>
+  </class>
+</hibernate-mapping>

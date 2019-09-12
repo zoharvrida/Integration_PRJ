@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class lazy="false" name="bdsm.model.CoCiCustmast" table="CI_CUSTMAST">
+        <composite-id class="bdsm.model.CoCiCustmastPK" name="compositeId">          
+            <key-property  column="COD_ENTITY_VPD" name="codEntityVpd" type="integer"/>
+            <key-property  column="COD_CUST_NATL_ID" name="nik" type="string"/>
+            <key-property  column="FLG_MNT_STATUS" name="flgMntStatus" type="string"/>
+            <key-property  column="DAT_BIRTH_CUST" name="dateofBirth" type="date"/>
+        </composite-id>
+		<property  column="NAM_CUST_FIRST" name="namCustFirst" type="string"/>
+        <property column="NAM_CUST_FULL" name="namCustFull" type="string"/>
+        <property column="TXT_CUSTADR_ADD1" name="address" type="string"/>
+        <property column="cod_cust_id" name="codCustId" type="integer"/>
+
+    </class>
+    <sql-query name="fcrCiCustMast#getByNoCard">
+        <query-param name="noCard" type="string" />
+
+        <return-scalar  column="nik" type="string" />            
+        <return-scalar  column="fullname" type="string" />
+        <return-scalar  column="address" type="string" />
+        <return-scalar column="cif" type="string" />
+        <return-scalar column="dob" type="string" />
+
+		<!-- Revision : Search Customer By Card 
+             Change : 08-Januari-2016   
+             Changer : v00020800
+			 Begin 1 -->
+		<![CDATA[
+	 SELECT to_char(cis.DAT_BIRTH_CUST,'dd/MM/YYYY') as dob,cis.cod_cust_natl_id as nik,cis.nam_cust_full as fullname,cis.txt_custadr_add1 as address, cis.cod_cust_id as cif
+        FROM cm_custcard_acct_xref xref JOIN (select * from (select * from ci_custmast ci
+            where ci.flg_mnt_status = 'A'
+            and EXISTS (SELECT 1 FROM SM_ACCESS_CODE_CUST_XREF C
+            WHERE C.COD_CUST_ID = ci.cod_cust_id
+            AND C.FLG_MNT_STATUS = 'A'
+            AND C.COD_ACCESS IN (SELECT B.COD_ACCESS FROM SM_ACCESS_CODES B
+            WHERE B.COD_ACCESS IN (select regexp_substr((Select strval from parameter where cdparam='TAX.Access.Param'),
+                                     '[0-9]+|[a-z]+|[A-Z]+',
+                                     1,
+                                     lvl)
+                  from (select (Select strval from parameter where cdparam='TAX.Access.Param'), level lvl
+                          from dual
+                        connect by level <=
+                                   length((Select strval from parameter where cdparam='TAX.Access.Param')) -
+                                   length(replace((Select strval from parameter where cdparam='TAX.Access.Param'), ',')) + 1)))))) cis
+        ON cis.cod_cust_id = xref.cod_cust_id JOIN cm_custcard_mast mast
+        ON xref.cod_card_no=mast.cod_card_no 
+        WHERE mast.flg_card_status = '2'
+        AND xref.flg_mnt_status = mast.flg_mnt_status
+        AND xref.flg_mnt_status = 'A'
+        AND xref.cod_card_no= :noCard
+		]]>
+		<!-- End 1 -->
+    </sql-query>
+         
+</hibernate-mapping>

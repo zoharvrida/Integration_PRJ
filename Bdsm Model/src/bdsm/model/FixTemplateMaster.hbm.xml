@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<!-- Model -->
+    <class lazy="false" name="bdsm.scheduler.model.FixTemplateMaster" table="FIXTEMPLATEMASTER">        
+        <composite-id class="bdsm.scheduler.model.FixTemplateMasterPK" name="fixTemplateMasterPK">
+            <key-property column="idTemplate" name="idTemplate" type="integer"/>
+            <key-property column="namTemplate" name="namTemplate" type="string"/>
+        </composite-id>
+        <property column="description" name="description" type="string"/>
+        <property column="typFix" name="typFix" type="string"/>
+        <property column="typTemplate" name="typTemplate" type="string"/>
+        <property column="rptFileTemplate" name="rptFileTemplate" type="string"/>
+        <property column="javaClass" name="javaClass" type="string"/>        
+    </class>
+    
+    
+    <!-- Query -->
+    <sql-query name="fixTemplateMaster#getAccessTemplate1">
+    	<![CDATA[
+    		SELECT a.grpId, a.cdAccess, c.idTemplate, c.javaClass,
+    			b.namScheduler ,b.idScheduler, b.filePattern, b.fILE_EXT, b.flgEncrypt, 
+    			b.modDecrypt, b.keyDecrypt, b.spvAuth, b.flg, b.flgStatus 
+    		FROM FixEmailAccess a, FixSchedulerImport b, FixTemplateMaster c
+    		WHERE a.idScheduler = b.idScheduler
+    			AND c.idTemplate = b.idTemplate
+    			AND c.typFix = :typFix 
+    			AND lower(a.sender) LIKE :sender 
+    			AND b.namScheduler = :namScheduler
+    	]]>
+    </sql-query>
+</hibernate-mapping>

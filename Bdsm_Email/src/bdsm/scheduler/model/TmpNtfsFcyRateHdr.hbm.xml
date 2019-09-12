@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+      <class  name="bdsm.scheduler.model.TmpNtfsFcyRateHdr" table="tmp_ntfs_fcy_ratehdr" lazy="false">
+        <id       name="id"        column="id"        type="int" >
+            <generator class="increment"/>
+        </id>
+        <property name="BdsmBatch"  column="BDSMBATCH"  type="string"/>
+        <property name="Identifier"  column="IDENTIFIER"  type="string"/>
+        <property name="BatchId"  column="BATCHID"  type="string"/>
+        <property name="RespCode"  column="RESPCODE"  type="string"/>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.model.ErrorProfileDictionary" table="INT_ERROR_DICT" lazy="false">
+      <id       name="errorNumb"    column="ERROR_CODE"    type="integer" >
+         <generator class="assigned"/>
+      </id>
+      <property name="errorProfile"   column="PROFILE_USED"   type="string"/>
+      <property name="errorDesc"   column="ERROR_DESC"   type="string"/>
+
+    </class>
+</hibernate-mapping>

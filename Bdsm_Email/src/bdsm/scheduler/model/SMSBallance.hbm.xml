@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<!-- Model -->
+    <class name="bdsm.scheduler.model.SMSBallance" table="TMP_SMS_BALLANCE" lazy="false">
+        <id       name="rowNum"             column="IDREC"             type="integer" >
+            <generator class="assigned"/>
+        </id>
+		
+        <property name="cod_cust"           column="cod_cust"           type="big_decimal" />
+        <property name="flg_cust_typ"       column="flg_cust_typ"       type="string" />
+        <property name="ref_phone_mobile"   column="ref_phone_mobile"   type="string" />
+        <property name="ref_cust_email"     column="ref_cust_email"     type="string" />
+        <property name="cod_acct_no"        column="cod_acct_no"        type="string" />
+        <property name="cod_acct_title"     column="cod_acct_title"     type="string" />
+        <property name="acctbrn"            column="acctbrn"            type="big_decimal" />
+        <property name="cod_lob"            column="cod_lob"            type="big_decimal" />
+        <property name="cod_txn_mnemonic"   column="cod_txn_mnemonic"   type="string" />
+        <property name="cod_txn_literal"    column="cod_txn_literal"    type="string" />
+        <property name="flg_drcr"           column="flg_drcr"           type="string" />
+        <property name="acctccy"            column="acctccy"            type="string" />
+        <property name="amt_acct"           column="amt_acct"           type="big_decimal" />
+        <property name="amt_txn_lcy"        column="amt_txn_lcy"        type="big_decimal" />
+        <property name="txt_txn_desc"       column="txt_txn_desc"       type="string" />
+        <property name="cod_msg_typ"        column="cod_msg_typ"        type="string" />
+        <property name="dat_txn"            column="dat_txn"            type="timestamp" />
+        <property name="udfacct"            column="udfacct"            type="string" />
+        <property name="udfcif"             column="udfcif"             type="string" />
+        <property name="cod_user_id"        column="cod_user_id"        type="string" />
+    </class>
+    
+    <query name="SMSBallance#getGreatData">
+		<![CDATA[
+			SELECT ar
+			  FROM SMSBallance ar
+		]]>
+	</query>
+   
+</hibernate-mapping>

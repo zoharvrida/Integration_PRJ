@@ -1,0 +1,24 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bdsm.scheduler.fix;
+
+import bdsm.scheduler.FolderWatcher;
+
+/**
+ *
+ * @author bdsm
+ */
+public class FolderRespWatcher extends FolderWatcher {
+
+    public FolderRespWatcher(long timeout, long sleep, long btsleep, int threadcount, String folderToWatch, String fileBackup) {
+        super(timeout, sleep, btsleep, threadcount, folderToWatch, fileBackup);
+    }
+
+    @Override
+    protected void processFile(String filename) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+}

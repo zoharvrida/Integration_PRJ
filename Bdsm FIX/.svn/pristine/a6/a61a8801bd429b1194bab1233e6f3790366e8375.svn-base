@@ -1,0 +1,108 @@
+package bdsm.scheduler.processor;
+
+import bdsm.scheduler.MapKey;
+import bdsm.scheduler.StatusDefinition;
+import bdsm.scheduler.dao.FixInboxDao;
+import bdsm.scheduler.dao.FixLogDao;
+import bdsm.scheduler.dao.FixQXtractDao;
+import bdsm.scheduler.model.FixInbox;
+import bdsm.scheduler.model.FixLog;
+import bdsm.scheduler.model.FixQXtract;
+import bdsm.scheduler.util.SchedulerUtil;
+import bdsm.util.HibernateUtil;
+import java.lang.reflect.Constructor;
+import java.util.Map;
+import org.hibernate.Transaction;
+
+public class MailObjectReflection extends BaseReflection{
+    
+    private Transaction tx;
+
+    @Override
+    public void execute(Map context) {
+        this.session = HibernateUtil.getSession();
+        String status = context.get(MapKey.status).toString();
+        String inboxId = context.get(MapKey.inboxId).toString();
+        boolean y = status.equals(StatusDefinition.AUTHORIZED) || status.equals(StatusDefinition.REJECTED);
+        updateInboxStatus(inboxId, StatusDefinition.PROCESS, y);
+
+        Class[] paramString = new Class[1];
+        paramString[0] = Map.class;
+        FixQXtract fixQXtract;
+        Class cls;
+
+        String javaClass = context.get(MapKey.javaClass).toString();
+        try {
+            getLogger().info("Execute class : " + javaClass);
+            getLogger().debug("status = " + status);
+            if (status.equals(StatusDefinition.UNAUTHORIZED)) {
+                getLogger().debug("fileName = " + context.get(MapKey.param5).toString());
+            }
+
+            cls = Class.forName(javaClass);
+            Constructor cons = cls.getConstructor(paramString);
+            context.put(MapKey.session, this.session);
+
+            //1st execute
+            BaseProcessor baseProcessor = (BaseProcessor) cons.newInstance(context);
+            boolean success = baseProcessor.execute();
+            boolean auth = context.get(MapKey.spvAuth).toString().equals("N");
+            if (!auth) {
+                updateInboxStatus(inboxId, StatusDefinition.DONE, y);
+            }
+            getLogger().info("Finish class" + javaClass + " execution. Result = "+success);
+
+            //2nd execute
+            if (context.get(MapKey.cdAccess).toString().equals("100") && auth && success) {
+                context.put(MapKey.status, StatusDefinition.AUTHORIZED);
+                y = true;
+                getLogger().info("Execute class " + javaClass + " with no need approval");
+                getLogger().debug("status = " + context.get(MapKey.status).toString());
+                getLogger().debug("fileName = " + context.get(MapKey.param5).toString());
+                success = baseProcessor.execute();
+                updateInboxStatus(inboxId, StatusDefinition.DONE, y);
+                getLogger().info("Finish class " + javaClass + " execution with no need approval. Result = "+success);
+            }
+
+        } catch (Exception ex) {
+            getLogger().error(ex,ex);
+            updateInboxStatus(inboxId, StatusDefinition.ERROR, y);
+        } finally {
+            fixQXtract = (FixQXtract) context.get(MapKey.fixQXtract);
+            insertToFixQXtract(fixQXtract);
+            HibernateUtil.closeSession(this.session);
+        }
+    }
+
+    private void insertToFixQXtract(FixQXtract fixQXtract) {
+        FixQXtractDao fixQXtractDao = new FixQXtractDao(this.session);
+        this.tx = session.beginTransaction();
+        fixQXtractDao.insert(fixQXtract);
+        this.tx.commit();
+    }
+
+    private void updateInboxStatus(String inboxId, String sd, boolean y) {
+        this.tx = this.session.beginTransaction();
+        FixInboxDao fixInboxDao = new FixInboxDao(this.session);
+        FixInbox fixInbox = fixInboxDao.get(inboxId);
+        fixInbox.setFlgProcess(sd);
+        fixInboxDao.update(fixInbox);
+        if (y || sd.equals(StatusDefinition.ERROR)) {
+            FixLogDao fixLogDao = new FixLogDao(this.session);
+            FixLog fixLog;
+            if (fixInbox.getItemIdLink() != null && !fixInbox.getItemIdLink().equals("")) {
+                fixLog = fixLogDao.get(fixInbox.getItemIdLink());
+            } else {
+                fixLog = fixLogDao.get(inboxId);
+            }
+            fixLog.setFlgProcess(sd);
+            if (sd.equals(StatusDefinition.PROCESS)) {
+                fixLog.setDtmStartProcess(SchedulerUtil.getTime());
+            } else if (sd.equals(StatusDefinition.DONE) || sd.equals(StatusDefinition.ERROR)) {
+                fixLog.setDtmEndProcess(SchedulerUtil.getTime());
+            }
+            fixLogDao.update(fixLog);
+        }
+        this.tx.commit();
+    }
+}

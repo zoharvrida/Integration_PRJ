@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="bdsm.scheduler.model.SKNIncomingCreditFooter" table="TMP_SKNNG_GEN1_CREDIT_FOOTER" lazy="false">
+		<composite-id name="compositeId" class="bdsm.scheduler.model.SknNgIncomingCreditFPK">
+			<key-property name="batchNo" column="FILEID" type="string" />
+		</composite-id> 
+		<property name="TotalRec" column="TOTAL_RECORD" type="integer" />
+		<property name="checkSum" column="checkSum" type="string" />
+		<property name="recordType" column="recordType" type="string" />
+		<property name="recordName" column="recordName" type="string" />
+		<property name="data" column="data" type="double" />
+		<property name="length" column="length" type="integer" /> 
+		<property name="comments" column="comments" type="string" />
+		<property name="recordStatus" column="recordStatus" type="string" />
+		<property name="codEntityVpd" column="cod_Entity_Vpd" type="integer" />
+	</class>
+</hibernate-mapping>

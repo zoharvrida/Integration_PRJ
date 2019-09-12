@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class lazy="false" name="bdsm.scheduler.model.FixSchedulerImport" table="FIXSCHEDULERIMPORT">
+        <composite-id class="bdsm.scheduler.model.FixSchedulerPK" name="fixSchedulerPK">
+            <key-property column="idTemplate" name="idTemplate" type="integer"/>
+            <key-property column="idScheduler" name="idScheduler" type="integer"/>
+            <key-property column="namScheduler" name="namScheduler" type="string"/>
+        </composite-id>
+        <property column="flgStatus" name="flgStatus" type="string"/>
+        <property column="dtEffStart" name="dtEffStart" type="timestamp"/>
+        <property column="dtEffEnd" name="dtEffEnd" type="timestamp"/>
+        <property column="filePattern" name="filePattern" type="string"/>
+        <property column="flgEncrypt" name="flgEncrypt" type="string"/>
+        <property column="modDecrypt" name="modDecrypt" type="string"/>
+        <property column="keyDecrypt" name="keyDecrypt" type="string"/>
+        <property column="flgFCRPMcutoff" name="flgFCRPMcutoff" type="string"/>
+        <property column="spvAuth" name="spvAuth" type="string"/>
+        <property column="flg" name="flg" type="string"/>
+    </class>
+</hibernate-mapping>

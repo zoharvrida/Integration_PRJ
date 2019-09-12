@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class  name="bdsm.scheduler.model.TmpAdqPml" table="Tmp_AdqPml" lazy="false">
+        <id       name="id"        column="id"        type="int" >
+            <generator class="increment"/>
+        </id>
+        <property name="batchNo"  column="batchNo"  type="string"/>
+        <property name="rowFlag"  column="rowFlag"  type="string"/>
+        <property name="col1"  column="col1"  type="string"/>
+        <property name="col2"  column="col2"  type="string"/>
+        <property name="col3"  column="col3"  type="string"/>
+        <property name="col4"  column="col4"  type="string"/>
+        <property name="col5"  column="col5"  type="string"/>
+        <property name="col6"  column="col6"  type="string"/>
+        <property name="col7"  column="col7"  type="string"/>
+        <property name="col8"  column="col8"  type="string"/>
+        <property name="col9"  column="col9"  type="string"/>
+        <property name="col10"  column="col10"  type="string"/>        
+        <property name="flgStatus"  column="flgStatus"  type="string"/>
+        <property name="checksum"  column="checksum"  type="string"/>
+    </class>
+</hibernate-mapping>

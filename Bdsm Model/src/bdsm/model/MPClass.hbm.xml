@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.MPClass" table="MP_CLASS" lazy="false">
+		<id name="code"                 column="COD_CLASS"      type="integer" />
+		
+		<property name="codeProduct"    column="COD_PROD"       type="integer" />
+		<property name="codeMIS"        column="COD_MIS"        type="string" />
+		<property name="name"           column="NAM_CLASS"      type="string" />
+		<property name="idCreatedBy"    column="CREATEDBY"      type="string" />
+		<property name="idCreatedSpv"   column="CREATEDSPV"     type="string" />
+		<property name="dtmCreated"     column="DTMCREATED"     type="timestamp" />
+		<property name="dtmCreatedSpv"  column="DTMCREATEDSPV"  type="timestamp" />
+		<property name="idUpdatedBy"    column="UPDATEDBY"      type="string" />
+		<property name="idUpdatedSpv"   column="UPDATEDSPV"     type="string" />
+		<property name="dtmUpdated"     column="DTMUPDATED"     type="timestamp" />
+		<property name="dtmUpdatedSpv"  column="DTMUPDATEDSPV"  type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.MPClassDetails" table="MP_CLASS_DTLS" lazy="false">
+		<composite-id>
+			<key-property name="codeClass"      column="COD_CLASS"  type="integer" />
+			<key-property name="codeComponent"  column="COD_COMP"   type="integer" />
+		</composite-id>
+		
+		<property name="minimumValue"   column="MIN_VAL"        type="big_decimal" />
+		<property name="maximumValue"   column="MAX_VAL"        type="big_decimal" />
+		<property name="defaultValue"   column="DEF_VAL"        type="big_decimal" />
+		<property name="idCreatedBy"    column="CREATEDBY"      type="string" />
+		<property name="idCreatedSpv"   column="CREATEDSPV"     type="string" />
+		<property name="dtmCreated"     column="DTMCREATED"     type="timestamp" />
+		<property name="dtmCreatedSpv"  column="DTMCREATEDSPV"  type="timestamp" />
+		<property name="idUpdatedBy"    column="UPDATEDBY"      type="string" />
+		<property name="idUpdatedSpv"   column="UPDATEDSPV"     type="string" />
+		<property name="dtmUpdated"     column="DTMUPDATED"     type="timestamp" />
+		<property name="dtmUpdatedSpv"  column="DTMUPDATEDSPV"  type="timestamp" />
+	</class>
+	
+	
+	<!-- Query -->
+	<query name="MPClass#listByProductMIS">
+		<![CDATA[
+			  FROM MPClass
+			 WHERE codeProduct = :codeProduct
+			   AND codeMIS     = :codeMIS
+		]]>
+	</query>
+	
+	<query name="MPClassDetails#listComponentByClass">
+		<![CDATA[
+			SELECT b, a
+			  FROM MPClassDetails a, MPComponent b 
+			 WHERE a.codeComponent = b.code
+			   AND a.codeClass     = :codeClass
+			 ORDER BY b.code
+		]]>
+	</query>
+
+	<query name="fcrDataMaster#MitraPastiClassification">
+		<![CDATA[
+			SELECT code, name 
+   			  FROM MPClass
+			 WHERE CONCAT(codeProduct, codeMIS) = :like
+		]]>
+	</query>
+	
+	
+</hibernate-mapping>

@@ -1,0 +1,59 @@
+package bdsm.scheduler.dao;
+
+import bdsm.model.BaseModel;
+import bdsm.scheduler.model.FixLog;
+import bdsmhost.dao.BaseDao;
+import java.util.List;
+import org.hibernate.Query;
+import org.hibernate.Session;
+
+public class FixLogDao extends BaseDao {    
+
+    public FixLogDao(Session session) {
+        super(session);
+    }
+
+    public FixLog get(String inboxId) {
+        StringBuilder sb = new StringBuilder("from FixLog ");
+        sb.append(" where inboxId = :inboxId");
+        Query q = getSession().createQuery(sb.toString());
+        q.setString("inboxId", inboxId);
+        List result = q.list();
+        if (result.size()==1) {
+            return (FixLog) result.get(0);
+        }
+        return null;
+    }
+
+    public FixLog get(String filename, String dtPost) {
+        StringBuilder sb = new StringBuilder("from FixLog ");
+        sb.append(" where fixLogPK.fileName = :fileName and fixLogPK.dtPost = to_date(:dtPost,'dd/MM/yyyy')");
+        Query q = getSession().createQuery(sb.toString());
+        q.setString("fileName", filename);
+        q.setString("dtPost", dtPost);
+        List result = q.list();
+        if (result.size()==1) {
+            return (FixLog) result.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    protected boolean doInsert(BaseModel baseModel) {
+        getSession().save((FixLog) baseModel);
+        return true;
+    }
+
+    @Override
+    protected boolean doUpdate(BaseModel baseModel) {
+        getSession().update((FixLog) baseModel);
+        return true;
+    }
+
+    @Override
+    protected boolean doDelete(BaseModel baseModel) {
+        getSession().delete((FixLog) baseModel);
+        return true;
+    }
+    
+}

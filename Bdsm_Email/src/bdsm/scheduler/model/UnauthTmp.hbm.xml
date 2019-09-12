@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.scheduler.model.UnauthTmp" table="AUTO_DEL_UNAUTH_TEMP">
+    <id column="id" name="id" type="int">
+      <generator class="increment"/>
+    </id>
+    <property column="ID_PATCH" name="idPatch" type="string"/>
+    <property column="COD_ID" name="codID" type="string"/>
+    <property column="FLAG_PROCESS" name="flagProcess" type="string"/>
+    <property column="DATE_PROCESS" name="dateProcess" type="date"/>
+    <property column="STATUS" name="status" type="string"/>
+    <property column="STATUSREASON" name="statusReason" type="string"/>
+    <property column="NOBATCH" name="noBatch" type="string"/>
+  </class>
+</hibernate-mapping>

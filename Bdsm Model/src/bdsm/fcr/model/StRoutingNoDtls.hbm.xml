@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+	<!-- Model -->
+	<class name="bdsm.fcr.model.StRoutingNoDtls" table="ST_ROUTING_NO_DTLS" lazy="false">
+		<composite-id name="compositeId" class="bdsm.fcr.model.StRoutingNoDtlsPK">
+			<key-property name="codRoutingNo"  column="COD_ROUTING_NO"  type="integer" />
+			<key-property name="flgMntStatus"  column="FLG_MNT_STATUS"  type="string" />
+			<key-property name="codEntityVPD"  column="COD_ENTITY_VPD"  type="integer" />
+		</composite-id>
+		
+		<property name="codSector"    column="COD_SECTOR"    type="integer" />
+		<property name="codCity"      column="COD_CITY"      type="integer" />
+		<property name="codProvince"  column="COD_PROVINCE"  type="integer" />
+	</class>
+</hibernate-mapping>

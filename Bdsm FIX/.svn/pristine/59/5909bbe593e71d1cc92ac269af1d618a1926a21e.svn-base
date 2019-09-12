@@ -1,0 +1,63 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package main;
+
+import bdsm.scheduler.PropertyPersister;
+import bdsm.scheduler.fix.FixExport;
+import bdsm.scheduler.fix.FixImportMail;
+import bdsm.scheduler.fix.FolderInWatcher;
+import bdsm.scheduler.fix.FolderRespWatcher;
+import bdsm.util.ExcelUtil;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.StringTokenizer;
+
+/**
+ *
+ * @author bdsm
+ */
+public class FixRunTest {
+
+    static String b;
+
+    private void sout(){
+        System.out.println();
+    }
+
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+        int timeout = 5000;
+        int sleep = 10000;
+        int btsleep = 10000;
+        int threadcount = 5;        
+        
+        FixImportMail fixImportMail = new FixImportMail(timeout, sleep, btsleep, threadcount);
+        fixImportMail.start();
+//        FixExport fixExport = new FixExport(timeout, sleep, btsleep, threadcount);
+//        fixExport.start();
+
+//        FolderInWatcher folderWatcher = new FolderInWatcher(timeout, sleep, btsleep, threadcount, PropertyPersister.dirFixIn, "IN.");
+//        folderWatcher.start();
+//        FolderRespWatcher folderWatcher2 = new FolderRespWatcher(timeout, sleep, btsleep, threadcount, PropertyPersister.dirResp, "RES.");
+//        folderWatcher2.start();
+        HashMap hashMap = new HashMap();
+//        ExcelUtil x = new ExcelUtil(null, "excelutil.properties");
+//        FixRunTest f = new FixRunTest();
+//        f.sout();
+//
+//        StringTokenizer st = new StringTokenizer("");
+//        System.out.println(st.countTokens());
+//        System.out.println(st.nextElement());
+
+        hashMap.put("a", b);
+
+        String a;
+        if ((a = (String) hashMap.get("a")) != null) {
+            System.out.println(a);
+        }
+
+    }
+}

@@ -1,0 +1,29 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class lazy="false" name="bdsm.scheduler.model.TmpPmFinInstDirDtls" table="TMP_PM_FIN_INST_DIR_DTLS">
+        <composite-id class="bdsm.scheduler.model.TmpPmFinInstDirDtlsPK" name="compositeId">
+            <key-property column="BATCH_NO" name="batchNo" type="string"/>
+            <key-property column="RECORD_ID" name="recordId" type="integer"/>
+            <key-property column="cod_fin_inst_id" name="codFinInstId" type="string"/>
+        </composite-id>
+        <property column="cod_network_id" name="codFinInstId" type="string"/>
+        <property column="flg_direct_participant" name="flgDirectParticipant" type="string"/>
+        <property column="nam_bank_direct_particip" name="namBankDirectParticip" type="string"/>
+        <property column="nam_branch_direct_particip" name="namBranchDirectParticip" type="string"/>
+        <property column="flg_direct_addressable" name="flgDirectAddressable" type="string"/>
+        <property column="cod_clg_direct_addr" name="codClgDirectAddr" type="string"/>   
+        <property column="cod_clg" name="codClg" type="string"/>
+        <property column="flg_iban_mand" name="flgIbanMand" type="string"/>
+        <property column="network_details_index" name="networkDetailsIndex" type="string"/>
+        <property column="flg_mnt_status" name="flgMntStatus" type="string"/>
+        <property column="cod_mnt_action" name="codMntAction" type="string"/>
+        <property column="cod_last_mnt_makerid" name="codLastMntMakerid" type="string"/>
+        <property column="cod_last_mnt_chkrid" name="codLastMntChkrid" type="string"/>
+        <property column="ctr_updat_srlno" name="ctrUpdatSrlno" type="integer"/>
+        <property column="cod_entity_vpd" name="codEntityVpd" type="integer"/>   
+         <property column="FLG_STATUS" name="flgstatus" type="string"/>
+        <property column="STATUS_REASON" name="statusReason" type="string"/>
+         <property column="CMD" name="cmd" type="string"/>
+    </class>
+</hibernate-mapping>

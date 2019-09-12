@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.AmortizeProgramMaster" table="AMORTIZE_PROGRAM_MASTER" lazy="false" dynamic-insert="true">
+		<composite-id name="compositeId" class="bdsm.model.AmortizeProgramMasterPK">
+			<key-property name="giftCode"     column="GIFT_CODE"  type="string" />
+			<key-property name="productCode"  column="PRODUCT"    type="integer" />
+		</composite-id>
+		
+		<property name="giftName"        column="GIFT_NAME"        type="string" />
+		<property name="type"            column="TYPE"             type="integer" />
+		<property name="status"          column="STATUS"           type="boolean" />
+		<property name="programId"       column="PROGRAM_ID"       type="string" />
+		<property name="programName"     column="PROGRAM_NAME"     type="string" />
+		<property name="idAccrual"       column="ID_ACCRUAL"       type="string" />
+		<property name="taxPercent"      column="TAX_PCT"          type="double" />
+		<property name="amortizeMethod"  column="AMORTIZE_METHOD"  type="integer" />
+		<property name="voucher"         column="VOUCHER"          type="boolean" />
+		<property name="idCreatedBy"     column="ID_CREATED_BY"    type="string" />
+		<property name="idCreatedSpv"    column="ID_CREATED_SPV"   type="string" />
+		<property name="dtmCreated"      column="DTM_CREATED"      type="timestamp" />
+		<property name="idUpdatedBy"     column="ID_UPDATED_BY"    type="string" />
+		<property name="idUpdatedSpv"    column="ID_UPDATED_SPV"   type="string" />
+		<property name="dtmUpdated"      column="DTM_UPDATED"      type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.AmortizeProgramDetail" table="AMORTIZE_PROGRAM_DETAIL" lazy="false" dynamic-insert="true">
+		<id name="id" column="ID" type="integer" />
+		
+		<property name="giftCode"       column="GIFT_CODE"        type="string" />
+		<property name="productCode"    column="PRODUCT"          type="integer" />
+		<property name="effectiveDate"  column="EFFECTIVE_DATE"   type="date" />
+		<property name="term"           column="TERM"             type="integer" />
+		<property name="giftPrice"      column="GIFT_PRICE"       type="big_decimal" />
+		<property name="minimumHold"    column="MINIMUM_HOLD"     type="big_decimal" />
+		<property name="maximumHold"    column="MAXIMUM_HOLD"     type="big_decimal" />
+		<property name="idCreatedBy"    column="ID_CREATED_BY"    type="string" />
+		<property name="idCreatedSpv"   column="ID_CREATED_SPV"   type="string" />
+		<property name="dtmCreated"     column="DTM_CREATED"      type="timestamp" />
+	</class>
+	
+	
+	<!-- Query -->
+	<query name="AmortizeProgramMaster#listProgramMasterAndProductByGiftCode">
+		<![CDATA[
+			SELECT apm, prod
+			  FROM AmortizeProgramMaster apm, ChProdMast prod
+			 WHERE apm.compositeId.productCode = prod.compositeId.codProd
+			   AND LOWER(CONCAT(apm.compositeId.giftCode, apm.giftName)) LIKE LOWER(COALESCE(:giftCode, apm.compositeId.giftCode))
+			 ORDER BY apm.compositeId.giftCode
+		]]>
+	</query>
+	
+	<query name="AmortizeProgramMaster#listProductNotInAmortizeProductMaster">
+		<![CDATA[
+			SELECT prod
+			  FROM ChProdMast prod
+			 WHERE prod.compositeId.codProd NOT IN (
+			 	SELECT DISTINCT apm.compositeId.productCode
+			 	  FROM AmortizeProgramMaster apm 
+			 	 WHERE apm.compositeId.giftCode = :giftCode
+			 )
+			   AND (
+			   	prod.compositeId.codProd LIKE COALESCE(:strProductNameLike, prod.compositeId.codProd) 
+			   	OR
+			   	LOWER(prod.namProduct) LIKE LOWER(COALESCE(:strProductNameLike, prod.namProduct))
+			   ) 
+		]]>
+	</query>
+</hibernate-mapping>

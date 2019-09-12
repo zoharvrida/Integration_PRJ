@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+      <class  name="bdsm.scheduler.model.FixClassConfig" table="FIXCLASSCONFIG" lazy="false">
+        <id       name="id"        column="id"        type="int" >
+            <generator class="increment"/>
+        </id>
+        <property name="Source"  column="Source"  type="string"/>
+        <property name="Classname"  column="Classname"  type="string"/>
+        <property name="Param"  column="Param"  type="string"/>
+        <property name="FixType"  column="FixType"  type="string"/>
+        <property name="IdScheduler"  column="IdScheduler"  type="int"/>
+    </class>
+</hibernate-mapping>

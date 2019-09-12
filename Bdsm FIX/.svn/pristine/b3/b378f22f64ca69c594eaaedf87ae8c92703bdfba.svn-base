@@ -1,0 +1,137 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bdsm.scheduler.processor;
+
+import bdsm.scheduler.MapKey;
+import bdsm.scheduler.PropertyPersister;
+import bdsm.scheduler.dao.FillRptDao;
+import bdsm.scheduler.exception.GenRptException;
+import java.io.File;
+import java.util.Map;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRCsvExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
+import net.sf.jasperreports.engine.util.JRLoader;
+import org.apache.log4j.Logger;
+import org.hibernate.Session;
+
+/**
+ *
+ * @author v00013493
+ */
+public class JasperGenRpt {
+
+    private String reportId;
+    private String reportFileName;
+    private String reportFormat;
+    private Map reportParam;
+    private Session session;
+    private static final String reportDir = PropertyPersister.dirFixOut;
+    private static final String reportDirTemp = PropertyPersister.reportDirTemp;
+    private static final Logger logger = Logger.getLogger(JasperGenRpt.class);
+
+    public JasperGenRpt(Map context) {
+        this.reportId = (String) context.get(MapKey.reportId);
+        logger.debug("ReportId : "+this.reportId);
+        this.reportFileName = (String) context.get(MapKey.reportFileName);
+        logger.debug("Report FileName : "+this.reportFileName);
+        this.reportFormat = (String) context.get(MapKey.reportFormat);
+        logger.debug("Report Format : "+this.reportFormat);
+        this.reportParam = (Map) context.get(MapKey.reportParam);
+        logger.debug("Report Param 1 : "+this.reportParam.get(MapKey.param1));
+        logger.debug("Report Param 2 : "+this.reportParam.get(MapKey.param2));
+        logger.debug("Report Param 3 : "+this.reportParam.get(MapKey.param3));
+        logger.debug("Report Param 4 : "+this.reportParam.get(MapKey.param4));
+        logger.debug("Report Param 5 : "+this.reportParam.get(MapKey.param5));
+        logger.debug("Report Param 6 : "+this.reportParam.get(MapKey.param6));
+        this.session = (Session) context.get(MapKey.session);
+    }
+
+    public void generateReport() {
+        logger.info("Preparing generate report");
+        logger.debug("Report Template Directory :"+this.reportDirTemp);
+        logger.debug("Report Result Directory :"+this.reportDir);       
+        try {
+            logger.info("Compile report");
+            JasperCompileManager.compileReportToFile(reportDirTemp + reportId + ".jrxml", reportDirTemp + reportId + ".jasper");
+            logger.info("Compile report success");
+        } catch (JRException ex) {
+            throw new GenRptException(ex.getMessage());
+        }        
+        FillRptDao fillRptDao = new FillRptDao(session);
+        fillRptDao.setReportDirTemp(reportDirTemp);
+        fillRptDao.setReportId(reportId);
+        fillRptDao.setReportParam(reportParam);
+        fillRptDao.setReportFileName(reportFileName);
+        try {            
+            File sourceFile = new File(reportDirTemp + reportFileName + ".jrprint");
+            logger.info("Try to generate report");
+            fillRptDao.fillReport();
+            logger.info("Generate report done");
+            logger.info("Trying to convert report");
+            JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(sourceFile);
+            String reportOutput = reportDir + reportFileName;
+
+            if (reportFormat.toLowerCase().equals("pdf")) {
+                pdf(jasperPrint, reportOutput);
+            } else if (reportFormat.toLowerCase().equals("xls")) {
+                xls(jasperPrint, reportOutput);
+            } else if (reportFormat.toLowerCase().equals("docx")) {
+                docx(jasperPrint, reportOutput);
+            } else if (reportFormat.toLowerCase().equals("csv")) {
+                csv(jasperPrint, reportOutput);
+            } else if (reportFormat.toLowerCase().equals("html")) {
+                html(jasperPrint, reportOutput);
+            } else {
+                throw new GenRptException("Output format not supported");
+            }
+            logger.info("Convert report success");
+        } catch (Exception ex) {            
+            throw new GenRptException(ex);
+        }
+    }
+
+    private void pdf(JasperPrint jasperPrint, String reportOutput) throws JRException {
+        JasperExportManager.exportReportToPdfFile(jasperPrint, reportOutput);
+    }
+
+    private void xls(JasperPrint jasperPrint, String reportOutput) throws JRException {
+        JRXlsExporter xlsExporter = new JRXlsExporter();
+
+        xlsExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        xlsExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, reportOutput);
+        xlsExporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
+
+        xlsExporter.exportReport();
+    }
+
+    private void docx(JasperPrint jasperPrint, String reportOutput) throws JRException {
+        JRDocxExporter docxExporter = new JRDocxExporter();
+
+        docxExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        docxExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, reportOutput);
+
+        docxExporter.exportReport();
+    }
+
+    private void csv(JasperPrint jasperPrint, String reportOutput) throws JRException {
+        JRCsvExporter csvExporter = new JRCsvExporter();
+
+        csvExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+        csvExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, reportOutput);
+
+        csvExporter.exportReport();
+    }
+
+    private void html(JasperPrint jasperPrint, String reportOutput) throws JRException {
+        JasperExportManager.exportReportToHtmlFile(jasperPrint, reportOutput);
+    }
+}

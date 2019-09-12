@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <!-- Model -->
+    <class name="bdsm.scheduler.model.BdsmCifAml" table="tmp_cif_aml" lazy="false">
+        <id       name="partyKey"             column="PARTY_KEY"             type="string" >
+            <generator class="assigned"/>
+        </id>
+		
+        <property name="partyType"           column="PARTY_TYPE"           type="string" />
+        <property name="partyGivenName"       column="PARTY_GIVEN_NAME"       type="string" />
+        <property name="partySurname"   column="PARTY_SURNAME"   type="string" />
+        <property name="partyDatBirth"     column="PARTY_DAT_BIRTH"     type="string" />
+        <property name="partyBirthCountry"  column="PARTY_BIRTH_COUNTRY"        type="string" />
+        <property name="partyCountry"     column="PARTY_COUNTRY"     type="string" />
+        <property name="partyIds"            column="PARTY_IDS"            type="string" />
+        <property name="datInsert"            column="DAT_INSERT"            type="timestamp" />
+        
+    </class>
+    
+    <query name="BdsmCifAml#getCifOpenToday">
+		<![CDATA[
+			SELECT ar
+			  FROM BdsmCifAml ar
+		]]>
+    </query>
+   
+</hibernate-mapping>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping 
+		PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		
+<hibernate-mapping>
+	<class name="bdsm.scheduler.model.TmpGefuRespons" table="TMP_GEFU_RESPONS" lazy="false">
+		<composite-id name="compositeId" class="bdsm.scheduler.model.TmpGefuResponsPK" >
+			<key-property name="ocpackage"   column="PACKAGE"   type="string" />
+			<key-property name="ocfunction"  column="FUNCTION"  type="string" />
+			<key-property name="batchNo"     column="BATCHNO"   type="string" />
+		</composite-id>
+
+		<property name="status"           column="STATUS"       type="string" />
+		<property name="inboxid"          column="INBOXID"      type="string" />
+		<property name="dateTimeRequest"  column="DTMREQUEST"   type="timestamp" />
+		<property name="dateTimeFinish"   column="DTMFINISH"    type="timestamp" />
+		<property name="idScheduler"      column="IDSCHEDULER"  type="integer" />
+		<property name="moduleDesc"       column="MODULE_DESC"  type="string" />
+	</class>
+</hibernate-mapping>

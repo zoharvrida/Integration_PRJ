@@ -1,0 +1,521 @@
+/*
+ * CHANGE LOG
+ * [ENH01] by Titus : Add Process Source to Context
+ */
+package bdsm.scheduler.fix;
+
+import bdsm.model.BaseModel;
+import bdsm.scheduler.*;
+import bdsm.scheduler.dao.*;
+import bdsm.scheduler.exception.FIXException;
+import bdsm.scheduler.model.*;
+import bdsm.scheduler.processor.MailObjectReflection;
+import bdsm.scheduler.util.FileUtil;
+import bdsm.scheduler.util.MailUtil;
+import bdsm.scheduler.util.PatternUtil;
+import bdsm.scheduler.util.SchedulerUtil;
+import bdsm.util.HibernateUtil;
+import bdsmhost.dao.BaseDao;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.StringTokenizer;
+import microsoft.exchange.webservices.data.*;
+import org.apache.commons.io.FilenameUtils;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+public class FixImportMail extends BdsmScheduler {
+
+    private static final String filePath = PropertyPersister.dirFixInProc;
+    private static final String adminEmail = PropertyPersister.adminEmail;
+
+    public FixImportMail(long timeout, long sleep, long btsleep, int threadcount) {
+        super(timeout, sleep, btsleep, threadcount);
+        this.maxItem = threadcount;
+    }
+
+    @Override
+    protected void execute() {
+        try {
+            FindItemsResults<Item> findResults = getUnreadMessages();
+
+            if (findResults != null) {
+                this.session = HibernateUtil.getSession();
+                this.fixInboxDao = new FixInboxDao(this.session);
+                this.fixLogDao = new FixLogDao(this.session);
+                getLogger().info("--->>> Begin Processing New Messages <<<---");
+                int i = 1;
+                for (Item item : findResults.getItems()) {
+                    getLogger().info("Processing New Message no : " + i);
+                    try {
+                        processMail(item);
+                    } catch (Exception ex) {
+                        getLogger().info("Error Processing New Message no : " + i);
+                        getLogger().error(ex);
+                    }
+                    getLogger().info("Finish Processing New Message no : " + i);
+                    i++;
+                }
+                getLogger().info("--->>> Finish Processing New Messages <<<---");
+                HibernateUtil.closeSession(this.session);
+            } else {
+                getLogger().info("--->>> No New Message <<<---");
+            }
+        } catch (Exception ex) {
+            getLogger().error("Failed Getting Messages");
+            getLogger().error(ex, ex);
+            try {
+                MailUtil.sentNewMessage(adminEmail, "", "[FIX ALERT]Error Getting Email", "Error Getting Email <br/> " + ex.toString(), null, session, ScheduleDefinition.emailOnly);
+            } catch (Exception ex1) {
+                getLogger().error("Error Sending Message to Fix Admin");
+                getLogger().error(ex1, ex1);
+            }
+        }
+    }
+
+    //get unread message
+    private FindItemsResults getUnreadMessages() throws Exception {
+        ItemView itemView = new ItemView(this.maxItem);
+        SearchFilter sf =
+                new SearchFilter.SearchFilterCollection(LogicalOperator.And,
+                new SearchFilter.IsEqualTo(EmailMessageSchema.IsRead, false));
+        getLogger().info("Begin search inbox");
+        if (MailServiceInstance.getService() == null) {
+            getLogger().info("getService Instance Null");
+        }
+        FindItemsResults<Item> findResults = null;
+        try {
+            findResults = MailServiceInstance.getService().findItems(WellKnownFolderName.Inbox, sf, itemView);
+        } catch (Exception ee) {
+            getLogger().error("Find Items Error");
+            getLogger().error(ee, ee);
+        }
+        getLogger().info("Search inbox success");
+        int unread = findResults.getTotalCount();
+        getLogger().info("Search Result Finish with total unread : " + unread);
+        if (unread == 0) {
+            return null;
+        }
+        return findResults;
+    }
+
+    //process mail
+    private void processMail(Item item) throws Exception {
+        this.exist = false;
+        this.emailMessage = (EmailMessage) item;
+        this.fixInbox = new FixInbox();
+        this.customResult1 = new CustomResult1();
+        this.fixLog = new FixLog();
+
+        try {
+            this.emailMessage.load();
+            getLogger().info("Message ID " + emailMessage.getInternetMessageId());
+            //save to inbox
+            try {
+                saveFixInbox();
+            } catch (HibernateException he) {
+                registerToFixQXtract(he);
+                throw new Exception(he);
+            }
+            //set email as read
+            //this.emailMessage.setIsRead(true);
+            //this.emailMessage.update(ConflictResolutionMode.AlwaysOverwrite);
+
+        } catch (Exception ex) {
+            getLogger().error("Load Message : " + ex);
+        }
+        FixEmailAccess fixEmailAccess = null;
+        try {
+            FixEmailAccessDao fixEmailAccessDao = new FixEmailAccessDao(this.session);
+            FixEmailAccessPK fixEmailAccessPK = new FixEmailAccessPK();
+            fixEmailAccessPK.setSender(this.emailMessage.getSender().getAddress());
+            List<FixEmailAccess> list = fixEmailAccessDao.get(fixEmailAccessPK);
+            if (list.size() == 0) {
+                MailUtil.sentNewMessage(adminEmail, "", "[FIX ALERT] UnRegistered Sender", "Sender Not Registered : " + this.emailMessage.getSender().getAddress(), null, session, ScheduleDefinition.emailOnly);
+                this.emailMessage.delete(DeleteMode.HardDelete);
+                throw new Exception("Sender not registered");
+            }
+            fixEmailAccess = list.get(0);
+        } catch (Exception ex) {
+            this.fixInbox.setFlgProcess(StatusDefinition.ERROR);
+            this.fixInbox.setReason(ex.getMessage());
+            update(this.fixInboxDao, this.fixInbox);
+            throw new Exception(ex);
+        }
+
+        //validasi dan execute class
+        try {
+            //validasi            
+            validateEmail(this.fixInbox.getSender(), this.fixInbox.getFixInboxPK().getSubject(), this.fixInbox.getEmailAttachment());
+
+            if (!this.customResult1.getItemIdLink().equals("")) {
+                this.fixInbox.setItemIdLink(this.customResult1.getItemIdLink());
+                this.exist = true;
+            }
+            //save to log
+            saveFixLog(this.exist);
+
+            HashMap hashMap = new HashMap();
+
+            //assign class to back thread
+            MailObjectReflection objectReflection = new MailObjectReflection();
+            //put necessary parameter
+            hashMap.put(MapKey.javaClass, this.customResult1.getJavaClass());
+            getLogger().debug("Java Class : " + this.customResult1.getJavaClass());
+            hashMap.put(MapKey.templateName, this.customResult1.getNamTemplate());
+            getLogger().debug("Template Name : " + this.customResult1.getNamTemplate());
+            hashMap.put(MapKey.idScheduler, this.customResult1.getIdScheduler());
+            getLogger().debug("ID Scheduler : " + this.customResult1.getIdScheduler());
+            hashMap.put(MapKey.status, this.customResult1.getParam1());
+            getLogger().debug("Status : " + this.customResult1.getParam1());
+            hashMap.put(MapKey.param1, this.fixInbox.getFixInboxPK().getSubject());
+            getLogger().debug("Subject/Param2 : " + this.fixInbox.getFixInboxPK().getSubject());
+            hashMap.put(MapKey.param2, this.fixInbox.getSender());
+            if (fixInbox.getFlgAttach() != null && this.fixInbox.getFlgAttach().equals("Y")) {
+                if (customResult1.getNewFilename() != null) {
+                    hashMap.put(MapKey.param5, this.filePath + this.customResult1.getNewFilename());
+                    getLogger().debug("Param5/Filename : " + this.filePath + this.customResult1.getNewFilename());
+                    hashMap.put(MapKey.fileName, this.customResult1.getNewFilename());
+                } else {
+                    hashMap.put(MapKey.param5, this.filePath + this.fixInbox.getEmailAttachment());
+                    getLogger().debug("Param5/Filename : " + this.filePath + this.fixInbox.getEmailAttachment());
+                    hashMap.put(MapKey.fileName, this.fixInbox.getEmailAttachment());
+                }
+            }
+            hashMap.put(MapKey.filePath, this.filePath);
+            hashMap.put(MapKey.inboxId, this.fixInbox.getFixInboxPK().getInboxId());
+            getLogger().debug("Inbox ID : " + this.fixInbox.getFixInboxPK().getInboxId());
+            hashMap.put(MapKey.itemIdLink, this.customResult1.getItemIdLink());
+            getLogger().debug("Item ID Link : " + this.customResult1.getItemIdLink());
+            if (this.customResult1.getCdAccess().equals("100")) {
+                hashMap.put(MapKey.batchNo, this.fixInbox.getNoBatch());
+                getLogger().debug("Batch No : " + this.fixInbox.getNoBatch());
+            } else if (this.customResult1.getCdAccess().equals("010")) {
+                hashMap.put(MapKey.batchNo, this.customResult1.getBatchNo());
+                getLogger().debug("Batch No : " + this.customResult1.getBatchNo());
+            }
+            hashMap.put(MapKey.grpId, this.customResult1.getGrpId());
+            getLogger().debug("Group ID : " + this.customResult1.getGrpId());
+            hashMap.put(MapKey.cdAccess, this.customResult1.getCdAccess());
+            getLogger().debug("Access Code : " + this.customResult1.getCdAccess());
+            hashMap.put(MapKey.spvAuth, this.customResult1.getSpvAuth());
+            getLogger().debug("SPV AUTH : " + this.customResult1.getSpvAuth());
+            //Set Source Process to Context [ENH01]
+            hashMap.put(MapKey.processSource, "EMAIL");
+            getLogger().debug("PROCESS SOURCE : EMAIL");
+            //delete exchange inbox
+            getLogger().info("Delete exchange inbox");
+            this.emailMessage.delete(DeleteMode.HardDelete);
+            //assign to back thread
+            getLogger().debug("Assign to back thread");
+            this.assign(hashMap, objectReflection);
+        } catch (FIXException ex) {
+            //delete email 
+            this.emailMessage.delete(DeleteMode.HardDelete);
+            //Error jika validasi gagal.
+            getLogger().error("Validation failed for " + this.fixInbox.getFixInboxPK().getSubject() + " reason : " + ex.getMessage());
+            doWhenError(ex, true);
+        } catch (Exception ex) {
+            //Global Java Exception
+            getLogger().error(ex);
+            doWhenError(ex, false);
+        }
+
+    }
+
+    private void saveFixInbox() throws ServiceLocalException {
+        AttachmentCollection attachmentCollection;
+        String batchNo = SchedulerUtil.generateUUID();
+        getLogger().info("Save to FixInbox");
+        this.fixInbox.setSender(this.emailMessage.getSender().getAddress());
+        try {
+            this.fixInbox.setFixInboxPK(new FixInboxPK(this.emailMessage.getInternetMessageId(),
+                    this.emailMessage.getSubject().replaceAll(" {2,}", " ").trim(), SchedulerUtil.getDate("dd/MM/yyyy")));
+        } catch (ParseException ex) {
+            getLogger().error(ex);
+        }
+        try {
+            this.fixInbox.setFlgProcess(StatusDefinition.REQUEST);
+            this.fixInbox.setDtmReceive(new Timestamp(this.emailMessage.getDateTimeReceived().getTime()));
+        } catch (Exception ex) {
+            getLogger().error(ex.toString());
+        }
+        if (this.emailMessage.getHasAttachments()) {
+            this.fixInbox.setFlgAttach("Y");
+            attachmentCollection = this.emailMessage.getAttachments();
+            this.fileAttachment = (FileAttachment) attachmentCollection.getPropertyAtIndex(0);
+            this.fixInbox.setEmailAttachment(this.fileAttachment.getName());
+            this.fixInbox.setNoBatch(batchNo);
+        } else {
+            this.fixInbox.setFlgAttach("N");
+        }
+
+        save(this.fixInboxDao, this.fixInbox);
+        getLogger().info("Successfully save to FixInbox");
+    }
+
+    private void validateEmail(String sender, String subject, String filename) throws FIXException, Exception {
+        getLogger().info("Validating...");
+        String[] ss = subject.replaceAll(" ", "\"").split("\"");
+
+        if (ss.length < 2) {
+            throw new FIXException("INVALID EMAIL");
+        }
+
+        String template;
+
+        try {
+            template = ss[ss.length - 2].trim().substring(0, 6);
+        } catch (StringIndexOutOfBoundsException ex) {
+            throw new FIXException("INVALID EMAIL");
+        }
+
+        //validate duplicate batch in same day
+        getLogger().info("Cek Duplicate for Subject : " + subject);
+        FixInbox fb = this.fixInboxDao.getDuplicateSameDay(subject, this.emailMessage.getInternetMessageId());
+        if (fb != null) {
+            getLogger().info("Duplicate Batch File " + fb.getFixInboxPK().getSubject());
+            throw new FIXException("INVALID EMAIL");
+        }
+
+        FixTemplateMasterDao fixTemplateMasterDao = new FixTemplateMasterDao(this.session);
+
+        //Validate Template
+        this.customResult1 = fixTemplateMasterDao.getAccessTemplate(sender, template, "I");
+
+        if (this.customResult1 == null) {
+            getLogger().info("INVALID ACCESS NULL RESULT");
+            throw new FIXException("INVALID EMAIL");
+        }
+
+        //Access Validation
+        //REQUESTER
+        if (this.customResult1.getCdAccess().equals("100")) {
+            this.customResult1.setRequester(sender);
+            this.customResult1.setParam1(StatusDefinition.UNAUTHORIZED);
+            this.customResult1.setFlgAuth(StatusDefinition.UNAUTHORIZED);
+            this.customResult1.setItemIdLink("");
+            //file validation
+            if (!ss[ss.length - 1].trim().equals(filename)) {
+                getLogger().info("INVALID FILENAME");
+                throw new FIXException("INVALID EMAIL");
+            }
+
+            PatternUtil ptrn = new PatternUtil(this.customResult1.getFilePattern() + ".{0,}");
+            if (!ptrn.match(filename)) {
+                getLogger().info("INVALID FILENAME");
+                throw new FIXException("INVALID EMAIL");
+            }
+
+        } //SPV
+        else if (this.customResult1.getCdAccess().equals("010")) {
+            this.fixInboxDao = new FixInboxDao(this.session);
+            this.customResult1.setSpv(sender);
+
+            FixInbox fixInbox1 = this.fixInboxDao.getItemIdLink(subject.replaceFirst("RE: ", ""));
+            if (fixInbox1 == null) {
+                getLogger().info("INVALID LINK");
+                throw new FIXException("INVALID EMAIL");
+            }
+
+            String itemId = fixInbox1.getFixInboxPK().getInboxId();
+
+            String body = "";
+            try {
+                if (this.emailMessage.getBody() != null) {
+                    String result;
+                    getLogger().debug("Email Body Type : " + this.emailMessage.getBody().getBodyType());
+                    getLogger().debug("Body Email : " + this.emailMessage.getBody().toString());
+                    if (this.emailMessage.getBody().getBodyType().equals(BodyType.HTML)) {
+                        //result = this.emailMessage.getBody().toString().replaceAll("\n", " ").replaceFirst(".{0,}<body", "\"").replaceFirst("From.{0,}", "\"").replaceFirst("</p>.{0,}", "\"").replaceFirst(".{0,}\"IN\"", "").replaceFirst("</span>.{0,}", "\"").replaceAll(".{0,}\">", "\"").replaceAll("<.{0,}", "\"").replaceAll("\"{1,}", "");
+                        result = this.emailMessage.getBody().toString().replaceAll("\n", "~").replaceAll("</p","~</p").replaceAll("</div","~</div").replaceFirst(".{0,}/head>", "").replaceFirst("</html>.{0,}", "\"").replaceAll("<[^>]*>", "\t").replaceAll("\"", "");
+                    } else {
+                        result = this.emailMessage.getBody().toString().trim().replaceAll("\n", "~");
+                    }
+                    StringTokenizer st = new StringTokenizer(result,"~");
+                    getLogger().info("Email Result : " + result);
+                    getLogger().debug("ST Count Token : " + st.countTokens());
+                    //if (st.countTokens() > 0) {
+                    //    //getLogger().info("ST Next Token : " + st.nextToken());
+                    //    body = st.nextToken();
+                    //    getLogger().debug("Body : " + body);
+                    //}
+                    String tmpBody="";
+                    for (int stCount=0;stCount<st.countTokens();stCount++){
+                        tmpBody = st.nextToken().trim();
+                        if (tmpBody.length()>0){
+                            body=tmpBody;
+                            break;
+                        }
+                    }
+                    getLogger().debug("Body : " + body);
+                }
+            } catch (ServiceLocalException ex) {
+                getLogger().error(ex);
+            }
+
+            this.customResult1.setFlgAuth(StatusDefinition.AUTHORIZED);
+            this.customResult1.setItemIdLink(itemId);
+            this.customResult1.setBatchNo(fixInbox1.getNoBatch());
+            //spv approval
+
+            if (body.toLowerCase().equalsIgnoreCase(StatusDefinition.getOkWords(body))) {
+                getLogger().debug(">>> " + this.customResult1.getItemIdLink() + " Authorized <<<");
+                this.customResult1.setParam1(StatusDefinition.AUTHORIZED);
+            } else if (body.toLowerCase().equalsIgnoreCase(StatusDefinition.getNotOkWords(body))) {
+                getLogger().debug(">>> " + this.customResult1.getItemIdLink() + " Rejected <<<");
+                this.customResult1.setParam1(StatusDefinition.REJECTED);
+            } else {
+                getLogger().debug(">>> " + this.customResult1.getItemIdLink() + "Ignored <<<");
+                this.customResult1.setParam1(StatusDefinition.IGNORED);
+            }
+
+
+        } else {
+            getLogger().info("INVALID ACCESS");
+            throw new FIXException("INVALID EMAIL");
+        }
+        getLogger().info("Done validating.");
+    }
+
+    //if exists will update fixlog
+    private void saveFixLog(boolean exists) throws FIXException, ParseException {
+        getLogger().info("Save to FixLog");
+        if (exists) {
+            this.fixInbox.setItemIdLink(this.customResult1.getItemIdLink());
+            update(this.fixInboxDao, this.fixInbox);
+            this.fixLog = this.fixLogDao.get(this.fixInbox.getItemIdLink());
+            this.fixLog.setFlgAuth(this.customResult1.getFlgAuth());
+            this.fixLog.setSenderSpv(this.fixInbox.getSender());
+            this.fixLog.setDtmAuth(this.fixInbox.getDtmReceive());
+            update(this.fixLogDao, this.fixLog);
+        } else {
+            this.fixLog.setFlgProcess(StatusDefinition.REQUEST);
+            this.fixLog.setIdScheduler(this.customResult1.getIdScheduler());
+            this.fixLog.setFixLogPK(new FixLogPK(this.fixInbox.getEmailAttachment(), SchedulerUtil.getDate("dd/MM/yyyy")));
+            this.fixLog.getFixLogPK().setInboxId(this.fixInbox.getFixInboxPK().getInboxId());
+            this.fixLog.setGrpId(this.customResult1.getGrpId());
+            this.fixLog.getFixLogPK().setTypFix(StatusDefinition.IN);
+            this.fixLog.setSender(this.fixInbox.getSender());
+            this.fixLog.setFlgAuth(this.customResult1.getFlgAuth());
+            this.fixLog.setDtmReceive(this.fixInbox.getDtmReceive());
+
+            if (this.fixInbox.getFlgAttach() != null) {
+                if (this.fixInbox.getFlgAttach().equals("Y")) {
+                    getLogger().info("Getting Attachment " + this.fileAttachment.getName());
+                    try {
+                        this.fileAttachment.load(this.filePath + this.fixInbox.getEmailAttachment());
+                        File file = new File(this.filePath + this.fixInbox.getEmailAttachment());
+                        getLogger().info("Size : " + file.length());
+                        this.fixLog.setFileSize((int) file.length());
+                        //decrypt file
+                        if (this.customResult1.getFlgEncrypt().equalsIgnoreCase("Y")) {
+                            getLogger().info("Decrypting " + this.fixInbox.getEmailAttachment());
+                            String newFile = FileUtil.decrypt(this.filePath + this.fixInbox.getEmailAttachment(),
+                                    this.customResult1.getModDecrypt(), this.customResult1.getKeyDecrypt(), "EM.");
+                            this.customResult1.setNewFilename(newFile);
+                            if (!FilenameUtils.getBaseName(newFile).equalsIgnoreCase(FilenameUtils.getBaseName(this.fixInbox.getEmailAttachment()))) {
+                                //getLogger().error("Filename Before and After Decrypt Different");
+                                throw new Exception("Filename Before and After Decrypt Different");
+                            }
+                        }
+                    } catch (IOException ex) {
+                        getLogger().error("IO Error When Download Attachment " + ex);
+                        /*
+                        try {
+                            MailUtil.sentNewMessage(adminEmail, "", "[FIX ALERT]Error Decrypting Attachment", "Error Decrypting Attachment <br/> " + ex.toString(), null, session, ScheduleDefinition.emailOnly);
+                        } catch (Exception ex1) {
+                            getLogger().error("Error Sending Email for FIX Admin");
+                            getLogger().error(ex1);
+                        }
+                        * 
+                        */
+                        throw new FIXException("INVALID EMAIL");
+                    } catch (Exception ex) {
+                        getLogger().error("Error Download Attachment " + ex);
+                        /*
+                        try {
+                            MailUtil.sentNewMessage(adminEmail, "", "[FIX ALERT]Error Download Attachment", "Error Download Attachment <br/>" + ex.toString(), null, session, ScheduleDefinition.emailOnly);
+                        } catch (Exception ex1) {
+                            getLogger().error("Error Sending Email to FIX Admin");
+                            getLogger().error(ex1);
+                        }
+                        * 
+                        */
+                        this.fixLog.setReason(ex.getMessage());
+                        throw new FIXException("INVALID EMAIL");
+                    }
+                    getLogger().info("Done Getting and Decrypt Attachment " + this.fileAttachment.getName());
+                }
+            }
+            save(this.fixLogDao, this.fixLog);
+        }
+        getLogger().info("Successfully save to FixLog");
+    }
+
+    //individual save
+    private void save(BaseDao baseDao, BaseModel baseModel) {
+        this.transaction = this.session.beginTransaction();
+        baseDao.insert(baseModel);
+        this.transaction.commit();
+    }
+
+    //individual update
+    private void update(BaseDao baseDao, BaseModel baseModel) {
+        this.transaction = this.session.beginTransaction();
+        baseDao.update(baseModel);
+        this.transaction.commit();
+    }
+
+    //if reg = true will register to fixqxtract
+    private void doWhenError(Exception ex, boolean reg) {
+        this.transaction = this.session.beginTransaction();
+        //update fixInbox
+        this.fixInbox.setFlgProcess(StatusDefinition.ERROR);
+        this.fixInbox.setReason(ex.getMessage());
+        this.fixInboxDao.update(this.fixInbox);
+
+        //update fixLog
+        this.fixLog.setFlgProcess(StatusDefinition.ERROR);
+        this.fixLog.setReason(ex.getMessage());
+        this.fixLogDao.update(this.fixLog);
+
+        if (reg) {
+            //register to fixqxtract
+            registerToFixQXtract(ex);
+        }
+        this.transaction.commit();
+    }
+
+    private void registerToFixQXtract(Exception ex) {
+        FixQXtract fixQXtract = new FixQXtract();
+        fixQXtract.setIdScheduler(ScheduleDefinition.emailOnly);
+        fixQXtract.setFlgProcess(StatusDefinition.REQUEST);
+        fixQXtract.setDtmRequest(SchedulerUtil.getTime());
+        fixQXtract.setReason(ex.getMessage());
+        fixQXtract.setParam1(MailUtil.createEmailSubject(this.fixInbox.getFixInboxPK().getSubject()));
+        fixQXtract.setParam2(this.fixInbox.getSender());
+        fixQXtract.setParam4(ex.getMessage());
+
+        FixQXtractDao fixQXtractDao = new FixQXtractDao(this.session);
+
+        //insert to fixqxtract
+        fixQXtractDao.insert(fixQXtract);
+    }
+    private int maxItem;
+    private Session session;
+    private Transaction transaction;
+    private EmailMessage emailMessage;
+    private FixInboxDao fixInboxDao;
+    private FixInbox fixInbox;
+    private FixLog fixLog;
+    private FixLogDao fixLogDao;
+    private FileAttachment fileAttachment;
+    private CustomResult1 customResult1;
+    private boolean exist;
+}

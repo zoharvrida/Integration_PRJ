@@ -1,0 +1,23 @@
+<!DOCTYPE validators PUBLIC
+              "-//Apache Struts//XWork Validator 1.0.2//EN"
+              "http://struts.apache.org/dtds/xwork-validator-1.0.2.dtd">
+<validators>
+    <field name="idReport">
+        <field-validator type="requiredstring">
+            <message>Report ID must not be empty.</message>
+        </field-validator>
+        <field-validator type="regex">
+            <param name="regex"><![CDATA[^[a-zA-Z0-9_]*$]]></param>  
+            <message>Should not type special character in Template ID.</message>
+        </field-validator>
+    </field>
+    <field name="namReport">
+        <field-validator type="requiredstring">
+            <message>Report Name must not be empty.</message>
+        </field-validator>
+        <field-validator type="regex">
+            <param name="regex"><![CDATA[^[a-zA-Z0-9\ _]*$]]></param>  
+            <message>Should not type special character in Template Name.</message>
+        </field-validator>
+    </field>
+</validators>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class lazy="false" name="bdsm.scheduler.model.OtpCustDetail" table="TMP_OTP_DTLS">
+        <id column="RECORDID" name="recordId" type="integer">
+            <generator class="increment"/>
+        </id>
+        <property column="BATCHID" name="batchId" type="string"/>
+        <property column="TYPERECORD" name="typeRecord" type="string"/>
+        <property column="TYPEOTP" name="typeOtp" type="string"/>
+        <property column="CIFNUMBER" name="cifNumber" type="string"/>
+        <property column="NAMA" name="nama" type="string"/>
+        <property column="SPK" name="spk" type="string"/>
+        <property column="KODEAO" name="kodeAo" type="string"/>
+        <property column="LOB" name="lob" type="string"/>
+        <property column="COSTCENTER" name="costCenter" type="string"/>
+        <property column="GRADING" name="grading" type="string"/>
+        <property column="CODPRODNCBS" name="codprodNcbs" type="string"/>
+        <property column="CODPRODICBS" name="codprodIcbs" type="string"/>
+        <property column="VARIANCE" name="variance" type="string"/>
+        <property column="BOOKINGLOAN" name="bookingLoan" type="string"/>
+        <property column="AC" name="ac" type="string"/>
+        <property column="FASILITAS" name="fasilitas" type="double"/>
+        <property column="PLAFONAWAL" name="plafonAwal" type="double"/>
+        <property column="OS" name="os" type="double"/>
+        <property column="TRANSAKSIOTP" name="transaksiOtp" type="double"/>
+        <property column="SISAPLAFON" name="sisaPlafon" type="double"/>
+        <property column="JUMLAH" name="jumlah" type="double"/>
+        <property column="INDEXRATE" name="indexRate" type="double"/>
+        <property column="RATECODE" name="ratecode" type="string"/>
+        <property column="PERIODE" name="periode" type="string"/>
+        <property column="SUKUBUNGA" name="sukuBunga" type="string"/>
+        <property column="RATEPINALTY" name="ratePinalty" type="double"/>
+        <property column="TANGGALPELUNASAN" name="tanggalPelunasan" type="string"/>
+        <property column="STATUS" name="status" type="string"/>
+        <property column="FLAGSTATUS" name="flgStatus" type="string"/>
+
+        <property column="COMMENTS" name="comments" type="string"/>
+            </class>
+  
+
+</hibernate-mapping>

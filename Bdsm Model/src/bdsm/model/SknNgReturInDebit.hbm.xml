@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping 
+		PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.SknNgReturInDebitParent" abstract="true" polymorphism="explicit">
+		<composite-id name="compositeId" class="bdsm.model.SknNgPK">
+			<key-property name="batchNo"   column="BATCH_NO"   type="string" />
+			<key-property name="recordId"  column="RECORD_ID"  type="integer" />
+		</composite-id>
+		
+		<property name="tipeRecord"       column="TIPE_RECORD"      type="string" />
+		<property name="kodeDke"          column="KODE_DKE"         type="string" />
+		<property name="extractStatusDB"  column="EXTRACT_STATUS"   type="character"  access="property" />
+		<property name="idCreatedBy"      column="ID_CREATED"       type="string" />
+		<property name="dtmCreated"       column="DTM_CREATED"      type="timestamp" />
+		
+		
+		<!-- subclass -->
+		<union-subclass name="bdsm.model.SknNgReturInDebitHeader" table="SKNNG_RET_IN_DEBIT_HEADER" dynamic-insert="true">
+			<property name="batchId"                           column="BATCH_ID"                        type="string" />
+			<property name="jamTanggalMessage"                 column="JAM_TANGGAL_MESSAGE"             type="string" />
+			<property name="jumlahRecords"                     column="JUMLAH_RECORDS"                  type="string" />
+			<property name="totalNominal"                      column="TOTAL_NOMINAL"                   type="string" />
+			<property name="tanggalBatch"                      column="TANGGAL_BATCH"                   type="string" />
+			<property name="jenisSetelmen"                     column="JENIS_SETELMEN"                  type="string" />
+			<property name="identitasPesertaPengirim"          column="IDENTITAS_PESERTA_PENGIRIM"      type="string" />
+			<property name="sandiKotaPengirim"                 column="SANDI_KOTA_PENGIRIM"             type="string" />
+			<property name="batchIdOriginal"                   column="BATCH_ID_ORI"                    type="string" />
+			<property name="identitasPesertaPengirimOriginal"  column="IDENTITAS_PESERTA_PENGIRIM_ORI"  type="string" />
+		</union-subclass>
+		
+		<union-subclass name="bdsm.model.SknNgReturInDebitDetail" table="SKNNG_RET_IN_DEBIT_DETAIL" dynamic-insert="true">
+			<property name="identitasPesertaPenerima"       column="IDENTITAS_PESERTA_PENERIMA"      type="string" />
+			<property name="sandiKotaAsal"                  column="SANDI_KOTA_ASAL"                 type="string" />
+			<property name="namaNasabahPemegang"            column="NAMA_NASABAH_PEMEGANG"           type="string" />
+			<property name="noRekeningNasabahPemegang"      column="NO_REKENING_NASABAH_PEMEGANG"    type="string" />
+			<property name="noIdentitasPemegang"            column="NO_IDENTITAS_PEMEGANG"           type="string" />
+			<property name="namaPenarik"                    column="NAMA_PENARIK"                    type="string" />
+			<property name="namaNasabahTertarik"            column="NAMA_NASABAH_TERTARIK"           type="string" />
+			<property name="noRekeningNasabahTertarik"      column="NO_REKENING_NASABAH_TERTARIK"    type="string" />
+			<property name="alamatNasabahTertarik"          column="ALAMAT_NASABAH_TERTARIK"         type="string" />
+			<property name="RT"                             column="RT"                              type="string" />
+			<property name="RW"                             column="RW"                              type="string" />
+			<property name="kota"                           column="KOTA"                            type="string" />
+			<property name="propinsi"                       column="PROPINSI"                        type="string" />
+			<property name="kodePos"                        column="KODE_POS"                        type="string" />
+			<property name="tanggalLahir"                   column="TANGGAL_LAHIR"                   type="string" />
+			<property name="tempatLahir"                    column="TEMPAT_LAHIR"                    type="string" />
+			<property name="sandiNegaraTempatLahir"         column="SANDI_NEGARA_TEMPAT_LAHIR"       type="string" />
+			<property name="jenisNasabahPenerima"           column="JENIS_NASABAH_PENERIMA"          type="string" />
+			<property name="statusPendudukNasabahPenerima"  column="STAT_PENDUDUK_NASABAH_PENERIMA"  type="string" />
+			<property name="noIdentitas"                    column="NO_IDENTITAS"                    type="string" />
+			<property name="NPWP"                           column="NPWP"                            type="string" />
+			<property name="jenisTransaksi"                 column="JENIS_TRANSAKSI"                 type="string" />
+			<property name="noWarkat"                       column="NO_WARKAT"                       type="string" />
+			<property name="nominal"                        column="NOMINAL"                         type="string" />
+			<property name="alasanPenolakan"                column="ALASAN_PENOLAKAN"                type="string" />
+			<property name="noUrut"                         column="NO_URUT"                         type="string" />
+			<property name="noReferensi"                    column="NO_REFERENSI"                    type="string" />
+			<property name="noReferensiOriginal"            column="NO_REFERENSI_ORIGINAL"           type="string" />
+			<property name="bebanBiaya"                     column="BEBAN_BIAYA"                     type="string" />
+			<property name="SOR"                            column="SOR"                             type="string" />
+			<property name="parentRecordId"                 column="PARENT_RECORD_ID"                type="integer" />
+		</union-subclass>
+
+		<union-subclass name="bdsm.model.SknNgReturInDebitFooter" table="SKNNG_RET_IN_DEBIT_FOOTER" dynamic-insert="true">
+			<property name="CRC"             column="CRC"               type="string" />
+			<property name="parentRecordId"  column="PARENT_RECORD_ID"  type="integer" />
+		</union-subclass>
+	</class>
+	
+</hibernate-mapping>

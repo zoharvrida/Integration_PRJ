@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>  
+    <class name="bdsm.model.Com.ComCdMast" table="COMCDMAST" lazy="false">
+        <composite-id>
+            <key-property column="IDCD" name="txnId" type="string"/>
+            <key-property name="seqId"  column="SEQID"   type="integer" />
+        </composite-id>
+		
+        <property column="IDBRANCH" name="idBranch" type="integer"/>
+        <property column="DTREQ" name="dtmRequest" type="timestamp"/>
+        <property column="COD_CCY" name="codCcy" type="string"/>
+        <property column="IDVENDOR" name="idVendor" type="string"/>
+        <property column="IDCUST" name="idCust" type="string"/>
+        <property column="STATUS" name="status" type="string"/>
+        <property column="TOTALAMTREQ" name="totalAmtReq" type="big_decimal"/>
+        <property column="TOTALAMTCONF" name="totalAmtConf" type="big_decimal"/>
+		
+        <property column="IDCREATEDBY" name="idCreatedBy" type="string"/>
+        <property column="IDCREATEDSPV" name="idCreatedSpv" type="string"/>
+        <property column="DTMCREATED" name="dtmCreated" type="timestamp"/>
+        <property column="DTMCREATEDSPV" name="dtmCreatedSpv" type="timestamp"/>
+        <property column="IDUPDATEDBY" name="idUpdatedBy" type="string"/>
+        <property column="IDUPDATEDSPV" name="idUpdatedSpv" type="string"/>
+        <property column="DTMUPDATED" name="dtmUpdated" type="timestamp"/>
+        <property column="DTMUPDATEDSPV" name="dtmUpdatedSpv" type="timestamp"/>
+        	
+        <set name="details" cascade="save-update, delete-orphan" lazy="false">
+            <key>
+                <column name="IDCD"/>
+                <column name="SEQID"/> 
+            </key>
+                
+            <one-to-many class="bdsm.model.Com.ComCdDtls" />
+        </set>
+    </class>
+	
+    <class name="bdsm.model.Com.ComCdDtls" table="COMCDDTLS" lazy="false">
+        <composite-id>
+            <key-property column="IDCD" name="txnId" type="string"/>
+            <key-property name="txnDtlsId"  column="IDCDDTLS"   type="string" />
+            <key-property name="seqId"  column="SEQID"   type="integer" />
+        </composite-id>
+        
+        <property column="IDDENOM" name="denomId" type="string"/>
+        <property column="PIECE" name="piece" type="integer"/>
+        <property column="AMOUNT" name="amount" type="big_decimal"/>
+    </class>
+        
+    <class name="bdsm.model.Com.ComCdMastHist" table="COMCDMAST_HIST" lazy="false">
+        <composite-id class="bdsm.model.Com.ComCdMastHistPK" name="pk">
+            <key-property column="IDCD" name="txnId" type="string"/>
+            <key-property name="seqId"  column="SEQID"   type="string" />
+            <key-property column="DTMLOG" name="dtmLog" type="timestamp"/>
+        </composite-id>
+		
+        <property column="IDBRANCH" name="idBranch" type="integer"/>
+        <property column="DTREQ" name="dtmRequest" type="timestamp"/>
+        <property column="COD_CCY" name="codCcy" type="string"/>
+        <property column="IDVENDOR" name="idVendor" type="string"/>
+        <property column="IDCUST" name="idCust" type="string"/>
+        <property column="STATUS" name="status" type="string"/>
+        <property column="TOTALAMTREQ" name="totalAmtReq" type="big_decimal"/>
+        <property column="TOTALAMTCONF" name="totalAmtConf" type="big_decimal"/>
+		
+        <property column="IDCREATEDBY" name="idCreatedBy" type="string"/>
+        <property column="IDCREATEDSPV" name="idCreatedSpv" type="string"/>
+        <property column="DTMCREATED" name="dtmCreated" type="timestamp"/>
+        <property column="DTMCREATEDSPV" name="dtmCreatedSpv" type="timestamp"/>
+        <property column="IDUPDATEDBY" name="idUpdatedBy" type="string"/>
+        <property column="IDUPDATEDSPV" name="idUpdatedSpv" type="string"/>
+        <property column="DTMUPDATED" name="dtmUpdated" type="timestamp"/>
+        <property column="DTMUPDATEDSPV" name="dtmUpdatedSpv" type="timestamp"/>
+        
+        <set name="detailsHist" cascade="save-update, delete-orphan" lazy="false">
+            <key>
+                <column name="IDCD" />
+                <column name="SEQID" /> 
+                <column name="DTMLOG" /> 
+            </key>
+            <one-to-many class="bdsm.model.Com.ComCdDtlsHist" />
+        </set>
+    </class>
+	
+    <class name="bdsm.model.Com.ComCdDtlsHist" table="COMCDDTLS_HIST" lazy="false">
+        <composite-id>
+            <key-property column="IDCD" name="txnId" type="string"/>
+            <key-property name="seqId"  column="SEQID"   type="integer" />
+            <key-property column="DTMLOG" name="dtmLog" type="timestamp"/>
+            <key-property name="txnDtlsId"  column="IDCDDTLS"   type="string" />
+        </composite-id>
+        
+        <property column="IDDENOM" name="denomId" type="string"/>
+        <property column="PIECE" name="piece" type="integer"/>
+        <property column="AMOUNT" name="amount" type="big_decimal"/>
+    </class>
+    
+    <query name="ComCdMast#getListTrx">
+    <query-param name="idbranch" type="integer"/> 
+    <query-param name="dtmreq" type="date"/> 
+    <query-param name="codccy" type="string"/>    
+       <![CDATA[
+			 FROM ComCdMast cd
+			WHERE cd.idBranch = :idbranch
+                        AND cd.dtmRequest = :dtmreq
+                        AND cd.codCcy = :codccy
+                        ]]>		
+    </query>
+    
+    <query name="ComCdMast#getTrxbyBatch">
+       <query-param name="pTxn" type="string"/> 
+       <![CDATA[
+			 FROM ComCdDtls cdtls
+			WHERE cdtls.txnId = :pTxn
+                        order by cdtls.seqId desc
+                        ]]>		
+    </query>
+</hibernate-mapping>

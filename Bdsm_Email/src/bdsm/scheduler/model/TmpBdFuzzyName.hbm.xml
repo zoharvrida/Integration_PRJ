@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+      <class  name="bdsm.scheduler.model.TmpBdFuzzyName" table="TMP_BD_FUZZY_NAME" lazy="false">
+        <id       name="id"        column="ID"        type="int" >
+            <generator class="increment"/>
+        </id>
+        <property name="batchNo"  column="BATCHNO"  type="string"/>
+        <property name="codCasaNo"  column="COD_CASA_NO"  type="string"/>
+        <property name="name"  column="NAME"  type="string"/>
+        <property name="noMemo"  column="NO_MEMO"  type="string"/>
+        <property name="remarks"  column="REMARKS"  type="string"/>
+        <property name="cmd"  column="CMD"  type="string"/>
+        <property name="flgStatus"  column="FLG_STATUS"  type="string"/>
+        <property name="statusReason"  column="STATUS_REASON"  type="string"/>
+        <property name="idCreatedBy"   column="idCreatedBy"   type="string"/>
+        <property name="idCreatedSpv"  column="idCreatedSpv"  type="string"/>
+        <property name="dtmCreated"    column="dtmCreated"    type="timestamp"  />
+        <property name="dtmCreatedSpv" column="dtmCreatedSpv" type="timestamp"  />        
+    </class>
+</hibernate-mapping>

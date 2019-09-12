@@ -1,0 +1,161 @@
+package bdsm.scheduler;
+
+import bdsm.scheduler.dao.FixLogDao;
+import bdsm.scheduler.model.FixLog;
+import bdsm.scheduler.model.FixLogPK;
+import bdsm.scheduler.util.PatternUtil;
+import bdsm.scheduler.util.SchedulerUtil;
+import bdsm.util.HibernateUtil;
+import java.io.File;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import org.apache.commons.io.monitor.FileAlterationListener;
+import org.apache.commons.io.monitor.FileAlterationMonitor;
+import org.apache.commons.io.monitor.FileAlterationObserver;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+public abstract class FolderWatcher extends BdsmScheduler implements FileAlterationListener {
+    
+    protected static final PatternUtil pttrn = new PatternUtil(".{0,}.filepart");
+    protected static final PatternUtil pttrn2 = new PatternUtil("$.{0,}");
+
+    public FolderWatcher(long timeout, long sleep, long btsleep, int threadcount, String folderToWatch, String fileBackup) {
+        super(timeout, sleep, btsleep, threadcount);
+        this.filepath = folderToWatch;
+        this.maxJob = threadcount;
+        this.fileBackup = fileBackup;
+        this.ready = new HashMap();
+        this.check = new HashMap();
+
+        File file = new File(folderToWatch);
+
+        FileAlterationObserver fileAlterationObserver = new FileAlterationObserver(file);
+        this.fileAlterationMonitor = new FileAlterationMonitor();
+        FileAlterationListener fileAlterationListener = this;
+
+        fileAlterationObserver.addListener(fileAlterationListener);
+        this.fileAlterationMonitor.addObserver(fileAlterationObserver);
+        try {
+            this.fileAlterationMonitor.start();
+        } catch (Exception ex) {
+            getLogger().error(ex);
+        }
+    }
+
+    @Override
+    protected void execute() {
+        try {
+            FolderWatcher.sleep(1000);
+        } catch (InterruptedException ex) {
+            getLogger().error(ex);
+        }
+
+    }
+
+    protected abstract void processFile(String filename);
+
+    @Override
+    public void onStart(FileAlterationObserver fao) {
+        getLogger().info("Start Observing");
+        Set key = this.ready.keySet();
+        List keys = new ArrayList();
+        keys.addAll(key);
+        String filename;
+        int max = keys.size() > this.maxJob ? this.maxJob : keys.size();
+        if (max > 0) {
+            this.session = HibernateUtil.getSession();
+            for (int i = 0; i < max; i++) {
+                filename = keys.get(i).toString();
+                processFile(filename);
+                this.ready.remove(filename);
+            }
+            HibernateUtil.closeSession(this.session);
+        }
+    }
+
+    @Override
+    public void onFileCreate(File file) {
+        this.session = HibernateUtil.getSession();
+        getLogger().info("File Created " + file.getName());
+        validateName(file.getName(), file.length(), true);
+        HibernateUtil.closeSession(this.session);
+    }
+
+    @Override
+    public void onFileChange(File file) {
+        getLogger().info("File Changed " + file.getName());
+        validateName(file.getName(), file.length(), false);
+    }
+
+    @Override
+    public void onFileDelete(File file) {
+        getLogger().info("File Deleted " + file.getName());
+    }
+
+    //put every file name that has been created or changed to a list.
+    @Override
+    public void onStop(FileAlterationObserver fao) {
+        this.ready.putAll(this.check);
+        this.check.clear();
+        getLogger().info("Stop Observing");
+    }
+
+    @Override
+    public void onDirectoryCreate(File file) {
+        getLogger().info("Directory created " + file.getName());
+    }
+
+    @Override
+    public void onDirectoryChange(File file) {
+        getLogger().info("Directory changed " + file.getName());
+    }
+
+    @Override
+    public void onDirectoryDelete(File file) {
+        getLogger().info("Directory deleted " + file.getName());
+    }
+
+
+    //validate filename and insert to fixLog
+    private void validateName(String name, long size, boolean n) {
+        if (this.pttrn2.match(name)) {
+        }
+        if (this.pttrn.match(name)) {
+        } else {
+            this.check.put(name, size);
+            if (n) {
+                File file = new File(this.filepath + name);
+                String batchId = SchedulerUtil.generateUUID();
+                FixLog fixLog = new FixLog();
+                FixLogDao fixLogDao = new FixLogDao(this.session);
+                try {
+                    fixLog.setFixLogPK(new FixLogPK(name, SchedulerUtil.getDate("dd/MM/yyyy")));
+                } catch (ParseException ex) {
+                    getLogger().error(ex);
+                }
+                fixLog.setDtmReceive(SchedulerUtil.getTime());
+                fixLog.getFixLogPK().setTypFix(StatusDefinition.IN);
+                fixLog.getFixLogPK().setInboxId(batchId);
+                fixLog.setFileSize((int) file.length());
+                fixLog.setFlgProcess(StatusDefinition.REQUEST);
+                Transaction transaction = this.session.beginTransaction();
+                fixLogDao.insert(fixLog);
+                transaction.commit();
+            }
+        }
+    }
+
+    protected FileAlterationMonitor fileAlterationMonitor;
+    protected HashMap ready;
+    protected HashMap check;
+    protected String filepath;
+    protected String filePathToProcess;
+    protected String fileBackup;
+    protected int maxJob;
+    protected Session session;
+
+}

@@ -1,0 +1,46 @@
+package bdsm.scheduler.dao;
+
+import bdsm.model.BaseModel;
+import bdsm.scheduler.model.FixSchedulerImport;
+import bdsmhost.dao.BaseDao;
+import java.util.List;
+import org.hibernate.Query;
+import org.hibernate.Session;
+
+public class FixSchedulerImportDao extends BaseDao {
+
+    public FixSchedulerImportDao(Session session) {
+        super(session);
+    }
+
+    public FixSchedulerImport get(String filePattern) {
+        StringBuilder sb = new StringBuilder("select A from FixSchedulerImport A ");
+        sb.append("where (select datProcess from FcrBaBankMast where compositeId.flgMntStatus = 'A') between A.dtEffStart and A.dtEffEnd ");
+        sb.append("and A.flgStatus = 'A' and A.filePattern like :pattern");
+        Query query = getSession().createQuery(sb.toString());
+        query.setString("pattern", filePattern + "%");
+        List<FixSchedulerImport> list = query.list();
+        if (list.size() == 1) {
+            return list.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    protected boolean doInsert(BaseModel baseModel) {
+        getSession().save(baseModel);
+        return true;
+    }
+
+    @Override
+    protected boolean doUpdate(BaseModel baseModel) {
+        getSession().update(baseModel);
+        return true;
+    }
+
+    @Override
+    protected boolean doDelete(BaseModel baseModel) {
+        getSession().delete(baseModel);
+        return true;
+    }
+}

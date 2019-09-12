@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+	<!-- Model -->
+	<class name="bdsm.fcr.model.BaSectorMast" table="BA_SECTOR_MAST" lazy="false">
+		<composite-id name="compositeId" class="bdsm.fcr.model.BaSectorMastPK">
+			<key-property name="codClgSector"  column="COD_CLG_SECTOR"  type="integer" />
+			<key-property name="flgMntStatus"  column="FLG_MNT_STATUS"  type="string" />
+			<key-property name="codEntityVPD"  column="COD_ENTITY_VPD"  type="integer" />
+		</composite-id>
+		
+		<property name="namClgSector"  column="NAM_CLG_SECTOR"  type="string" />
+	</class>
+	
+	
+	<!-- Query -->
+	<query name="BaSectorMast#listByCodBI">
+		<![CDATA[
+			  FROM BaSectorMast so
+			 WHERE EXISTS ( 
+				SELECT '1'
+				  FROM StRoutingNoDtls r, PmFinInstDirMast f, BaSectorMast s
+				 WHERE r.compositeId.codRoutingNo = f.compositeId.codFinInstId
+				   AND r.codSector                = s.compositeId.codClgSector 
+				   AND r.compositeId.flgMntStatus = 'A'
+				   AND r.compositeId.flgMntStatus = 'A'
+				   AND f.codBI                    = :codBI
+				   AND s.compositeId.codClgSector = so.compositeId.codClgSector
+			 )
+			   AND CONCAT(
+			   		CASE 
+			   			WHEN LENGTH(so.compositeId.codClgSector) = 1 THEN CONCAT('000', so.compositeId.codClgSector)
+			   			WHEN LENGTH(so.compositeId.codClgSector) = 2 THEN CONCAT('00', so.compositeId.codClgSector)
+			   			WHEN LENGTH(so.compositeId.codClgSector) = 3 THEN CONCAT('0', so.compositeId.codClgSector)
+			   			ELSE CONCAT('', so.compositeId.codClgSector)
+			   		END, 
+			   		CONCAT(' - ', so.namClgSector)
+			   	   ) LIKE UPPER(:strLike)
+		]]>
+	</query>
+</hibernate-mapping>

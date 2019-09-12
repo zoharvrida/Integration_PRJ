@@ -1,0 +1,131 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bdsm.scheduler.processor;
+
+import bdsm.model.EodMast;
+import bdsm.model.EodProcMast;
+import bdsm.scheduler.IBdsmClass;
+import bdsm.scheduler.MapKey;
+import bdsm.scheduler.PropertyPersister;
+import bdsm.scheduler.dao.FixQXtractDao;
+import bdsm.scheduler.util.FileUtil;
+import bdsm.tdr.dao.TmpBdgwOleDetailDao;
+import bdsm.tdr.dao.TmpBdgwOleFooterDao;
+import bdsm.tdr.dao.TmpBdgwOleHeaderDao;
+import bdsm.tdr.model.TmpBdgwOleDetail;
+import bdsm.tdr.model.TmpBdgwOleFooter;
+import bdsm.tdr.model.TmpBdgwOleHeader;
+import bdsmhost.dao.EodMastDao;
+import bdsmhost.dao.EodProcMastDao;
+import bdsmhost.dao.FcrBaBankMastDao;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author USER
+ */
+public class FixGefuOle extends BaseProcessor implements IBdsmClass {
+
+    public FixGefuOle(Map context) {
+        super(context);
+    }
+
+    @Override
+    protected boolean doExecute() throws Exception {
+        getLogger().info("Begin Gefu OLE");
+        FixQXtractDao fixDao = new FixQXtractDao(session);
+        TmpBdgwOleHeaderDao daoHeader = new TmpBdgwOleHeaderDao(session);
+        TmpBdgwOleDetailDao daoDetail = new TmpBdgwOleDetailDao(session);
+        TmpBdgwOleFooterDao daoFooter = new TmpBdgwOleFooterDao(session);
+        EodProcMastDao eodDao = new EodProcMastDao(session);
+        EodMastDao eodMastDao = new EodMastDao(session);
+        FcrBaBankMastDao bankMastDao = new FcrBaBankMastDao(session);
+        getLogger().info("Dao Initialization Completed");
+        String moduleId = context.get(MapKey.param1).toString();
+        String processId = context.get(MapKey.param4).toString();
+        String batchId = context.get(MapKey.param6).toString();
+        int type = Integer.parseInt(context.get(MapKey.param2).toString());
+        getLogger().info("ModuleID : " + moduleId);
+        getLogger().info("ProcessID : " + processId);
+        getLogger().info("BatchID : " + batchId);
+        getLogger().info("Get Required Param Completed");
+        TmpBdgwOleHeader modelHeader = null;
+        List<TmpBdgwOleDetail> listModelDetail = null;
+        TmpBdgwOleFooter modelFooter = null;
+        TmpBdgwOleDetail modelDetail = null;
+        EodProcMast eodProcMast = null;
+        EodMast eodMast = null;
+        try {
+            //get Gefu data model
+            eodProcMast = eodDao.get(processId, moduleId, type);
+            eodMast = eodMastDao.get(bankMastDao.get().getDatProcess(), eodProcMast.getType(), eodProcMast.getProcId(), eodProcMast.getModuleId());
+            modelHeader = daoHeader.get(batchId, moduleId, processId,type);
+            listModelDetail = daoDetail.list(batchId, moduleId, processId,type);
+            modelFooter = daoFooter.get(batchId, moduleId, processId,type);
+            getLogger().info("get OLE Data Model completed");
+        } catch (Exception ex) {
+            //update status progress
+            getLogger().error("["+eodMast.getProcessId()+"]get GEFU Data Model Error");
+            getLogger().error(ex, ex);
+            eodMast.setProgress("A");
+            eodMast.setActivity("Aborted");
+            eodMast.setRemark("["+eodMast.getProcessId()+"]Get GEFU Data Model Error");
+            eodMastDao.update(eodMast);
+        }
+        String oleContent = "";
+        String outFileName = "";
+        getLogger().info("Begin OLE Write to HIT File");
+        try {
+            //write the header
+            oleContent += (modelHeader.getRecordType() + modelHeader.getProfileName()
+                    + modelHeader.getBusDat() + modelHeader.getIntrFceTyp() + modelHeader.getGlNo() + modelHeader.getCstCntr()
+                    + modelHeader.getApplCod() + modelHeader.getAcctNo() + modelHeader.getTransCcy() + modelHeader.getAmnt()
+                    + modelHeader.getLceOfTrans() + modelHeader.getAmntFee() + modelHeader.getDesc1() + modelHeader.getDesc2()
+                    + "                                                                                                                                                                                           ").substring(0, 187) + "\n";
+            //write the details
+            for (int i = 0; i < listModelDetail.size(); i++) {
+                modelDetail = listModelDetail.get(i);
+                oleContent += (modelDetail.getRecordType() + modelDetail.getTransCod() + modelDetail.getApplCod()
+                        + modelDetail.getAcctNo() + modelDetail.getTransAmt() + modelDetail.getTransCcy()
+                        + modelDetail.getLceOfTrans() + modelDetail.getForeignExchgRat() + modelDetail.getCstCntr()
+                        + modelDetail.getRef() + modelDetail.getDesc1() + modelDetail.getDesc2() + modelDetail.getAmntFee()
+                        + "                                                                                                                                                                                                           ").substring(0, 203) + "\n";
+            }
+            //write the footer
+            oleContent += (modelFooter.getRecordType() + modelFooter.getTotalRecord() + "            ").substring(0, 11);
+            //append to file
+            outFileName = FileUtil.getDateTimeFormatedFileName("BDSMOVB{yyyymmddhhmmss}.HIT");
+            File fileOle = new File(PropertyPersister.dirFixOut + outFileName);
+            if (!fileOle.exists()) {
+                fileOle.createNewFile();
+            }
+            FileWriter fw = new FileWriter(fileOle.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(oleContent);
+            bw.flush();
+            bw.close();
+            getLogger().info("END OLE Write to HIT File");
+            getLogger().info("Begin OLE Register FixQXtract");
+            // update status progress
+            eodMast.setProgress("D");
+            eodMast.setActivity("Done");
+            eodMast.setRemark("Process ID "+eodMast.getProcessId()+" Done");
+            eodMastDao.update(eodMast);            
+        } catch (Exception ex) {
+            //update status progress
+            getLogger().error("["+eodMast.getProcessId()+"]Write to HIT File Error");
+            getLogger().error(ex, ex);
+            eodMast.setProgress("A");
+            eodMast.setActivity("Aborted");
+            eodMast.setRemark("["+eodMast.getProcessId()+"]Write to HIT File Error");
+            eodMastDao.update(eodMast);
+        }
+        return true;
+    }
+}

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.fcr.model.XfOlStTxnLogCurrent" table="XF_OL_ST_TXNLOG_CURRENT" lazy="false">
+		<composite-id name="pk" class="bdsm.fcr.model.XfOlStTxnLogCurrentPK">
+			<key-property name="datTxn" column="DAT_TXN" type="long" />
+			<key-property name="codOrgBrn" column="COD_ORG_BRN" type="integer" />
+			<key-property name="codUserNo" column="COD_USERNO" type="long" />
+			<key-property name="ctrBatchNo" column="CTR_BATCH_NO" type="long" />
+			<key-property name="refSysTrAudNo" column="REF_SYS_TR_AUD_NO" type="long" />
+			<key-property name="refSubSeqNo" column="REF_SUBSEQ_NO" type="integer" />
+			<key-property name="codMsgTyp" column="COD_MSG_TYP" type="integer" />
+			<key-property name="codEntityVpd" column="COD_ENTITY_VPD" type="integer" />
+		</composite-id>
+		
+		
+		<property name="refTxnNo" column="REF_TXN_NO" type="string" />
+		<property name="codCust" column="COD_CUST" type="long" />
+		<property name="codAcctNo" column="COD_ACCT_NO" type="string" />
+		<property name="codFromAcctNo" column="COD_FROM_ACCT_NO" type="string" />
+		<property name="codToAcctNo" column="COD_TO_ACCT_NO" type="string" />
+		<property name="codTxnCcy" column="COD_TXN_CCY" type="integer" />
+		<property name="amtTxnTcy" column="AMT_TXN_TCY" type="big_decimal" />
+		<property name="codTxnMnemonic" column="COD_TXN_MNEMONIC" type="integer" />
+		<property name="flgDrCrDB" column="FLG_DRCR" type="character" access="property" />
+		<property name="txnNrrtv" column="TXN_NRRTV" type="string" />
+		<property name="codUserId" column="COD_USER_ID" type="string" />
+		<property name="datTxnStr" column="DAT_TXN_STR" type="timestamp" />
+		<property name="datValueStr" column="DAT_VALUE_STR" type="timestamp" />
+	</class>
+	
+	<!-- Query -->
+	<query name="XfOlStTxnLogCurrent#getByRefTxnNoAndCodOrgBrn">
+		<![CDATA[
+			 FROM XfOlStTxnLogCurrent
+			WHERE refTxnNo       = :refTxnNo
+			  AND pk.codOrgBrn   = COALESCE(:codOrgBrn, pk.codOrgBrn)
+			  AND pk.refSubSeqNo = 0
+		]]>
+	</query>
+</hibernate-mapping>

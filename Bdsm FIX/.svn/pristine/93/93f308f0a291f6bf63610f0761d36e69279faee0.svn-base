@@ -1,0 +1,43 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package main;
+
+import bdsm.scheduler.PropertyPersister;
+import bdsm.scheduler.fix.FixExport;
+import bdsm.scheduler.fix.FixImportMail;
+import bdsm.scheduler.fix.FolderInWatcher;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+/**
+ *
+ * @author bdsm
+ */
+public class FixRunTest {
+
+    static String b;
+
+    private void sout() {
+        System.out.println();
+    }
+
+    public static void main(String[] args) throws FileNotFoundException, IOException {
+        FixImportMail fixImportMail = null;
+        FixExport fixExport = null;
+        FolderInWatcher folderInWatcher = null;
+
+        int timeout = 5000;
+        int sleep = 10000;
+        int btsleep = 10000;
+        int threadcount = PropertyPersister.maxProcess;
+        fixImportMail = new FixImportMail(PropertyPersister.mailTimeout, PropertyPersister.mailSleep, btsleep, threadcount);
+        fixImportMail.start();
+        fixExport = new FixExport(PropertyPersister.mailTimeout, PropertyPersister.mailSleep, btsleep, threadcount);
+        fixExport.start();
+        //folderInWatcher = new FolderInWatcher(timeout, sleep, btsleep, threadcount, PropertyPersister.dirFixIn, "IN.");
+        //folderInWatcher.start();
+
+    }
+}

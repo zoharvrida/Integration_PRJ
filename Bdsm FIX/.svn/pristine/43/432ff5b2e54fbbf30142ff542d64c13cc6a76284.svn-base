@@ -1,0 +1,195 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bdsm.scheduler.processor;
+
+import bdsm.model.EodMast;
+import bdsm.model.EodProcMast;
+import bdsm.scheduler.IBdsmClass;
+import bdsm.scheduler.MapKey;
+import bdsm.scheduler.PropertyPersister;
+import bdsm.scheduler.util.FileUtil;
+import bdsm.tdr.dao.TmpBdgwOgtDetailDao;
+import bdsm.tdr.dao.TmpBdgwOgtFooterDao;
+import bdsm.tdr.dao.TmpBdgwOgtHeaderDao;
+import bdsm.tdr.model.TmpBdgwOgtDetail;
+import bdsm.tdr.model.TmpBdgwOgtFooter;
+import bdsm.tdr.model.TmpBdgwOgtHeader;
+import bdsmhost.dao.EodMastDao;
+import bdsmhost.dao.EodProcMastDao;
+import bdsmhost.dao.FcrBaBankMastDao;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.List;
+import java.util.Map;
+
+/**
+ *
+ * @author USER
+ */
+public class FixGefuOgt extends BaseProcessor implements IBdsmClass {
+
+    public FixGefuOgt(Map context) {
+        super(context);
+    }
+
+    @Override
+    protected boolean doExecute() throws Exception {
+        getLogger().info("Begin Gefu OGT");
+        TmpBdgwOgtHeaderDao daoHeader = new TmpBdgwOgtHeaderDao(session);
+        TmpBdgwOgtDetailDao daoDetail = new TmpBdgwOgtDetailDao(session);
+        TmpBdgwOgtFooterDao daoFooter = new TmpBdgwOgtFooterDao(session);
+        EodProcMastDao eodDao = new EodProcMastDao(session);
+        EodMastDao eodMastDao = new EodMastDao(session);
+        FcrBaBankMastDao bankMastDao = new FcrBaBankMastDao(session);
+        getLogger().info("Dao Initialization Completed");
+        String moduleId = context.get(MapKey.param1).toString();
+        int type = Integer.parseInt(context.get(MapKey.param2).toString());
+        String processId = context.get(MapKey.param4).toString();
+        String batchId = context.get(MapKey.param6).toString();
+        getLogger().info("ModuleID : " + moduleId);
+        getLogger().info("ProcessID : " + processId);
+        getLogger().info("BatchID : " + batchId);
+        getLogger().info("Get Required Param Completed");
+        TmpBdgwOgtHeader modelHeaderSKN = null;
+        TmpBdgwOgtDetail modelDetailSKN = null;
+        List<TmpBdgwOgtDetail> listModelDetailSKN = null;
+        TmpBdgwOgtFooter modelFooterSKN = null;
+        TmpBdgwOgtHeader modelHeaderRTGS = null;
+        TmpBdgwOgtDetail modelDetailRTGS = null;
+        List<TmpBdgwOgtDetail> listModelDetailRTGS = null;
+        TmpBdgwOgtFooter modelFooterRTGS = null;
+        EodProcMast eodProcMast = null;
+        EodMast eodMast = null;
+        try {
+            //get GEFU Data Model
+            eodProcMast = eodDao.get(processId, moduleId,type);
+            eodMast = eodMastDao.get(bankMastDao.get().getDatProcess(), eodProcMast.getType(), eodProcMast.getProcId(), eodProcMast.getModuleId());
+            modelHeaderSKN = daoHeader.get(batchId, moduleId, processId, "1", type);
+            listModelDetailSKN = daoDetail.list(batchId, moduleId, processId, "1", type);
+            modelFooterSKN = daoFooter.get(batchId, moduleId, processId, "1", type);
+            getLogger().info("get SKN Data Model completed");
+            modelHeaderRTGS = daoHeader.get(batchId, moduleId, processId, "3", type);
+            listModelDetailRTGS = daoDetail.list(batchId, moduleId, processId, "3", type);
+            modelFooterRTGS = daoFooter.get(batchId, moduleId, processId, "1", type);
+            getLogger().info("get RTGS Data Model completed");
+        } catch (Exception ex) {
+            //update status progress
+            getLogger().error("["+eodMast.getProcessId()+"]get GEFU Data Model Error");
+            getLogger().error(ex, ex);
+            eodMast.setProgress("A");
+            eodMast.setActivity("Aborted");
+            eodMast.setRemark("["+eodMast.getProcessId()+"]Get GEFU Data Model Error");
+            eodMastDao.update(eodMast);
+        }
+        String ogtContent = "";
+        String outFileName = "";
+        getLogger().info("Begin SKN Write to HIT File");
+        try {
+            /*
+             * SKN
+             */
+            //write the header
+            ogtContent += (modelHeaderSKN.getRecordType() + modelHeaderSKN.getProfileName() + modelHeaderSKN.getBusinessDate()
+                    + modelHeaderSKN.getInterfaceType() + modelHeaderSKN.getGlNumber() + modelHeaderSKN.getCostCenter()
+                    + modelHeaderSKN.getServicingBranch() + modelHeaderSKN.getApplicationCode() + modelHeaderSKN.getFromAccountNumber()
+                    + modelHeaderSKN.getFromAccountCurrency() + modelHeaderSKN.getForeignExchangeRate() + modelHeaderSKN.getTransactionAmount()
+                    + modelHeaderSKN.getLceTransaction() + modelHeaderSKN.getAmountFee() + modelHeaderSKN.getDescription1()
+                    + modelHeaderSKN.getDescription2()
+                    + "                                                                                                                                                                                                                  ").substring(0, 210) + "\n";
+            //write the detail
+            for (int i = 0; i < listModelDetailSKN.size(); i++) {
+                modelDetailSKN = listModelDetailSKN.get(i);
+                ogtContent += (modelDetailSKN.getRecordType() + modelDetailSKN.getTransactionCode() + modelDetailSKN.getTransferType()
+                        + modelDetailSKN.getApplicationCode() + modelDetailSKN.getBeneficiaryId() + modelDetailSKN.getBeneficiaryName()
+                        + modelDetailSKN.getLceTransaction() + modelDetailSKN.getDestinationCoc() + modelDetailSKN.getDestinationBankMemberCode()
+                        + modelDetailSKN.getDestionationBankBiCode() + modelDetailSKN.getDestinationBankName()
+                        + modelDetailSKN.getDestinationBankBranch() + modelDetailSKN.getDestinatiionBankCity()
+                        + modelDetailSKN.getTransactionCode() + modelDetailSKN.getResidencyStatus() + modelDetailSKN.getCitizenshipStatus()
+                        + modelDetailSKN.getFeeCode() + modelDetailSKN.getCostCenter() + modelDetailSKN.getReference()
+                        + modelDetailSKN.getDescription1() + modelDetailSKN.getDescription2()
+                        + "                                                                                                                                                                                                                                                                                                                                                                                                  ").substring(0, 386) + "\n";
+            }
+            //write the footer
+            ogtContent += (modelFooterSKN.getRecordType() + modelFooterSKN.getTotalRecord() + "            ").substring(0, 11);
+            //write the file
+            outFileName = FileUtil.getDateTimeFormatedFileName("BDSMSKN{yyyymmddhhmmss}.HIT");
+            File fileOgtSKN = new File(PropertyPersister.dirFixOut + outFileName);
+            if (!fileOgtSKN.exists()) {
+                fileOgtSKN.createNewFile();
+            }
+            FileWriter fwSKN = new FileWriter(fileOgtSKN.getAbsoluteFile());
+            BufferedWriter bwSKN = new BufferedWriter(fwSKN);
+            bwSKN.write(ogtContent);
+            bwSKN.flush();
+            bwSKN.close();
+            /*
+             * END SKN
+             */
+            getLogger().info("END SKN Write to HIT File");
+            getLogger().info("Begin SKN Register FixQXtract");
+
+            /*
+             * RTGS
+             */
+            getLogger().info("Begin RTGS Write to HIT File");
+            //write the header
+            ogtContent = "";
+            ogtContent += (modelHeaderRTGS.getRecordType() + modelHeaderRTGS.getProfileName() + modelHeaderRTGS.getBusinessDate()
+                    + modelHeaderRTGS.getInterfaceType() + modelHeaderRTGS.getGlNumber() + modelHeaderRTGS.getCostCenter()
+                    + modelHeaderRTGS.getServicingBranch() + modelHeaderRTGS.getApplicationCode() + modelHeaderRTGS.getFromAccountNumber()
+                    + modelHeaderRTGS.getFromAccountCurrency() + modelHeaderRTGS.getForeignExchangeRate() + modelHeaderRTGS.getTransactionAmount()
+                    + modelHeaderRTGS.getLceTransaction() + modelHeaderRTGS.getAmountFee() + modelHeaderRTGS.getDescription1()
+                    + modelHeaderRTGS.getDescription2()
+                    + "                                                                                                                                                                                                                  ").substring(0, 210) + "\n";
+            //write the detail
+            for (int i = 0; i < listModelDetailRTGS.size(); i++) {
+                modelDetailRTGS = listModelDetailRTGS.get(i);
+                ogtContent += (modelDetailRTGS.getRecordType() + modelDetailRTGS.getTransactionCode() + modelDetailRTGS.getTransferType()
+                        + modelDetailRTGS.getApplicationCode() + modelDetailRTGS.getBeneficiaryId() + modelDetailRTGS.getBeneficiaryName()
+                        + modelDetailRTGS.getLceTransaction() + modelDetailRTGS.getDestinationCoc() + modelDetailRTGS.getDestinationBankMemberCode()
+                        + modelDetailRTGS.getDestionationBankBiCode() + modelDetailRTGS.getDestinationBankName()
+                        + modelDetailRTGS.getDestinationBankBranch() + modelDetailRTGS.getDestinatiionBankCity()
+                        + modelDetailRTGS.getTransactionCode() + modelDetailRTGS.getResidencyStatus() + modelDetailRTGS.getCitizenshipStatus()
+                        + modelDetailRTGS.getFeeCode() + modelDetailRTGS.getCostCenter() + modelDetailRTGS.getReference()
+                        + modelDetailRTGS.getDescription1() + modelDetailRTGS.getDescription2()
+                        + "                                                                                                                                                                                                                                                                                                                                                                                                  ").substring(0, 386) + "\n";
+            }
+            //write the footer
+            ogtContent += (modelFooterRTGS.getRecordType() + modelFooterRTGS.getTotalRecord() + "            ").substring(0, 11);
+            //write the file
+            outFileName = FileUtil.getDateTimeFormatedFileName("BDSMRTGS{yyyymmddhhmmss}.HIT");
+
+            File fileOgtRTGS = new File(PropertyPersister.dirFixOut + outFileName);
+            if (!fileOgtRTGS.exists()) {
+                fileOgtRTGS.createNewFile();
+            }
+            FileWriter fwRTGS = new FileWriter(fileOgtRTGS.getAbsoluteFile());
+            BufferedWriter bwRTGS = new BufferedWriter(fwRTGS);
+            bwRTGS.write(ogtContent);
+            bwRTGS.flush();
+            bwRTGS.close();
+            /*
+             * END RTGS
+             */
+            getLogger().info("END SKN Write to HIT File");
+            getLogger().info("Begin SKN Register FixQXtract");
+            // update status progress
+            eodMast.setProgress("D");
+            eodMast.setActivity("Done");
+            eodMast.setRemark("Process ID "+eodMast.getProcessId()+" Done");
+            eodMastDao.update(eodMast);             
+        } catch (Exception ex) {
+            //update status progress
+            getLogger().error("["+eodMast.getProcessId()+"]Write to HIT File Error");
+            getLogger().error(ex, ex);
+            eodMast.setProgress("A");
+            eodMast.setActivity("Aborted");
+            eodMast.setRemark("["+eodMast.getProcessId()+"]Write to HIT File Error");
+            eodMastDao.update(eodMast);
+        }      
+        return true;
+    }
+}

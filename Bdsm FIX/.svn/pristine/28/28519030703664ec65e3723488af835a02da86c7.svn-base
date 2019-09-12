@@ -1,0 +1,41 @@
+package bdsm.scheduler.dao;
+
+import bdsm.model.BaseModel;
+import bdsm.scheduler.StatusDefinition;
+import bdsm.scheduler.model.FixQXtract;
+import bdsmhost.dao.BaseDao;
+import java.util.List;
+import org.hibernate.Query;
+import org.hibernate.Session;
+
+public class FixQXtractDao extends BaseDao {
+
+    public FixQXtractDao(Session session) {
+        super(session);
+    }
+
+    @Override
+    protected boolean doInsert(BaseModel baseModel) {
+        getSession().save((FixQXtract) baseModel);
+        return true;
+    }
+
+    @Override
+    protected boolean doUpdate(BaseModel baseModel) {
+        getSession().update((FixQXtract) baseModel);
+        return true;
+    }
+
+    @Override
+    protected boolean doDelete(BaseModel baseModel) {
+        getSession().delete((FixQXtract) baseModel);
+        return true;
+    }
+
+    public List<FixQXtract> getAllQXtractList(int size) {
+        Query query = getSession().createQuery("from FixQXtract where flgProcess = :flgProcess");
+        query.setString("flgProcess", StatusDefinition.REQUEST);
+        query.setMaxResults(size);
+        return query.list();
+    }
+}

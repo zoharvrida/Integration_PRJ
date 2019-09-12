@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.AmortizeAccount" table="AMORTIZE_ACCOUNT" lazy="false">
+		<id name="id" column="ID" type="integer">
+			<generator class="sequence">
+				<param name="sequence">AMORT_SEQ</param>
+			</generator>
+		</id>
+		
+		<property name="programDetailId"  column="PROGRAM_DETAIL_ID"  type="integer" />
+		<property name="accountNo"        column="ACCT_NO"            type="string" />
+		<property name="status"           column="STATUS"             type="integer" />
+		<property name="openDate"         column="OPEN_DATE"          type="date" />
+		<property name="cancelDate"       column="CANCEL_DATE"        type="date" />
+		<property name="programId"        column="PROGRAM_ID"         type="string" />
+		<property name="programName"      column="PROGRAM_NAME"       type="string" />
+		<property name="type"             column="TYPE"               type="integer" />
+		<property name="giftPrice"        column="GIFT_PRICE"         type="big_decimal" />
+		<property name="taxPercent"       column="TAX_PCT"            type="big_decimal" />
+		<property name="taxAmount"        column="TAX_AMOUNT"         type="big_decimal" />
+		<property name="giftPriceGross"   column="GIFT_PRICE_GROSS"   type="big_decimal" />
+		<property name="holdAmount"       column="HOLD_AMOUNT"        type="big_decimal" />
+		<property name="finish"           column="FINISH"             type="boolean" />
+		<property name="finishType"       column="FINISH_TYPE"        type="byte" />
+		<property name="idCreatedBy"      column="ID_CREATED_BY"      type="string" />
+		<property name="dtmCreated"       column="DTM_CREATED_BY"     type="timestamp" />
+		<property name="idCreatedSpv"     column="ID_CREATED_SPV"     type="string" />
+		<property name="dtmCreatedSpv"    column="DTM_CREATED_SPV"    type="timestamp" />
+		<property name="idUpdatedBy"      column="ID_UPDATED_BY"      type="string" />
+		<property name="dtmUpdated"       column="DTM_UPDATED_BY"     type="timestamp" />
+		<property name="idUpdatedSpv"     column="ID_UPDATED_SPV"     type="string" />
+		<property name="dtmUpdatedSpv"    column="DTM_UPDATED_SPV"    type="timestamp" />
+	</class>
+	
+	<!-- Query -->
+	<query name="AmortizeAccount#getByProgramDetailIdAndStatus">
+		<![CDATA[
+			 FROM AmortizeAccount
+			WHERE programDetailId = :programDetailId
+			  AND status          = :status
+		]]>
+	</query>
+	
+	<query name="AmortizeAccount#getByStatusAndMethod">
+		<![CDATA[
+			SELECT aa, pd.term, c.codAcctStat, c.codCcBrn, p.codTypProd
+			  FROM AmortizeAccount aa, AmortizeProgramDetail pd, AmortizeProgramMaster pm, ChAcctMast c, ChProdMast p
+			 WHERE pd.giftCode                = pm.compositeId.giftCode
+			   AND pd.productCode             = pm.compositeId.productCode
+			   AND aa.programDetailId         = pd.id
+			   AND TRIM(aa.accountNo)         = TRIM(c.compositeId.codAcctNo)
+			   AND c.codProd                  = p.compositeId.codProd
+			   AND c.compositeId.flgMntStatus = 'A'
+			   AND c.compositeId.codEntityVpd = 11
+			   AND p.compositeId.flgMntStatus = 'A'
+			   AND p.compositeId.codEntityVpd = 11
+			   AND aa.status                  = COALESCE(:status, aa.status)
+			   AND pm.amortizeMethod          = COALESCE(:method, pm.amortizeMethod)
+			   AND aa.openDate                <= COALESCE(:beforeDate, aa.openDate)
+			 ORDER BY aa.id
+		]]>
+	</query>
+	
+	<query name="AmortizeAccount#getByAccountNoStatusAndMethod">
+		<![CDATA[
+			SELECT aa, pd.term, c.codAcctStat, c.codCcBrn, p.codTypProd
+			  FROM AmortizeAccount aa, AmortizeProgramDetail pd, AmortizeProgramMaster pm, ChAcctMast c, ChProdMast p
+			 WHERE pd.giftCode                = pm.compositeId.giftCode
+			   AND pd.productCode             = pm.compositeId.productCode
+			   AND aa.programDetailId         = pd.id
+			   AND TRIM(aa.accountNo)         = TRIM(c.compositeId.codAcctNo)
+			   AND c.codProd                  = p.compositeId.codProd
+			   AND c.compositeId.flgMntStatus = 'A'
+			   AND c.compositeId.codEntityVpd = 11
+			   AND p.compositeId.flgMntStatus = 'A'
+			   AND p.compositeId.codEntityVpd = 11
+			   AND TRIM(aa.accountNo)         IN (:accountNoList)
+			   AND aa.status                  = COALESCE(:status, aa.status)
+			   AND pm.amortizeMethod          = COALESCE(:method, pm.amortizeMethod)
+			   AND aa.openDate                <= COALESCE(:beforeDate, aa.openDate)
+			 ORDER BY aa.id
+		]]>
+	</query>
+	
+	<query name="AmortizeAccount#updateStatusFinish">
+		<![CDATA[
+			UPDATE AmortizeAccount aa
+			   SET aa.status = :newStatus
+			 WHERE aa.finish = true
+			   AND aa.status = COALESCE(:oldStatus, aa.status)
+		]]>
+	</query>
+</hibernate-mapping>

@@ -1,0 +1,58 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package main;
+
+import bdsm.util.HibernateUtil;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
+import net.sf.jasperreports.engine.util.JRLoader;
+import org.hibernate.Session;
+import org.hibernate.impl.SessionImpl;
+
+/**
+ *
+ * @author NCBS
+ */
+public class JasperTest {
+
+    public static void main(String[] args) {
+        String jrxmlFile = "D:\\BDSM\\FIX\\jaspertemplate\\FIXRPT_LBU_U.jrxml";
+        String jasperFile = "D:\\BDSM\\FIX\\jaspertemplate\\FIXRPT_LBU_U.jasper";
+        String jrprintFile = "D:\\BDSM\\FIX\\jaspertemplate\\FIXRPT_LBU_U.jprint";
+        String xlsFile = "D:\\BDSM\\FIX\\jaspertemplate\\FIXRPT_LBU_U.xls";
+        Map reportParam = new HashMap<String, String>();
+        Session session = HibernateUtil.getSession();
+        try {
+            reportParam.put("param6", "c4d8653d-5976-4c38-b887-28b770ff6fd2");
+            Connection conn = ((SessionImpl) session).connection();
+            JasperCompileManager.compileReportToFile(jrxmlFile, jasperFile);
+            JasperFillManager.fillReportToFile(jasperFile, jrprintFile, reportParam, conn);
+            JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(jrprintFile);
+            JRXlsExporter xlsExporter = new JRXlsExporter();
+
+            xlsExporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+            xlsExporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, xlsFile);
+            xlsExporter.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
+            xlsExporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
+            xlsExporter.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_COLUMNS, Boolean.TRUE);
+
+            xlsExporter.exportReport();
+        } catch (Exception ex) {
+            Logger.getLogger(JasperTest.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            session.close();
+        }
+    }
+}

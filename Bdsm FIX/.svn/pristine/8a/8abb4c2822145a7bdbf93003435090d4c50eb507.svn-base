@@ -1,0 +1,41 @@
+package bdsm.scheduler.fix;
+
+import bdsm.scheduler.PropertyPersister;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.TimeZone;
+import microsoft.exchange.webservices.data.ExchangeCredentials;
+import microsoft.exchange.webservices.data.ExchangeService;
+import microsoft.exchange.webservices.data.ExchangeVersion;
+import microsoft.exchange.webservices.data.WebCredentials;
+import org.apache.log4j.Logger;
+
+public class MailServiceInstance {
+
+    private static ExchangeService service = null;
+    private static ExchangeCredentials credentials;
+    private static final Logger logger = Logger.getLogger(MailServiceInstance.class);
+
+    static {
+        logger.debug("Initiating Mail Service Instance");
+        logger.debug("URL : " + PropertyPersister.url);
+        logger.debug("username : " + PropertyPersister.username);
+        logger.debug("password : " + PropertyPersister.password);
+        MailServiceInstance.credentials = new WebCredentials(PropertyPersister.username, PropertyPersister.password);
+        try {
+            MailServiceInstance.service = new ExchangeService(ExchangeVersion.Exchange2007_SP1, TimeZone.getTimeZone("GMT+07:00"));
+            MailServiceInstance.service.setPreAuthenticate(true);
+            MailServiceInstance.service.setCredentials(MailServiceInstance.credentials);
+            MailServiceInstance.service.setUrl(new URI(PropertyPersister.url));
+        } catch (URISyntaxException ex) {
+            logger.error(ex);
+        } catch (Exception ex) {
+            logger.error(ex);
+        }
+        logger.debug("Initiate Mail Service Instance Success");
+    }
+
+    public static ExchangeService getService() {
+        return MailServiceInstance.service;
+    }
+}

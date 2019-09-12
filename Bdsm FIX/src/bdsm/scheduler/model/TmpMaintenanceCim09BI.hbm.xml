@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.scheduler.model.TmpMaintenanceCim09BI" table="TMP_CIM09_BASICINFORMATION">
+    <composite-id class="bdsm.scheduler.model.TmpMaintenanceCim09BIPK" name="compositeId">
+      <key-property column="BATCHNO" name="batchiId" type="string"/>
+      <key-property column="RECORDID" name="recordId" type="integer"/>
+      <key-property column="COD_CUST_ID" name="cif" type="integer"/>
+    </composite-id>
+    
+    <property column="TXT_CUST_PREFIX" name="salutation" type="string"/>
+    <property column="REF_CUST_IT_NUM" name="incomeTaxNo" type="string"/>
+    <property column="COD_EMPLOYEE_ID" name="employeeId" type="string"/>
+    <property column="COD_VERIFIED_REASON" name="reasonVerifed" type="integer"/>
+    <property column="IDCREATEDBY"     name="idCreatedBy"  type="string"/>
+    <property column="DTMCREATEDBY"    name="dtmCreated"   type="timestamp"  /> 
+    <property column="IDCREATEDSPV"    name="idCreatedSpv" type="string"/>
+    <property column="DTMCREATEDSPV"   name="dtmCreatedSpv" type="timestamp"  />
+    <property column="FLAG_STATUS"     name="flagStatus"   type="string"/>
+    <property column="STATUS_REASON"   name="statusReason" type="string"/>
+    
+  </class>
+</hibernate-mapping>

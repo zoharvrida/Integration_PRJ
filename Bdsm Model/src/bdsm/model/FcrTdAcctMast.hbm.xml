@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.model.FcrTdAcctMast" table="TD_ACCT_MAST" lazy="false">
+        <composite-id name="compositeId" class="bdsm.model.FcrTdAcctMastPK">
+            <key-property name="codAcctNo"    column="cod_acct_no"    type="string" />
+            <key-property name="flgMntStatus" column="flg_mnt_status" type="string"  />
+        </composite-id>
+        <property name="codEntityVpd"   column="COD_ENTITY_VPD"   type="integer"/>
+    </class>
+</hibernate-mapping>

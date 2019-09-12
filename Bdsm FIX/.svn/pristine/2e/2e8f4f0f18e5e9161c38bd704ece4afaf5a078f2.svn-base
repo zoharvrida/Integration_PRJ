@@ -1,0 +1,19 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package main;
+
+import java.util.Locale;
+import java.util.TimeZone;
+import com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl;
+/**
+ *
+ * @author USER
+ */
+public class Test {
+    public static void main(String[] args) {
+        System.setProperty("javax.xml.parsers.SAXParserFactory", "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl");
+        
+    }
+}

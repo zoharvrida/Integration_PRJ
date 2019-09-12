@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class abstract="true" lazy="false" name="bdsm.model.Com.ComCPMastParent" polymorphism="explicit">
+    <id column="IDCD" name="txnId" type="string"/>
+    <union-subclass dynamic-insert="true" name="bdsm.model.Com.ComCpMast" table="COMCPMAST">
+      <property column="IDBRANCH" name="idBranch" type="integer"/>
+      <property column="DTREQ" name="dtmRequest" type="timestamp"/>
+      <property column="COD_CCY" name="codCcy" type="string"/>
+      <property column="IDVENDOR" name="idVendor" type="string"/>
+      <property column="IDCUST" name="idCust" type="string"/>
+      <property column="STATUS" name="status" type="string"/>
+      <property column="TOTALAMTREQ" name="totalAmtReq" type="big_decimal"/>
+      <property column="TOTALAMTCONF" name="totalAmtConf" type="big_decimal"/>
+    </union-subclass>
+    <union-subclass dynamic-insert="true" name="bdsm.model.Com.ComCpDtls" table="COMCPDTLS">
+      <property column="IDCDDTLS" name="txnDtlsId" type="string"/>
+      <property column="IDDENOM" name="denomId" type="string"/>
+      <property column="PIECE" name="piece" type="integer"/>
+      <property column="AMOUNT" name="amount" type="big_decimal"/>
+    </union-subclass>
+  </class>
+  <class abstract="true" name="bdsm.model.Com.ComCPHistParent" polymorphism="explicit">
+    <composite-id class="bdsm.model.Com.ComCpMastHistPK" name="pk">
+      <key-property column="IDCD" name="txnId" type="string"/>
+      <key-property column="DTMLOG" name="dtmLog" type="timestamp"/>
+    </composite-id>
+    <union-subclass dynamic-insert="true" name="bdsm.model.Com.ComCpMastHist" table="COMCPMAST_HIST">
+      <property column="IDBRANCH" name="idBranch" type="integer"/>
+      <property column="DTREQ" name="dtmRequest" type="timestamp"/>
+      <property column="COD_CCY" name="codCcy" type="string"/>
+      <property column="IDVENDOR" name="idVendor" type="string"/>
+      <property column="IDCUST" name="idCust" type="string"/>
+      <property column="STATUS" name="status" type="string"/>
+      <property column="TOTALAMTREQ" name="totalAmtReq" type="big_decimal"/>
+      <property column="TOTALAMTCONF" name="totalAmtConf" type="big_decimal"/>
+    </union-subclass>
+    <union-subclass dynamic-insert="true" name="bdsm.model.Com.ComCpDtlsHist" table="COMCPDTLS_HIST">
+      <property column="IDCDDTLS" name="txnDtlsId" type="string"/>
+      <property column="IDDENOM" name="denomId" type="string"/>
+      <property column="PIECE" name="piece" type="integer"/>
+      <property column="AMOUNT" name="amount" type="big_decimal"/>
+    </union-subclass>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.AmortizeRecord" table="AMORTIZE_RECORD" lazy="false">
+		<composite-id name="compositeId" class="bdsm.model.AmortizeRecordPK">
+			<key-property name="amortizeAccountId"  column="AMORTIZE_ACCOUNT_ID"  type="integer" />
+			<key-property name="sequenceNo"         column="SEQ_NO"               type="short" />
+		</composite-id>
+		
+		<property name="amortizedThisMonth"     column="AMORTIZED_THIS_MONTH"    type="big_decimal" />
+		<property name="amortizedAccumalation"  column="AMORTIZED_ACCUMULATION"  type="big_decimal" />
+		<property name="termDays"               column="TERM_DAYS"               type="short" />
+		<property name="postDate"               column="POST_DATE"               type="date" />
+		<property name="dtmCreated"             column="DTM_CREATED"             type="timestamp" />
+		<property name="txnUploadFileId"        column="TXNUPLOAD_FILE_ID"       type="string" />
+		<property name="txnUploadReferenceNo"   column="TXNUPLOAD_REFERENCE_NO"  type="string" />
+	</class>
+	
+	<!-- Query -->
+	<query name="AmortizeRecord#ByAmortizeAccountIdAndSequenceId">
+		<![CDATA[
+			SELECT ar
+			  FROM AmortizeRecord ar, AmortizeAccount ac
+			 WHERE ar.compositeId.amortizeAccountId = ac.id
+			   AND ac.id                            = :amortizeAccountId
+			   AND ar.compositeId.sequenceNo        = COALESCE(:sequenceId, ar.compositeId.sequenceNo)
+			 ORDER BY ar.compositeId.sequenceNo DESC
+		]]>
+	</query>
+</hibernate-mapping>

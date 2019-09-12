@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+      <class  name="bdsm.scheduler.model.UlcTmpSrc" table="ULC_TMP_SRC_UDF_ACCT" lazy="false">
+        <id       name="id"        column="id"        type="int" >
+            <generator class="increment"/>
+        </id>
+        <property name="CodAcctNo"  column="CodAcctNo"  type="string"/>
+        <property name="Status"  column="Status"  type="string"/>
+        <property name="Batch"  column="Batch"  type="string"/>
+        <property name="CodFieldTag"  column="CodFieldTag"  type="string"/>
+        <property name="CodTask"  column="CodTask"  type="string"/>
+        <property name="FieldValue"  column="FieldValue"  type="string"/>
+        <property name="Cmd"  column="Cmd"  type="string"/>
+    </class>
+</hibernate-mapping>

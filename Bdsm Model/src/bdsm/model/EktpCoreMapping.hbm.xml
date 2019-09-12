@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class name="bdsm.model.EktpCoreMapping" table="ektpcoremapping" lazy="false">
+        <composite-id name="pk" class="bdsm.model.EktpCoreMappingPK">
+            <key-property name="fieldCode"    column="FIELD_NAME"    type="string" />
+            <key-property name="ektpVal" column="VALUE_DUKCAPIL" type="string"  />
+            <key-property name="flgMntStatus" column="flg_mnt_status" type="string"  />
+        </composite-id>
+        <property name="coreVal"   column="VALUE_NCBS"   type="string"/>
+    </class>
+</hibernate-mapping>

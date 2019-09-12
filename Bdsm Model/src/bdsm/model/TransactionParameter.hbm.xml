@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.TransactionParameter" table="TRX_PARAM" lazy="false">
+		<id name="id" column="ID" type="integer" />
+		
+		<property name="moduleName" column="MODULENAME" type="string" />
+		<property name="accountNo" column="ACCOUNT_NUMBER" type="string" />
+		<property name="accountName" column="ACCOUNT_NAME" type="string" />
+		<property name="accountBranch" column="ACCOUNT_BRANCH" type="string" />
+		<property name="GLNo" column="GL_NUMBER" type="string" />
+		<property name="GLName" column="GL_NAME" type="string" />
+		<property name="costCenter" column="COST_CENTER" type="string" />
+		<property name="feeBDI" column="FEEBDI" type="big_decimal" />
+		<property name="feeLLG" column="FEELLG" type="big_decimal" />
+		<property name="feeRTGS" column="FEERTGS" type="big_decimal" />
+		<property name="feeSWIFT" column="FEESWIFT" type="big_decimal" />
+		<property name="memo" column="MEMO" type="string" />
+		<property name="moduleOwnerId" column="MODULE_OWNER_ID" type="string" />
+		<property name="moduleOwnerName" column="MODULE_OWNER_NAME" type="string" />
+		<property name="moduleOwnerEmail" column="MODULE_OWNER_EMAIL" type="string" />
+		<property name="flagStatusDB" column="FLG_STATUS" type="character" access="property" />
+		<property name="idCreatedBy" column="IDCREATEDBY" type="string" />
+		<property name="dtmCreated" column="DTMCREATEBY" type="timestamp" />
+		<property name="idCreatedSpv" column="IDSPVCREATED" type="string" />
+		<property name="dtmCreatedSpv" column="DTMSPVCREATED" type="timestamp" />
+		<property name="idUpdatedBy" column="IDUPDATEDBY" type="string" />
+		<property name="dtmUpdated" column="DTMUPDATEBY" type="timestamp" />
+		<property name="idUpdatedSpv" column="IDSPVUPDATEBY" type="string" />
+		<property name="dtmUpdatedSpv" column="DTMSPVUPDATEBY" type="timestamp" />
+	</class>
+	
+</hibernate-mapping>

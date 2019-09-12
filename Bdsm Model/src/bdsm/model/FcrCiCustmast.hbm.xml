@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.model.FcrCiCustmast" table="CI_CUSTMAST" lazy="false">
+        <composite-id name="compositeId" class="bdsm.model.FcrCiCustmastPK">
+            <key-property name="codCustId"    column="cod_cust_id"    type="integer" />
+            <key-property name="flgMntStatus" column="flg_mnt_status" type="string"  />
+        </composite-id>
+        <property name="namCustFull"    column="NAM_CUST_FULL"    type="string"/>
+        <property name="codEntityVpd"   column="COD_ENTITY_VPD"   type="integer"/>
+        <property name="CodCustNatlID"   column="COD_CUST_NATL_ID"   type="string"/>
+        
+    </class>
+</hibernate-mapping>

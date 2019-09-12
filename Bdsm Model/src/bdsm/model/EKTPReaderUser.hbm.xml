@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+	<!-- Model -->
+	<class name="bdsm.model.EKTPReaderUser" table="EKTP_READER_USER" lazy="false">
+		<composite-id>
+			<key-property name="idUser"        column="ID_USER"      type="string" />
+			<key-property name="codeCCBranch"  column="COD_CC_BRN"   type="integer" />
+			<key-property name="deviceName"    column="DEVICE_NAME"  type="string" />
+		</composite-id>
+		
+		<property name="role"           column="ROLE"             type="string" />
+		<property name="password"       column="PASSWORD"         type="string" />
+		<property name="idCreatedBy"    column="ID_CREATED_BY"    type="string" />
+		<property name="dtmCreated"     column="DTM_CREATED_BY"   type="timestamp" />
+		<property name="idCreatedSpv"   column="ID_CREATED_SPV"   type="string" />
+		<property name="dtmCreatedSpv"  column="DTM_CREATED_SPV"  type="timestamp" />
+	</class>
+	
+	
+	<!-- Query -->
+	<query name="EKTPReaderUser#checkValidUserOnDevice">
+		<![CDATA[
+			SELECT u.password
+			  FROM EKTPReaderUser u, EKTPReaderDevice d
+			 WHERE u.codeCCBranch = d.codeCCBranch 
+			   AND u.deviceName   = d.name
+			   AND u.idUser       = :idUser
+			   AND d.IP           = :deviceIP
+			   AND u.role         = :role
+		]]>
+	</query>
+</hibernate-mapping>

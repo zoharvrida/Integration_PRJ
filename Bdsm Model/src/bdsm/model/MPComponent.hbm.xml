@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.MPComponent" table="MP_COMP" lazy="false">
+		<id name="code"              column="COD_COMP"  type="integer" />
+		
+		<property name="name"        column="NAM_COMP"  type="string" />
+		<property name="typeDB"      column="TYP_COMP"  type="character"  access="property" />
+		<property name="dataTypeDB"  column="TYP_DATA"   type="character"  access="property" />
+	</class>
+	
+	
+	<!-- Query -->
+	<query name="MPComponent#listByType">
+		<![CDATA[
+			 FROM MPComponent
+			WHERE typeDB = :type
+		]]>
+	</query>
+</hibernate-mapping>

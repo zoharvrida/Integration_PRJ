@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping 
+		PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.SknNgInOutDebitBulkParent" abstract="true" polymorphism="explicit">
+		<composite-id name="compositeId" class="bdsm.model.SknNgPK">
+			<key-property name="batchNo"   column="BATCH_NO"   type="string" />
+			<key-property name="recordId"  column="RECORD_ID"  type="integer" />
+		</composite-id>
+		
+		<property name="tipeRecord"     column="TIPE_RECORD"      type="string" />
+		<property name="kodeDKE"        column="KODE_DKE"         type="string" />
+		
+		<property name="idCreatedBy"    column="ID_CREATED_BY"    type="string" />
+		<property name="idCreatedSpv"   column="ID_CREATED_SPV"   type="string" />
+		<property name="dtmCreated"     column="DTM_CREATED"      type="timestamp" />
+		<property name="dtmCreatedSpv"  column="DTM_CREATED_SPV"  type="timestamp" />
+		<property name="idUpdatedBy"    column="ID_UPDATED_BY"    type="string" />
+		<property name="idUpdatedSpv"   column="ID_UPDATED_SPV"   type="string" />
+		<property name="dtmUpdated"     column="DTM_UPDATED"      type="timestamp" />
+		<property name="dtmUpdatedSpv"  column="DTM_UPDATED_SPV"  type="timestamp" />
+		
+		
+		<!-- subclass -->
+		<union-subclass name="bdsm.model.SknNgInOutDebitBulkHeader" table="SKNNG_IN_OUT_DEBIT_BULK_HEADER" dynamic-insert="true">
+			<property name="typeDB"                    column="TYPE"                        type="character"  access="property" />
+			<property name="batchId"                   column="BATCH_ID"                    type="string" />
+			<property name="jamTanggalMessage"         column="JAM_TANGGAL_MESSAGE"         type="string" />
+			<property name="jumlahRecordsDKE"          column="JUMLAH_RECORDS_DKE"          type="string" />
+			<property name="totalNominalDKE"           column="TOTAL_NOMINAL_DKE"           type="string" />
+			<property name="tanggalBatch"              column="TANGGAL_BATCH"               type="string" />
+			<property name="jenisSetelmen"             column="JENIS_SETELMEN"              type="string" />
+			<property name="identitasPesertaPengirim"  column="ID_PESERTA_PENGIRIM"         type="string" />
+			<property name="sandiKotaPengirim"         column="SANDI_KOTA_PENGIRIM"         type="string" />
+			<property name="FCRBatchNo"                column="FCR_BATCH_NO"                type="string" />
+			<property name="status"                    column="STATUS"                      type="string" />
+			<property name="rejectCode"                column="REJECT_CODE"                 type="string" />
+			<property name="comments"                  column="COMMENTS"                    type="string" />
+			<property name="recordStatus"              column="RECORD_STATUS"               type="string" />
+			
+		</union-subclass>
+		
+		<union-subclass name="bdsm.model.SknNgInOutDebitBulkDKE" table="SKNNG_IN_OUT_DEBIT_BULK_DKE" dynamic-insert="true">
+			<property name="parentRecordId"                   column="PARENT_RECORD_ID"                type="integer" />
+			<property name="nomorUrutDKE"                     column="NOMOR_URUT_DKE"                  type="string" />
+			<property name="identitasPesertaPengirimAsal"     column="ID_PESERTA_PENGIRIM_ASAL"        type="string" />
+			<property name="sandiKotaAsal"                    column="SANDI_KOTA_ASAL"                 type="string" />
+			<property name="identitasPesertaPenerimaPenerus"  column="ID_PESERTA_PENERIMA_PENERUS"     type="string" />
+			<property name="identitasPesertaPenerimaAkhir"    column="ID_PESERTA_PENERIMA_AKHIR"       type="string" />
+			<property name="jumlahRecordsRincian"             column="JUMLAH_RECORDS_RINCIAN"          type="string" />
+			<property name="totalNominalRincian"              column="TOTAL_NOMINAL_RINCIAN"           type="string" />
+			<property name="namaNasabahPenagih"               column="NAMA_NASABAH_PENAGIH"            type="string" />
+			<property name="nomorRekeningNasabahPenagih"      column="NO_REKENING_NASABAH_PENAGIH"     type="string" />
+			<property name="jenisUsahaNasabahPenagih"         column="JENIS_USAHA_NASABAH_PENAGIH"     type="string" />
+			<property name="jenisNasabahPenagih"              column="JENIS_NASABAH_PENAGIH"           type="string" />
+			<property name="statusPendudukNasabahPenagih"     column="STATUS_PENDUDUK_NSBH_PENAGIH"    type="string" />
+			<property name="nomorReferensiDKE"                column="NOMOR_REFERENSI_DKE"             type="string" />
+			<property name="bebanBiaya"                       column="BEBAN_BIAYA"                     type="string" />
+			<property name="jenisTransaksi"                   column="JENIS_TRANSAKSI"                 type="string" />
+			<property name="SOR"                              column="SOR"                             type="string" />
+			<property name="valid"                            column="IS_VALID"                        type="boolean" />
+		</union-subclass>
+		
+		<union-subclass name="bdsm.model.SknNgInOutDebitBulkDetail" table="SKNNG_IN_OUT_DEBIT_BULK_DETAIL" dynamic-insert="true">
+			<property name="parentRecordId"                 column="PARENT_RECORD_ID"                 type="integer" />
+			<property name="nomorUrutTransaksi"             column="NOMOR_URUT_TRANSAKSI"             type="string" />
+			<property name="namaNasabahTertagih"            column="NAMA_NASABAH_TERTAGIH"            type="string" />
+			<property name="nomorRekeningNasabahTertagih"   column="NO_REKENING_NASABAH_TERTAGIH"     type="string" />
+			<property name="jenisNasabahTertagih"           column="JENIS_NASABAH_TERTAGIH"           type="string" />
+			<property name="statusPendudukNasabahTertagih"  column="STATUS_PENDUDUK_NSBH_TERTAGIH"    type="string" />
+			<property name="nomorIdPelanggan"               column="NOMOR_ID_PELANGGAN"               type="string" />
+			<property name="nomorReferensi"                 column="NOMOR_REFERENSI"                  type="string" />
+			<property name="nominal"                        column="NOMINAL"                          type="string" />
+			<property name="FCRRecordId"                    column="FCR_RECORD_ID"                    type="long" />
+			<property name="status"                         column="STATUS"                           type="string" />
+			<property name="rejectCode"                     column="REJECT_CODE"                      type="string" />
+			<property name="comments"                       column="COMMENTS"                         type="string" />
+			<property name="recordStatus"                   column="RECORD_STATUS"                    type="string" />
+			<property name="retur"                          column="IS_RETUR"                         type="boolean" />
+		</union-subclass>
+		
+		<union-subclass name="bdsm.model.SknNgInOutDebitBulkFooter" table="SKNNG_IN_OUT_DEBIT_BULK_FOOTER" dynamic-insert="true">
+			<property name="parentRecordId"  column="PARENT_RECORD_ID"  type="integer" />
+			<property name="CRC"             column="CRC"               type="string" />
+			<property name="comments"        column="COMMENTS"          type="string" />
+			<property name="recordStatus"    column="RECORD_STATUS"     type="string" />
+		</union-subclass>
+	</class>
+
+	
+	<!-- Query -->
+	<query name="SknNgInOutDebitBulkHeader#listByBatchNo">
+		<![CDATA[
+			 FROM SknNgInOutDebitBulkHeader
+			WHERE compositeId.batchNo = :batchNo
+		]]>
+	</query>
+	
+	<query name="SknNgInOutDebitBulkDKE#getByBatchDateAndSOR">
+		<![CDATA[
+			SELECT a.compositeId.batchNo, b.compositeId.recordId
+			  FROM SknNgInOutDebitBulkHeader a, SknNgInOutDebitBulkDKE b
+			 WHERE a.compositeId.batchNo  = b.compositeId.batchNo
+			   AND a.compositeId.recordId = b.parentRecordId
+			   AND a.tanggalBatch         = :batchDate
+			   AND b.SOR                  = :SOR
+		]]>
+	</query>
+	
+	<!--  
+	<query name="SknNgInOutDebitBulkDetail#listDetailByBatchNo">
+		<![CDATA[
+			SELECT b
+			  FROM SknNgInOutDebitBulkDKE a, SknNgInOutDebitBulkDetail b
+			 WHERE a.compositeId.batchNo = b.compositeId.batchNo
+			   AND a.valid               = true
+			   AND compositeId.batchNo   = :batchNo
+		]]>
+	</query>
+	-->
+</hibernate-mapping>

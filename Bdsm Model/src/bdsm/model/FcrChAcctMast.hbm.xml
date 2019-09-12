@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <!-- Model -->
+	<class name="bdsm.model.FcrChAcctMast" table="CH_ACCT_MAST" lazy="false">
+		<composite-id name="compositeId" class="bdsm.model.FcrChAcctMastPK">
+			<key-property name="codAcctNo"    column="cod_acct_no"    type="string" />
+			<key-property name="flgMntStatus" column="flg_mnt_status" type="string"  />
+		</composite-id>
+        
+		<property name="codEntityVpd"   column="COD_ENTITY_VPD"   type="integer"/>
+		<property name="codCust"        column="COD_CUST"         type="integer" />
+		<property name="codAcctStat"    column="COD_ACCT_STAT"    type="integer" />
+		<property name="codAcctTitle"   column="COD_ACCT_TITLE"   type="string" />
+		<property name="codCcy"         column="COD_CCY"          type="integer" />
+		<property name="balAvail"         column="BAL_AVAILABLE"          type="big_decimal" />
+		<property name="amtOdLmt"         column="AMT_OD_LIMIT"          type="big_decimal" />
+		<property name="balacct"         column="BAL_ACCT_MIN_REQD"          type="big_decimal" />
+		<property name="amtHld"         column="AMT_HLD"          type="big_decimal" />
+
+	</class>
+    
+    <!-- Query -->
+	<sql-query name="fcrChAcctMast#getAccountStatusByAccountNoAndAccountType">
+		<return-scalar column="COD_ACCT_STAT" type="integer" />
+		<return-scalar column="TXT_ACCT_STATUS" type="string" />
+    	   	
+    	<![CDATA[
+    		SELECT a.cod_acct_stat, b.txt_acct_status
+    		FROM ch_acct_mast a INNER JOIN ba_acct_status b 
+    			ON a.cod_acct_stat = b.cod_acct_status
+    		WHERE 	TRIM(a.cod_acct_no) = :accountNo
+    			AND a.flg_mnt_status = :flagMntStatus
+    			AND	b.cod_module = :accountType 
+    	]]>
+	</sql-query>
+</hibernate-mapping>

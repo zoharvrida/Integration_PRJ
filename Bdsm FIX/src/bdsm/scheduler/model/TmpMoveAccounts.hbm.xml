@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+<class name="bdsm.scheduler.model.TmpMoveAccounts" table="TMP_MOVE_ACCOUNTS" lazy="false">
+        <id       name="id"        column="ID"        type="integer" >
+            <generator class="increment"/>
+        </id>      
+        <property name="batchNo"    column="BATCHNO"    type="string"  />        
+        <property name="codAcctNo"  column="COD_ACCT_NO"  type="string"/>
+        <property name="codModule"    column="COD_MODULE"    type="string"  />         
+        <property name="codProd"    column="COD_PROD"    type="integer"  />        
+        <property name="codCurBrn"  column="COD_CUR_BRN"  type="integer"/>    
+        <property name="codXferBrn"  column="COD_XFER_BRN"  type="integer"/>    
+        <property name="flagStatus"  column="FLAG_STATUS"  type="string"/>    
+        <property name="idCreatedBy"  column="IDCREATEDBY"  type="string"/>
+        <property name="dtmCreated"    column="DTMCREATEDBY"    type="timestamp"  /> 
+        <property name="idCreatedSpv"  column="IDCREATEDSPV"  type="string"/>
+        <property name="dtmCreatedSpv"    column="DTMCREATEDSPV"    type="timestamp"  />                
+        <property name="idUpdatedBy"  column="IDUPDATEDBY"  type="string"/>
+        <property name="dtmUpdated"    column="DTMUPDATEDBY"    type="timestamp"  /> 
+        <property name="idUpdatedSpv"  column="IDUPDATEDSPV"  type="string"/>
+        <property name="dtmUpdatedSpv"    column="DTMUPDATEDSPV"    type="timestamp"  />                
+        <property name="statusReason"    column="STATUS_REASON"    type="string"  />                
+        <property name="moveRdAccounts"  column="MOVE_RD_ACCOUNTS"  type="string"/>
+        <property name="moveCollateral"  column="MOVE_COLLATERAL"  type="string"/>         
+ </class> 
+</hibernate-mapping>

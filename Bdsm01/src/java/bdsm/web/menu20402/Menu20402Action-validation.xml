@@ -1,0 +1,69 @@
+<!DOCTYPE validators PUBLIC
+              "-//Apache Struts//XWork Validator 1.0.2//EN"
+              "http://struts.apache.org/dtds/xwork-validator-1.0.2.dtd">
+<validators>
+    <field name="noCif">
+        <field-validator type="required">
+            <message>CIF No must not be empty.</message>
+        </field-validator>
+        <field-validator type="int">
+            <param name="min">0</param>
+            <message>CIF No should not be negative</message>
+        </field-validator>
+        <field-validator type="regex">
+            <param name="regex"><![CDATA[^[0-9]*$]]></param>
+            <message>CIF No only accept numbers.</message>
+        </field-validator>
+    </field>
+    <field name="amtTxnScr">
+        <field-validator type="required">
+            <message>Txn Amount must not be empty.</message>
+        </field-validator>
+        <field-validator type="double" short-circuit="true">
+            <param name="min">1</param>
+            <param name="max">999999999999999</param>
+            <message>Txn Amount must be greater than or equal 1</message>
+        </field-validator>
+        <field-validator type="regex" short-circuit="true">
+            <param name="regex"><![CDATA[^[.,0-9]*$]]></param>
+            <message>Txn Amount only accept numbers.</message>
+        </field-validator>
+    </field>
+    <field name="ratFcyIdrScr">
+        <field-validator type="required">
+            <message>FCY/IDR Rate must not be empty.</message>
+        </field-validator>
+        <field-validator type="double" short-circuit="true">
+            <param name="min">1</param>
+            <param name="max">999999999999999</param>
+            <message>Rate FCY/IDR must be greater than or equal 1</message>
+        </field-validator>
+        <field-validator type="regex" short-circuit="true">
+            <param name="regex"><![CDATA[^[.,0-9]*$]]></param>
+            <message>Rate FCY/IDR only accept numbers.</message>
+        </field-validator>
+    </field>
+    <field name="txnDesc">
+        <field-validator type="requiredstring" short-circuit="true">
+            <message>Description must not be empty.</message>
+        </field-validator>
+         <field-validator type="regex">
+            <param name="regex"><![CDATA[^[a-zA-Z0-9\ _]*$]]></param>
+            <message>Should not type special character in Description.</message>
+        </field-validator>
+    </field>
+    <field name="ccyTxn">
+        <field-validator type="requiredstring" short-circuit="true">
+            <message>Txn Currency must not be empty.</message>
+        </field-validator>
+    </field>
+    <field name="dtmTxn">
+        <field-validator type="requiredstring" short-circuit="true">
+            <message>Txn Date must not be empty.</message>
+        </field-validator>
+        <field-validator type="regex">
+            <param name="regex"><![CDATA[\d{2}/\d{2}/\d{4}]]></param>
+            <message>Txn Date must be correct date.</message>
+        </field-validator>
+    </field>
+</validators>

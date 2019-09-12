@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="bdsm.scheduler.model.TmpMpMiscod" table="TMP_MP_MISCOD" lazy="false">
+		<composite-id name="compositeId" class="bdsm.scheduler.model.TmpMpPK">
+			<key-property name="recordId" column="RECORDID" type="integer" />
+			<key-property name="batchNo"  column="BATCHNO"  type="string" />
+		</composite-id>
+		
+		<property name="codProd"       column="COD_PROD"      type="integer" />
+		<property name="codMis"        column="COD_MIS"       type="string" />
+		<property name="prodMisName"   column="PROD_MIS_NAME" type="string" />
+		<property name="flagStatus"    column="FLAG_STATUS"   type="string" />
+		<property name="statusReason"  column="STATUS_REASON" type="string" />
+		<property name="cmd"           column="CMD"           type="string" />
+		<property name="idCreatedBy"   column="IDCREATEDBY"   type="string" />
+		<property name="dtmCreated"    column="DTMCREATEDBY"  type="timestamp" />
+		<property name="idCreatedSpv"  column="IDCREATEDSPV"  type="string" />
+		<property name="dtmCreatedSpv" column="DTMCREATEDSPV" type="timestamp" />
+	</class> 
+</hibernate-mapping>

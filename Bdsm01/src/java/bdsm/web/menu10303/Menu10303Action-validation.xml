@@ -1,0 +1,45 @@
+<!DOCTYPE validators PUBLIC
+              "-//Apache Struts//XWork Validator 1.0.2//EN"
+              "http://struts.apache.org/dtds/xwork-validator-1.0.2.dtd">
+<validators>
+    <field name="idUser">
+        <field-validator type="requiredstring">
+            <message>User ID must not be empty.</message>
+        </field-validator>
+        <field-validator type="regex">
+            <param name="regex"><![CDATA[^[a-zA-Z0-9_]*$]]></param>
+            <message>Should not type special character in User ID.</message>
+        </field-validator>
+    </field>
+    <field name="namUser">
+        <field-validator type="requiredstring">
+            <message>User Name must not be empty.</message>
+        </field-validator>
+        <field-validator type="regex">
+            <param name="regex"><![CDATA[^[a-zA-Z0-9\ _]*$]]></param>
+            <message>Should not type special character in User Name.</message>
+        </field-validator>
+    </field>
+    <field name="cdBranch">
+        <field-validator type="requiredstring">
+            <message>Branch Code must not be empty.</message>
+        </field-validator>
+        <field-validator type="regex">
+            <param name="regex"><![CDATA[^[0-9]*$]]></param>
+            <message>Branch Code should be numeric.</message>
+        </field-validator>
+        <field-validator type="int">
+            <param name="min">0</param>
+            <message>Branch Code should not be negative</message>
+        </field-validator>
+    </field>
+    <field name="idTemplate">
+        <field-validator type="requiredstring">
+            <message>Template ID must not be empty.</message>
+        </field-validator>
+        <field-validator type="regex">
+            <param name="regex"><![CDATA[^[a-zA-Z0-9_]*$]]></param>
+            <message>Should not type special character in Template ID.</message>
+        </field-validator>
+    </field>
+</validators>

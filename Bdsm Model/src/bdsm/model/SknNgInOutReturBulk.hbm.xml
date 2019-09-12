@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping 
+		PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.SknNgInOutReturBulkParent" abstract="true" polymorphism="explicit">
+		<composite-id name="compositeId" class="bdsm.model.SknNgPK">
+			<key-property name="batchNo"   column="BATCH_NO"   type="string" />
+			<key-property name="recordId"  column="RECORD_ID"  type="integer" />
+		</composite-id>
+		
+		<property name="tipeRecord"     column="TIPE_RECORD"      type="string" />
+		<property name="kodeDKE"        column="KODE_DKE"         type="string" />
+		
+		<property name="idCreatedBy"    column="ID_CREATED_BY"    type="string" />
+		<property name="idCreatedSpv"   column="ID_CREATED_SPV"   type="string" />
+		<property name="dtmCreated"     column="DTM_CREATED"      type="timestamp" />
+		<property name="dtmCreatedSpv"  column="DTM_CREATED_SPV"  type="timestamp" />
+		<property name="idUpdatedBy"    column="ID_UPDATED_BY"    type="string" />
+		<property name="idUpdatedSpv"   column="ID_UPDATED_SPV"   type="string" />
+		<property name="dtmUpdated"     column="DTM_UPDATED"      type="timestamp" />
+		<property name="dtmUpdatedSpv"  column="DTM_UPDATED_SPV"  type="timestamp" />
+		
+		
+		<!-- subclass -->
+		<union-subclass name="bdsm.model.SknNgInOutReturBulkHeader" table="SKNNG_IN_OUT_RETUR_BULK_HEADER" dynamic-insert="true">
+			<property name="typeDB"                            column="TYPE"                     type="character"  access="property" />
+			<property name="batchId"                           column="BATCH_ID"                 type="string" />
+			<property name="jamTanggalMessage"                 column="JAM_TANGGAL_MESSAGE"      type="string" />
+			<property name="jumlahRecordsDKE"                  column="JUMLAH_RECORDS_DKE"       type="string" />
+			<property name="totalNominalDKE"                   column="TOTAL_NOMINAL_DKE"        type="string" />
+			<property name="tanggalBatch"                      column="TANGGAL_BATCH"            type="string" />
+			<property name="jenisSetelmen"                     column="JENIS_SETELMEN"           type="string" />
+			<property name="identitasPesertaPengirim"          column="ID_PESERTA_PENGIRIM"      type="string" />
+			<property name="sandiKotaPengirim"                 column="SANDI_KOTA_PENGIRIM"      type="string" />
+			<property name="batchIdOriginal"                   column="BATCH_ID_ORI"             type="string" />
+			<property name="identitasPesertaPengirimOriginal"  column="ID_PESERTA_PENGIRIM_ORI"  type="string" />
+			<property name="FCRBatchNo"                        column="FCR_BATCH_NO"             type="string" />
+			<property name="status"                            column="STATUS"                   type="string" />
+			<property name="rejectCode"                        column="REJECT_CODE"              type="string" />
+			<property name="comments"                          column="COMMENTS"                 type="string" />
+			<property name="recordStatus"                      column="RECORD_STATUS"            type="string" />
+		</union-subclass>
+		
+		<union-subclass name="bdsm.model.SknNgInOutReturBulkDKE" table="SKNNG_IN_OUT_RETUR_BULK_DKE" dynamic-insert="true">
+			<property name="parentRecordId"                           column="PARENT_RECORD_ID"                type="integer" />
+			<property name="nomorUrutDKE"                             column="NOMOR_URUT_DKE"                  type="string" />
+			<property name="nomorReferensiDKE"                        column="NOMOR_REFERENSI_DKE"             type="string" />
+			<property name="identitasPesertaPengirimAsalOriginal"     column="ID_PESERTA_PENGIRIM_ASAL_ORI"    type="string" />
+			<property name="sandiKotaAsalOriginal"                    column="SANDI_KOTA_ASAL_ORI"             type="string" />
+			<property name="identitasPesertaPenerimaPenerusOriginal"  column="ID_PESERTA_PENERIMAPENERUS_ORI"  type="string" />
+			<property name="identitasPesertaPenerimaAkhirOriginal"    column="ID_PESERTA_PENERIMA_AKHIR_ORI"   type="string" />
+			<property name="jumlahRecordsRincian"                     column="JUMLAH_RECORDS_RINCIAN"          type="string" />
+			<property name="totalNominalRincian"                      column="TOTAL_NOMINAL_RINCIAN"           type="string" />
+			<property name="namaNasabahPenagih"                       column="NAMA_NASABAH_PENAGIH"            type="string" />
+			<property name="nomorRekeningNasabahPenagih"              column="NO_REKENING_NASABAH_PENAGIH"     type="string" />
+			<property name="jenisUsahaNasabahPenagih"                 column="JENIS_USAHA_NASABAH_PENAGIH"     type="string" />
+			<property name="jenisNasabahPenagih"                      column="JENIS_NASABAH_PENAGIH"           type="string" />
+			<property name="statusPendudukNasabahPenagih"             column="STATUS_PENDUDUK_NSBH_PENAGIH"    type="string" />
+			<property name="nomorReferensiDKEOriginal"                column="NOMOR_REFERENSI_DKE_ORI"         type="string" />
+			<property name="bebanBiaya"                               column="BEBAN_BIAYA"                     type="string" />
+			<property name="jenisTransaksi"                           column="JENIS_TRANSAKSI"                 type="string" />
+			<property name="SOR"                                      column="SOR"                             type="string" />
+			<property name="valid"                                    column="IS_VALID"                        type="boolean" />
+		</union-subclass>
+		
+		<union-subclass name="bdsm.model.SknNgInOutReturBulkDetail" table="SKNNG_IN_OUT_RETUR_BULK_DETAIL" dynamic-insert="true">
+			<property name="parentRecordId"                 column="PARENT_RECORD_ID"                 type="integer" />
+			<property name="nomorUrutTransaksi"             column="NOMOR_URUT_TRANSAKSI"             type="string" />
+			<property name="namaNasabahTertagih"            column="NAMA_NASABAH_TERTAGIH"            type="string" />
+			<property name="nomorRekeningNasabahTertagih"   column="NO_REKENING_NASABAH_TERTAGIH"     type="string" />
+			<property name="jenisNasabahTertagih"           column="JENIS_NASABAH_TERTAGIH"           type="string" />
+			<property name="statusPendudukNasabahTertagih"  column="STATUS_PENDUDUK_NSBH_TERTAGIH"    type="string" />
+			<property name="nomorIdPelanggan"               column="NOMOR_ID_PELANGGAN"               type="string" />
+			<property name="nomorReferensi"                 column="NOMOR_REFERENSI"                  type="string" />
+			<property name="nominal"                        column="NOMINAL"                          type="string" />
+			<property name="alasanPenolakan"                column="ALASAN_PENOLAKAN"                 type="string" />
+			<property name="nomorUrutTransaksiOriginal"     column="NOMOR_URUT_TRANSAKSI_ORI"         type="string" />
+			<property name="FCRRecordId"                    column="FCR_RECORD_ID"                    type="long" />
+			<property name="status"                         column="STATUS"                           type="string" />
+			<property name="rejectCode"                     column="REJECT_CODE"                      type="string" />
+			<property name="comments"                       column="COMMENTS"                         type="string" />
+			<property name="recordStatus"                   column="RECORD_STATUS"                    type="string" />
+		</union-subclass>
+		
+		<union-subclass name="bdsm.model.SknNgInOutReturBulkFooter" table="SKNNG_IN_OUT_RETUR_BULK_FOOTER" dynamic-insert="true">
+			<property name="parentRecordId"  column="PARENT_RECORD_ID"  type="integer" />
+			<property name="CRC"             column="CRC"               type="string" />
+			<property name="comments"        column="COMMENTS"          type="string" />
+			<property name="recordStatus"    column="RECORD_STATUS"     type="string" />
+		</union-subclass>
+	</class>
+
+	
+	<!-- Query -->
+	<query name="SknNgInOutReturBulkHeader#listByBatchNo">
+		<![CDATA[
+			 FROM SknNgInOutReturBulkHeader
+			WHERE compositeId.batchNo = :batchNo
+			ORDER BY compositeId.recordId
+		]]>
+	</query>
+	
+	<query name="SknNgInOutReturBulkDKE#listByBatchNoAndParentRecordId">
+		<![CDATA[
+			 FROM SknNgInOutReturBulkDKE
+			WHERE compositeId.batchNo = :batchNo
+			  AND parentRecordId      = :parentRecordId
+			ORDER BY compositeId.recordId 
+		]]>
+	</query>
+	
+	<query name="SknNgInOutReturBulkDetail#listByBatchNoAndParentRecordId">
+		<![CDATA[
+			 FROM SknNgInOutReturBulkDetail
+			WHERE compositeId.batchNo = :batchNo
+			  AND parentRecordId      = :parentRecordId
+			ORDER BY compositeId.recordId 
+		]]>
+	</query>
+	
+	<query name="SknNgInOutReturBulkFooter#listByBatchNoAndParentRecordId">
+		<![CDATA[
+			 FROM SknNgInOutReturBulkFooter
+			WHERE compositeId.batchNo = :batchNo
+			  AND parentRecordId      = :parentRecordId
+			ORDER BY compositeId.recordId 
+		]]>
+	</query>
+	
+</hibernate-mapping>

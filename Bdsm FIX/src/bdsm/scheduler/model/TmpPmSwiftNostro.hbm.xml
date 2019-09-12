@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-access="field">
+  <!-- Model -->
+  <class lazy="false" name="bdsm.scheduler.model.TmpPmSwiftNostro" table="TMP_PM_SWIFT_NOSTRO">
+    <composite-id class="bdsm.scheduler.model.TmpPmSwiftNostroPK" name="compositeId">
+      <key-property column="BATCHNO" name="batchiId" type="string"/>
+      <key-property column="RECORDID" name="recordId" type="integer"/>
+    </composite-id>
+    <property column="PERIOD_OF_TIME" name="periodOfTime" type="string"/>
+    <property column="CCY" name="ccy" type="string"/>
+    <property column="PRIORITY" name="priority" type="integer"/>
+    <property column="NOSTRO" name="nostro" type="string"/>
+    <property column="DESCRIPTION" name="description" type="string"/>
+    <property column="CHARGE_BEARER" name="chargeBearer" type="string"/>
+    <property column="MAX_NOT" name="maxNot" type="integer"/>
+    <property column="FCC_PRODUCT_CODE" name="fccProductCode" type="string"/>
+    <property column="FLG_EXCLUDE" name="flgExclude" type="string"/>
+    <property column="FLAG_STATUS" name="flagStatus" type="string"/>
+    <property column="CMD" name="cmd" type="string"/>
+        <property column="STATUS_REASON" name="statusReason" type="string"/>
+    <property column="IDCREATEDBY" name="idCreatedBy" type="string"/>
+    <property column="DTMCREATEDBY" name="dtmCreated" type="timestamp"/>
+    <property column="IDCREATEDSPV" name="idCreatedSpv" type="string"/>
+    <property column="DTMCREATEDSPV" name="dtmCreatedSpv" type="timestamp"/>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,135 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bdsm.scheduler.fix;
+
+import bdsm.scheduler.FolderWatcher;
+import bdsm.scheduler.MapKey;
+import bdsm.scheduler.PropertyPersister;
+import bdsm.scheduler.ScheduleDefinition;
+import bdsm.scheduler.StatusDefinition;
+import bdsm.scheduler.dao.FixLogDao;
+import bdsm.scheduler.dao.FixSchedulerImportDao;
+import bdsm.scheduler.dao.FixTemplateMasterDao;
+import bdsm.scheduler.model.FixLog;
+import bdsm.scheduler.model.FixSchedulerImport;
+import bdsm.scheduler.model.FixTemplateMaster;
+import bdsm.scheduler.model.FixTemplateMasterPK;
+import bdsm.scheduler.processor.FileObjectReflection;
+import bdsm.scheduler.util.FileUtil;
+import bdsm.scheduler.util.MailUtil;
+import bdsm.scheduler.util.SchedulerUtil;
+import java.io.File;
+import java.text.ParseException;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.hibernate.Transaction;
+
+/**
+ *
+ * @author bdsm
+ */
+public class FolderInWatcher extends FolderWatcher{
+    private static String adminEmail = PropertyPersister.adminEmail;
+    public FolderInWatcher(long timeout, long sleep, long btsleep, int threadcount, String folderToWatch, String fileBackup) {
+        super(timeout, sleep, btsleep, threadcount, folderToWatch, fileBackup);
+    }
+
+    @Override
+    protected void processFile(String filename) {
+        File file = new File(this.filepath + filename);
+        FileObjectReflection objectReflection = new FileObjectReflection();
+        Transaction transaction = this.session.beginTransaction();
+        try {
+            //check if size is same
+            if (Integer.valueOf(this.ready.get(filename).toString()) == file.length()) {
+                //update FixLog
+                FixLogDao fixLogDao = new FixLogDao(this.session);
+                FixLog fixLog = null;
+
+                try {
+                    fixLog = fixLogDao.get(filename, SchedulerUtil.getDate("dd/MM/yyyy"));
+                } catch (ParseException ex) {
+                    getLogger().error(ex);
+                }
+
+                if(fixLog == null){
+                    throw new Exception("file is not registered in fix Log");
+                }
+
+                fixLog.setFileSize((int) file.length());
+                fixLogDao.update(fixLog);
+
+                //validasi
+                FixSchedulerImportDao fixSchedulerImportDao = new FixSchedulerImportDao(this.session);
+                String namTemplate = FileUtil.getTemplateFromFileName(filename);
+                getLogger().debug("Template Name : "+namTemplate);
+                FixSchedulerImport fixSchedulerImport = fixSchedulerImportDao.get(namTemplate);
+
+                if (fixSchedulerImport != null) {
+                    HashMap hashMap = new HashMap();
+                    hashMap.put(MapKey.flgEncrypt, "N");
+                    if (fixSchedulerImport.getFlgEncrypt().equalsIgnoreCase("Y")) {
+                        try {
+                            hashMap.put(MapKey.flgEncrypt, fixSchedulerImport.getFlgEncrypt());
+                            getLogger().debug("FLG Encrypt : " + fixSchedulerImport.getFlgEncrypt());
+                            hashMap.put(MapKey.modDecrypt, fixSchedulerImport.getModDecrypt());
+                            getLogger().debug("Mod Encrypt : " + fixSchedulerImport.getModDecrypt());
+                            hashMap.put(MapKey.keyDecrypt, fixSchedulerImport.getKeyDecrypt());
+                            getLogger().debug("KeyDecrypt : " + fixSchedulerImport.getKeyDecrypt());
+                        } catch (Exception ex) {
+                            getLogger().error("Error Decrypting : " + ex);
+                            MailUtil.sentNewMessage(adminEmail, "", "[FIX ALERT]Error Decrypting SFTP File", "Error Decrypt File <br/>"+ex.toString(), null, session, ScheduleDefinition.emailOnly);
+                        }
+                    }
+
+                    hashMap.put(MapKey.idScheduler, fixSchedulerImport.getFixSchedulerPK().getIdScheduler());
+                    getLogger().debug("ID Scheduler : " + fixSchedulerImport.getFixSchedulerPK().getIdScheduler());
+                    hashMap.put(MapKey.batchNo, fixLog.getFixLogPK().getInboxId());
+                    getLogger().debug("Batch No : " + fixLog.getFixLogPK().getInboxId());
+                    hashMap.put(MapKey.fileName, filename);
+                    hashMap.put(MapKey.grpId, "");
+                    hashMap.put(MapKey.itemIdLink, "");
+                    hashMap.put(MapKey.param1, "");
+                    hashMap.put(MapKey.param5, this.filepath + filename);
+                    getLogger().debug("Param5/Filename : " + this.filepath + filename);
+                    hashMap.put(MapKey.filePath, this.filepath);
+                    hashMap.put(MapKey.fileBackup, this.fileBackup);
+
+                    FixTemplateMasterDao fixTemplateMasterDao = new FixTemplateMasterDao(this.session);
+                    FixTemplateMasterPK fixTemplateMasterPK = new FixTemplateMasterPK();
+                    fixTemplateMasterPK.setNamTemplate(namTemplate);
+                    FixTemplateMaster fixTemplateMaster = fixTemplateMasterDao.get(fixTemplateMasterPK);
+
+                    //execute class
+                    hashMap.put(MapKey.javaClass, fixTemplateMaster.getJavaClass());
+                    getLogger().debug("Java Class : " + fixTemplateMaster.getJavaClass());
+                    hashMap.put(MapKey.processSource,"SFTP");
+                    getLogger().debug("processSource : SFTP");
+                    this.assign(hashMap, objectReflection);
+
+                } else {
+                    fixLog.setFlgProcess(StatusDefinition.ERROR);
+                    fixLog.setReason("Scheduler Import not found");
+                    fixLogDao.update(fixLog);
+                }
+            }
+        } catch(Exception ex){
+            try {
+                MailUtil.sentNewMessage(adminEmail, "", "[FIX ALERT] Error Processing SFTP File", "Error Procesing File <br/>"+ex.toString(), null, session, ScheduleDefinition.emailOnly);
+            } catch (Exception ex1) {
+                getLogger().error("Error Send Email to Fix Admin");
+                getLogger().error(ex1);
+            }
+            getLogger().error(ex);
+        } finally {
+            transaction.commit();
+        }
+
+    }
+
+
+
+}

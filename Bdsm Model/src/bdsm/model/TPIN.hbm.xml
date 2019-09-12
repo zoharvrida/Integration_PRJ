@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.TPINStatusMaster" table="TPIN_IVR_STATUS_MAST">
+		<id name="codeDB" column="CODE" type="character" access="property" />
+		<property name="description" type="string" />
+	</class>
+	
+	<class name="bdsm.model.TPIN" lazy="false" table="TPIN" polymorphism="explicit">
+		<id name="cardNo" column="CARD_NO" type="string" />
+		
+		<property name="b24UpdatedTime" column="B24_UPDATED_DTM" type="timestamp" />
+		<property name="IVRStatusDB" column="IVR_STATUS" type="character" access="property" />
+		<property name="fillerDB" column="FILLER" type="character" access="property" />
+		
+		<property name="dtmUpdated" column="BDSM_UPDATED_DTM" type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.TPINHistory" table="TPIN_HISTORY">
+		<composite-id access="property">
+			<key-property name="cardNo" column="CARD_NO" type="string" />
+			<key-property name="dtmCreated" column="HISTORY_INSERTED_DTM" type="timestamp" />
+		</composite-id>
+		
+		<property name="b24UpdatedTime" column="B24_UPDATED_DTM" type="timestamp" />
+		<property name="IVRStatusDB" column="IVR_STATUS" type="character" access="property" />
+		<property name="fillerDB" column="FILLER" type="character" access="property" />
+		
+		<property name="dtmUpdatedOld" column="BDSM_UPDATED_DTM" type="timestamp" access="property" />
+	</class>
+	
+	<class name="bdsm.model.TPINError" lazy="false" table="TPIN_ERR">
+		<composite-id>
+			<key-property name="filename" column="FILENAME" type="string" />
+			<key-property name="lineNumber" column="LINE_NUMBER" type="integer" />
+			<key-property name="dtmCreated" column="ERR_DTM" type="timestamp" />
+		</composite-id>
+		
+		<property name="reason" column="REASON" type="string" />
+	</class>
+	
+</hibernate-mapping>

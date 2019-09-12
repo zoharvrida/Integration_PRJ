@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.scheduler.model.TmpMaintenanceCif" table="TMP_MAINTENANCE_CIF_CCDM">
+    <composite-id class="bdsm.scheduler.model.TmpMaintenanceCifPK" name="compositeId">
+      <key-property column="BATCHID" name="batchiId" type="string"/>
+      <key-property column="RECORD_ID" name="recordId" type="integer"/>
+      <key-property column="COD_CUST_ID" name="cif" type="integer"/>
+    </composite-id>
+    
+    <property column="TXT_CUST_PREFIX" name="salutation" type="string"/>
+    <property column="COD_INCOME_CAT" name="incomeTaxNo" type="string"/>
+    <property column="COD_EMPLOYEE_ID" name="employeeId" type="string"/>
+    <property column="COD_VERIFIED_REASON" name="reasonVerifed" type="integer"/>
+    <property column="TXT_CUSTADR_ADD1" name="address1MA" type="string"/>
+    <property column="TXT_CUSTADR_ADD2" name="address2MA" type="string"/>
+    <property column="TXT_CUSTADR_ADD3" name="address3MA" type="string"/>
+    <property column="NAM_CUSTADR_CITY" name="cityMA" type="string"/>
+    <property column="NAM_CUSTADR_STATE" name="stateMA" type="string"/>
+    <property column="NAM_CUSTADR_CNTRY" name="countryMA" type="string"/>
+    <property column="TXT_CUSTADR_ZIP" name="postalCodeMA" type="string"/>
+    <property column="REF_CUST_TELEX" name="telexMA" type="string"/>
+    <property column="REF_CUST_PHONE_OFF" name="phoneOfficeMA" type="string"/>
+    <property column="REF_CUST_PHONE" name="phoneResMA" type="string"/>
+    <property column="REF_CUST_FAX" name="faxNoMA" type="string"/>
+    <property column="FLG_STATUS" name="flgStatus" type="string"/>
+    <property column="STATUS_REASON" name="statusReason" type="string"/>
+    <property column="COD_LAST_MNT_MAKERID" name="codLastMntMakerid" type="string"/>
+    <property column="COD_LAST_MNT_CHKRID" name="codLastMntChkrid" type="string"/>
+    <property column="DAT_LAST_MNT" name="datLastMnt" type="timestamp"/>
+    <property column="COD_SIGN_TYP" name="signTypIC" type="string"/>
+    <property column="TXT_ETHNIC_ORIGIN" name="ethnicIC" type="string"/>
+    <property column="TXT_LGL_RSDNC_STAT" name="countryResidenIC" type="string"/>
+    <property column="TXT_CUST_SEX" name="sexIC" type="string"/>
+    <property column="TXT_PROFESS_CAT" name="profesCodeIC" type="integer"/>
+    <property column="TXT_CUST_NATNLTY" name="nationalityIC" type="string"/>
+    <property column="TXT_CUST_EDUCN" name="educationIC" type="string"/>
+    <property column="COD_CUST_MARSTAT" name="maritalStatus" type="integer"/>
+    <property column="CTR_CUST_SPOUSES" name="noOfSpouseIC" type="integer"/>
+    <property column="COD_BUSINESS_CAT" name="businesTypeCC" type="integer"/>
+    <property column="TXT_BUSINESS_TYP" name="typCompanyCC" type="string"/>
+    <property column="DAT_INCORPORATED" name="datRegisteredCC" type="date"/>
+    <property column="COD_BUSINESS_REGNO" name="registrationNoCC" type="string"/>
+    <property column="NAM_SIGNATORY1" name="signatoresName1CC" type="string"/>
+    <property column="NAM_SIGNATORY2" name="signatoresName2CC" type="string"/>
+    <property column="NAM_SIGNATORY3" name="signatoresName3CC" type="string"/>
+    <property column="NAM_SIGNATORY4" name="signatoresName4CC" type="string"/>
+    <property column="NAM_SIGNATORY5" name="signatoresName5CC" type="string"/>
+    <property column="TXT_DESGN_SIGNTRY1" name="signatoresDesignation1CC" type="string"/>
+    <property column="TXT_DESGN_SIGNTRY2" name="signatoresDesignation2CC" type="string"/>
+    <property column="TXT_DESGN_SIGNTRY3" name="signatoresDesignation3CC" type="string"/>
+    <property column="TXT_DESGN_SIGNTRY4" name="signatoresDesignation4CC" type="string"/>
+    <property column="TXT_DESGN_SIGNTRY5" name="signatoresDesignation5CC" type="string"/>
+    <property column="NAM_DIRECTOR1" name="dirPartner1CC" type="string"/>
+    <property column="NAM_DIRECTOR2" name="dirPartner2CC" type="string"/>
+    <property column="NAM_DIRECTOR3" name="dirPartner3CC" type="string"/>
+    <property column="NAM_DIRECTOR4" name="dirPartner4CC" type="string"/>
+    <property column="NAM_DIRECTOR5" name="dirPartner5CC" type="string"/>
+    
+    <property column="TXT_TENR_OCCUPTN" name="tenurED" type="integer"/>
+    <property column="NAM_CUST_EMP" name="nameED" type="string"/>
+    <property column="TXT_EMPADR_ADD1" name="address1ED" type="string"/>
+    <property column="TXT_EMPADR_ADD2" name="address2ED" type="string"/>
+    <property column="TXT_EMPADR_ADD3" name="address3ED" type="string"/>
+    <property column="NAM_EMPADR_CITY" name="cityED" type="string"/>
+    <property column="NAM_EMPADR_STATE" name="stateED" type="string"/>
+    <property column="NAM_EMPADR_CNTRY" name="countryED" type="string"/>
+    <property column="TXT_EMPADR_ZIP" name="postalCodeED" type="string"/>
+    <property column="REF_CUST_EMP_MOBILE" name="mobileED" type="string"/>
+    <property column="REF_CUST_EMP_EMAIL" name="emailED" type="string"/>
+    <property column="REF_CUST_EMP_PHONE" name="phoneED" type="string"/>
+    <property column="REF_CUST_EMP_TELEX" name="telexNoED" type="string"/>
+    <property column="REF_CUST_EMP_FAX" name="faxNoED" type="string"/>
+    <property column="CTR_YRS_JOB" name="numOfYearsED" type="integer"/>
+    <property column="CTR_AGE_RETIRE" name="retriementAgeED" type="integer"/>
+    <property column="NAM_SPOUSE_CUST" name="parentNamePD" type="string"/>
+    <property column="COD_NATL_ID_SPOUSE" name="parenticPD" type="string"/>
+    <property column="TXT_OCCPN_SPOUSE" name="occupationPD" type="integer"/>
+    <property column="TXT_SPO_DESGN" name="designationPD" type="string"/>
+    <property column="DAT_DOB_SPOUSE" name="parentBODPD" type="date"/>
+    <property column="NAM_SPO_EMPLOYER" name="spouseDetailPD" type="string"/>
+    <property column="TXT_ADDR1_SPO_EMP" name="address1PD" type="string"/>
+    <property column="TXT_ADDR2_SPO_EMP" name="address2PD" type="string"/>
+    <property column="TXT_ADDR3_SPO_EMP" name="address3PD" type="string"/>
+    <property column="REF_SPO_EMP_PHONE" name="phoneNoPD" type="string"/>
+    
+    <property column="TYP_COMPANY" name="typeCompCO" type="string"/>
+    <property column="NAM_PLACE_INCORP" name="placeInCorpCO" type="string"/>
+    <property column="CTR_PARTNERS_DIRECTORS" name="noPartnerCO" type="integer"/>
+    <property column="NAM_PARENT_COMPANY" name="parentCompanyCO" type="string"/>
+    <property column="NAM_APEX_COMPANY" name="apexHoldingCompany" type="string"/>
+    <property column="NAM_CONTACT_PERSON" name="contactPersonCO" type="string"/>
+    <property column="TXT_DESGN_CONTACT_PERSN" name="contacPersonDesgnCO" type="string"/>
+    <property column="TXT_INT_CR_RATING" name="internalCreditRatingCO" type="string"/>
+    <property column="COD_BUSINESS_LICENSE" name="businesLicenseNoCO" type="string"/>
+    <property column="DAT_BUS_START" name="businesCommencementDateCO" type="date"/>
+    <property column="DAT_BUS_LICENSE_EXP" name="businesLicenseExpiryDateCO" type="date"/>
+    <property column="NAM_BANKER1" name="bankName1CO" type="string"/>
+    <property column="NAM_BANKER2" name="bankName2CO" type="string"/>
+    <property column="TXT_BUSINESS_TYP_CIM17" name="natureOfBusinesCO" type="string"/>
+    <property column="NAM_MAJ_SHAREHLDR1" name="majorShareHolder1" type="string"/>
+    <property column="NAM_MAJ_SHAREHLDR2" name="majorShareHolder2" type="string"/>
+    <property column="NAM_MAJ_SHAREHLDR3" name="majorShareHolder3" type="string"/>
+    <property column="NAM_MAJ_SHAREHLDR4" name="majorShareHolder4" type="string"/>
+    <property column="NAM_MAJ_SHAREHLDR5" name="majorShareHolder5" type="string"/>
+    <property column="NAM_MAJ_SHAREHLDR6" name="majorShareHolder6" type="string"/>
+    <property column="NAM_MAJ_SHAREHLDR7" name="majorShareHolder7" type="string"/>
+    <property column="NAM_MAJ_SHAREHLDR8" name="majorShareHolder8" type="string"/>
+    <property column="NAM_MAJ_SHAREHLDR9" name="majorShareHolder9" type="string"/>
+    <property column="NAM_MAJ_SHAREHLDR10" name="majorShareHolder10" type="string"/>
+    <property column="COD_MAJ_SHAREHLDR_REL1" name="relationShip1" type="string"/>
+    <property column="COD_MAJ_SHAREHLDR_REL2" name="relationShip2" type="string"/>
+    <property column="COD_MAJ_SHAREHLDR_REL3" name="relationShip3" type="string"/>
+    <property column="COD_MAJ_SHAREHLDR_REL4" name="relationShip4" type="string"/>
+    <property column="COD_MAJ_SHAREHLDR_REL5" name="relationShip5" type="string"/>
+    <property column="COD_MAJ_SHAREHLDR_REL6" name="relationShip6" type="string"/>
+    <property column="COD_MAJ_SHAREHLDR_REL7" name="relationShip7" type="string"/>
+    <property column="COD_MAJ_SHAREHLDR_REL8" name="relationShip8" type="string"/>
+    <property column="COD_MAJ_SHAREHLDR_REL9" name="relationShip9" type="string"/>
+    <property column="COD_MAJ_SHAREHLDR_REL10" name="relationShip10" type="string"/>
+    
+   
+    
+  </class>
+</hibernate-mapping>

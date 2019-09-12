@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+	<class name="bdsm.model.EKTPReaderLog" table="EKTP_READER_LOG" lazy="false">
+		<id name="dtmLog" column="DTM_LOG" type="timestamp">
+			<generator class="assigned" />
+		</id>
+		<property name="idUser"       column="ID_USER"        type="string" />
+		<property name="codCCBranch"  column="COD_CC_BRN"     type="integer" />
+		<property name="deviceName"   column="DEVICE_NAME"    type="string" />
+		<property name="deviceIP"     column="DEVICE_IP"      type="string" />
+		<property name="requestType"  column="REQUEST_TYPE"   type="byte" />
+		<property name="data"         column="DATA"           type="clob" />
+	</class>
+</hibernate-mapping>

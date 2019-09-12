@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.model.FcrBaCcyCode" table="BA_CCY_CODE">
+    <composite-id class="bdsm.model.FcrBaCcyCodePK" name="compositeId">
+      <key-property column="cod_ccy" name="codCcy" type="integer"/>
+      <key-property column="flg_mnt_status" name="flgMntStatus" type="string"/>
+    </composite-id>
+    <property column="nam_ccy_short" name="namCcyShort" type="string"/>
+    <property column="nam_currency" name="namCurrency" type="string"/>
+  </class>
+</hibernate-mapping>

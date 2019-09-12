@@ -1,0 +1,52 @@
+<!DOCTYPE hibernate-configuration PUBLIC 
+ "-//Hibernate/Hibernate COnfiguration DTD 3.0//EN" 
+ "classpath://org/hibernate/hibernate-configuration-3.0.dtd">
+          
+<hibernate-configuration>
+
+    <session-factory>
+
+        <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+        <property name="hibernate.connection.url">jdbc:oracle:thin:@10.195.52.35:1521:FCRUAT</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
+        <property name="hibernate.connection.username">bdsm</property>
+        <property name="hibernate.connection.password">Danamon_12345</property>
+        <property name="connection.pool_size">3</property>
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+        <!-- Enable Hibernate's automatic session context management -->
+        <property name="current_session_context_class">thread</property>
+
+        <!-- Disable the second-level cache  -->
+        <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+
+        <mapping resource="bdsm/model/MasterTemplate.hbm.xml" />
+        <mapping resource="bdsm/model/MasterUser.hbm.xml" />
+        <mapping resource="bdsm/model/MasterMenu.hbm.xml"       />
+        <mapping resource="bdsm/model/XrefTemplateMenu.hbm.xml" />
+        <mapping resource="bdsm/model/FcrBaBankMast.hbm.xml"    />
+        <mapping resource="bdsm/model/FcrCiCustmast.hbm.xml"    />
+        <mapping resource="bdsm/model/Auditlog.hbm.xml"    />
+        <mapping resource="bdsm/model/MfcSlMaster.hbm.xml"    />
+        <mapping resource="bdsm/model/MfcUdMaster.hbm.xml"    />
+        <mapping resource="bdsm/model/FcrBaCcyCode.hbm.xml"    />
+        <mapping resource="bdsm/model/FcrChAcctMast.hbm.xml"    />
+        <mapping resource="bdsm/model/FcrTdAcctMast.hbm.xml"    />
+        <mapping resource="bdsm/model/MfcNoBook.hbm.xml"    />
+        <mapping resource="bdsm/model/MfcTxnMaster.hbm.xml"    />
+        <mapping resource="bdsm/model/MfcTxnDetails.hbm.xml"    />
+        <mapping resource="bdsm/model/FcrBaCcyRate.hbm.xml"    />
+        <mapping resource="bdsm/model/Parameter.hbm.xml"    />
+  		<mapping resource="bdsm/model/CoCiCustmast.hbm.xml"    />
+        <mapping resource="bdsm/model/TPIN.hbm.xml" />
+        <mapping resource="bdsm/model/FCRCustomerCardMaster.hbm.xml" />
+		<mapping resource="bdsm/model/EktpUser.hbm.xml"    />
+		<mapping resource="bdsm/model/EktpLog.hbm.xml"    />
+ 		<mapping resource="bdsm/fcr/model/DataMaster.hbm.xml"    />
+        <mapping resource="bdsm/model/FcrBaCcBrnMast.hbm.xml"    />
+      
+
+    </session-factory>
+
+</hibernate-configuration>
+

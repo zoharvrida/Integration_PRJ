@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC  "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+                                    "classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+	<class name="bdsm.model.MfcTxnDetails_LLD" table="MFCTXNDETAILS_LLD" lazy="false">
+		<composite-id name="compositeId" class="bdsm.model.MfcTxnDetailsPK">
+			<key-property name="noAcct"  column="NOACCT"  type="string" />
+			<key-property name="refTxn"  column="REFTXN"  type="string" />
+		</composite-id>
+		
+		<property name="noCif"          column="NOCIF"          type="int" />
+		<property name="noUd"           column="NOUD"           type="string" />
+		<property name="status"         column="STATUS"         type="string" />
+		<property name="idCreatedBy"    column="IDCREATEDBY"    type="string" />
+		<property name="idCreatedSpv"   column="IDCREATEDSPV"   type="string" />
+		<property name="dtmCreated"     column="DTMCREATED"     type="timestamp" />
+		<property name="dtmCreatedSpv"  column="DTMCREATEDSPV"  type="timestamp" />
+		<property name="idUpdatedBy"    column="IDUPDATEDBY"    type="string" />
+		<property name="idUpdatedSpv"   column="IDUPDATEDSPV"   type="string" />
+		<property name="dtmUpdated"     column="DTMUPDATED"     type="timestamp" />
+		<property name="dtmUpdatedSpv"  column="DTMUPDATEDSPV"  type="timestamp" />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.model.ARParamMasterInterface" table="INT_PARAM_MASTER" lazy="false">
+      <composite-id>
+         <key-property column="IDSCHEDULER" name="idScheduler" type="integer"/>
+         <key-property column="ORDERNO" name="orderNo" type="integer"/>
+         <key-property name="typScheduler"   column="TYPE_SCHEDULER" type="string"/>
+      </composite-id>
+      <property name="tableName"   column="TABLENAME"   type="string"/>
+      <property name="delimiter"   column="DELIMITER"   type="string"/>
+      <property name="typProcess"   column="TYPE_PROCESS"   type="string"/>
+      <property name="flgValidation"   column="FLG_VAL"   type="string"/>
+      <property name="recType"   column="REC_TYPE"   type="string"/>  
+      
+    </class>
+</hibernate-mapping>
+

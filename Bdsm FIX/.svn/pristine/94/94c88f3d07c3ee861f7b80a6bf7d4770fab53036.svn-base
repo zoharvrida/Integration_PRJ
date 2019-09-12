@@ -1,0 +1,35 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package main;
+
+import bdsm.scheduler.util.EncryptionUtil;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+/**
+ *
+ * @author NCBS
+ */
+public class TimeZoneTest {
+
+    public static void main(String[] args) {
+        try {
+            System.out.println(EncryptionUtil.getAES("PvTHjY2k7u/D7loAqJn7yw==", "ZIP@@@@@@@@@@@@@", Cipher.DECRYPT_MODE));
+        } catch (Exception ex) {
+            Logger.getLogger(TimeZoneTest.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+}

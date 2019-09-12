@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="bdsm.scheduler.model.TmpchHoldMntDetail" table="TMP_CHHOLDMNT_DETAIL" lazy="false">
+        <composite-id name="compositeId"     class="bdsm.scheduler.model.TmpchHoldMntPK">
+            <key-property name="idBatch"     column="fileid"         type="string" />
+            <key-property name="recid" column="recordid"        type="integer" />
+            <key-property name="parentID" column="parentrecid"        type="integer" />
+        </composite-id>
+		
+        <property name="rectype"             column="rectype"        type="integer" />
+        <property name="datTxn"            column="dattxn"             type="string" />
+        <property name="codAcct"            column="codacctno"             type="string" />
+        <property name="codBrn"         column="codccbrn"        type="integer" />
+        <property name="amtHold"         column="amthold"  type="string" />
+        <property name="holDesc"             column="holddesc"             type="string" />
+        <property name="earMarkType"          column="earmarktype"      type="integer" />
+        <property name="earmarkreason"        column="earmarkreason"   type="integer" />
+        <property name="dateExpire"        column="datexpire"   type="string" />
+        <property name="recType"        column="recordtype"   type="string" />
+        <property name="recName"        column="recordname"   type="string" />
+        <property name="data"        column="data"   type="string" />
+        <property name="lengths"        column="length"   type="integer" />
+        <property name="comments"        column="comments"   type="string" />
+        <property name="gefuStatus"        column="gefustatus"   type="string" />
+        <property name="dtmProcStart"        column="dtm_proc_start"   type="timestamp" />
+        <property name="dtmProcFinish"        column="dtm_proc_finish"   type="timestamp" />
+        <property name="validationstatus"        column="validationstatus"   type="string" />
+    </class>
+</hibernate-mapping>

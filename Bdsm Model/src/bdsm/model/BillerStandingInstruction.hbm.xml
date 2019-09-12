@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.BillerStandingInstruction" table="BILLER_STAND_INSTR" lazy="false" polymorphism="explicit">
+		<id name="id"  column="STAND_INSTR_ID"  type="string"/>
+
+		<property name="accountNo"              column="ACCOUNT_NO"             type="string" />
+		<property name="billingNo"              column="BILLING_NO"             type="string" />
+		<property name="billerName"             column="BILLER_NAME"            type="string" />
+		<property name="billerAccountNo"        column="BILLER_ACCOUNT_NO"      type="string" />
+		<property name="billerBankName"         column="BILLER_BANK_NAME"       type="string" />
+		<property name="billingPurpose"         column="BILLING_PURPOSE"        type="string" />
+		<property name="paymentPeriodicTypeDB"  column="PAYMENT_PERIODIC_TYPE"  type="character"  access="property" />
+		<property name="paymentMinDate"         column="PAYMENT_MIN_DATE"       type="integer" />
+		<property name="paymentMaxDate"         column="PAYMENT_MAX_DATE"       type="integer" />
+		<property name="nominalTypeDB"          column="NOMINAL_TYPE"           type="character"  access="property" />
+		<property name="nominal"                column="NOMINAL"                type="big_decimal" />
+		<property name="validUntil"             column="VALID_UNTIL"            type="date" />
+		<property name="flagStatusDB"           column="FLAG_STATUS"            type="character"  access="property" />
+		<property name="lastDebited"            column="LAST_DEBITED"           type="timestamp" />
+		<property name="idCreatedBy"            column="ID_CREATED"             type="string" />
+		<property name="idCreatedSpv"           column="ID_CREATED_SPV"         type="string" />
+		<property name="dtmCreated"             column="DTM_CREATED"            type="timestamp" />
+		<property name="requester"              column="ID_UPDATED"             type="string" />
+		<property name="approver"               column="ID_UPDATED_SPV"         type="string" />
+		<property name="dtmUpdated"             column="DTM_UPDATED"            type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.BillerStandingInstructionHistory" table="BILLER_STAND_INSTR_HIST" lazy="false">
+		<composite-id access="property">
+			<key-property name="id"          column="STAND_INSTR_ID"  type="string" />
+			<key-property name="dtmCreated"  column="DTM_LOG"  type="timestamp" />
+		</composite-id>
+		
+
+		<property name="accountNo"              column="ACCOUNT_NO"             type="string" />
+		<property name="billingNo"              column="BILLING_NO"             type="string" />
+		<property name="billerName"             column="BILLER_NAME"            type="string" />
+		<property name="billerAccountNo"        column="BILLER_ACCOUNT_NO"      type="string" />
+		<property name="billerBankName"         column="BILLER_BANK_NAME"       type="string" />
+		<property name="billingPurpose"         column="BILLING_PURPOSE"        type="string" />
+		<property name="paymentPeriodicTypeDB"  column="PAYMENT_PERIODIC_TYPE"  type="character"  access="property" />
+		<property name="paymentMinDate"         column="PAYMENT_MIN_DATE"       type="integer" />
+		<property name="paymentMaxDate"         column="PAYMENT_MAX_DATE"       type="integer" />
+		<property name="nominalTypeDB"          column="NOMINAL_TYPE"           type="character"  access="property" />
+		<property name="nominal"                column="NOMINAL"                type="big_decimal" />
+		<property name="validUntil"             column="VALID_UNTIL"            type="date" />
+		<property name="flagStatusDB"           column="FLAG_STATUS"            type="character"  access="property" />
+		<property name="lastDebited"            column="LAST_DEBITED"           type="timestamp" />
+		<property name="idCreatedBy"            column="ID_CREATED"             type="string" />
+		<property name="idCreatedSpv"           column="ID_CREATED_SPV"         type="string" />
+		<property name="dtmCreatedOld"          column="DTM_CREATED"            type="timestamp" access="property" />
+		<property name="requester"              column="ID_UPDATED"             type="string" />
+		<property name="approver"               column="ID_UPDATED_SPV"         type="string" />
+		<property name="processType"            column="PROCESS_TYPE"           type="character" access="property" />
+		<property name="dtmUpdatedOld"          column="DTM_UPDATED"            type="timestamp" access="property" />
+		<property name="processRequester"       column="REQUESTER"              type="string" access="property" />
+		<property name="processApprover"        column="APPROVER"               type="string" access="property" />
+	</class>
+	
+	
+	
+	<!-- Query -->
+	<query name="BillerStandingInstruction#listLastCreatedData">
+		<![CDATA[
+			 FROM BillerStandingInstruction
+			ORDER BY dtmCreated DESC
+		]]>
+	</query>
+	
+	<query name="BillerStandingInstruction#listByBillingNoAndBillerAccountNo">
+		<![CDATA[
+			  FROM BillerStandingInstruction
+			 WHERE id              LIKE CONCAT(:idStartBy, '%')
+			   AND billingNo       = :billingNo
+			   AND billerAccountNo = :billerAccountNo
+		]]>
+	</query>
+</hibernate-mapping>

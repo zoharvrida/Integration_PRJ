@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping 
+		PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		
+<hibernate-mapping>
+	<class name="bdsm.scheduler.model.TmpSknngInOutCreditFooter" table="TMP_SKNNG_IN_OUT_CREDIT_FOOTER" lazy="false">
+		<composite-id name="compositeId" class="bdsm.scheduler.model.TmpSknngInoutHFPK">
+			<key-property name="batchNo" column="BATCH_NO" type="string" />
+			<key-property name="parentRecordId" column="PARENT_RECORD_ID" type="integer" />
+		</composite-id>
+                <property name="Tsuccess" column="TOTAL_SUCCESS" type="integer" />
+                <property name="Treject" column="TOTAL_REJECT" type="integer" />
+		<property name="tipeRecord" column="TIPE_RECORD" type="string" />
+		<property name="kodeDke" column="KODE_DKE" type="string" />
+		<property name="crc" column="CRC" type="string" />
+		<property name="type" column="TYPE" type="string" />
+		<property name="extractStatus" column="EXTRACT_STATUS" type="string" />
+		<property name="message" column="MESSAGE" type="string" />
+		<property name="idCreatedBy" column="ID_CREATED_BY" type="string" />
+		<property name="idCreatedSpv" column="ID_CREATED_SPV" type="string" />
+		<property name="dtmCreated" column="DTM_CREATED" type="timestamp" />
+		<property name="dtmCreatedSpv" column="DTM_CREATED_SPV" type="timestamp" />
+		<property name="idUpdatedBy" column="ID_UPDATED_BY" type="string" />
+		<property name="idUpdatedSpv" column="ID_UPDATED_SPV" type="string" />
+		<property name="dtmUpdated" column="DTM_UPDATED" type="timestamp" />
+		<property name="dtmUpdatedSpv" column="DTM_UPDATED_SPV" type="timestamp" />
+	</class>
+</hibernate-mapping>

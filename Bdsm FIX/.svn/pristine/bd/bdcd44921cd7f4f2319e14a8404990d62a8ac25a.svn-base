@@ -1,0 +1,37 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package main;
+
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
+
+/**
+ *
+ * @author NCBS
+ */
+public class TimeZoneTest {
+
+    public static void main(String[] args) {
+        TimeZone t = TimeZone.getDefault();
+        int off = t.getRawOffset();
+        System.out.println(off);
+        System.out.println(String.format("%02d", off/3600000));
+        System.out.println(off/3600000);
+//        System.out.println(TimeZone.getDefault().getDisplayName());
+//        System.out.println(TimeZone.getDefault().getID());
+//        Locale[] l =Locale.getAvailableLocales();
+//        for(int i =0; i<l.length; i++){
+//            System.out.println(l[i]);
+//        }
+        //byte[] arrayOfByte1 = {52, 83, 78, 44, 16, 117, 7, 41};
+        //byte[] arrayOfByte2 = {22, 37, 47, 125, 116, 86, 41, 115, 57, 100, 83, 18, 101, 86, 71, 43};
+        //System.out.println(new String(arrayOfByte1));
+        //System.out.println(new String(arrayOfByte2));
+        System.out.println(off);
+        System.out.println(String.format("%s%02d%02d", off>=0?"+":"-",off/360000,(off/60000)%60));
+
+    }
+}

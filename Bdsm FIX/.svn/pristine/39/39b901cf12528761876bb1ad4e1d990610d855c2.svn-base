@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.scheduler.model.FixSentBox" table="FIXSENTBOX" lazy="false">
+        <id       name="sentBoxId"        column="sentBoxId"        type="string" >
+            <generator class="assigned"/>
+        </id>
+        <property name="emailTo"  column="emailTo"  type="string"/>
+        <property name="emailCc"  column="emailCc"  type="string"/>
+        <property name="subject"    column="subject"    type="string"  />
+        <property name="emailBody"  column="emailBody"  type="string"/>        
+        <property name="dtmSend"    column="dtmSend"    type="timestamp"  />
+        <property name="emailAttachment"  column="emailAttachment"  type="string"/>        
+
+    </class>
+</hibernate-mapping>

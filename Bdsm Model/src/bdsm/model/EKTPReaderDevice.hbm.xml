@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"> 
+
+<hibernate-mapping>
+	<!-- Model -->
+	<class name="bdsm.model.EKTPReaderDevice" table="EKTP_READER_DEVICE" lazy="false">
+		<composite-id>
+			<key-property name="codeCCBranch"  column="COD_CC_BRN"  type="integer" />
+			<key-property name="name"          column="NAME"        type="string" />
+		</composite-id>
+		
+		<property name="IP"             column="IP"               type="string" />
+		<property name="SAUsername"     column="SA_USERNAME"      type="string" />
+		<property name="SAPassword"     column="SA_PASSWORD"      type="string" />
+		<property name="protocol"       column="PROTOCOL"         type="string" />
+		<property name="idCreatedBy"    column="ID_CREATED_BY"    type="string" />
+		<property name="dtmCreated"     column="DTM_CREATED_BY"   type="timestamp" />
+		<property name="idCreatedSpv"   column="ID_CREATED_SPV"   type="string" />
+		<property name="dtmCreatedSpv"  column="DTM_CREATED_SPV"  type="timestamp" />
+		<property name="idUpdatedBy"    column="ID_UPDATED_BY"    type="string" />
+		<property name="dtmUpdated"     column="DTM_UPDATED_BY"   type="timestamp" />
+		<property name="idUpdatedSpv"   column="ID_UPDATED_SPV"   type="string" />
+		<property name="dtmUpdatedSpv"  column="DTM_UPDATED_SPV"  type="timestamp" />
+	</class>
+	
+	
+	<!-- Query -->
+	<query name="EKTPReaderDevice#listByCodeCCBranch">
+		<![CDATA[
+			SELECT e FROM EKTPReaderDevice e WHERE e.codeCCBranch = :codeCCBranch
+		]]>
+	</query>
+	
+	<query name="EKTPReaderDevice#listDevicesByUserId">
+		<![CDATA[
+			SELECT CONCAT(d.IP, '|', d.protocol), d.name
+			  FROM EKTPReaderDevice d, EKTPReaderUser u
+			 WHERE d.codeCCBranch = u.codeCCBranch
+			   AND d.name         = u.deviceName
+			   AND u.idUser       = :idUser
+			 ORDER BY d.name
+		]]>
+	</query>
+</hibernate-mapping>

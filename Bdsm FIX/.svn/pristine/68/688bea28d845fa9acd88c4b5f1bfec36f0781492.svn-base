@@ -1,0 +1,147 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bdsm.scheduler.processor;
+
+import bdsm.scheduler.MapKey;
+import bdsm.scheduler.StatusDefinition;
+import bdsm.scheduler.dao.FixLogDao;
+import bdsm.scheduler.dao.FixQXtractDao;
+import bdsm.scheduler.dao.FixSchedulerXtractDao;
+import bdsm.scheduler.dao.FixTemplateMasterDao;
+import bdsm.scheduler.exception.GenRptException;
+import bdsm.scheduler.model.FixLog;
+import bdsm.scheduler.model.FixQXtract;
+import bdsm.scheduler.model.FixTemplateMasterPK;
+import bdsm.scheduler.util.FileUtil;
+import bdsm.scheduler.util.MailUtil;
+import bdsm.scheduler.util.SchedulerUtil;
+import bdsm.util.HibernateUtil;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ *
+ * @author bdsm
+ */
+public class XtractJobProcessor extends XtractProcessor {
+
+    @Override
+    public void execute(Map context) {
+        this.context = context;
+        this.session = HibernateUtil.getSession();
+
+        this.fixQXtract = (FixQXtract) context.get(MapKey.model);
+
+        this.fixSchedulerXtractDao = new FixSchedulerXtractDao(this.session);
+        this.fixSchedulerXtract = this.fixSchedulerXtractDao.get(this.fixQXtract.getIdScheduler());
+
+        this.fixTemplateMasterDao = new FixTemplateMasterDao(this.session);
+        this.fixTemplateMasterPK = new FixTemplateMasterPK();
+        this.fixTemplateMasterPK.setIdTemplate(this.fixSchedulerXtract.getFixSchedulerPK().getIdTemplate());
+        this.fixTemplateMaster = this.fixTemplateMasterDao.get(this.fixTemplateMasterPK);
+
+        this.context.put(MapKey.session, this.session);
+        try {
+            if (this.fixTemplateMaster.getRptFileTemplate() != null) {
+                //generate with jasper
+                getLogger().info("Generate Report with Jasper");
+                generateReport();
+                getLogger().info("Generate Report with Jasper DONE");
+            }
+
+            if (this.fixTemplateMaster.getJavaClass() != null) {
+                this.context.put(MapKey.fixQXtract, this.fixQXtract);
+                this.context.put(MapKey.javaClass, this.fixTemplateMaster.getJavaClass());
+                this.session.clear();
+                executeClass();
+            }
+
+            encryptAttachment();
+
+            if (this.fixSchedulerXtract.getTypDest().toLowerCase().equals("email")) {
+                getLogger().info("Begin Send Email");
+                sentMessages();
+                getLogger().info("Send Email DONE");
+            } else if (this.fixSchedulerXtract.getTypDest().toLowerCase().equals("sftp")) {
+                getLogger().info("Begin SFTP Transfer");
+                sFTP(this.fixQXtract.getParam5());
+                getLogger().info("SFTP Transfer Done");
+            }
+            this.fixQXtract.setFlgProcess(StatusDefinition.DONE);
+        } catch (Exception ex) {            
+            fixQXtract.setFlgProcess(StatusDefinition.ERROR);
+            fixQXtract.setReason(ex.getMessage());
+            getLogger().error(ex.getMessage());
+        }
+        this.fixQXtract.setDtmFinish(SchedulerUtil.getTime());
+        this.fixQXtractDao = new FixQXtractDao(this.session);
+        this.transaction = this.session.beginTransaction();
+        this.fixQXtractDao.update(this.fixQXtract);
+        this.transaction.commit();
+        HibernateUtil.closeSession(this.session);
+    }
+
+    private void sentMessages() throws Exception {
+        MailUtil.sentNewMessage(getValue(this.fixSchedulerXtract.getEmailTo()),
+                getValue(this.fixSchedulerXtract.getEmailCC()),
+                getValue(this.fixSchedulerXtract.getEmailSubjectPattern()),
+                getValue(this.fixSchedulerXtract.getEmailBody()),
+                //getValue(this.fixSchedulerXtract.getEmailAttachment()),
+                this.fixQXtract.getParam5(),
+                this.session, this.fixSchedulerXtract.getFixSchedulerPK().getIdScheduler());
+    }
+
+    private void sFTP(String sourceFile) throws Exception {
+        getLogger().info("Initiate SFTP Transfer");
+        FixLog fixLog = FileUtil.sftpToFCR(this.fixSchedulerXtract.getSftpIP(),
+                this.fixSchedulerXtract.getSftpPort(),
+                this.fixSchedulerXtract.getSftpUserId(),
+                this.fixSchedulerXtract.getSftpPass(),
+                this.fixSchedulerXtract.getSftpKeyPath(), sourceFile,
+                this.fixSchedulerXtract.getSftpDestPath(), this.fixSchedulerXtract.getFixSchedulerPK().getIdScheduler());
+        getLogger().info("Initiate SFTP Transfer Done, Begin Logging SFTP Transfer to FixLog");
+        FixLogDao fixLogDao = new FixLogDao(this.session);
+        this.transaction = this.session.beginTransaction();
+        fixLogDao.insert(fixLog);
+        this.transaction.commit();
+        getLogger().info("SFTP Save log to FixLog Done");
+    }
+
+    private void encryptAttachment() throws Exception {
+        String param5 = getValue(this.fixSchedulerXtract.getEmailAttachment());
+
+        if (param5 != null) {
+            if (!param5.equals("") && this.fixSchedulerXtract.getFlgEncrypt().equals("Y")) {
+                getLogger().info("Encrypt Attachment");
+                String newFile = FileUtil.encrypt(filePath + param5, this.fixSchedulerXtract.getModEncrypt(), this.fixSchedulerXtract.getKeyEncrypt());
+                this.fixQXtract.setParam5(newFile);
+                getLogger().info("Encrypt Attachment DONE");
+            }
+        }
+
+    }
+
+    private void generateReport() throws GenRptException {
+        HashMap contextReport = new HashMap();
+        contextReport.put(MapKey.reportId, this.fixTemplateMaster.getRptFileTemplate());
+        contextReport.put(MapKey.reportFormat, this.fixSchedulerXtract.getFileFormat());
+        contextReport.put(MapKey.reportFileName, getValue(this.fixSchedulerXtract.getEmailAttachment()));
+        contextReport.put(MapKey.session, this.session);
+
+        HashMap parameter = new HashMap();
+        parameter.put(MapKey.param1, this.fixQXtract.getParam1());
+        parameter.put(MapKey.param2, this.fixQXtract.getParam2());
+        parameter.put(MapKey.param3, this.fixQXtract.getParam3());
+        parameter.put(MapKey.param4, this.fixQXtract.getParam4());
+        parameter.put(MapKey.param5, this.fixQXtract.getParam5());
+        parameter.put(MapKey.param6, this.fixQXtract.getParam6());
+
+        contextReport.put(MapKey.reportParam, parameter);
+
+        //call jasper function
+        JasperGenRpt jasperGenRpt = new JasperGenRpt(contextReport);
+        jasperGenRpt.generateReport();
+    }
+}

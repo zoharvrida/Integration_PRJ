@@ -1,0 +1,34 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package main;
+
+import bdsm.scheduler.util.MailUtil;
+import bdsm.util.HibernateUtil;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author USER
+ */
+public class MailTest {
+    public static void main(String[] args){
+        String emailbody="Dear Sir/Madam,<br/>" +
+                        "<br/>" +
+                        "Your approval is required for the attached file to be processed further. <br/>" +
+                        "<br/>" +
+                        "Please reply this email with:<br/>" +
+                        "Ok, if you approve the file to be processed, or<br/>" +
+                        "Not ok, if otherwise.<br/>" +
+                        "<br/>" +
+                        "Thanks & regards,<br/>" +
+                        "- BDSM -";
+        try {
+            MailUtil.sentNewMessage("titus.prasetyo@danamon.co.id", null, "Test", emailbody, null, HibernateUtil.getSession(), 1);
+        } catch (Exception ex) {
+            System.out.println("ERR : " + ex.toString());
+        }
+    }
+}

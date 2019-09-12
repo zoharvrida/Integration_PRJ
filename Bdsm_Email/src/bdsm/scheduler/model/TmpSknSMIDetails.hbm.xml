@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="bdsm.scheduler.model.TmpSknSMIDetails" table="TMP_SKNNG_IN_OUT_SMI_DETAIL" lazy="false">
+		<composite-id name="pk" class="bdsm.scheduler.model.TmpSKNSMIpkDtls">
+			<key-property name="batchNo" column="batch_no" type="string" />
+			<key-property name="bacthNogen2" column="BATCH_GEN2" type="string" />
+			<key-property name="recordId" column="record_id" type="integer" />
+		</composite-id>
+		<property name="tipe_record" column="tipe_record" type="string" />
+		<property name="Clearing_Date" column="Clearing_Date" type="string" />
+		<property name="InstNumber" column="Instrument_No" type="string" />
+		<property name="receivingRouteCode" column="Receiving_Route_Code" type="string" />
+		<property name="accountNo" column="Account_No" type="string" />
+		<property name="trxCode" column="Transaction_Code" type="string" />
+		<property name="Amount" column="Amount" type="string" />
+		<property name="senderRouteCode" column="Sender_Routing_Code" type="string" />
+		<property name="SOR" column="SOR" type="string" />
+		<property name="LOB" column="LOB" type="string" />
+		<property name="branchCode" column="Branch_Code" type="string" />
+		<property name="subBranch" column="Sub_Branch" type="string" />
+		<property name="RejectCode" column="Reject_Code" type="string" />
+		<property name="message" column="message" type="string" />
+		<property name="idCreatedBy" column="ID_CREATED_BY" type="string" />
+		<property name="idCreatedSpv" column="ID_CREATED_SPV" type="string" />
+		<property name="dtmCreated" column="DTM_CREATED" type="timestamp" />
+		<property name="dtmCreatedSpv" column="DTM_CREATED_SPV" type="timestamp" />
+		<property name="idUpdatedBy" column="ID_UPDATED_BY" type="string" />
+		<property name="idUpdatedSpv" column="ID_UPDATED_SPV" type="string" />
+		<property name="dtmUpdated" column="DTM_UPDATED" type="timestamp" />
+		<property name="dtmUpdatedSpv" column="DTM_UPDATED_SPV" type="timestamp" />
+		<property name="orderNo" column="ORDER_NO" type="integer" />
+		<property name="parentID" column="PARENT_ID" type="string" />
+		<property name="extractStatus" column="Extract_Status" type="string" />
+	</class>
+</hibernate-mapping>

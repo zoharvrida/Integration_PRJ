@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+
+<hibernate-mapping>
+	<!-- Model -->
+	<class name="bdsm.model.MfcUdMaster_LLD" table="MFCUDMASTER_LLD" lazy="false">
+		<composite-id name="compositeId" class="bdsm.model.MfcUdMasterPK">
+			<key-property name="noCif"  column="NOCIF"  type="int" />
+			<key-property name="noUd"   column="NOUD"   type="string" />
+		</composite-id>
+		
+		<property name="dtIssued"        column="DT_ISSUED"         type="date" />
+		<property name="dtExpiry"        column="DTEXPIRY"          type="date" />
+		<property name="ccyUd"           column="CCYUD"             type="string" />
+		<property name="amtLimit"        column="AMTLIMIT"          type="big_decimal" />
+		<property name="amtAvail"        column="AMTAVAIL"          type="big_decimal" />
+		<property name="cdBranch"        column="CDBRANCH"          type="integer" />
+		<property name="status"          column="STATUS"            type="string" />
+		<property name="remarks"         column="REMARKS"           type="string" />
+		<property name="amtLimitUsd"     column="AMTLIMITUSD"       type="big_decimal" />
+		<property name="amtAvailUsd"     column="AMTAVAILUSD"       type="big_decimal" />
+		<property name="ratFcyLim"       column="RATFCYLIM"         type="big_decimal" />
+		<property name="ratUsdLim"       column="RATUSDLIM"         type="big_decimal" />
+		<property name="udTypeCategory"  column="UD_TYPE_CATEGORY"  type="string" />
+		<property name="udTypeValue"     column="UD_TYPE_VALUE"     type="string" />
+		<property name="payeeName"       column="PAYEE_NAME"        type="string" />
+		<property name="payeeCountry"    column="PAYEE_COUNTRY"     type="string" />
+		<property name="tradingProduct"  column="TRADING_PRODUCT"   type="string" />
+		<property name="channelId"       column="CHANNEL_ID"        type="string" />
+		<property name="idCreatedBy"     column="IDCREATEDBY"       type="string" />
+		<property name="idCreatedSpv"    column="IDCREATEDSPV"      type="string" />
+		<property name="dtmCreated"      column="DTMCREATED"        type="timestamp" />
+		<property name="dtmCreatedSpv"   column="DTMCREATEDSPV"     type="timestamp" />
+		<property name="idUpdatedBy"     column="IDUPDATEDBY"       type="string" />
+		<property name="idUpdatedSpv"    column="IDUPDATEDSPV"      type="string" />
+		<property name="dtmUpdated"      column="DTMUPDATED"        type="timestamp" />
+		<property name="dtmUpdatedSpv"   column="DTMUPDATEDSPV"     type="timestamp" />		
+	</class>
+</hibernate-mapping>

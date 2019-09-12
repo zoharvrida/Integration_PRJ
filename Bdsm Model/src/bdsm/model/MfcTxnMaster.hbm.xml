@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.model.MfcTxnMaster" table="MFCTXNMASTER" lazy="false">
+      <composite-id name="compositeId" class="bdsm.model.MfcTxnMasterPK">
+            <key-property name="noCif"    column="noCif"    type="int" />
+            <key-property name="period"   column="period"   type="int" />
+      </composite-id>
+      <property name="amtAvailUsd"   column="amtAvailUsd"   type="double"   />
+      <property name="idCreatedBy"   column="idCreatedBy"   type="string"/>
+      <property name="idCreatedSpv"  column="idCreatedSpv"  type="string"/>
+      <property name="dtmCreated"    column="dtmCreated"    type="timestamp"/>
+      <property name="dtmCreatedSpv" column="dtmCreatedSpv" type="timestamp"/>
+      <property name="idUpdatedBy"   column="idUpdatedBy"   type="string"/>
+      <property name="idUpdatedSpv"  column="idUpdatedSpv"  type="string"/>
+      <property name="dtmUpdated"    column="dtmUpdated"    type="timestamp"/>
+      <property name="dtmUpdatedSpv" column="dtmUpdatedSpv" type="timestamp"/>
+    </class>
+    
+    
+    <sql-query name="FcyTxnSummLimMonthly#byCIF">
+        <![CDATA[
+            SELECT c.cod_cust_id, 
+                   c.nam_cust_full, 
+                   NVL(d.amtAvailUsd, (SELECT value FROM parameter WHERE cdparam = 'MFCLMTAMT')) amtAvailUsd, 
+                   DECODE(e.cdBranch, NULL, 'A', 'I') action, 
+                   DECODE(f.nocif, NULL, 'NO', 'YES') selected_customer 
+              FROM 
+                   ci_custmast c, MfcTxnMaster d, MfcSlMaster e,
+                   (
+                     SELECT DISTINCT ud.nocif
+                       FROM MfcUdMaster ud, bdsm_lov_mast blm, ba_bank_mast bbm
+                      WHERE blm.cod_field_tag = 'TXT_BDSM_002'
+                        AND ud.type_ud        = blm.txt_lov_value
+                        AND ud.status         = 'A'
+                        AND bbm.dat_process   <= ud.dtexpiry
+                        AND (UPPER(blm.txt_lov_name) LIKE '%SALES CONTRACT%' OR UPPER(blm.txt_lov_name) LIKE '%PURCHASE ORDER%') 
+                   ) f
+             WHERE c.flg_mnt_status = 'A' 
+               AND c.cod_entity_vpd = 11 
+               AND d.noCif(+)       = c.cod_cust_id 
+               AND e.noCif(+)       = d.noCif 
+               AND e.period(+)      = d.period 
+               AND f.noCif(+)       = c.cod_cust_id
+               AND c.cod_cust_id    = :pNoAcct 
+               AND d.period(+)      = :pPeriod 
+        ]]>
+    </sql-query>
+    
+    <sql-query name="FcyTxnSummLimMonthly#byAccountNo">
+        <![CDATA[
+            SELECT b.cod_cust, 
+                   c.nam_cust_full, 
+                   b.cod_acct_cust_rel, 
+                   NVL(d.amtAvailUsd, (SELECT value FROM parameter WHERE cdparam = 'MFCLMTAMT')) amtAvailUsd, 
+                   DECODE(e.cdBranch, NULL, 'A', 'I') action, 
+                   DECODE(f.nocif, NULL, 'NO', 'YES') selected_customer 
+              FROM (
+                  SELECT cod_acct_no 
+                    FROM ch_acct_mast a1 
+                   WHERE a1.cod_acct_no    = CAST(:pNoAcct1 AS CHAR(16)) 
+                     AND a1.flg_mnt_status = 'A' 
+                     AND a1.cod_entity_vpd = 11
+                UNION
+                  SELECT cod_acct_no 
+                    FROM td_acct_mast a2 
+                   WHERE a2.cod_acct_no    = CAST(:pNoAcct2 AS CHAR(16)) 
+                     AND a2.flg_mnt_status = 'A' 
+                     AND a2.cod_entity_vpd = 11
+              ) a, ch_acct_cust_xref b, 
+              ci_custmast c, MfcTxnMaster d, MfcSlMaster e, 
+              (
+                 SELECT DISTINCT ud.nocif
+                   FROM MfcUdMaster ud, bdsm_lov_mast blm, ba_bank_mast bbm
+                  WHERE blm.cod_field_tag = 'TXT_BDSM_002'
+                    AND ud.type_ud        = blm.txt_lov_value
+                    AND ud.status         = 'A'
+                    AND bbm.dat_process   <= ud.dtexpiry
+                    AND (UPPER(blm.txt_lov_name) LIKE '%SALES CONTRACT%' OR UPPER(blm.txt_lov_name) LIKE '%PURCHASE ORDER%') 
+              ) f
+             WHERE b.cod_acct_no    = a.cod_acct_no 
+               AND b.flg_mnt_status = 'A' 
+               AND b.cod_entity_vpd = 11 
+               AND c.cod_cust_id    = b.cod_cust 
+               AND c.flg_mnt_status = 'A' 
+               AND c.cod_entity_vpd = 11
+               AND d.noCif(+)       = b.cod_cust 
+               AND e.noCif(+)       = d.noCif 
+               AND e.period(+)      = d.period
+               AND f.noCif(+)       = c.cod_cust_id   
+               AND d.period(+)      = :pPeriod  
+        ]]>
+    </sql-query>
+</hibernate-mapping>

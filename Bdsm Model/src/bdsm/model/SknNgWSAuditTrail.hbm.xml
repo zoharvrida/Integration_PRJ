@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping 
+		PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.SknNgWSAuditTrailBatch" table="SKNNG_WS_AUDIT_TRAIL_BATCH">
+		<id name="batchNo" column="BATCH_NO" type="string" />
+		
+		<property name="type"              column="TYPE"               type="byte" />
+		<property name="filenameFixin"     column="FILENAME_FIXIN"     type="string" />
+		<property name="batchNoOriginal"   column="BATCH_NO_ORIGINAL"  type="string" />
+		<property name="filenameOriginal"  column="FILENAME_ORIGINAL"  type="string" />
+		<property name="dtmCreated"        column="DTM_CREATED"        type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.SknNgWSAuditTrailHeader" table="SKNNG_WS_AUDIT_TRAIL_HEADER">
+		<composite-id name="compositeId" class="bdsm.model.SknNgPK">
+			<key-property name="batchNo"   column="BATCH_NO"   type="string" />
+			<key-property name="recordId"  column="RECORD_ID"  type="integer" />
+		</composite-id>
+		
+		<property name="batchId"                   column="BATCH_ID"                    type="string" />
+		<property name="jamTanggalMessage"         column="JAM_TANGGAL_MESSAGE"         type="string" />
+		<property name="jumlahRecords"             column="JUMLAH_RECORDS"              type="string" />
+		<property name="tanggalBatch"              column="TANGGAL_BATCH"               type="string" />
+		<property name="identitasPesertaPengirim"  column="IDENTITAS_PESERTA_PENGIRIM"  type="string" />
+		<property name="CRC"                       column="CRC"                         type="string" />
+		<property name="status"                    column="STATUS"                      type="string" />
+		<property name="rejectCode"                column="REJECT_CODE"                 type="string" />
+		<property name="dtmStart"                  column="DTM_START"                   type="timestamp" />
+		<property name="dtmFinish"                 column="DTM_FINISH"                  type="timestamp" />
+		<property name="flagErrorDB"               column="FLAG_ERROR"                  type="character"  access="property" />
+	</class>
+	
+	<class name="bdsm.model.SknNgWSAuditTrailDetail" table="SKNNG_WS_AUDIT_TRAIL_DETAIL">
+		<composite-id name="compositeId" class="bdsm.model.SknNgPK">
+			<key-property name="batchNo"   column="BATCH_NO"   type="string" />
+			<key-property name="recordId"  column="RECORD_ID"  type="integer" />
+		</composite-id>
+		
+		<property name="parentRecordId"  column="PARENT_RECORD_ID"  type="integer" />
+		<property name="nomorReferensi"  column="NOMOR_REFERENSI"   type="string" />
+		<property name="SOR"             column="SOR"               type="string" />
+		<property name="status"          column="STATUS"            type="string" />
+		<property name="rejectCode"      column="REJECT_CODE"       type="string" />
+		<property name="dtmCreated"      column="DTM_CREATED"       type="timestamp" />
+		<property name="dtmUpdated"      column="DTM_UPDATED"       type="timestamp" />
+	</class>
+	
+	
+	<!-- Query -->
+	<query name="SknNgWSAuditTrailBatch#listByBatchNo,TypeAndStatus">
+		<![CDATA[
+			  FROM SknNgWSAuditTrailBatch bo
+			 WHERE EXISTS (
+				 FROM SknNgWSAuditTrailBatch b, SknNgWSAuditTrailHeader h, SknNgWSAuditTrailDetail d
+				WHERE b.batchNo              = h.compositeId.batchNo
+				  AND h.compositeId.batchNo  = d.compositeId.batchNo
+				  AND h.compositeId.recordId = d.parentRecordId
+				  AND b.batchNo              LIKE :batchNo
+				  AND b.type                 = :type
+				  AND ((h.status = COALESCE(:status, h.status)) OR (d.status = COALESCE(:status, d.status)))
+				  AND TRUNC(b.dtmCreated)    = TRUNC(COALESCE(:date, b.dtmCreated))
+				  AND b.batchNo              = bo.batchNo
+			 )
+			 ORDER BY bo.dtmCreated DESC
+		]]>
+	</query>
+	
+	<query name="SknNgWSAuditTrailHeader#listCreditByBatchNoAndStatus">
+		<![CDATA[
+		   SELECT ho, hOri
+			 FROM SknNgWSAuditTrailHeader ho, SknNgWSAuditTrailBatch b, SknNgInOutCreditHeader hOri
+			WHERE ho.compositeId.batchNo   = b.batchNo
+			  AND b.batchNoOriginal        = hOri.compositeId.batchNo
+			  AND ho.compositeId.recordId  = hOri.compositeId.recordId 
+			  AND hOri.compositeId.batchNo = COALESCE(:batchNo, hOri.compositeId.batchNo)
+			  AND ho.compositeId.recordId  IN (
+			       SELECT h.compositeId.recordId
+					 FROM SknNgWSAuditTrailHeader h, SknNgWSAuditTrailDetail d
+					WHERE h.compositeId.batchNo  = d.compositeId.batchNo
+					  AND h.compositeId.recordId = d.parentRecordId 
+					  AND ((h.status = COALESCE(:status, h.status)) OR (d.status = COALESCE(:status, d.status)))
+					  AND h.compositeId.batchNo  = ho.compositeId.batchNo
+			  )
+			ORDER BY ho.compositeId.recordId
+		]]>
+	</query>
+	
+	<query name="SknNgWSAuditTrailHeader#listDebitByBatchNoAndStatus">
+		<![CDATA[
+		   SELECT ho, hOri
+			 FROM SknNgWSAuditTrailHeader ho, SknNgWSAuditTrailBatch b, SknNgInOutDebitHeader hOri
+			WHERE ho.compositeId.batchNo   = b.batchNo
+			  AND b.batchNoOriginal        = hOri.compositeId.batchNo
+			  AND ho.compositeId.recordId  = hOri.compositeId.recordId 
+			  AND hOri.compositeId.batchNo = COALESCE(:batchNo, hOri.compositeId.batchNo)
+			  AND ho.compositeId.recordId  IN (
+			       SELECT h.compositeId.recordId
+					 FROM SknNgWSAuditTrailHeader h, SknNgWSAuditTrailDetail d
+					WHERE h.compositeId.batchNo  = d.compositeId.batchNo
+					  AND h.compositeId.recordId = d.parentRecordId 
+					  AND ((h.status = COALESCE(:status, h.status)) OR (d.status = COALESCE(:status, d.status)))
+					  AND h.compositeId.batchNo  = ho.compositeId.batchNo
+			  )
+			ORDER BY ho.compositeId.recordId
+		]]>
+	</query>
+	
+	<query name="SknNgWSAuditTrailHeader#listReturByBatchNoAndStatus">
+		<![CDATA[
+		   SELECT ho, hOri
+			 FROM SknNgWSAuditTrailHeader ho, SknNgWSAuditTrailBatch b, SknNgReturInDebitHeader hOri
+			WHERE ho.compositeId.batchNo   = b.batchNo
+			  AND b.batchNoOriginal        = hOri.compositeId.batchNo
+			  AND ho.compositeId.recordId  = hOri.compositeId.recordId 
+			  AND hOri.compositeId.batchNo = COALESCE(:batchNo, hOri.compositeId.batchNo)
+			  AND ho.compositeId.recordId  IN (
+			       SELECT h.compositeId.recordId
+					 FROM SknNgWSAuditTrailHeader h, SknNgWSAuditTrailDetail d
+					WHERE h.compositeId.batchNo  = d.compositeId.batchNo
+					  AND h.compositeId.recordId = d.parentRecordId 
+					  AND ((h.status = COALESCE(:status, h.status)) OR (d.status = COALESCE(:status, d.status)))
+					  AND h.compositeId.batchNo  = ho.compositeId.batchNo
+			  )
+			ORDER BY ho.compositeId.recordId
+		]]>
+	</query>
+	
+	<query name="SknNgWSAuditTrailDetail#listCreditByBatchNoAndStatus">
+		<![CDATA[
+			SELECT d, dOri, e.description
+			  FROM SknNgWSAuditTrailDetail d, SknNgWSAuditTrailHeader h, SknNgWSAuditTrailBatch b
+			       , SknNgInOutCreditHeader hOri, SknNgInOutCreditDetail dOri
+			       , SknNgSPKErrorCode e
+			 WHERE d.compositeId.batchNo     = h.compositeId.batchNo
+			   AND d.parentRecordId          = h.compositeId.recordId
+			   AND h.compositeId.batchNo     = b.batchNo
+			   AND b.batchNoOriginal         = hOri.compositeId.batchNo
+			   AND hOri.compositeId.batchNo  = dOri.compositeId.batchNo
+			   AND hOri.compositeId.recordId = dOri.parentRecordId
+			   AND d.compositeId.recordId    = dOri.compositeId.recordId
+			   AND d.rejectCode              = e.code
+			   AND hOri.compositeId.batchNo  = COALESCE(:batchNo, hOri.compositeId.batchNo)
+			   AND hOri.compositeId.recordId = COALESCE(:recordId, hOri.compositeId.recordId)
+			   AND d.status = (CASE WHEN h.flagErrorDB = 'Y' THEN d.status ELSE COALESCE(:status, d.status) END)
+			 ORDER BY d.compositeId.recordId
+		]]>
+	</query>
+	
+	<query name="SknNgWSAuditTrailDetail#listDebitByBatchNoAndStatus">
+		<![CDATA[
+			SELECT d, dOri, e.description
+			  FROM SknNgWSAuditTrailDetail d, SknNgWSAuditTrailHeader h, SknNgWSAuditTrailBatch b
+			       , SknNgInOutDebitHeader hOri, SknNgInOutDebitDetail dOri
+			       , SknNgSPKErrorCode e
+			 WHERE d.compositeId.batchNo     = h.compositeId.batchNo
+			   AND d.parentRecordId          = h.compositeId.recordId
+			   AND h.compositeId.batchNo     = b.batchNo
+			   AND b.batchNoOriginal         = hOri.compositeId.batchNo
+			   AND hOri.compositeId.batchNo  = dOri.compositeId.batchNo
+			   AND hOri.compositeId.recordId = dOri.parentRecordId
+			   AND d.compositeId.recordId    = dOri.compositeId.recordId
+			   AND d.rejectCode              = e.code
+			   AND hOri.compositeId.batchNo  = COALESCE(:batchNo, hOri.compositeId.batchNo)
+			   AND hOri.compositeId.recordId = COALESCE(:recordId, hOri.compositeId.recordId)
+			   AND d.status = (CASE WHEN h.flagErrorDB = 'Y' THEN d.status ELSE COALESCE(:status, d.status) END)
+			 ORDER BY d.compositeId.recordId
+		]]>
+	</query>
+	
+	<query name="SknNgWSAuditTrailDetail#listReturByBatchNoAndStatus">
+		<![CDATA[
+			SELECT d, dOri, e.description
+			  FROM SknNgWSAuditTrailDetail d, SknNgWSAuditTrailHeader h, SknNgWSAuditTrailBatch b
+			       , SknNgReturInDebitHeader hOri, SknNgReturInDebitDetail dOri
+			       , SknNgSPKErrorCode e
+			 WHERE d.compositeId.batchNo     = h.compositeId.batchNo
+			   AND d.parentRecordId          = h.compositeId.recordId
+			   AND h.compositeId.batchNo     = b.batchNo
+			   AND b.batchNoOriginal         = hOri.compositeId.batchNo
+			   AND hOri.compositeId.batchNo  = dOri.compositeId.batchNo
+			   AND hOri.compositeId.recordId = dOri.parentRecordId
+			   AND d.compositeId.recordId    = dOri.compositeId.recordId
+			   AND d.rejectCode              = e.code
+			   AND hOri.compositeId.batchNo  = COALESCE(:batchNo, hOri.compositeId.batchNo)
+			   AND hOri.compositeId.recordId = COALESCE(:recordId, hOri.compositeId.recordId)
+			   AND d.status = (CASE WHEN h.flagErrorDB = 'Y' THEN d.status ELSE COALESCE(:status, d.status) END)
+			 ORDER BY d.compositeId.recordId
+		]]>
+	</query>
+	
+	<query name="SknNgWSAuditTrailDetail#countByStatus">
+		<![CDATA[
+		   SELECT h.compositeId.batchNo, h.compositeId.recordId, e.description, COUNT(d.compositeId.recordId)
+			 FROM SknNgWSAuditTrailHeader h, SknNgWSAuditTrailDetail d, SknNgSPKErrorCode e
+			WHERE h.compositeId.batchNo  = d.compositeId.batchNo
+			  AND h.compositeId.recordId = d.parentRecordId
+			  AND h.rejectCode           = e.code
+			  AND COALESCE(d.status, ' ') = COALESCE((CASE WHEN h.flagErrorDB = 'Y' THEN d.status ELSE COALESCE(:status, d.status) END), ' ')
+			  AND CONCAT(h.compositeId.batchNo, h.compositeId.recordId) IN (:headerList)
+			GROUP BY h.compositeId.batchNo, h.compositeId.recordId, e.description
+		]]>
+	</query>
+		
+	<query name="SknNgWSAuditTrailDetail#updateStatusAndRejectCode">
+		<![CDATA[
+			UPDATE SknNgWSAuditTrailDetail
+			   SET status     = :status, 
+			       rejectCode = :rejectCode,
+			       dtmUpdated = COALESCE(:dtmUpdated, current_timestamp())
+			 WHERE compositeId.batchNo  = :batchNo
+			   AND compositeId.recordId IN (:listRecordId)
+		]]>
+	</query>
+</hibernate-mapping>

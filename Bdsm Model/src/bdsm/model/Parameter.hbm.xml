@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+   <class name="bdsm.model.Parameter" table="PARAMETER" lazy="false">
+      <id       name="cdParam"     column="cdParam"     type="string">
+         <generator class="assigned"/>
+      </id>
+      <property name="typParam"    column="typParam"    type="string"/>
+      <property name="value"       column="value"       type="integer"/>
+      <property name="strVal"      column="strVal"      type="string"/>
+   </class>
+   <sql-query name="FieldParameter#getRealParam">
+       <query-param name="pIdScheduler" type="integer"/>
+       <query-param name="pField" type="string"/>
+       <query-param name="pTypfix" type="string"/>
+       
+       <return-scalar column="formatData" type="string"/>
+       <return-scalar column="fieldName" type="string"/>
+       
+<return-scalar column="formatRule" type="string"/>
+
+       <![CDATA[
+            select field_name as fieldName,format as formatData,format_rule as formatRule
+             from FIELDPARAMETER 
+            where id_field = :pField
+              and id_template = :pIdScheduler
+              and flg_tmp = :pTypfix
+              order by ORDER_NO
+        ]]>
+   </sql-query>
+   <sql-query name="FieldParameter#getParambyModul">
+       <query-param name="pIdScheduler" type="integer"/>
+       <query-param name="pField" type="string"/>
+       <query-param name="pTypfix" type="string"/>
+       <query-param name="pModule" type="string"/>
+       
+       <return-scalar column="formatData" type="string"/>
+       <return-scalar column="formatRule" type="string"/>
+       <return-scalar column="fieldName" type="string"/>
+       <return-scalar column="flgMandatory" type="string"/>
+       <return-scalar column="destTable" type="string"/>
+       
+       <![CDATA[
+            select field_name as fieldName,
+                   format as formatData,
+                   format_rule as formatRule,
+                   flg_mandatory as flgMandatory,
+                   dest_table as destTable
+             from FIELDPARAMETER 
+            where id_field = :pField
+              and id_template = :pIdScheduler
+              and flg_tmp = :pTypfix
+              and module_name like '%'||:pModule||'%'
+              order by ORDER_NO
+        ]]>
+   </sql-query>
+   <sql-query name="FieldParameter#getParambyTemplate">
+       <query-param name="pIdScheduler" type="integer"/>
+       <query-param name="pField" type="integer"/>
+       <query-param name="pOrder" type="integer"/>
+       <query-param name="pModule" type="string"/>
+
+       <return-scalar column="formatData" type="string"/>
+       <return-scalar column="formatRule" type="string"/>
+       <return-scalar column="fieldName" type="string"/>
+       <return-scalar column="flgMandatory" type="string"/>
+       <return-scalar column="destTable" type="string"/>
+
+       <![CDATA[
+            select field_name as fieldName,
+                   format as formatData,
+                   format_rule as formatRule,
+                   flg_mandatory as flgMandatory,
+                   dest_table as destTable
+             from FIELDPARAMETER
+            where id_field = :pField
+              and id_template = :pIdScheduler
+              and order_no = :pOrder
+              and module_name like '%'||:pModule||'%'
+        ]]>
+   </sql-query>
+   <sql-query name="FieldParameter#getParambyModulwithClob">
+       <query-param name="pIdScheduler" type="integer"/>
+       <query-param name="pField" type="string"/>
+       <query-param name="pTypfix" type="string"/>
+       <query-param name="pModule" type="string"/>
+       
+       <return-scalar column="formatData" type="string"/>
+       <return-scalar column="formatRule" type="string"/>
+       <return-scalar column="fieldName" type="string"/>
+       <return-scalar column="flgMandatory" type="string"/>
+       <return-scalar column="destTable" type="string"/>
+	   <return-scalar column="query" type="clob"/>
+       
+       <![CDATA[
+            select field_name as fieldName,
+                   format as formatData,
+                   format_rule as formatRule,
+                   flg_mandatory as flgMandatory,
+                   dest_table as destTable,
+				   query as query
+             from FIELDPARAMETER 
+            where id_field = :pField
+              and id_template = :pIdScheduler
+              and flg_tmp = :pTypfix
+              and module_name like '%'||:pModule||'%'
+              order by ORDER_NO
+        ]]>
+   </sql-query>
+</hibernate-mapping>

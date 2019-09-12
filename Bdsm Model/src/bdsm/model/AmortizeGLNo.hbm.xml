@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.AmortizeGLNo" table="AMORTIZE_GL_NO" lazy="false">
+		<composite-id name="compositeId" class="bdsm.model.AmortizeGLNoPK">
+			<key-property name="type"         column="TYPE"          type="integer" />
+			<key-property name="processType"  column="PROCESS_TYPE"  type="integer" />
+			<key-property name="DrCrDB"       column="DR_CR"         type="character"  access="property" />
+			<key-property name="sequenceNo"   column="SEQ_NO"        type="integer" />
+		</composite-id>
+		
+		<property name="GLNo"            column="GL_NO"             type="string" />
+		<property name="codCCBrn"        column="COD_CC_BRN"        type="string" />
+		<property name="codLOB"          column="COD_LOB"           type="string" />
+		<property name="codProduct"      column="COD_PROD"          type="integer" />
+	</class>
+	 
+	<!-- Query -->
+	<query name="AmortizeGLNo#getByTypeAndProcessType">
+		<![CDATA[
+			 FROM AmortizeGLNo 
+			WHERE compositeId.type        = (CASE(:type) WHEN -1 THEN compositeId.type ELSE :type END)
+			  AND compositeId.processType = (CASE(:processType) WHEN -1 THEN compositeId.processType ELSE :processType END) 
+			ORDER BY compositeId.DrCrDB DESC, compositeId.sequenceNo
+		]]>
+	</query>
+</hibernate-mapping>

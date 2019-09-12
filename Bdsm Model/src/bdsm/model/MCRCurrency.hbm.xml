@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+    <!-- Model -->
+    <class name="bdsm.model.MCRCurrencyMaster" table="MCR_CCY_MAST">
+        <id name="currencyCode" column="CCY_COD" type="string"/>
+        <property name="currencyName" column="CCY_NAME" type="string"/>
+        <property name="currencyDestination" column="CCY_CTRY" type="string"/>
+    </class>
+    
+    <class name="bdsm.model.MCRCurrencyRate" table="MCR_CCY_RATE">
+        <composite-id access="property">
+			<key-property name="currencyCode" column="CCY_COD" type="string" />
+			<key-property name="valueDate" column="DT_VALUE" type="timestamp" />
+		</composite-id>
+        <property name="sellRate" column="SELL_RATE" type="big_decimal"/>
+        <property name="makerID" column="MAKERID" type="string"/>
+        <property name="checkerID" column="CHECKERID" type="string"/>
+        <property name="dtmLog" column="DTM_LOG" type="timestamp"/>
+		<property name="flag" column="FLAG" type="string"/>
+    </class>
+    
+    <!-- Query -->
+	<query name="MCRCurrencyRate#listByCurrencyCodeAndDate"> 
+            <![CDATA[
+                SELECT a.currencyCode as currencyCode, 
+                       b.currencyName as currencyName, 
+                       b.currencyDestination as currencyDestination, 
+                       a.sellRate as sellRate,
+                       a.valueDate as valueDate,
+                       a.flag as flag,
+                       a.dtmLog as dtmLog
+                  FROM MCRCurrencyRate a, MCRCurrencyMaster b
+                 WHERE a.currencyCode = b.currencyCode
+                  AND a.currencyCode = COALESCE(:currencyCode,a.currencyCode)
+                   AND a.valueDate = COALESCE(:valueDate,a.valueDate)
+				   AND a.flag = 'NEW'
+                 ORDER BY a.dtmLog DESC
+            ]]>
+      </query>
+
+	
+	<query name="MCRCurrencyRate#getRateByCcy">
+        <![CDATA[
+                SELECT sellRate, 
+                       max(dtmLog) 
+                FROM MCRCurrencyRate
+                WHERE currencyCode = :currencyCode
+                AND valueDate      >= trunc(sysdate)
+            GROUP BY sellRate
+        ]]>
+    </query>
+    
+    <query name="MCRCurrencyRate#getRateAfterByCcy">
+        <![CDATA[
+               SELECT a.sellRate 
+                 FROM MCRCurrencyRate a, PmTxnLog b
+                WHERE a.valueDate    = b.datPost
+                  AND a.dtmLog       < b.datTxn
+                  AND b.refNetworkNo = :refNetworkNo
+                  AND a.currencyCode = :currencyCode
+        ]]>
+    </query>
+    
+</hibernate-mapping>

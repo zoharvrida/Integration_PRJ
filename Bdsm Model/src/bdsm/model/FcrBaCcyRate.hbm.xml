@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.model.FcrBaCcyRate" table="BA_CCY_RATE">
+    <composite-id class="bdsm.model.FcrBaCcyRatePK" name="compositeId">
+      <key-property column="cod_ccy" name="codCcy" type="integer"/>
+      <key-property column="dat_tim_rate_eff" name="datTimRateEff" type="timestamp"/>
+      <key-property column="flg_mnt_status" name="flgMntStatus" type="string"/>
+    </composite-id>
+    <property column="rat_ccy_mid" name="ratCcyMid" type="double"/>
+    <property column="cod_lcy" name="codLcy" type="integer"/>
+  </class>
+</hibernate-mapping>

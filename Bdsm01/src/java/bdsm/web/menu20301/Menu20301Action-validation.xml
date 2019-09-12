@@ -1,0 +1,23 @@
+<!DOCTYPE validators PUBLIC
+              "-//Apache Struts//XWork Validator 1.0.2//EN"
+              "http://struts.apache.org/dtds/xwork-validator-1.0.2.dtd">
+<validators>
+    <field name="noCif">
+        <field-validator type="requiredstring">
+            <message>CIF No must not be empty.</message>
+        </field-validator>
+        <field-validator type="int">
+            <param name="min">0</param>
+            <message>CIF No should not be negative</message>
+        </field-validator>
+        <field-validator type="regex">
+            <param name="regex"><![CDATA[^[0-9]*$]]></param>
+            <message>CIF No only accept numbers.</message>
+        </field-validator>
+    </field>
+    <field name="namCustFull">
+        <field-validator type="requiredstring">
+            <message>Please press &lt;TAB&gt; after keying CIF No.</message>
+        </field-validator>
+    </field>
+</validators>

@@ -1,0 +1,251 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bdsm.scheduler.util;
+
+import java.io.*;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.*;
+import javax.crypto.spec.DESedeKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.FileHeader;
+import net.lingala.zip4j.model.ZipParameters;
+import net.lingala.zip4j.util.Zip4jConstants;
+import org.apache.commons.io.IOUtils;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
+
+/**
+ *
+ * @author bdsm
+ */
+public class EncryptionUtil {
+
+    public static final String AESALGO = "AES";
+    public static final String DESALGO = "3DES";
+    public static final String ZIPALGO = "ZIP";
+    public static final String RC4ALGO = "RC4";
+    public static final String HASHFALGO = "HASHF";
+
+    protected static void RC4Algo(String source, String dest, String password) throws IOException, FileNotFoundException {
+        byte[] key = password.getBytes();
+        int keylen = key.length;
+        byte[] text = null;
+        if (keylen < 1 || keylen > 256) {
+            throw new IllegalArgumentException("Key must between 1 and 256 bytes");
+        } else {
+            byte S[] = new byte[256];
+            byte T[] = new byte[256];
+            for (int i = 0; i < 256; i++) {
+                S[i] = (byte) i;
+                T[i] = key[i % keylen];
+            }
+
+            int j = 0;
+
+            for (int i = 0; i < 256; i++) {
+                j = (j + S[i] + T[i]) & 0xFF;
+                S[i] ^= S[j];
+                S[j] ^= S[i];
+                S[i] ^= S[j];
+            }
+
+            FileInputStream fis = new FileInputStream(source);
+            try {
+                text = IOUtils.toByteArray(fis);
+            } finally {
+                if (fis != null) {
+                    fis.close();
+                }
+            }
+
+            int i = 0, k, t;
+            j = 0;
+            for (int counter = 0; counter < text.length; counter++) {
+                i = (i + 1) & 0xFF;
+                j = (j + S[i]) & 0xFF;
+                S[i] ^= S[j];
+                S[j] ^= S[i];
+                S[i] ^= S[j];
+                t = (S[i] + S[j]) & 0xff;
+                k = S[t];
+                text[counter] = (byte) (text[counter] ^ k);
+            }
+
+            FileOutputStream fos = new FileOutputStream(dest);
+            try {
+                IOUtils.write(text, fos);
+            } finally {
+                if (fos != null) {
+                    fos.close();
+                }
+            }
+        }
+    }
+
+    protected static void AESAlgo(String source, String dest, String password, int mode) throws IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, FileNotFoundException {
+        Key key;
+        byte[] fileContent = null;
+        FileInputStream fis = new FileInputStream(source);
+        try {
+            key = new SecretKeySpec(password.getBytes(), "AES");
+            Cipher c = Cipher.getInstance("AES");
+            if (mode == Cipher.ENCRYPT_MODE) {
+                c.init(Cipher.ENCRYPT_MODE, key);
+            } else if (mode == Cipher.DECRYPT_MODE) {
+                c.init(Cipher.DECRYPT_MODE, key);
+            }
+            fileContent = IOUtils.toByteArray(fis);
+            fileContent = c.doFinal(fileContent);
+        } finally {
+            if (fis != null) {
+                fis.close();
+            }
+        }
+
+        FileOutputStream fos = new FileOutputStream(dest);
+
+        try {
+            IOUtils.write(fileContent, fos);
+        } finally {
+            if (fos != null) {
+                fos.close();
+            }
+        }
+
+    }
+
+    protected static void DESAlgo(String source, String dest, String key, int mode) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, FileNotFoundException {
+        byte[] fileContent = null;
+        FileInputStream fis = new FileInputStream(source);
+        try {
+            SecretKey skey = readDESkey(key);
+            Cipher c = Cipher.getInstance("DESede");
+            if (mode == Cipher.ENCRYPT_MODE) {
+                c.init(Cipher.ENCRYPT_MODE, skey);
+            } else if (mode == Cipher.DECRYPT_MODE) {
+                c.init(Cipher.DECRYPT_MODE, skey);
+            }
+            fileContent = IOUtils.toByteArray(fis);
+            fileContent = c.doFinal(fileContent);
+        } finally {
+            if (fis != null) {
+                fis.close();
+            }
+        }
+
+        FileOutputStream fos = new FileOutputStream(dest);
+
+        try {
+            IOUtils.write(fileContent, fos);
+        } finally {
+            if (fos != null) {
+                fos.close();
+            }
+        }
+    }
+
+    private static SecretKey readDESkey(String fileKey) throws FileNotFoundException, IOException, InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException {
+        String dataKey;
+        byte[] key;
+        File files = new File(fileKey);
+        DataInputStream in = new DataInputStream(new FileInputStream(files));
+        dataKey = getAES(IOUtils.toString(in),"3DES@@@@@@@@@@@@",Cipher.DECRYPT_MODE);
+        key = dataKey.getBytes();
+        in.close();
+
+        DESedeKeySpec keySpec = new DESedeKeySpec(key);
+        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+        return keyFactory.generateSecret(keySpec);
+    }
+
+    protected static String ZIPcompress(String source, String destination, String password) throws ZipException {
+        ZipParameters zipParameters = new ZipParameters();
+        if (password != null) {
+            zipParameters.setPassword(password);
+            zipParameters.setEncryptionMethod(Zip4jConstants.COMP_AES_ENC);
+            zipParameters.setAesKeyStrength(Zip4jConstants.AES_STRENGTH_256);
+            zipParameters.setEncryptFiles(true);
+        }
+        zipParameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
+        ZipFile zipFile = new ZipFile(destination);
+
+        zipFile.addFile(new File(source), zipParameters);
+        return zipFile.getFile().getName();
+    }
+
+    protected static String ZIPdecompress(String source, String dest, String password) throws ZipException, IOException {
+        ZipFile zipFile = new ZipFile(source);
+
+        if (zipFile.isEncrypted()) {
+            zipFile.setPassword(password);
+        }
+
+        List<FileHeader> list = zipFile.getFileHeaders();
+        zipFile.extractAll(dest);
+        return list.get(0).getFileName();
+    }
+    
+    /* [START] Add DES and AES Encryption / Decryption with String returned Value*/
+    public static String getAES(String source, String password, int mode) throws IOException, InvalidKeyException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, FileNotFoundException {
+        String retVal = "";
+        Key key;
+        byte[] fileContent = null;
+        key = new SecretKeySpec(password.getBytes(), "AES");
+        Cipher c = Cipher.getInstance("AES");
+        if (mode == Cipher.ENCRYPT_MODE) {
+            c.init(Cipher.ENCRYPT_MODE, key);
+            //Encrypting source with AES
+            fileContent = c.doFinal(source.getBytes());
+            //Encode Base 64 Required to get Formated String
+            retVal = new BASE64Encoder().encode(fileContent);
+        } else if (mode == Cipher.DECRYPT_MODE) {
+            c.init(Cipher.DECRYPT_MODE, key);
+            //Decode Base 64 from Encrypted String
+            fileContent = new BASE64Decoder().decodeBuffer(source);
+            //Decrypting with AES
+            fileContent = c.doFinal(fileContent);
+            retVal = new String(fileContent);
+        }
+        return retVal;
+    }
+
+    public static String getDES(String source, String key, int mode) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, FileNotFoundException {
+        String retVal = "";
+        byte[] fileContent = null;
+        SecretKey skey = readDESkeyString(key);
+        Cipher c = Cipher.getInstance("DESede");
+        if (mode == Cipher.ENCRYPT_MODE) {
+            c.init(Cipher.ENCRYPT_MODE, skey);
+            //Encrypting source with DES
+            fileContent = c.doFinal(source.getBytes());
+            //Encode Base 64 Required to get Formated String
+            retVal = new BASE64Encoder().encode(fileContent);
+        } else if (mode == Cipher.DECRYPT_MODE) {
+            c.init(Cipher.DECRYPT_MODE, skey);
+            //Decode Base 64 from Encrypted String
+            fileContent = new BASE64Decoder().decodeBuffer(source);
+            //Decrypting with DES
+            fileContent = c.doFinal(fileContent);
+            retVal = new String(fileContent);
+        }
+        return retVal;
+    }
+
+    private static SecretKey readDESkeyString(String fileKey) throws FileNotFoundException, IOException, InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException {
+        byte[] key = fileKey.getBytes();
+        DESedeKeySpec keySpec = new DESedeKeySpec(key);
+        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+        return keyFactory.generateSecret(keySpec);
+    }
+    /* [START] Add DES and AES Encryption / Decryption with String returned Value*/
+}

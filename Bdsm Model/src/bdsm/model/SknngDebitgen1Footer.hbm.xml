@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="bdsm.model.SknngInOutDebitGen1Footer" table="SKNNG_IN_OUT_DEBIT_GEN1_FOOTER" lazy="false">
+        <composite-id class="bdsm.model.SknngInOutDebitHPK" name="compositeId">
+            <key-property column="FILE_ID" name="fileId" type="string"/>
+            <key-property column="PARENT_ID" name="parentId" type="integer"/>
+        </composite-id>
+        <property column="TOTAL_RECORD" name="TotalRecord" type="integer" />
+        <property column="CRC_CHECK" name="CrcCheck" type="string" />
+        <property column="TIPE_RECORD" name="RecordType" type="string" />
+        <property column="KODE_DKE" name="DKE_Code" type="string" />
+        <property column="BATCH_NO" name="BatchNo" type="string" />
+        <property column="ERR_MESSAGE" name="ErrMessage" type="string" />
+        <property column="EXTRACT_STATUS" name="ExtractStatus" type="string" />
+        <property column="NUMBER_EXTRACT" name="ExtractNum" type="integer" />
+        <property column="TOTAL_SUCCESS" name="TSuccess" type="integer" />
+        <property column="TOTAL_REJECT" name="TReject" type="integer" />
+        <property column="ID_CREATED_BY" name="idCreatedBy" type="string"/>
+        <property column="ID_CREATED_SPV" name="idCreatedSpv" type="string"/>
+        <property column="DTM_CREATED" name="dtmCreated" type="timestamp"/>
+        <property column="DTM_CREATED_SPV" name="dtmCreatedSpv" type="timestamp"/>
+        <property column="ID_UPDATED_BY" name="idUpdatedBy" type="string"/>
+        <property column="ID_UPDATED_SPV" name="idUpdatedSpv" type="string"/>
+        <property column="DTM_UPDATED" name="dtmUpdated" type="timestamp"/>
+        <property column="DTM_UPDATED_SPV" name="dtmUpdatedSpv" type="timestamp"/>
+  
+
+    </class>
+</hibernate-mapping>

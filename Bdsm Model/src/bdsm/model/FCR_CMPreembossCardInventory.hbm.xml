@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.FCR_CMPreembossCardInventory" table="CM_PREEMBOSS_CARD_INV">
+		<composite-id>
+			<key-property name="homeBranch" column="COD_CC_HOME_BRN" type="integer" />
+			<key-property name="productCode" column="COD_CARD_PROD" type="integer" />
+			<key-property name="cardNo" column="COD_CARD_NO" type="string" />
+			<key-property name="entityVPD" column="COD_ENTITY_VPD" type="integer" />
+		</composite-id>
+		
+		<property name="flagStatusDB" column="FLG_STATUS" type="character" access="property" />
+		<property name="uploadDate" column="DAT_UPLOAD" type="date" />
+		<property name="expiryDate" column="DAT_EXPIRY" type="date" />
+		<property name="errorComments" column="ERROR_COMMENTS" type="string" />
+	</class>
+</hibernate-mapping>

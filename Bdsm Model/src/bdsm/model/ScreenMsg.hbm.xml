@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.model.ScreenMsg" table="SCREEN_MSG_PARAM" lazy="false">
+    <id       name="msgTag"     column="MSG_TAG"     type="string">
+         <generator class="assigned"/>
+      </id>
+    <property name="message"   column="MESSAGE"   type="string"/>
+    <property name="typParam"   column="TYP_PARAM"   type="string"/>
+    <property name="cdParam"   column="CDPARAM"   type="string"/>
+    <property name="numParam"   column="NUM_PARAM"   type="integer"/>
+    <property name="delimiter"   column="DELIMITER"   type="string"/>
+    </class>
+</hibernate-mapping>

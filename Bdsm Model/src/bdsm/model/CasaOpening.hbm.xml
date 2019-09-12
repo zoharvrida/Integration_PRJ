@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.model.CasaOpening" table="TMP_BDSM_ADD_CASA">
+    <id column="APPLICATIONID" name="applicationID" type="string">
+      <generator class="assigned"/>
+    </id>
+    <property column="REGLUCKYFLAG" name="regLuckyFlag" type="string"/>
+    <property column="BRANCHCODE" name="branchCodeCasa" type="integer"/>
+    <property column="BRANCHCODEDESC" name="branchCodeName" type="string"/>
+    <property column="LOB" name="lob" type="integer"/>
+    <property column="LOBDESC" name="lobDesc" type="string"/>
+	<property column="STATEINDICATOR" name="stateIndicator" type="string"/>
+    <property column="ACCESSCODE" name="accessCode" type="integer"/>
+    <property column="PRODUCTCODE" name="productCode" type="integer"/>
+    <property column="PRODUCTCODEDESC" name="productCodeDesc" type="string"/>
+    <property column="CUSTID" name="custId" type="integer"/>
+    <property column="ACCOUNTNO" name="acctNo" type="string"/>
+    <property column="ACCOUNTOPENDATE" name="accountOpenDateConvertion" type="date"/>
+    <property column="ADDITIONALREMARKS" name="additionalRemarks" type="string"/>
+    <property column="AOBUSINESS" name="aoBusiness" type="string"/>
+    <property column="ECHANNEL" name="echannel" type="string"/>
+    <property column="RELATION" name="relation" type="string"/>
+    <property column="AOBUSINESSDESC" name="aoBusinessDesc" type="string"/>
+    <property column="AOOPERATION" name="aoOperation" type="string"/>
+    <property column="AOOPERATIONDESC" name="aoOperationDesc" type="string"/>
+    <property column="CURRENTACCBICODE" name="currentAccBiCode" type="string"/>
+    <property column="SAVINGACCBICODE" name="savingAccBiCode" type="string"/>
+    <property column="OTHERACCBICODE" name="otherAccBiCode" type="string"/>
+    <property column="TDACCBICODE" name="tdAccBiCode" type="string"/>
+	<property column="TUJUANPEMBUKAAN" name="tujuanPembukaan" type="string"/>
+	<property column="SUMBERDANA" name="sumberDana" type="string"/>
+    <property column="ADDITIONALFIELD1" name="additionalField1Casa" type="string"/>
+    <property column="ADDITIONALFIELD2" name="additionalField2Casa" type="string"/>
+    <property column="ADDITIONALFIELD3" name="additionalField3Casa" type="string"/>
+    <property column="ADDITIONALFIELD4" name="additionalField4Casa" type="string"/>
+    <property column="ADDITIONALFIELD5" name="additionalField5Casa" type="string"/>
+    <property column="ADDITIONALFIELD6" name="additionalField6Casa" type="string"/>
+    <property column="ADDITIONALFIELD7" name="additionalField7Casa" type="string"/>
+    <property column="ADDITIONALFIELD8" name="additionalField8Casa" type="string"/>
+    <property column="ADDITIONALFIELD9" name="additionalField9Casa" type="string"/>
+    <property column="ADDITIONALFIELD10" name="additionalField10Casa" type="string"/>
+    <property column="COMMENTS" name="comments" type="string"/>
+    <property column="FLAGPROCESS" name="flgProcess" type="string"/>
+    <property column="MENUACCOUNT" name="menuAccount" type="string"/>
+    <property column="TERM" name="term" type="string"/>
+    <property column="INSTALMENTAMOUNT" name="instalmentAmount" type="string"/>
+    <property column="ACCTTITLE" name="acctTitle" type="string"/>
+    <property column="DTMSTARTPROC" name="dtmCreated" type="date"/>
+    <property column="COD_USER_ID" name="codUserID" type="string"/>
+	<property column="SANDITABLBU14LBULAMA" name="sandiTabLBU14Lama" type="string"/>
+    <property column="SANDITABUNGANLBUBARU" name="sandiTabLBUBaru" type="string"/>
+    <property column="SIFATREKTABUNGANLBUBARU" name="sifatRekTabunganLBUBaru" type="string"/>
+    <property column="ACCT_OUTBRANCH" name="acctOB" type="string"/>
+    <property column="ACCT_OUTBRANCH_DESC" name="acctOBDesc" type="string"/>
+    <property column="REMARKS_4" name="remarks4" type="string"/>
+    <property column="REMARKS_5" name="remarks5" type="string"/>
+    <property column="STATUS_PEMILIK" name="pemilikStatus" type="string"/>
+    <property column="SANDI_JENIS_TABUNGAN_LBU" name="sandiJenisTabunganLBU" type="string"/> 
+    
+    <property column="MAKERID" name="makerID" type="string"/>
+    <property column="SERIALNO" name="serialNO" type="string"/>
+  </class>
+</hibernate-mapping>

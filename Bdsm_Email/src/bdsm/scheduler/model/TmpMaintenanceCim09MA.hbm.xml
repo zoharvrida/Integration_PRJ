@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class lazy="false" name="bdsm.scheduler.model.TmpMaintenanceCim09MA" table="TMP_CIM09_MAILINGADDRS">
+        <composite-id class="bdsm.scheduler.model.TmpMaintenanceCim09MAPK" name="compositeId">
+            <key-property column="BATCHID" name="batchiId" type="string"/>
+            <key-property column="RECORD_ID" name="recordId" type="integer"/>
+            <key-property column="COD_CUST_ID" name="cif" type="integer"/>
+        </composite-id>
+    
+        <property column="txt_custadr_add1" name="address1" type="string"/>
+        <property column="txt_custadr_add2" name="address2" type="string"/>
+        <property column="txt_custadr_add3" name="address3" type="string"/>
+        <property column="nam_custadr_city" name="city" type="string"/>
+        <property column="nam_custadr_state" name="state" type="string"/>
+        <property column="nam_custadr_cntry" name="country" type="string"/>
+        <property column="txt_custadr_zip" name="postalCode" type="string"/>
+        <property column="ref_cust_phone_off" name="phoneOffice" type="string"/>
+        <property column="ref_cust_phone" name="phoneRes" type="string"/>
+        <property column="ref_cust_fax" name="faxNo" type="string"/>
+        <property column="ref_cust_telex" name="telex" type="string"/>
+ <property column="IDCREATEDBY"     name="idCreatedBy"  type="string"/>
+    <property column="DTMCREATEDBY"    name="dtmCreated"   type="timestamp"  /> 
+    <property column="IDCREATEDSPV"    name="idCreatedSpv" type="string"/>
+    <property column="DTMCREATEDSPV"   name="dtmCreatedSpv" type="timestamp"  />
+    <property column="FLG_STATUS"     name="flagStatus"   type="string"/>
+    <property column="STATUS_REASON"   name="statusReason" type="string"/>
+    </class>
+</hibernate-mapping>

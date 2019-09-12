@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.scheduler.model.FixQXtract" table="FIXQXTRACT" lazy="false">
+        <id name="qId" column="qId">
+            <generator class="sequence">
+                <param name="sequence">FIXQ_SEQ</param>
+            </generator>
+        </id>
+        <property name="idScheduler"  column="idScheduler"  type="integer"/>
+        <property name="dtmRequest"    column="dtmRequest"    type="timestamp"  />
+        <property name="dtmProcess"    column="dtmProcess"    type="timestamp"  />
+        <property name="dtmFinish"    column="dtmFinish"    type="timestamp"  />
+        <property name="flgProcess"    column="flgProcess"    type="string"  />
+        <property name="reason"    column="reason"    type="string"  />
+        <property name="param1"    column="param1"    type="string"  />
+        <property name="param2"    column="param2"    type="string"  />
+        <property name="param3"    column="param3"    type="string"  />
+        <property name="param4"    column="param4"    type="string"  />
+        <property name="param5"    column="param5"    type="string"  />
+        <property name="param6"    column="param6"    type="string"  />
+
+    </class>
+    <query name="Fixqxtract#getWatcherdata">
+		<![CDATA[
+			SELECT ar
+			  FROM FixQXtract ar
+                          where qId = :pQid
+			  and idScheduler = :pIdScheduler
+                          and param6 = :pIdbatch
+		]]>
+   </query>
+</hibernate-mapping>

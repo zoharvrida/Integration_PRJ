@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.model.MfcNoBook" table="MFCNOBOOK" lazy="false">
+      <composite-id name="compositeId" class="bdsm.model.MfcNoBookPK">
+            <key-property name="noAcct"     column="noAcct"     type="string" />
+            <key-property name="refTxn"     column="refTxn"     type="string" />
+            <key-property name="typMsg"     column="typMsg"     type="string" />
+            <key-property name="typTrx"     column="typTrx"     type="string" />
+      </composite-id>
+      <property name="typAcct"       column="typAcct"       type="string"/>
+      <property name="dtPost"        column="dtPost"        type="date"/>
+      <property name="dtValue"       column="dtValue"       type="date"/>
+      <property name="dtmTxn"        column="dtmTxn"        type="timestamp"/>
+      <property name="ccyTxn"        column="ccyTxn"        type="string"/>
+      <property name="amtTxn"        column="amtTxn"        type="double"/>
+      <property name="ratFcyIdr"     column="ratFcyIdr"     type="double"/>
+      <property name="amtTxnLcy"     column="amtTxnLcy"     type="double"/>
+      <property name="ratUsdIdr"     column="ratUsdIdr"     type="double"/>
+      <property name="amtTxnUsd"     column="amtTxnUsd"     type="double"/>
+      <property name="txnDesc"       column="txnDesc"       type="string"/>
+      <property name="txnBranch"     column="txnBranch"     type="integer"/>
+      <property name="status"        column="status"        type="string"/>
+      <property name="idTxn"         column="idTxn"         type="string"/>
+      <property name="idCreatedBy"   column="idCreatedBy"   type="string"/>
+      <property name="idCreatedSpv"  column="idCreatedSpv"  type="string"/>
+      <property name="dtmCreated"    column="dtmCreated"    type="timestamp"  />
+      <property name="dtmCreatedSpv" column="dtmCreatedSpv" type="timestamp"  />
+      <property name="idUpdatedBy"   column="idUpdatedBy"   type="string"/>
+      <property name="idUpdatedSpv"  column="idUpdatedSpv"  type="string"/>
+      <property name="dtmUpdated"    column="dtmUpdated"    type="timestamp"  />
+      <property name="dtmUpdatedSpv" column="dtmUpdatedSpv" type="timestamp"  />
+    </class>
+</hibernate-mapping>

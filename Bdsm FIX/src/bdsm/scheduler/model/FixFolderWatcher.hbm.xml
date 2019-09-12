@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.scheduler.model.FixFolderWatcher" table="FixFolderWatcher" lazy="false">
+        <composite-id name="compositeId" class="bdsm.scheduler.model.FixFolderWatcherPK">
+            <key-property name="folderPath"   column="folderPath"   type="string"/>
+            <key-property name="prependFileBackup"   column="prependFileBkp"   type="string"/>
+        </composite-id>
+      <property name="flgStat"  column="flgStat"  type="string"/>
+    </class>
+</hibernate-mapping>

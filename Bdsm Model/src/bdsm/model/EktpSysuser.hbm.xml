@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+   <class name="bdsm.model.EktpSysuser" table="EKTP_SYSUSER" lazy="false">
+      <id       name="ktpUser"        column="KTPUSER"        type="string" >
+         <generator class="assigned"/>
+      </id>
+      <property name="ktpPwd"    column="KTPPWD"    type="string"/>
+      <property name="nikUser"      column="NIKUSER"      type="string"   />
+      <property name="ipUser"          column="IPUSER"          type="string"/>
+      <property name="ktpQuota"       column="KTPQUOTA"       type="int"/>
+   </class>
+   <!-- Query -->
+   <sql-query name="ektp#getMAXRank">
+       <![CDATA[
+            select MAX(RANKING) as maxRank from (select rank() over (order by ktpuser) ranking, a.* 
+            from EKTP_SYSUSER a)
+       ]]>
+   </sql-query>
+   <sql-query name="ektp#getUserRank">
+       <query-param name="pRanks" type="string"/>
+
+       <![CDATA[
+            select ktpUser,ktpPwd,nikUser,ipUser,ktpQuota
+            from (select rank() over (order by ktpuser) ranking, a.*
+            from EKTP_SYSUSER a) where ranking = :pRanks
+       ]]>
+   </sql-query>
+	<sql-query name="ektp#getSystemQuota">
+            <query-param name="pSystem" type="string"/>
+            <query-param name="pMenu" type="string"/>
+            <query-param name="pktpMax" type="integer"/>
+
+            <return-scalar column="ktpUser" type="string"/>
+            <return-scalar column="idUser" type="string"/>
+            <return-scalar column="maxQuery" type="integer"/>
+		<![CDATA[
+			select ktpuser as ktpUser,iduser as idUser,counter as maxQuery from (
+                            select a.ktpuser,a.iduser, counter, dtmReq from(
+                            select a.ktpuser,a.iduser, count(1) counter, Max(dtmrequest) dtmReq
+                            from ektp_log a
+                            where a.datlog=trunc(sysdate)
+                            and a.flgrespfromexternal='Y'
+                            and a.system_src=:pSystem
+                            and a.menu_src=:pMenu
+                            and a.ktpuser in (
+                                select c.ktpuser from EKTP_SYSUSER c)
+                            group by a.ktpuser,a.iduser) a, EKTP_SYSUSER b
+                            where a.ktpuser = b.ktpuser
+                            and a.counter < :pktpMax - nvl(b.KTPQUOTA,0)
+                            union
+                            select ktpuser,'', 0, sysdate-1
+                            from EKTP_SYSUSER
+                            where ktpuser is not null
+                            and ktpuser not in (select a.ktpuser
+                            from ektp_log a, EKTP_SYSUSER b
+                            where a.datlog=trunc(sysdate)
+                            and a.flgrespfromexternal='Y'
+                            and a.system_src=:pSystem
+                            and a.menu_src=:pMenu)
+                            order by 3, 4, 1
+                        ) where rownum <=1
+		]]>
+	</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+   <class name="bdsm.model.MenuRedirect" table="menu_redirection" lazy="false">
+      <composite-id name="pk" class="bdsm.model.MenuRedirectionPK">
+            <key-property name="sourceMenu"        column="SOURCE_NUMBER"        type="string" />
+         <key-property name="aliasName"     column="ALIAS_NAME"     type="string" />
+      </composite-id>
+      <property name="sourceName"    column="SOURCE_NAME"    type="string"/>
+      <property name="strutsAction"       column="REDIRECTEDACTION"       type="string"/>
+      <property name="destMenu"      column="DEST_NUMBER"      type="string"   />
+      <property name="inQuiry"          column="INQUIRY_ACTION"          type="string"/>
+      <property name="defaultData"      column="PARAMDEF_DATA"      type="string"/>
+   <property name="methodInvocation"      column="METHOD_INVOCATION"      type="string"/>
+      
+   </class>
+</hibernate-mapping>

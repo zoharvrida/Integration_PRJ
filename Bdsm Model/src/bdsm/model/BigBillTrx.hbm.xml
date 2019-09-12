@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.BigBillTrx" table="BIG_BILL_TRX" lazy="false" dynamic-insert="true">
+		<id name="recordId" column="RECORD_ID" type="string" />
+		
+		<property name="customerIdPelanggan"    column="CUST_ID_PEL"     type="string" />
+		<property name="typeTransactionDB"      column="TYPE_TRX"        type="character"  access="property" />
+		<property name="tarifDaya"              column="TARIF_DAYA"      type="string" />
+		<property name="periode"                column="PERIODE"         type="string" />
+		<property name="KWHAwal"                column="KWH_AWAL"        type="string" />
+		<property name="KWHAkhir"               column="KWH_AKHIR"       type="string" />
+		<property name="amountFlagging"         column="AMT_FLAGGING"    type="big_decimal" />
+		<property name="amountTagihan"          column="AMT_TAGIHAN"     type="big_decimal" />
+		<property name="sisaTunggakan"          column="SISA_TUNGGAKAN"  type="string" />
+		<property name="responStatus"           column="RESPON_STAT"     type="string" />
+		<property name="remarks"                column="REMARKS"         type="string" />
+		<property name="userId"                 column="USER_ID"         type="string" />
+		<property name="supervisorId"           column="SPV_ID"          type="string" />
+		<property name="recordStatusDB"         column="RECORD_STAT"     type="character"  access="property"/>
+		<property name="retry"                  column="RETRY"           type="integer" />
+		<property name="dateTimeUpload"         column="DTM_UPLOAD"      type="timestamp" />
+		<property name="dateTimeProcess"        column="DTM_PROCESS"     type="timestamp" />
+		<property name="dateTimeFinish"         column="DTM_FINISH"      type="timestamp" />
+		<property name="idBatchSMSTransaction"  column="IDBATCHSMSTRX"   type="string" />
+	</class>
+	
+	<!-- Query -->
+	<query name="BigBillTrx#listBatchNo">
+		<![CDATA[
+			SELECT tmp.batchNo
+			  FROM BigBillTrx trx, TmpBigBillTrx tmp
+			 WHERE trx.recordId           = tmp.recordId
+			       AND trx.recordStatusDB IN (:listRecordStatus)
+			 ORDER BY trx.dateTimeUpload, tmp.batchNo 
+		]]>
+	</query>
+	
+	<query name="BigBillTrx#listRequestData">
+		<![CDATA[
+			  FROM BigBillTrx
+			 WHERE recordId IN (
+			       SELECT trx.recordId
+			         FROM BigBillTrx trx, TmpBigBillTrx tmp
+			        WHERE trx.recordId    = tmp.recordId
+			              AND tmp.batchNo = :batchNo
+			 )
+			 AND recordStatusDB IN (:listRecordStatus)
+			 AND COALESCE(retry, 0) <= :maxRetry
+			 ORDER BY recordId
+		]]>
+	</query>
+</hibernate-mapping>

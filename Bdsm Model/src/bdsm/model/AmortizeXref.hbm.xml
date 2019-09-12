@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="bdsm.model.AmortizeXref" table="AMORTIZE_XREF" lazy="false">
+		<id       name="fileId"    column="file_id"    type="string" ></id>
+		<property name="id"   column="id"   type="integer"/>
+		<property name="amount"   column="amount"   type="string"/>
+		<property name="extType"   column="type_ext"   type="string"/>
+		<property name="gefuStatus"   column="gefu_Status"   type="string"/>
+		<property name="gefuComment"   column="gefu_Comment"   type="string"/>
+	</class>
+</hibernate-mapping>

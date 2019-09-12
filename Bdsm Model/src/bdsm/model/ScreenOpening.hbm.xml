@@ -1,0 +1,1723 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class table="TMP_EXT_CIFCASA" name="bdsm.model.ScreenOpening" >
+    <id column="APPLICATIONID" name="applicationID" type="string">
+        <generator class="assigned"/>
+    </id>
+    <property column="RECORD_ID" name="recId" type="integer"/>
+    <property column="BATCH_ID" name="batchId" type="string"/>
+    
+    <property column="CIFNUMBER" name="cifNumber" type="integer"/>
+    <property column="CATEGORY" name="category" type="string"/>
+    <property column="CIFTYPE" name="cifType" type="string"/>
+    <property column="STAFF" name="staff" type="string"/>
+    <property column="ACCESSCODE" name="accessCode" type="integer"/>
+    <property column="BRANCHCODE" name="branchCode" type="integer"/>
+    <property column="BRANCHCODEDESC" name="branchCodeName" type="string"/>
+    <property column="CUSTOMERIC" name="nik" type="string"/>
+    <property column="IDCARDTYPE" name="idcardType" type="string"/>
+    <property column="IDCARDTYPEDESC" name="idcardTDesc" type="string"/>
+    <property column="SALUTATION" name="salutation" type="string"/>
+    <property column="SALUTATIONDESC" name="salutationDesc" type="string"/>
+    <property column="FULLNAME" name="fullName" type="string"/>
+    <property column="CUSTOMERFIRSTNAME" name="custFirstName" type="string"/>
+    <property column="CUSTOMERMIDDLENAME" name="custMidName" type="string"/>
+    <property column="CUSTOMERLASTNAME" name="custLastName" type="string"/> 
+    <property column="SHORTNAME" name="shortName" type="string"/>
+    <property column="PERMANENTADDRESS1" name="permaAddress1" type="string"/>
+    <property column="PERMANENTADDRESS2" name="permaAddress2" type="string"/>
+    <property column="PERMANENTADDRESS3" name="permaAddress3" type="string"/>
+    <property column="PERMANENTZIPCODE" name="permaZipCode" type="string"/>
+    <property column="PERMANENTTOWNCITY" name="permaTownCity" type="string"/>
+    <property column="PERMANENTTCITYDESC" name="permaTownCityDesc" type="string"/>
+    <property column="PERMANENTSTATE" name="permaState" type="string"/>
+    <property column="PERMANENTSDESC" name="permaStateDesc" type="string"/>
+    <property column="PERMANENTCOUNTRY" name="permaCountry" type="string"/>
+    <property column="PERMANENTCDESC" name="permaCountryDesc" type="string"/>
+    
+    <property column="MAILINGADDRESS1" name="mailAddrs1" type="string"/>
+    <property column="MAILINGADDRESS2" name="mailAddrs2" type="string"/>
+    <property column="MAILINGADDRESS3" name="mailAddrs3" type="string"/>
+    <property column="MAILINGZIPCODE" name="maillingCode" type="string"/>
+    <property column="MAILINGTOWNCITY" name="maillingTownCity" type="string"/>
+    <property column="MAILINGTCITYDESC" name="maillingTownCityDesc" type="string"/>
+    <property column="MAILINGSTATE" name="maillingState" type="string"/>
+    <property column="MAILINGSTATEDESC" name="maillingStateDesc" type="string"/>
+    <property column="MAILINGCOUNTRY" name="maillingCountry" type="string"/>
+    <property column="MAILINGCOUDESC" name="maillingCountryDesc" type="string"/>
+    
+    <property column="HOLDADDRESS1" name="holdAddress1" type="string"/>
+    <property column="HOLDADDRESS2" name="holdAddress2" type="string"/>
+    <property column="HOLDADDRESS3" name="holdAddress3" type="string"/>
+    <property column="HOLDZIPCODE" name="holdZipCode" type="string"/>
+    <property column="HOLDTOWNCITY" name="holdTownCity" type="string"/>
+    <property column="HOLDTCITYDESC" name="holdTownCityDesc" type="string"/>   
+    <property column="HOLDSTATE" name="holdState" type="string"/>
+    <property column="HOLDSTDESC" name="holdStateDesc" type="string"/>
+    <property column="HOLDCOUNTRY" name="holdCountry" type="string"/>
+    <property column="HOLDCOUDESC" name="holdCountryDesc" type="string"/>
+    <property column="HOLD_PHONE_CNTRY" name="holdPhoneCountry" type="string"/>
+    <property column="HOLD_PHONE_NO" name="holdPhoneNo" type="string"/>
+    <property column="HOLD_PHONE_AREA" name="holdPhoneArea" type="string"/>
+    <property column="HOLD_PHONE_EXT" name="holdPhoneExt" type="string"/>
+    <property column="BIRTHDATE" name="birthDate" type="string"/>
+    <property column="RES_PHONE_CNTRY" name="residencePhoneNoContry" type="string"/>
+    <property column="RES_PHONE_AREA" name="residencePhoneNoArea" type="string"/>
+    <property column="RES_PHONE_EXT" name="residencePhoneNoExt" type="string"/>
+    <property column="RESIDENCEPHONENO" name="residencePhoneNo" type="string"/>
+    
+    <property column="MOBILEPHONENO" name="mobilePhone" type="string"/>
+    <property column="CUSTOMEREDUCATION" name="lastEdu" type="string"/>
+    <property column="CUSTOMEREDUDESC" name="lastEduDesc" type="string"/>
+    
+    <property column="EMAILADDRESS" name="emailAddress" type="string"/>
+    <property column="TXT_ETHNIC_ORIGIN" name="religion" type="string"/>
+    <property column="TXT_ETHNIC_ORIGIN_DESC" name="religionDesc" type="string"/>
+    <property column="NATIONALITY" name="nationality" type="string"/>
+    <property column="NATIONALITYDESC" name="nationalityDesc" type="string"/>
+    <property column="COUNTRYOFRESIDENCE" name="countryOfResidence" type="string"/>
+    <property column="COUNTRYOFRESDESC" name="countryOfResidenceDesc" type="string"/>
+    <property column="GENDER" name="gender" type="string"/>
+    <property column="GENDERDESC" name="genderDesc" type="string"/>
+    <property column="MARITALSTATUS" name="marStat" type="string"/>
+    <property column="MARITALSTATUSDESC" name="marStatDesc" type="string"/>
+    
+    <property column="INCOMETAXNO" name="incomeTaxNo" type="string"/>
+    <property column="AOBUSINESS" name="aoBusiness" type="string"/>
+    <property column="AOBUSINESSDESC" name="aoBusinessDesc" type="string"/>
+    <property column="AOOPERATION" name="aoOperation" type="string"/>
+    <property column="AOOPERATIONDESC" name="aoOperationDesc" type="string"/>
+    
+    <property column="BUSINESSTYPE" name="businessType" type="integer"/>
+    <property column="BUSINESSTYPEDESC" name="businessTypeDesc" type="string"/>
+    <property column="PROFESSION" name="professionCode" type="integer"/>
+    <property column="PROFESSIONDESC" name="professionDesc" type="string"/>
+    <property column="SPOUSENAME" name="spouseName" type="string"/>
+    <property column="SPOUSE_EMPLOYER" name="spouseEmployer" type="string"/>
+    <property column="SPOUSEJOBTITLE" name="spouseJobTitle" type="string"/>
+    <property column="OCCUPATION" name="occupation" type="string"/>
+    <property column="OCCUPATIONDESC" name="occupationDesc" type="string"/>
+    <property column="EMPLOYERADDRESS1" name="employerAddress1" type="string"/>
+    <property column="EMPLOYERADDRESS2" name="employerAddress2" type="string"/>
+    <property column="EMPLOYERADDRESS3" name="employerAddress3" type="string"/>
+    <property column="EMPLOYERZIPCODE" name="employerZipCode" type="string"/>
+    <property column="EMPLOYERTOWNCITY" name="employerTownCity" type="string"/>
+    <property column="EMPLOYERTCITYDESC" name="employerTownCityDesc" type="string"/>
+    <property column="EMPLOYERSTATE" name="employerState" type="string"/>
+    <property column="EMPLOYERSDESC" name="employerStateDesc" type="string"/>
+    <property column="EMPLOYERCOUNTRY" name="employerCountry" type="string"/>
+    <property column="EMPLOYERCOUDESC" name="employerCountryDesc" type="string"/>
+    <property column="EMPLOYERNAME" name="employerName" type="string"/>
+    <property column="EMPLOYMENTDETAILS" name="employementDetails" type="string"/>
+    <property column="EMP_PHONE_CNTRY" name="employerPhoneNoCountry" type="string"/>
+    <property column="EMP_PHONE_NO" name="employerPhoneNo" type="string"/>
+    <property column="EMP_PHONE_AREA" name="employerPhoneNoArea" type="string"/>
+    <property column="EMP_PHONE_EXT" name="employerPhoneNoExt" type="string"/>
+    <property column="LOB" name="lob" type="integer"/>
+    <property column="LOBDESC" name="lobDesc" type="string"/>
+    <property column="EMPLOYEEID" name="employeeId" type="string"/>
+    <property column="JOBTITLE" name="jobTitle" type="string"/>
+    <property column="DEBTORTYPE" name="debtType" type="string"/>
+    <property column="DEBTORSTATUS" name="debtStatus" type="string"/>
+    <property column="BRANCHLOCCODE" name="branchLocationCode" type="string"/>
+    <property column="DISTRICTCODE" name="districtCode" type="string"/>
+    <property column="EMPLOYERSICCODE" name="employeICCode" type="string"/>
+    <property column="CONNWITHBANK" name="conWithBank" type="string"/>
+    <property column="RESIDENCETYPE" name="residenceType" type="string"/>
+    <property column="NOOFDEPENDANTS" name="noOfDependant" type="integer"/>
+    <property column="DATATRANSEXTRACTFLAG" name="dataTransXtractFlag" type="integer"/>
+    <property column="DATATRANSEXTFLAGDESC" name="dataTransXtractFlagDesc" type="string"/>
+    <property column="COMMUNICATION" name="communication" type="string"/>
+    <property column="COMMUNICATIONDESC" name="communicationDesc" type="string"/>
+    <property column="MOTHERMAIDENNAME" name="namMother" type="string"/>
+    <property column="BIRTHPLACE" name="birthPlace" type="string"/>
+    <property column="SUMBER_DANA_LAIN" name="sumberDanaLain" type="string"/>
+    <property column="ALIASNAME" name="aliasName" type="string"/>
+    <property column="GOLPEMILIKLBULAMA" name="golPemilikLBUlama" type="string"/>
+    <property column="RELWITHBANK" name="reliwthBank" type="string"/>
+    <property column="SANDI_DATI_II_CUSTOMER" name="sandiDatiII" type="string"/>
+    <property column="BRANCH_LOCATION_CODE" name="branchlocCodes" type="string"/>
+    <property column="EXPECTEDLIMIT" name="expectedLimit" type="integer"/>
+    <property column="EXPECTEDLIMITDESC" name="expectedLimitDesc" type="string"/>
+    <property column="MONTHLYINCOME" name="monthLyIncome" type="integer"/>
+    <property column="MONTHLYINCOMEDESC" name="monthLyIncomeDesc" type="string"/>
+    <property column="ICEXPIRYDATE" name="icexpiryDate" type="string"/>
+    <property column="HOMESTATUS" name="homeStatus" type="integer"/>
+    <property column="HOMESTATUSDESC" name="homeStatusDesc" type="string"/>
+    <property column="SANDI_PERUSAHAAN_LHBU" name="sandiPerushLHBULama" type="string"/>
+    <property column="STATUS_PEMILIK" name="ownershipStat" type="string"/>
+    <property column="SMSEMAILNOTIFICATIONCUST" name="smsNotifCust" type="string"/>
+    <property column="BADAN_AS" name="badanAS" type="string"/>
+    <property column="BADAN_ASDESC" name="badanASDesc" type="string"/>
+    <property column="GREENCARD" name="greenCard" type="string"/>
+    <property column="GREENCARDDESC" name="greenCardDesc" type="string"/>
+    <property column="ALAMAT_AS" name="alamatAS" type="string"/>        
+    <property column="ALAMAT_ASDESC" name="alamatASDesc" type="string"/>
+    <property column="FATCA" name="fatca" type="string"/>
+    <property column="FATCADESC" name="fatcaDesc" type="string"/>
+    <property column="NO_TIN" name="tin" type="string"/>
+    <property column="REGISTRATIONNO" name="RegistrationNo" type="string"/>
+    <property column="REGISTRATIONDATE" name="RegistrationDate" type="string"/>
+    <property column="BUSSCOMMENCEMENTDATE" name="BusinessCommendate" type="string"/>
+    <property column="BUSINESSLILICENSENO" name="BusinessLicenseNo" type="string"/>
+    <property column="PLACEOFINCORPORATION" name="PlaceOfInc" type="string"/>
+    <property column="ADDITIONALFIELD1" name="AdditionalField1" type="string"/>
+    <property column="ADDITIONALFIELD2" name="AdditionalField2" type="string"/>
+    <property column="ADDITIONALFIELD3" name="AdditionalField3" type="string"/>
+    <property column="ADDITIONALFIELD4" name="AdditionalField4" type="string"/>
+    <property column="ADDITIONALFIELD5" name="AdditionalField5" type="string"/>
+    <property column="ADDITIONALFIELD6" name="AdditionalField6" type="string"/>
+    <property column="ADDITIONALFIELD7" name="AdditionalField7" type="string"/>
+    <property column="ADDITIONALFIELD8" name="AdditionalField8" type="string"/>
+    <property column="ADDITIONALFIELD9" name="AdditionalField9" type="string"/>
+    <property column="ADDITIONALFIELD10" name="AdditionalField10" type="string"/>
+    <property column="TYPEOFCOMPANY" name="typeOfCompany" type="string"/>
+    <property column="CHANNEL_ID" name="channelId" type="string"/>
+    <property column="FLG_IC_TYPE" name="flgIctype" type="string"/>
+    <property column="HIGHRISK_FLAG" name="hrFlag" type="string"/>
+    
+    <property column="FLAGPROCESS" name="flgProcess" type="string"/>
+    
+    <property column="TIPE_PENDUDUK" name="tipePenduduk" type="string"/>
+    <property column="ECHANNELFLAG" name="echannelDesc" type="string"/>
+    <property column="SIGN_TYPE" name="signType" type="string"/>
+    <property column="REASONFORVERIFICATION" name="reasonForVerification" type="string"/>
+    
+    <property column="GOLPEMILIKLBUBARU" name="golPemilikLBUBaru" type="string"/>
+    <property column="ACCOUNTNO" name="acctNo" type="string"/>
+    <property column="ACCOUNTOPENDATE" name="accountOpenDateConvertion" type="date"/>
+    <property column="PRODUCTCODE" name="productCode" type="integer"/>
+    <property column="PRODUCTCODEDESC" name="productCodeDesc" type="string"/>
+    <property column="BRANCHCODECASA" name="branchCodeCasa" type="integer"/>
+    <property column="BRANCHCODECDESC" name="branchCodeCasaDesc" type="string"/>
+    <property column="LOBCASA" name="lobCasa" type="integer"/>
+    <property column="LOBCASADESC" name="lobCasaDesc" type="string"/>
+    <property column="ACCESSCODEC" name="accessCodeCasa" type="integer"/>
+    <property column="ADDITIONALREMARKS" name="additionalRemarks" type="string"/>
+    <property column="AOBUSINESSCASA" name="aoBusinessCasa" type="string"/>
+    <property column="AOBUSINESSCDESC" name="aoBusinessCasaDesc" type="string"/>
+    <property column="AOOPERATIONCASA" name="aoOperationCasa" type="string"/>
+    <property column="AOOPERATIONCDESC" name="aoOperationCasaDesc" type="string"/>
+    <property column="CURRENTACCBICODE" name="currentAccBiCode" type="string"/>
+    <property column="SAVINGACCBICODE" name="savingAccBiCode" type="string"/>
+    <property column="OTHERACCBICODE" name="otherAccBiCode" type="string"/>
+    <property column="TDACCBICODE" name="tdAccBiCode" type="string"/>
+    <property column="ADDITIONALFIELDCASA1" name="additionalField1Casa" type="string"/>
+    <property column="ADDITIONALFIELDCASA2" name="additionalField2Casa" type="string"/>
+    <property column="ADDITIONALFIELDCASA3" name="additionalField3Casa" type="string"/>
+    <property column="ADDITIONALFIELDCASA4" name="additionalField4Casa" type="string"/>
+    <property column="ADDITIONALFIELDCASA5" name="additionalField5Casa" type="string"/>
+    <property column="ADDITIONALFIELDCASA6" name="additionalField6Casa" type="string"/>
+    <property column="ADDITIONALFIELDCASA7" name="additionalField7Casa" type="string"/>
+    <property column="ADDITIONALFIELDCASA8" name="additionalField8Casa" type="string"/>
+    <property column="ADDITIONALFIELDCASA9" name="additionalField9Casa" type="string"/>
+    <property column="ADDITIONALFIELDCASA10" name="additionalField10Casa" type="string"/>
+    <property column="RELATION" name="relation" type="string"/>
+    <property column="ECHANNEL" name="echannel" type="string"/>
+    <property column="MENUACCOUNT" name="menuAccount" type="string"/>
+    <property column="TERM" name="term" type="string"/>
+    <property column="INSTALMENTAMOUNT" name="instalmentAmount" type="string"/>
+    <property column="STATEINDICATOR" name="stateIndicator" type="string"/>
+    <property column="STATEINDICATORDESC" name="stateIndicatorDesc" type="string"/>
+
+    <property column="TUJUANPEMBUKAAN" name="tujuanPembukaan" type="string"/>
+    <property column="TUJUANPEMBUKAANDESC" name="tujuanPembukaanDesc" type="string"/>
+
+    <property column="SUMBERDANA" name="sumberDana" type="string"/>
+    <property column="SUMBERDANADESC" name="sumberDanaDesc" type="string"/>
+    <property column="SANDITABLBU14LBULAMA" name="sandiTabLBU14Lama" type="string"/>
+    <property column="SANDITABUNGANLBUBARU" name="sandiTabLBUBaru" type="string"/>
+    <property column="SIFATREKTABUNGANLBUBARU" name="sifatRekTabunganLBUBaru" type="string"/>
+    <property column="REGLUCKYFLAG" name="regLuckyFlag" type="string"/>
+    <property column="ACCTTITLE" name="acctTitle" type="string"/>
+    <property column="SMSEMAILNOTIFICATIONACCT" name="smsEmailNotifAcct" type="string"/>
+    <property column="SANDIJENISREKLBU17" name="sandiJenisLbu17" type="string"/>
+    <property column="SANDIJENISBANKLAIN" name="sandiJenisBankLain" type="string"/>
+    
+    <property column="COMMENTS_CIF" name="comments" type="string"/>
+    <property column="COMMENTS_CASA" name="commentsCasa" type="string"/>
+    
+    <property column="DTMSTARTPROC" name="dtmCreated" type="timestamp"/>
+    <property column="DTMPROCESS" name="dtmProc" type="timestamp"/>
+    <property column="DTMFINISHPROC" name="dtmFinishProc" type="timestamp"/>
+    
+    <property column="COD_USER_ID" name="codUserID" type="string"/>
+    <property column="COD_SPV_ID" name="codSpvID" type="string"/>
+    
+    <property column="STATUS" name="status" type="string"/>
+    <property column="SOURCE" name="extUser" type="string"/>
+    <property column="RECORD_STAT" name="recStat" type="string"/>
+    
+<property column="RESP_REC" name="recComment" type="string"/>
+
+    </class>
+    <query name="Cif#getExternalData">
+        <![CDATA[
+			SELECT s
+			FROM ScreenOpening s
+			WHERE s.applicationID = :pBatchNo
+                        and s.recStat = :pRecStat
+		]]>
+    </query>
+    <query name="Cif#getDistinctExtData">
+        <![CDATA[
+			SELECT DISTINCT s.fullName as fullName,
+                                        s.custFirstName as custFirstName,
+                                        s.birthDate as birthDate,
+                                        s.nik as nik,
+                                        s.extUser as extUser,
+                                        s.mailAddrs1 as mailAddrs1,
+                                        s.cifNumber as cifNumber
+			FROM ScreenOpening s
+			WHERE s.fullName = :pFullName
+                        and s.birthDate = :pDateBirth
+                        and s.status = :pStatus
+                        and s.recStat = :pRecStat
+                        and NOT EXISTS (select 1 from FcrCiCustmast a where a.CodCustNatlID = s.nik and a.compositeId.flgMntStatus = 'A')
+		]]>
+    </query>
+
+    <sql-query name="Cif#getExistingChannelCIF">
+        <query-param name="pcif" type="integer"/>
+        <query-param name="pEducation" type="string"/>
+        <query-param name="pExpectedLimit" type="string"/>
+        <query-param name="pMarstat" type="string"/>
+        <query-param name="pAlias" type="string"/>
+        <query-param name="pMother" type="string"/>
+        <query-param name="pResidence" type="string"/>
+        <query-param name="piDcardType" type="string"/>
+        <query-param name="pExpDate" type="string"/>
+        <query-param name="pBirthPlace" type="string"/>
+        <query-param name="pIncome" type="string"/>
+        <query-param name="pDataExtract" type="string"/>
+        <query-param name="pHomeStatus" type="string"/>
+        <query-param name="pNoDepend" type="string"/>
+        <query-param name="pReligion" type="string"/>
+        <query-param name="pTin" type="string"/>
+        <query-param name="pGreenCard" type="string"/>
+        <query-param name="pAlamatAS" type="string"/>
+        <query-param name="pBadanAS" type="string"/>
+        <query-param name="pFatca" type="string"/>
+        <query-param name="pCommunication" type="string"/>
+        <query-param name="pSumberDanaLain" type="string"/>
+
+
+        <return-scalar column="cifNumber" type="string"/>
+        <return-scalar column="religionDesc" type="string"/>
+        <return-scalar column="nik" type="string"/>
+        <return-scalar column="fullName" type="string"/>
+        <return-scalar column="birthDate" type="string"/>
+        <return-scalar column="branchCode" type="string"/>
+        <return-scalar column="branchCodeDesc" type="string"/>
+        <return-scalar column="lob" type="string"/>
+        <return-scalar column="lobDesc" type="string"/>
+        <return-scalar column="category" type="string"/>
+        <return-scalar column="cifType" type="string"/>
+        <return-scalar column="shortName" type="string"/>
+        <return-scalar column="expectedLimit" type="string"/>
+        <return-scalar column="expectedLimitDesc" type="string"/>
+        <return-scalar column="salutation" type="string"/>
+        <return-scalar column="salutationDesc" type="string"/>
+        <return-scalar column="custFirstName" type="string"/>
+        <return-scalar column="custMidName" type="string"/>
+        <return-scalar column="custLastName" type="string"/>
+        <return-scalar column="mailAddrs1" type="string"/>
+        <return-scalar column="mailAddrs2" type="string"/>
+        <return-scalar column="mailAddrs3" type="string"/>
+        <return-scalar column="maillingCode" type="string"/>
+        <return-scalar column="maillingTownCityDesc" type="string"/>
+        <return-scalar column="maillingTownCity" type="string"/>
+        <return-scalar column="maillingStateDesc" type="string"/>
+        <return-scalar column="maillingState" type="string"/>
+        <return-scalar column="maillingCountryDesc" type="string"/>
+        <return-scalar column="maillingCountry" type="string"/>
+        <return-scalar column="highRiskmaillingCountry" type="string"/>
+        <return-scalar column="highRiskmCode" type="string"/>
+        <return-scalar column="permaAddress1" type="string"/>
+        <return-scalar column="permaAddress2" type="string"/>
+        <return-scalar column="permaAddress3" type="string"/>
+        <return-scalar column="permaZipCode" type="string"/>
+        <return-scalar column="permaTownCityDesc" type="string"/>
+        <return-scalar column="permaTownCity" type="string"/>
+        <return-scalar column="permaState" type="string"/>
+        <return-scalar column="permaStateDesc" type="string"/>
+        <return-scalar column="permaCountry" type="string"/>
+        <return-scalar column="permaCountryDesc" type="string"/>
+        <return-scalar column="highRiskpermaCountry" type="string"/>
+        <return-scalar column="highRiskpCode" type="string"/>
+        <return-scalar column="employerName" type="string"/>
+        <return-scalar column="employerAddress1" type="string"/>
+        <return-scalar column="employerAddress2" type="string"/>
+        <return-scalar column="employerAddress3" type="string"/>
+        <return-scalar column="employerZipCode" type="string"/>
+        <return-scalar column="employerTownCityDesc" type="string"/>
+        <return-scalar column="employerState" type="string"/>
+        <return-scalar column="employerCountry" type="string"/>
+        <return-scalar column="employementDetails" type="string"/>
+        <return-scalar column="occupationDesc" type="string"/>
+        <return-scalar column="occupation" type="string"/>
+        <return-scalar column="holdAddress1" type="string"/>
+        <return-scalar column="holdAddress2" type="string"/>
+        <return-scalar column="holdAddress3" type="string"/>
+        <return-scalar column="holdZipCode" type="string"/>
+        <return-scalar column="holdTownCity" type="string"/>
+        <return-scalar column="holdState" type="string"/>
+        <return-scalar column="holdCountry" type="string"/>
+        <return-scalar column="nationalityDesc" type="string"/>
+        <return-scalar column="nationality" type="string"/>
+        <return-scalar column="highRisknationality" type="string"/>
+        <return-scalar column="highRisknationalityCode" type="string"/>
+        <return-scalar column="countryOfResidence" type="string"/>
+        <return-scalar column="countryOfResidenceDesc" type="string"/>
+        <return-scalar column="highRiskcOR" type="string"/>
+        <return-scalar column="highRiskcORCode" type="string"/>
+        <return-scalar column="residencePhoneNo" type="string"/>
+        <return-scalar column="residencePhoneNoContry" type="string"/>
+        <return-scalar column="residencePhoneNoArea" type="string"/>
+        <return-scalar column="employerPhoneNoCountry" type="string"/>
+        <return-scalar column="employerPhoneNoArea" type="string"/>
+        <return-scalar column="employerPhoneNoExt" type="string"/>
+        <return-scalar column="employerPhoneNo" type="string"/>
+
+        <return-scalar column="mobilePhone" type="string"/>
+        <return-scalar column="lastEduDesc" type="string"/>
+        <return-scalar column="lastEdu" type="string"/>
+        <return-scalar column="emailAddress" type="string"/>
+        <return-scalar column="gender" type="string"/>
+        <return-scalar column="genderDesc" type="string"/>
+
+        <return-scalar column="marStatDesc" type="string"/>
+        <return-scalar column="marStat" type="string"/>
+        <return-scalar column="staff" type="string"/>
+        <return-scalar column="employeeId" type="string"/>
+        <return-scalar column="businessTypeDesc" type="string"/>
+        <return-scalar column="businessType" type="string"/>
+        <return-scalar column="highRiskbusinessCode" type="string"/>
+        <return-scalar column="highRiskbusiness" type="string"/>
+        <return-scalar column="professionDesc" type="string"/>
+        <return-scalar column="professionCode" type="string"/>
+        <return-scalar column="highRiskprofessionCode" type="string"/>
+        <return-scalar column="highRiskprofession" type="string"/>
+        <return-scalar column="spouseName" type="string"/>
+        <return-scalar column="spouseEmployer" type="string"/>
+        <return-scalar column="spouseJobTitle" type="string"/>
+
+        <return-scalar column="aoBusiness" type="string"/>
+        <return-scalar column="aoBusinessDesc" type="string"/>
+        <return-scalar column="aoOperation" type="string"/>
+        <return-scalar column="aoOperationDesc" type="string"/>
+        <return-scalar column="jobTitle" type="string"/>
+        <return-scalar column="aliasName" type="string"/>
+        <return-scalar column="namMother" type="string"/>
+        <return-scalar column="debtType" type="string"/>
+        <return-scalar column="debtStatus" type="string"/>
+        <return-scalar column="branchLocationCode" type="string"/>
+        <return-scalar column="districtCode" type="string"/>
+        <return-scalar column="employeICCode" type="string"/>
+        <return-scalar column="reliwthBank" type="string"/>
+        <return-scalar column="relation" type="string"/>
+        <return-scalar column="conWithBank" type="string"/>
+        <return-scalar column="residenceType" type="string"/>
+        <return-scalar column="residenceTDesc" type="string"/>
+        <return-scalar column="idcardType" type="string"/>
+        <return-scalar column="idcardTDesc" type="string"/>
+        <return-scalar column="icExpiryDate" type="string"/>
+        <return-scalar column="birthPlace" type="string"/>
+        <return-scalar column="monthLyIncome" type="string"/>
+        <return-scalar column="monthLyIncomeDesc" type="string"/>
+        <return-scalar column="dataTransXtractFlag" type="string"/>
+        <return-scalar column="dataTransXtractFlagDesc" type="string"/>
+        <return-scalar column="homeStatus" type="string"/>
+        <return-scalar column="homeStatusDesc" type="string"/>
+        <return-scalar column="noOfDependant" type="string"/>
+        <return-scalar column="religion" type="string"/>
+        <return-scalar column="religionDesc" type="string"/>
+        <return-scalar column="incomeTaxNo" type="string"/>
+        <return-scalar column="tin" type="string"/>
+        <return-scalar column="greenCard" type="string"/>
+        <return-scalar column="greenCardDesc" type="string"/>
+        <return-scalar column="alamatAS" type="string"/>
+        <return-scalar column="alamatASDesc" type="string"/>
+        <return-scalar column="badanAS" type="string"/>
+        <return-scalar column="badanASDesc" type="string"/>
+        <return-scalar column="fatca" type="string"/>
+        <return-scalar column="fatcaDesc" type="string"/>
+
+        <return-scalar column="communicationDesc" type="string"/>
+        <return-scalar column="communication" type="string"/>
+        <return-scalar column="productCode" type="string"/>
+        <return-scalar column="productCodeDesc" type="string"/>
+        <return-scalar column="branchCodeCasa" type="string"/>
+        <return-scalar column="branchCodeCasaDesc" type="string"/>
+        <return-scalar column="lobCasa" type="string"/>
+        <return-scalar column="lobCasaDesc" type="string"/>
+        <return-scalar column="acctTitle" type="string"/>
+
+        <return-scalar column="echannel" type="string"/>
+        <return-scalar column="echannelDesc" type="string"/>
+        <return-scalar column="tujuanPembukaan" type="string"/>
+        <return-scalar column="tujuanPembukaanDesc" type="string"/>
+        <return-scalar column="sumberDana" type="string"/>
+        <return-scalar column="sumberDanaDesc" type="string"/>
+
+
+        <return-scalar column="flgIctype" type="string"/>
+        <return-scalar column="stateIndicator" type="string"/>
+        <return-scalar column="stateIndicatorDesc" type="string"/>
+        <return-scalar column="sumberDanaLain" type="string"/>
+        <!--  Revision : Added Value YES on Channel
+        Change Date : 07-Desember-2015
+        Changer : v00019722
+        Line Change :
+        Line Add : 1 -> 773  -->
+         <![CDATA[
+        select ZZ.COD_CUST_ID as cifNumber,
+			ZZ.COD_CUST_NATL_ID as nik,
+			ZZ.NAM_CUST_FULL as fullName,
+                        to_char(to_date(ZZ.DAT_BIRTH_CUST,'dd/mm/RR'),'dd/mm/yyyy') as birthDate,
+			cast(ZZ.COD_CC_HOMEBRN as varchar2(10)) as branchCode,
+       (select c.nam_branch
+          from ba_cc_brn_mast c
+         where c.cod_cc_brn = zz.COD_CC_HOMEBRN
+           and c.flg_mnt_status = 'A'
+           and c.cod_entity_vpd = 11) as branchCodeDesc,
+       cast((select lob.cod_lob
+          from ba_lob_mast lob, ba_lob_brn_xref brn
+         where lob.cod_lob = brn.cod_lob
+           and brn.cod_cc_brn = ZZ.COD_CC_HOMEBRN
+           and lob.cod_lob = (select xfer.cod_lob
+                                from ba_cust_acct_ao_lob_xref xfer
+                               where cod_cust_id = zz.COD_CUST_ID
+                                 and cod_acct_no = 0)
+           and lob.flg_mnt_status = 'A') as varchar2(100)) AS lob,
+       cast((select lob.nam_lob
+          from ba_lob_mast lob, ba_lob_brn_xref brn
+         where lob.cod_lob = brn.cod_lob
+           and brn.cod_cc_brn = ZZ.COD_CC_HOMEBRN
+           and lob.cod_lob = (select xfer.cod_lob
+                                from ba_cust_acct_ao_lob_xref xfer
+                               where cod_cust_id = zz.COD_CUST_ID
+                                 and cod_acct_no = 0)
+           and lob.flg_mnt_status = 'A') as varchar2(765)) AS lobDesc,
+	ZZ.FLG_CUST_TYP as category,
+       ZZ.CIF_TYPE as cifType,
+       ZZ.NAM_CUST_SHRT as shortName,
+       ZZ.TXT_CUST_PREFIX as salutation,
+       ZZ.TXT_CUST_PREFIX as salutationDesc,
+       ZZ.NAM_CUST_FIRST as custFirstName,
+       ZZ.NAM_CUST_MID as custMidName,
+       ZZ.NAM_CUST_LAST as custLastName,
+       ZZ.TXT_CUSTADR_ADD1 as mailAddrs1,
+       ZZ.TXT_CUSTADR_ADD2 as mailAddrs2,
+       ZZ.TXT_CUSTADR_ADD3 as mailAddrs3,
+       ZZ.TXT_CUSTADR_ZIP as maillingCode,
+       ZZ.NAM_CUSTADR_CITY as maillingTownCityDesc,
+       (select city_code
+          from ba_city_master a
+            where upper(a.city_name)=ZZ.NAM_CUSTADR_CITY
+			and flg_mnt_status = 'A'
+			and cod_entity_vpd = 11) as maillingTownCity,
+       ZZ.NAM_CUSTADR_STATE as maillingStateDesc,
+       (select cod_state
+          from ba_state_codes a
+            where upper(a.nam_state) = ZZ.NAM_CUSTADR_STATE
+			and flg_mnt_status = 'A'
+			and cod_entity_vpd = 11) as maillingState,
+	   (select description
+          from ba_ifst_country
+         where country_code = ZZ.NAM_CUSTADR_CNTRY
+           and flg_mnt_status = 'A') as maillingCountryDesc,
+       (select country_code
+          from ba_ifst_country
+         where country_code = ZZ.NAM_CUSTADR_CNTRY
+           and flg_mnt_status = 'A') as maillingCountry,
+       (select desc_high_risk
+          from ba_ifst_country
+         where country_code = ZZ.NAM_CUSTADR_CNTRY
+           and flg_mnt_status = 'A') as highRiskmaillingCountry,
+       (select cod_high_risk
+          from ba_ifst_country
+         where country_code = ZZ.NAM_CUSTADR_CNTRY
+           and flg_mnt_status = 'A') as highRiskmCode,
+		   TXT_PERMADR_ADD1 as permaAddress1,
+       ZZ.TXT_PERMADR_ADD2 as permaAddress2,
+       ZZ.TXT_PERMADR_ADD3 as permaAddress3,
+       ZZ.TXT_PERMADR_ZIP as permaZipCode,
+       ZZ.NAM_PERMADR_CITY as permaTownCityDesc,
+       (select city_code
+          from ba_city_master a
+            where upper(a.city_name)=ZZ.NAM_PERMADR_CITY
+			and flg_mnt_status = 'A'
+			and cod_entity_vpd = 11) as permaTownCity,
+       ZZ.NAM_PERMADR_STATE as permaStateDesc,
+       (select cod_state
+          from ba_state_codes a
+            where upper(a.nam_state) = ZZ.NAM_PERMADR_STATE
+			and flg_mnt_status = 'A'
+			and cod_entity_vpd = 11) as permaState,
+	   (select description
+          from ba_ifst_country
+         where country_code = ZZ.NAM_PERMADR_CNTRY
+           and flg_mnt_status = 'A') as permaCountryDesc,
+       (select country_code
+          from ba_ifst_country
+         where country_code = ZZ.NAM_PERMADR_CNTRY
+           and flg_mnt_status = 'A') as permaCountry,
+       (select desc_high_risk
+          from ba_ifst_country
+         where country_code = ZZ.NAM_PERMADR_CNTRY
+           and flg_mnt_status = 'A') as highRiskpermaCountry,
+       (select cod_high_risk
+          from ba_ifst_country
+         where country_code = ZZ.NAM_PERMADR_CNTRY
+           and flg_mnt_status = 'A') as highRiskpCode,
+		   YY.nam_spouse_cust as spouseName,
+		   YY.nam_spo_employer as spouseEmployer,
+		   YY.txt_spo_desgn as spouseJobTitle,
+		   YY.NAM_CUST_EMP as employerName,
+       YY.TXT_EMPADR_ADD1 as employerAddress1,
+       YY.TXT_EMPADR_ADD2 as employerAddress2,
+       YY.TXT_EMPADR_ADD3 as employerAddress3,
+       YY.TXT_EMPADR_ZIP as employerZipCode,
+       YY.NAM_EMPADR_CITY as employerTownCityDesc,
+       YY.NAM_EMPADR_STATE as employerState,
+       YY.NAM_EMPADR_CNTRY as employerCountry,
+       YY.NAM_CUST_EMP as employementDetails,
+	   nvl((select txt_profession
+             from ci_prof_codes prof
+            where cast(prof.txt_profess_cat as varchar2(120)) =
+                  YY.TXT_OCCPN_SPOUSE
+              and flg_mnt_status = 'A'),
+           '-') as occupationDesc,
+	   YY.REF_CUST_EMP_PHONE as employerPhoneNo,
+	   YY.ref_cust_emp_phone_country as employerPhoneNoCountry,
+	   YY.ref_cust_emp_phone_area as employerPhoneNoArea,
+	   YY.ref_cust_emp_phone_extn as employerPhoneNoExt,
+       cast(YY.TXT_OCCUPTN_CAT as varchar2(105)) as occupation,
+	   ZZ.TXT_HOLDADR_ADD1 as holdAddress1,
+       ZZ.TXT_HOLDADR_ADD2 as holdAddress2,
+       ZZ.TXT_HOLDADR_ADD3 as holdAddress3,
+       ZZ.TXT_HOLDADR_ZIP as holdZipCode,
+       ZZ.NAM_HOLDADR_CITY as holdTownCity,
+       ZZ.NAM_HOLDADR_STATE as holdState,
+	   (select description
+          from ba_ifst_country
+         where country_code = ZZ.NAM_HOLDADR_CNTRY
+           and flg_mnt_status = 'A') as holdCountry,
+       nvl((select description
+             from ba_ifst_country
+            where country_code = ZZ.TXT_CUST_NATNLTY),
+           'ID-INDONESIA - 09002') as nationalityDesc,
+       nvl((select country_code
+             from ba_ifst_country
+            where country_code = ZZ.TXT_CUST_NATNLTY),
+           'ID') as nationality,
+        (select desc_high_risk
+          from ba_ifst_country
+         where country_code = ZZ.TXT_CUST_NATNLTY
+           and flg_mnt_status = 'A') as highRisknationality,
+       (select cod_high_risk
+          from ba_ifst_country
+         where country_code = ZZ.TXT_CUST_NATNLTY
+           and flg_mnt_status = 'A') as highRisknationalityCode,
+       ZZ.TXT_CUST_RESIDENCE as countryOfResidence,
+        nvl((select description
+             from ba_ifst_country
+            where country_code = ZZ.TXT_CUST_RESIDENCE),
+           TXT_CUST_RESIDENCE) as countryOfResidenceDesc,
+       (select desc_high_risk
+          from ba_ifst_country
+         where country_code = ZZ.TXT_CUST_RESIDENCE
+           and flg_mnt_status = 'A') as highRiskcOR,
+       (select cod_high_risk
+          from ba_ifst_country
+         where country_code = ZZ.TXT_CUST_RESIDENCE
+           and flg_mnt_status = 'A') as highRiskcORCode,
+	   ZZ.REF_CUST_PHONE as residencePhoneNo,
+	   ZZ.ref_res_phone_country as residencePhoneNoContry,
+	   ZZ.ref_res_phone_area as residencePhoneNoArea,
+       ZZ.REF_PHONE_MOBILE as mobilePhone,
+       nvl((select display_text
+             from mow_scrn_dropdown_mast
+            where ctl_name = :pEducation
+              and item_index = zz.txt_cust_educn),
+           txt_cust_educn) as lastEduDesc,
+	   nvl((select item_index
+             from mow_scrn_dropdown_mast
+            where ctl_name = :pEducation
+              and item_index = zz.txt_cust_educn),
+           txt_cust_educn) as lastEdu,
+       ZZ.REF_CUST_EMAIL as emailAddress,
+       ZZ.TXT_CUST_SEX as gender,
+       decode (ZZ.TXT_CUST_SEX,'M','MALE','FEMALE')as genderDesc,
+       nvl((select display_text
+             from mow_scrn_dropdown_mast
+            where ctl_name = :pMarstat
+              and item_index = ZZ.COD_CUST_MARSTAT),
+           ZZ.COD_CUST_MARSTAT) as marStatDesc,
+	   nvl((select item_index
+             from mow_scrn_dropdown_mast
+            where ctl_name = :pMarstat
+              and item_index = ZZ.COD_CUST_MARSTAT),
+           ZZ.COD_CUST_MARSTAT) as marStat,
+       ZZ.FLG_STAFF as staff,
+	   ZZ.COD_EMPLOYEE_ID as employeeId,
+       nvl((select txt_business
+             from ci_business_types
+            where cod_business_cat = zz.cod_business_cat
+              and flg_mnt_status = 'A'),
+           ZZ.TXT_BUSINESS_TYP) as businessTypeDesc,
+       nvl((select cod_business_cat
+             from ci_business_types
+            where cod_business_cat = zz.cod_business_cat
+              and flg_mnt_status = 'A'),
+           cod_business_cat) as businessType,
+       nvl((select cod_high_risk
+             from ci_business_types
+            where cod_business_cat = zz.cod_business_cat
+              and flg_mnt_status = 'A'),
+           '') as highRiskbusinessCode,
+       nvl((select desc_highrisk
+             from ci_business_types
+            where cod_business_cat = zz.cod_business_cat
+              and flg_mnt_status = 'A'),
+           '') as highRiskbusiness,
+       nvl((select txt_profession
+             from ci_prof_codes prof
+            where prof.txt_profess_cat = zz.TXT_PROFESS_CAT
+              and flg_mnt_status = 'A'),
+           ZZ.TXT_PROFESS_CAT) as professionDesc,
+       ZZ.TXT_PROFESS_CAT as professionCode,
+       nvl((select cod_highrisk
+             from ci_prof_codes prof
+            where prof.txt_profess_cat = zz.TXT_PROFESS_CAT
+              and flg_mnt_status = 'A'),
+           '') as highRiskprofessionCode,
+       nvl((select desc_highrisk
+             from ci_prof_codes prof
+            where prof.txt_profess_cat = zz.TXT_PROFESS_CAT
+              and flg_mnt_status = 'A'),
+           '') as highRiskprofession,
+       (select xfer2.cod_ao_business
+          from ba_cust_acct_ao_lob_xref xfer2
+         where cod_cust_id = zz.COD_CUST_ID
+           and cod_acct_no = 0
+           and xfer2.flg_mnt_status = 'A') as aoBusiness,
+       (select office.nam_acct_officer
+          from ba_acct_officer_mast office
+         where COD_ACCT_OFFICER =
+               (nvl((select xfer2.cod_ao_business
+          from ba_cust_acct_ao_lob_xref xfer2
+         where cod_cust_id = zz.COD_CUST_ID
+           and cod_acct_no = 0
+                        and xfer2.flg_mnt_status = 'A'),''))
+           AND FLG_MNT_STATUS = 'A')as aoBusinessDesc,
+       (select xfer2.Cod_Ao_Operations
+          from ba_cust_acct_ao_lob_xref xfer2
+         where cod_cust_id = zz.COD_CUST_ID
+           and cod_acct_no = 0
+           and xfer2.flg_mnt_status = 'A') as aoOperation,
+       (select office.nam_acct_officer
+          from ba_acct_officer_mast office
+         where COD_ACCT_OFFICER =
+               (nvl((select xfer2.cod_ao_operations
+          from ba_cust_acct_ao_lob_xref xfer2
+         where cod_cust_id = zz.COD_CUST_ID
+           and cod_acct_no = 0
+                        and xfer2.flg_mnt_status = 'A'), ''))
+           AND FLG_MNT_STATUS = 'A')as aoOperationDesc,
+       YY.TXT_DESIGNATION as jobTitle,
+	   nvl((select field_value
+             from udf_cust_log_details cl
+            where cl.cod_field_tag = :pAlias
+              and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+              and cl.flg_mnt_status = 'A'),
+           (select NAM_ALIAS
+              from RR_CUST_SERVICE_BDI rr
+             where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C')) as aliasName,
+       nvl((select field_value
+             from udf_cust_log_details cl
+            where cl.cod_field_tag = :pMother
+              and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+              and cl.flg_mnt_status = 'A'),
+           (select NAM_MTHR_MAID
+              from RR_CUST_SERVICE_BDI rr
+             where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C')) as namMother,
+       (select NAM_ALIAS
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as NAM_ALIAS_BI,
+       (select NAM_MTHR_MAID
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as NAM_MOTHER_BI,
+       (select rr.cod_debt_type
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as debtType,
+       (select rr.debtor_status
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as debtStatus,
+       (select rr.cod_cc_brn
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as branchLocationCode,
+       (select rr.cod_dist
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as districtCode,
+       (select rr.cod_emp_sic
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as employeICCode,
+       (select rr.cod_rel_lbu
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as reliwthBank,
+       (select rr.cod_conn_lbu
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as conWithBank,
+       (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pResidence
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+           AND cl.flg_mnt_status = 'A') as residenceType,
+       (select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pResidence
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                   AND cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pResidence) as residenceTDesc,
+		(select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :piDcardType
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            AND cl.flg_mnt_status = 'A') as idcardType,
+       (select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :piDcardType
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                   AND cl.flg_mnt_status = 'A')
+           and cod_field_tag = :piDcardType) as idcardTDesc,
+        (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pExpDate
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            AND cl.flg_mnt_status = 'A') as icExpiryDate,
+           (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pBirthPlace
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            AND cl.flg_mnt_status = 'A') as birthPlace,
+       (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pIncome
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            AND cl.flg_mnt_status = 'A') as monthLyIncome,
+       (select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pIncome
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                   AND cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pIncome) as monthLyIncomeDesc,
+		   (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pDataExtract
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            AND cl.flg_mnt_status = 'A') as dataTransXtractFlag,
+       (select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pDataExtract
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                AND cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pDataExtract) as dataTransXtractFlagDesc,
+       (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pHomeStatus
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+        AND cl.flg_mnt_status = 'A') as homeStatus,
+       (select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pHomeStatus
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                AND cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pHomeStatus) as homeStatusDesc,
+       (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pExpectedLimit
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            AND cl.flg_mnt_status = 'A') as expectedLimit,
+            (select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pExpectedLimit
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                    AND cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pExpectedLimit) as expectedLimitDesc,
+       (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pNoDepend
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            AND cl.flg_mnt_status = 'A') as noOfDependant,
+       nvl((select upper(display_text)
+             from mow_scrn_dropdown_mast
+            where ctl_name = :pReligion
+              and item_index = zz.txt_ethnic_origin),
+           ZZ.txt_ethnic_origin) as religionDesc,
+       ZZ.TXT_ETHNIC_ORIGIN as religion,
+	   ZZ.REF_CUST_IT_NUM as incomeTaxNo,
+	   (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pTin
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            AND cl.flg_mnt_status = 'A') as tin,
+           nvl((select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pGreenCard
+              and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                AND cl.flg_mnt_status = 'A'),
+           '') as greenCard,
+            nvl((select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pGreenCard
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                   and cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pGreenCard),'') as greenCardDesc,
+           nvl((select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pAlamatAS
+              and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+              and cl.flg_mnt_status = 'A'),
+           '') as alamatAS,
+            nvl((select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pAlamatAS
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                   and cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pAlamatAS),'') as alamatASDesc,
+           nvl((select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pBadanAS
+              and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+and cl.flg_mnt_status = 'A'),
+           '') as badanAS,
+         nvl((select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pBadanAS
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                   and cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pBadanAS),'') as badanASDesc,
+        nvl((select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pFatca
+              and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+and cl.flg_mnt_status = 'A'),
+           '') as fatca,
+            nvl((select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pFatca
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                   and cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pFatca),'') as fatcaDesc,
+           'SOLE OWNER' as relation,
+		   nvl((select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pCommunication
+                      and cl.cod_cust_id =
+                          cast(zz.cod_cust_id as varchar2(40))
+and cl.flg_mnt_status = 'A')
+              and cod_field_tag = :pCommunication),
+           '') as communicationDesc,
+		   nvl((select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pCommunication
+              and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+and cl.flg_mnt_status = 'A'),
+           '') as communication,
+		   cf.PRODUCTCODE as productCode,
+		   cf.PRODUCTCODEDESC as productCodeDesc,
+		   cf.BRANCHCODECASA as branchCodeCasa,
+                   cf.BRANCHCODECDESC as branchCodeCasaDesc,
+                   cf.LOBCASA as lobCasa,
+                   cf.LOBCASADESC as lobCasaDesc,
+                   cf.ACCTTITLE as acctTitle,
+                   cf.RELATION as relation,
+                   cf.ECHANNEL as echannel,
+                   cf.ECHANNELFLAG as echannelDesc,
+                   --zz.FLG_IC_TYP as flgIctype,
+                   cf.STATEINDICATOR as stateIndicator,
+                   cf.STATEINDICATORDESC as stateIndicatorDesc,
+                   cf.TUJUANPEMBUKAAN as tujuanPembukaan,
+                   cf.TUJUANPEMBUKAANDESC as tujuanPembukaanDesc,
+                   cf.SUMBERDANA as sumberDana,
+                   cf.SUMBERDANADESC as sumberDanaDesc,
+                   nvl((select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pSumberDanaLain
+              and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                and cl.flg_mnt_status = 'A'),
+           '') as sumberDanaLain
+  from ci_custmast zz, ci_custdetl yy, tmp_ext_cifcasa cf
+ where zz.cod_cust_id = :pcif
+   and zz.cod_cust_id = yy.cod_cust_id
+   and yy.flg_mnt_status = 'A'
+   and zz.flg_mnt_status = 'A'
+   and zz.cod_entity_vpd = 11
+   and zz.cod_entity_vpd = 11
+   and cf.cifNumber = zz.cod_cust_id
+   and cf.applicationId = :pappId
+        ]]>
+    </sql-query>
+
+ <sql-query name="Cif#getReplicatedCIFNoDetlChannel">
+        <query-param name="pcif" type="integer"/>
+        <query-param name="pEducation" type="string"/>
+        <query-param name="pExpectedLimit" type="string"/>
+        <query-param name="pMarstat" type="string"/>
+        <query-param name="pAlias" type="string"/>
+        <query-param name="pMother" type="string"/>
+        <query-param name="pResidence" type="string"/>
+        <query-param name="piDcardType" type="string"/>
+        <query-param name="pExpDate" type="string"/>
+        <query-param name="pBirthPlace" type="string"/>
+        <query-param name="pIncome" type="string"/>
+        <query-param name="pDataExtract" type="string"/>
+        <query-param name="pHomeStatus" type="string"/>
+        <query-param name="pNoDepend" type="string"/>
+        <query-param name="pReligion" type="string"/>
+        <query-param name="pTin" type="string"/>
+        <query-param name="pGreenCard" type="string"/>
+        <query-param name="pAlamatAS" type="string"/>
+        <query-param name="pBadanAS" type="string"/>
+        <query-param name="pFatca" type="string"/>
+        <query-param name="pCommunication" type="string"/>
+        <query-param name="pSumberDanaLain" type="string"/>
+
+        <return-scalar column="cifNumber" type="string"/>
+        <return-scalar column="religionDesc" type="string"/>
+        <return-scalar column="nik" type="string"/>
+        <return-scalar column="fullName" type="string"/>
+        <return-scalar column="birthDate" type="string"/>
+        <return-scalar column="branchCode" type="string"/>
+        <return-scalar column="branchCodeDesc" type="string"/>
+        <return-scalar column="lob" type="string"/>
+        <return-scalar column="lobDesc" type="string"/>
+        <return-scalar column="category" type="string"/>
+        <return-scalar column="cifType" type="string"/>
+        <return-scalar column="shortName" type="string"/>
+        <return-scalar column="expectedLimit" type="string"/>
+        <return-scalar column="expectedLimitDesc" type="string"/>
+        <return-scalar column="salutation" type="string"/>
+        <return-scalar column="salutationDesc" type="string"/>
+        <return-scalar column="custFirstName" type="string"/>
+        <return-scalar column="custMidName" type="string"/>
+        <return-scalar column="custLastName" type="string"/>
+        <return-scalar column="mailAddrs1" type="string"/>
+        <return-scalar column="mailAddrs2" type="string"/>
+        <return-scalar column="mailAddrs3" type="string"/>
+        <return-scalar column="maillingCode" type="string"/>
+        <return-scalar column="maillingTownCityDesc" type="string"/>
+        <return-scalar column="maillingTownCity" type="string"/>
+        <return-scalar column="maillingStateDesc" type="string"/>
+        <return-scalar column="maillingState" type="string"/>
+        <return-scalar column="maillingCountryDesc" type="string"/>
+        <return-scalar column="maillingCountry" type="string"/>
+        <return-scalar column="highRiskmaillingCountry" type="string"/>
+        <return-scalar column="highRiskmCode" type="string"/>
+        <return-scalar column="permaAddress1" type="string"/>
+        <return-scalar column="permaAddress2" type="string"/>
+        <return-scalar column="permaAddress3" type="string"/>
+        <return-scalar column="permaZipCode" type="string"/>
+        <return-scalar column="permaTownCityDesc" type="string"/>
+        <return-scalar column="permaTownCity" type="string"/>
+        <return-scalar column="permaState" type="string"/>
+        <return-scalar column="permaStateDesc" type="string"/>
+        <return-scalar column="permaCountry" type="string"/>
+        <return-scalar column="permaCountryDesc" type="string"/>
+        <return-scalar column="highRiskpermaCountry" type="string"/>
+        <return-scalar column="highRiskpCode" type="string"/>
+        <return-scalar column="employerName" type="string"/>
+        <return-scalar column="employerAddress1" type="string"/>
+        <return-scalar column="employerAddress2" type="string"/>
+        <return-scalar column="employerAddress3" type="string"/>
+        <return-scalar column="employerZipCode" type="string"/>
+        <return-scalar column="employerTownCityDesc" type="string"/>
+        <return-scalar column="employerState" type="string"/>
+        <return-scalar column="employerCountry" type="string"/>
+        <return-scalar column="employementDetails" type="string"/>
+        <return-scalar column="occupationDesc" type="string"/>
+        <return-scalar column="occupation" type="string"/>
+        <return-scalar column="holdAddress1" type="string"/>
+        <return-scalar column="holdAddress2" type="string"/>
+        <return-scalar column="holdAddress3" type="string"/>
+        <return-scalar column="holdZipCode" type="string"/>
+        <return-scalar column="holdTownCity" type="string"/>
+        <return-scalar column="holdState" type="string"/>
+        <return-scalar column="holdCountry" type="string"/>
+        <return-scalar column="nationalityDesc" type="string"/>
+        <return-scalar column="nationality" type="string"/>
+        <return-scalar column="highRisknationality" type="string"/>
+        <return-scalar column="highRisknationalityCode" type="string"/>
+        <return-scalar column="countryOfResidence" type="string"/>
+        <return-scalar column="countryOfResidenceDesc" type="string"/>
+        <return-scalar column="highRiskcOR" type="string"/>
+        <return-scalar column="highRiskcORCode" type="string"/>
+        <return-scalar column="residencePhoneNo" type="string"/>
+        <return-scalar column="residencePhoneNoContry" type="string"/>
+        <return-scalar column="residencePhoneNoArea" type="string"/>
+        <return-scalar column="employerPhoneNoCountry" type="string"/>
+        <return-scalar column="employerPhoneNoArea" type="string"/>
+        <return-scalar column="employerPhoneNoExt" type="string"/>
+        <return-scalar column="employerPhoneNo" type="string"/>
+        <return-scalar column="mobilePhone" type="string"/>
+        <return-scalar column="lastEduDesc" type="string"/>
+        <return-scalar column="lastEdu" type="string"/>
+        <return-scalar column="emailAddress" type="string"/>
+        <return-scalar column="gender" type="string"/>
+        <return-scalar column="genderDesc" type="string"/>
+        <return-scalar column="marStatDesc" type="string"/>
+        <return-scalar column="marStat" type="string"/>
+        <return-scalar column="staff" type="string"/>
+        <return-scalar column="employeeId" type="string"/>
+        <return-scalar column="businessTypeDesc" type="string"/>
+        <return-scalar column="businessType" type="string"/>
+        <return-scalar column="highRiskbusinessCode" type="string"/>
+        <return-scalar column="highRiskbusiness" type="string"/>
+        <return-scalar column="professionDesc" type="string"/>
+        <return-scalar column="professionCode" type="string"/>
+        <return-scalar column="highRiskprofessionCode" type="string"/>
+        <return-scalar column="highRiskprofession" type="string"/>
+        <return-scalar column="spouseName" type="string"/>
+        <return-scalar column="spouseEmployer" type="string"/>
+        <return-scalar column="spouseJobTitle" type="string"/>
+        <return-scalar column="aoBusiness" type="string"/>
+        <return-scalar column="aoBusinessDesc" type="string"/>
+        <return-scalar column="aoOperation" type="string"/>
+        <return-scalar column="aoOperationDesc" type="string"/>
+        <return-scalar column="jobTitle" type="string"/>
+        <return-scalar column="aliasName" type="string"/>
+        <return-scalar column="namMother" type="string"/>
+        <return-scalar column="debtType" type="string"/>
+        <return-scalar column="debtStatus" type="string"/>
+        <return-scalar column="branchLocationCode" type="string"/>
+        <return-scalar column="districtCode" type="string"/>
+        <return-scalar column="employeICCode" type="string"/>
+        <return-scalar column="reliwthBank" type="string"/>
+        <return-scalar column="relation" type="string"/>
+        <return-scalar column="conWithBank" type="string"/>
+        <return-scalar column="residenceType" type="string"/>
+        <return-scalar column="residenceTDesc" type="string"/>
+        <return-scalar column="idcardType" type="string"/>
+        <return-scalar column="idcardTDesc" type="string"/>
+        <return-scalar column="icExpiryDate" type="string"/>
+        <return-scalar column="birthPlace" type="string"/>
+        <return-scalar column="monthLyIncome" type="string"/>
+        <return-scalar column="monthLyIncomeDesc" type="string"/>
+        <return-scalar column="dataTransXtractFlag" type="string"/>
+        <return-scalar column="dataTransXtractFlagDesc" type="string"/>
+        <return-scalar column="homeStatus" type="string"/>
+        <return-scalar column="homeStatusDesc" type="string"/>
+        <return-scalar column="noOfDependant" type="string"/>
+        <return-scalar column="religion" type="string"/>
+        <return-scalar column="religionDesc" type="string"/>
+        <return-scalar column="incomeTaxNo" type="string"/>
+        <return-scalar column="tin" type="string"/>
+        <return-scalar column="greenCard" type="string"/>
+        <return-scalar column="greenCardDesc" type="string"/>
+        <return-scalar column="alamatAS" type="string"/>
+        <return-scalar column="alamatASDesc" type="string"/>
+        <return-scalar column="badanAS" type="string"/>
+        <return-scalar column="badanASDesc" type="string"/>
+        <return-scalar column="fatca" type="string"/>
+        <return-scalar column="fatcaDesc" type="string"/>
+        <return-scalar column="communicationDesc" type="string"/>
+        <return-scalar column="communication" type="string"/>
+        <return-scalar column="productCode" type="string"/>
+        <return-scalar column="productCodeDesc" type="string"/>
+        <return-scalar column="branchCodeCasa" type="string"/>
+        <return-scalar column="branchCodeCasaDesc" type="string"/>
+        <return-scalar column="lobCasa" type="string"/>
+        <return-scalar column="lobCasaDesc" type="string"/>
+        <return-scalar column="acctTitle" type="string"/>
+        <return-scalar column="echannel" type="string"/>
+        <return-scalar column="echannelDesc" type="string"/>
+        <return-scalar column="tujuanPembukaan" type="string"/>
+        <return-scalar column="tujuanPembukaanDesc" type="string"/>
+        <return-scalar column="sumberDana" type="string"/>
+        <return-scalar column="sumberDanaDesc" type="string"/>
+        <return-scalar column="flgIctype" type="string"/>
+        <return-scalar column="stateIndicator" type="string"/>
+        <return-scalar column="stateIndicatorDesc" type="string"/>
+        <return-scalar column="sumberDanaLain" type="string"/>
+
+        <!--  Revision : Added Value YES on Channel
+        Change Date : 07-Desember-2015
+        Changer : v00019722
+        Line Change :
+        Line Add : 1 -> 1387  -->
+         <![CDATA[
+
+   select ZZ.COD_CUST_ID as cifNumber,
+		COD_CUST_NATL_ID as nik,
+		NAM_CUST_FULL as fullName,
+		to_char(to_date(DAT_BIRTH_CUST,'dd/mm/RR'),'dd/mm/yyyy') as birthDate,
+		cast(COD_CC_HOMEBRN as varchar2(10)) as branchCode,
+       (select c.nam_branch
+          from ba_cc_brn_mast c
+         where c.cod_cc_brn = zz.COD_CC_HOMEBRN
+           and c.flg_mnt_status = 'A'
+           and c.cod_entity_vpd = 11) as branchCodeDesc,
+       cast((select lob.cod_lob
+          from ba_lob_mast lob, ba_lob_brn_xref brn
+         where lob.cod_lob = brn.cod_lob
+           and brn.cod_cc_brn = COD_CC_HOMEBRN
+           and lob.cod_lob = (select xfer.cod_lob
+                                from ba_cust_acct_ao_lob_xref xfer
+                               where cod_cust_id = zz.COD_CUST_ID
+                                 and cod_acct_no = 0)
+           and lob.flg_mnt_status = 'A') as varchar2(100)) AS lob,
+       cast((select lob.nam_lob
+          from ba_lob_mast lob, ba_lob_brn_xref brn
+         where lob.cod_lob = brn.cod_lob
+           and brn.cod_cc_brn = COD_CC_HOMEBRN
+           and lob.cod_lob = (select xfer.cod_lob
+                                from ba_cust_acct_ao_lob_xref xfer
+                               where cod_cust_id = zz.COD_CUST_ID
+                                 and cod_acct_no = 0)
+           and lob.flg_mnt_status = 'A') as varchar2(765)) AS lobDesc,
+		   FLG_CUST_TYP as category,
+       CIF_TYPE as cifType,
+       NAM_CUST_SHRT as shortName,
+       TXT_CUST_PREFIX as salutation,
+       TXT_CUST_PREFIX as salutationDesc,
+       NAM_CUST_FIRST as custFirstName,
+       NAM_CUST_MID as custMidName,
+       NAM_CUST_LAST as custLastName,
+       TXT_CUSTADR_ADD1 as mailAddrs1,
+       TXT_CUSTADR_ADD2 as mailAddrs2,
+       TXT_CUSTADR_ADD3 as mailAddrs3,
+       TXT_CUSTADR_ZIP as maillingCode,
+       NAM_CUSTADR_CITY as maillingTownCityDesc,
+       (select city_code
+          from ba_city_master a
+            where upper(a.city_name)=NAM_CUSTADR_CITY
+			and flg_mnt_status = 'A'
+			and cod_entity_vpd = 11) as maillingTownCity,
+       ZZ.NAM_CUSTADR_STATE as maillingStateDesc,
+       (select cod_state
+          from ba_state_codes a
+            where upper(a.nam_state) = ZZ.NAM_CUSTADR_STATE
+			and flg_mnt_status = 'A'
+			and cod_entity_vpd = 11) as maillingState,
+	   (select description
+          from ba_ifst_country
+         where country_code = ZZ.NAM_CUSTADR_CNTRY
+           and flg_mnt_status = 'A') as maillingCountryDesc,
+       (select country_code
+          from ba_ifst_country
+         where country_code = ZZ.NAM_CUSTADR_CNTRY
+           and flg_mnt_status = 'A') as maillingCountry,
+       (select desc_high_risk
+          from ba_ifst_country
+         where country_code = ZZ.NAM_CUSTADR_CNTRY
+           and flg_mnt_status = 'A') as highRiskmaillingCountry,
+       (select cod_high_risk
+          from ba_ifst_country
+         where country_code = ZZ.NAM_CUSTADR_CNTRY
+           and flg_mnt_status = 'A') as highRiskmCode,
+		   ZZ.TXT_PERMADR_ADD1 as permaAddress1,
+       ZZ.TXT_PERMADR_ADD2 as permaAddress2,
+       ZZ.TXT_PERMADR_ADD3 as permaAddress3,
+       ZZ.TXT_PERMADR_ZIP as permaZipCode,
+       ZZ.NAM_PERMADR_CITY as permaTownCityDesc,
+       (select city_code
+          from ba_city_master a
+            where upper(a.city_name)=ZZ.NAM_PERMADR_CITY
+			and flg_mnt_status = 'A'
+			and cod_entity_vpd = 11) as permaTownCity,
+        ZZ.NAM_PERMADR_STATE as permaStateDesc,
+       (select cod_state
+          from ba_state_codes a
+            where upper(a.nam_state) = ZZ.NAM_PERMADR_STATE
+			and flg_mnt_status = 'A'
+			and cod_entity_vpd = 11) as permaState,
+	   (select description
+          from ba_ifst_country
+         where country_code = ZZ.NAM_PERMADR_CNTRY
+           and flg_mnt_status = 'A') as permaCountryDesc,
+       (select country_code
+          from ba_ifst_country
+         where country_code = ZZ.NAM_PERMADR_CNTRY
+           and flg_mnt_status = 'A') as permaCountry,
+       (select desc_high_risk
+          from ba_ifst_country
+         where country_code = ZZ.NAM_PERMADR_CNTRY
+           and flg_mnt_status = 'A') as highRiskpermaCountry,
+       (select cod_high_risk
+          from ba_ifst_country
+         where country_code = ZZ.NAM_PERMADR_CNTRY
+           and flg_mnt_status = 'A') as highRiskpCode,
+		   '' as spouseName,
+		   '' as spouseEmployer,
+		   '' as employerName,
+		   '' as spouseJobTitle,
+       '' as employerAddress1,
+       '' as employerAddress2,
+       '' as employerAddress3,
+       '' as employerZipCode,
+       '' as employerTownCityDesc,
+       '' as employerState,
+       '' as employerCountry,
+       '' as employementDetails,
+	   '' as occupationDesc,
+	   '' as employerNo,
+	   '' as employerPhoneNoCountry,
+	   '' as employerPhoneNoArea,
+	   '' as employerPhoneNoExt,
+       '0' as occupation,
+	   ZZ.TXT_HOLDADR_ADD1 as holdAddress1,
+       ZZ.TXT_HOLDADR_ADD2 as holdAddress2,
+       ZZ.TXT_HOLDADR_ADD3 as holdAddress3,
+       ZZ.TXT_HOLDADR_ZIP as holdZipCode,
+       ZZ.NAM_HOLDADR_CITY as holdTownCity,
+       ZZ.NAM_HOLDADR_STATE as holdState,
+	   (select description
+          from ba_ifst_country
+         where country_code = ZZ.NAM_HOLDADR_CNTRY
+           and flg_mnt_status = 'A') as holdCountry,
+       nvl((select description
+             from ba_ifst_country
+            where country_code = ZZ.TXT_CUST_NATNLTY),
+           'ID-INDONESIA - 09002') as nationalityDesc,
+       nvl((select country_code
+             from ba_ifst_country
+            where country_code = ZZ.TXT_CUST_NATNLTY),
+           'ID') as nationality,
+         (select desc_high_risk
+          from ba_ifst_country
+         where country_code = ZZ.TXT_CUST_NATNLTY
+           and flg_mnt_status = 'A') as highRisknationality,
+       (select cod_high_risk
+          from ba_ifst_country
+         where country_code = ZZ.TXT_CUST_NATNLTY
+           and flg_mnt_status = 'A') as highRisknationalityCode,
+       TXT_CUST_RESIDENCE as countryOfResidence,
+        nvl((select description
+             from ba_ifst_country
+            where country_code = ZZ.TXT_CUST_RESIDENCE),
+           TXT_CUST_RESIDENCE) as countryOfResidenceDesc,
+           (select desc_high_risk
+          from ba_ifst_country
+         where country_code = ZZ.TXT_CUST_RESIDENCE
+           and flg_mnt_status = 'A') as highRiskcOR,
+       (select cod_high_risk
+          from ba_ifst_country
+         where country_code = ZZ.TXT_CUST_RESIDENCE
+           and flg_mnt_status = 'A') as highRiskcORCode,
+	   REF_CUST_PHONE as residencePhoneNo,
+	   ref_res_phone_country as residencePhoneNoContry,
+	   ref_res_phone_area as residencePhoneNoArea,
+       ZZ.REF_PHONE_MOBILE as mobilePhone,
+       nvl((select display_text
+             from mow_scrn_dropdown_mast
+            where ctl_name = :pEducation
+              and item_index = zz.txt_cust_educn),
+           txt_cust_educn) as lastEduDesc,
+	   nvl((select item_index
+             from mow_scrn_dropdown_mast
+            where ctl_name = :pEducation
+              and item_index = zz.txt_cust_educn),
+           txt_cust_educn) as lastEdu,
+       ZZ.REF_CUST_EMAIL as emailAddress,
+       ZZ.TXT_CUST_SEX as gender,
+       decode(TXT_CUST_SEX,'M','MALE','FEMALE') as genderDesc,
+       nvl((select display_text
+             from mow_scrn_dropdown_mast
+            where ctl_name = :pMarstat
+              and item_index = COD_CUST_MARSTAT),
+           COD_CUST_MARSTAT) as marStatDesc,
+	   nvl((select item_index
+             from mow_scrn_dropdown_mast
+            where ctl_name = :pMarstat
+              and item_index = COD_CUST_MARSTAT),
+           COD_CUST_MARSTAT) as marStat,
+       FLG_STAFF as staff,
+	   COD_EMPLOYEE_ID as employeeId,
+       nvl((select txt_business
+             from ci_business_types
+            where cod_business_cat = zz.cod_business_cat
+              and flg_mnt_status = 'A'),
+           ZZ.TXT_BUSINESS_TYP) as businessTypeDesc,
+       nvl((select cod_business_cat
+             from ci_business_types
+            where cod_business_cat = zz.cod_business_cat
+              and flg_mnt_status = 'A'),
+           cod_business_cat) as businessType,
+       nvl((select cod_high_risk
+             from ci_business_types
+            where cod_business_cat = zz.cod_business_cat
+              and flg_mnt_status = 'A'),
+           '') as highRiskbusinessCode,
+       nvl((select desc_highrisk
+             from ci_business_types
+            where cod_business_cat = zz.cod_business_cat
+              and flg_mnt_status = 'A'),
+           '') as highRiskbusiness,
+       nvl((select txt_profession
+             from ci_prof_codes prof
+            where prof.txt_profess_cat = zz.TXT_PROFESS_CAT
+              and flg_mnt_status = 'A'),
+           ZZ.TXT_PROFESS_CAT) as professionDesc,
+       ZZ.TXT_PROFESS_CAT as professionCode,
+       nvl((select cod_highrisk
+             from ci_prof_codes prof
+            where prof.txt_profess_cat = zz.TXT_PROFESS_CAT
+              and flg_mnt_status = 'A'),
+           '') as highRiskprofessionCode,
+       nvl((select desc_highrisk
+             from ci_prof_codes prof
+            where prof.txt_profess_cat = zz.TXT_PROFESS_CAT
+              and flg_mnt_status = 'A'),
+           '') as highRiskprofession,
+       (select xfer2.cod_ao_business
+          from ba_cust_acct_ao_lob_xref xfer2
+         where cod_cust_id = zz.COD_CUST_ID
+           and cod_acct_no = 0
+           and xfer2.flg_mnt_status = 'A') as aoBusiness,
+       (select office.nam_acct_officer
+          from ba_acct_officer_mast office
+         where COD_ACCT_OFFICER =
+               (nvl((select xfer2.cod_ao_business
+          from ba_cust_acct_ao_lob_xref xfer2
+         where cod_cust_id = zz.COD_CUST_ID
+           and cod_acct_no = 0
+                        and xfer2.flg_mnt_status = 'A'), ''))
+           AND FLG_MNT_STATUS = 'A')as aoBusinessDesc,
+       (select xfer2.Cod_Ao_Operations
+          from ba_cust_acct_ao_lob_xref xfer2
+         where cod_cust_id = zz.COD_CUST_ID
+           and cod_acct_no = 0
+           and xfer2.flg_mnt_status = 'A') as aoOperation,
+       (select office.nam_acct_officer
+          from ba_acct_officer_mast office
+         where COD_ACCT_OFFICER =
+               (nvl((select xfer2.cod_ao_operations
+          from ba_cust_acct_ao_lob_xref xfer2
+         where cod_cust_id = zz.COD_CUST_ID
+           and cod_acct_no = 0
+                        and xfer2.flg_mnt_status = 'A'), ''))
+           AND FLG_MNT_STATUS = 'A')as aoOperationDesc,
+       '' as jobTitle,
+	   nvl((select field_value
+             from udf_cust_log_details cl
+            where cl.cod_field_tag = :pAlias
+              and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            AND cl.flg_mnt_status = 'A'),
+           (select NAM_ALIAS
+              from RR_CUST_SERVICE_BDI rr
+             where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C')) as aliasName,
+       nvl((select field_value
+             from udf_cust_log_details cl
+            where cl.cod_field_tag = :pMother
+              and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            AND cl.flg_mnt_status = 'A'),
+           (select NAM_MTHR_MAID
+              from RR_CUST_SERVICE_BDI rr
+             where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C')) as namMother,
+       (select NAM_ALIAS
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as NAM_ALIAS_BI,
+       (select NAM_MTHR_MAID
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as NAM_MOTHER_BI,
+       (select rr.cod_debt_type
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as debtType,
+       (select rr.debtor_status
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as debtStatus,
+       (select rr.cod_cc_brn
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as branchLocationCode,
+       (select rr.cod_dist
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as districtCode,
+       (select rr.cod_emp_sic
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as employeICCode,
+       (select rr.cod_rel_lbu
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as reliwthBank,
+       (select rr.cod_conn_lbu
+          from RR_CUST_SERVICE_BDI rr
+         where to_number(rr.cod_id) = ZZ.COD_CUST_ID
+and rr.cod_type = 'C') as conWithBank,
+       (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pResidence
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+        AND cl.flg_mnt_status = 'A') as residenceType,
+       (select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pResidence
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                AND cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pResidence) as residenceTDesc,
+		   (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :piDcardType
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            AND cl.flg_mnt_status = 'A') as idcardType,
+       (select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :piDcardType
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                    AND cl.flg_mnt_status = 'A')
+           and cod_field_tag = :piDcardType) as idcardTDesc,
+        (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pExpDate
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+        AND cl.flg_mnt_status = 'A') as icExpiryDate,
+           (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pBirthPlace
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            AND cl.flg_mnt_status = 'A') as birthPlace,
+       (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pIncome
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            AND cl.flg_mnt_status = 'A') as monthLyIncome,
+       (select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pIncome
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                    AND cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pIncome) as monthLyIncomeDesc,
+		   (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pDataExtract
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            AND cl.flg_mnt_status = 'A') as dataTransXtractFlag,
+       (select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pDataExtract
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                AND cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pDataExtract) as dataTransXtractFlagDesc,
+       (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pHomeStatus
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            AND cl.flg_mnt_status = 'A') as homeStatus,
+       (select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pHomeStatus
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                AND cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pHomeStatus) as homeStatusDesc,
+       (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pExpectedLimit
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+        AND cl.flg_mnt_status = 'A') as expectedLimit,
+            (select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pExpectedLimit
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                    AND cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pExpectedLimit) as expectedLimitDesc,
+       (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pNoDepend
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+           AND cl.flg_mnt_status = 'A') as noOfDependant,
+       nvl((select upper(display_text)
+             from mow_scrn_dropdown_mast
+            where ctl_name = :pReligion
+              and item_index = zz.txt_ethnic_origin),
+           ZZ.txt_ethnic_origin) as religionDesc,
+       ZZ.TXT_ETHNIC_ORIGIN as religion,
+	   ZZ.REF_CUST_IT_NUM as incomeTaxNo,
+	   (select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pTin
+           and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            AND cl.flg_mnt_status = 'A') as tin,
+           nvl((select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pGreenCard
+              and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                AND cl.flg_mnt_status = 'A'),
+           '') as greenCard,
+            nvl((select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pGreenCard
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                   and cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pGreenCard),'') as greenCardDesc,
+           nvl((select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pAlamatAS
+              and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+and cl.flg_mnt_status = 'A'),
+           '') as alamatAS,
+            nvl((select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pAlamatAS
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                   and cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pAlamatAS),'') as alamatASDesc,
+           nvl((select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pBadanAS
+              and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+and cl.flg_mnt_status = 'A'),
+           '') as badanAS,
+         nvl((select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pBadanAS
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                   and cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pBadanAS),'') as badanASDesc,
+        nvl((select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pFatca
+              and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+and cl.flg_mnt_status = 'A'),
+           '') as fatca,
+            nvl((select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pFatca
+                   and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                   and cl.flg_mnt_status = 'A')
+           and cod_field_tag = :pFatca),'') as fatcaDesc,
+                      'SOLE OWNER' as relation,
+					  nvl((select txt_lov_name
+          from udf_lov_mast
+         where txt_lov_value =
+               (select field_value
+                  from udf_cust_log_details cl
+                 where cl.cod_field_tag = :pCommunication
+                      and cl.cod_cust_id =
+                          cast(zz.cod_cust_id as varchar2(40))
+                and cl.flg_mnt_status = 'A')
+              and cod_field_tag = :pCommunication),
+           '') as communicationDesc,
+		   nvl((select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pCommunication
+              and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+            and cl.flg_mnt_status = 'A'),
+           '') as communication,
+		   cf.PRODUCTCODE as productCode,
+		   cf.PRODUCTCODEDESC as productCodeDesc,
+		   cf.BRANCHCODECASA as branchCodeCasa,
+                   cf.BRANCHCODECDESC as branchCodeCasaDesc,
+                   cf.LOBCASA as lobCasa,
+                   cf.LOBCASADESC as lobCasaDesc,
+                   cf.ACCTTITLE as acctTitle,
+                   cf.RELATION as relation,
+                   cf.ECHANNEL as echannel,
+                   cf.ECHANNELFLAG as echannelDesc,
+                   --zz.FLG_IC_TYP as flgIctype,
+                   cf.STATEINDICATOR as stateIndicator,
+                   cf.STATEINDICATORDESC as stateIndicatorDesc,
+                   cf.TUJUANPEMBUKAAN as tujuanPembukaan,
+                   cf.TUJUANPEMBUKAANDESC as tujuanPembukaanDesc,
+                   cf.SUMBERDANA as sumberDana,
+                   cf.SUMBERDANADESC as sumberDanaDesc,
+                   nvl((select field_value
+          from udf_cust_log_details cl
+         where cl.cod_field_tag = :pSumberDanaLain
+              and cl.cod_cust_id = cast(zz.cod_cust_id as varchar2(40))
+                and cl.flg_mnt_status = 'A'),
+           '') as sumberDanaLain
+  from ci_custmast zz, tmp_ext_cifcasa cf
+ where zz.cod_cust_id = :pcif
+   and zz.flg_mnt_status = 'A'
+   and zz.cod_entity_vpd = 11
+   and zz.cod_entity_vpd = 11
+      and cf.cifNumber = zz.cod_cust_id
+   and cf.applicationId = :pappId
+        ]]>
+    </sql-query>
+</hibernate-mapping>

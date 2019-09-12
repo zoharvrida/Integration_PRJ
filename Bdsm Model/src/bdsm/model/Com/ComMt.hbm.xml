@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="bdsm.model.Com.ComVendorMast" table="COMVENDORMAST">
+    <id column="IDVENDOR" name="vendorId" type="string"/>
+    <property column="NAMVENDOR" name="vendorName" type="string"/>
+    <property column="REMARKS" name="remarks" type="string"/>
+        
+	<property column="IDCREATEDBY" name="idCreatedBy" type="string"/>
+        <property column="IDCREATEDSPV" name="idCreatedSpv" type="string"/>
+        <property column="DTMCREATED" name="dtmCreated" type="timestamp"/>
+        <property column="DTMCREATEDSPV" name="dtmCreatedSpv" type="timestamp"/>
+        <property column="IDUPDATEDBY" name="idUpdatedBy" type="string"/>
+        <property column="IDUPDATEDSPV" name="idUpdatedSpv" type="string"/>
+        <property column="DTMUPDATED" name="dtmUpdated" type="timestamp"/>
+        <property column="DTMUPDATEDSPV" name="dtmUpdatedSpv" type="timestamp"/>
+        	
+        <set name="xref" cascade="save-update, delete-orphan" lazy="false">
+            <key column="IDVENDOR" update="false" />
+            <one-to-many class="bdsm.model.Com.ComBrnVendorXref" />
+    </set>
+  </class>
+    
+    <class name="bdsm.model.Com.ComBrnVendorXref" table="COMBRNVENDORXREF" lazy="false">
+        <composite-id>
+            <key-property column="IDBRN" name="idBrn" type="string"/>
+            <key-property column="IDVENDOR" name="vendorId" type="string"/>
+        </composite-id>
+        <property column="FLGDEFAULT" name="flgDefault" type="string"/>
+        
+        <property column="IDUPDATEDBY" name="idUpdatedBy" type="string"/>
+        <property column="IDUPDATEDSPV" name="idUpdatedSpv" type="string"/>
+        <property column="DTMUPDATED" name="dtmUpdated" type="timestamp"/>
+        <property column="DTMUPDATEDSPV" name="dtmUpdatedSpv" type="timestamp"/>
+  </class>
+  <class name="bdsm.model.Com.ComBrnMast" table="COMBRNMAST">
+    <id column="IDBRN" name="idBrn" type="string"/>
+    <property column="NAMBRANCH" name="namBranch" type="string"/>
+        <property column="TYPEBRANCH" name="branchType" type="string"/>
+    <property column="IDBRANCHPARENT" name="idBranchParent" type="string"/>
+    <property column="REMARKS" name="remarks" type="string"/>
+        
+	<property column="IDCREATEDBY" name="idCreatedBy" type="string"/>
+        <property column="IDCREATEDSPV" name="idCreatedSpv" type="string"/>
+        <property column="DTMCREATED" name="dtmCreated" type="timestamp"/>
+        <property column="DTMCREATEDSPV" name="dtmCreatedSpv" type="timestamp"/>
+        <property column="IDUPDATEDBY" name="idUpdatedBy" type="string"/>
+        <property column="IDUPDATEDSPV" name="idUpdatedSpv" type="string"/>
+        <property column="DTMUPDATED" name="dtmUpdated" type="timestamp"/>
+        <property column="DTMUPDATEDSPV" name="dtmUpdatedSpv" type="timestamp"/>
+        	
+        <set name="xref" cascade="save-update, delete-orphan" lazy="false">
+            <key column="IDBRN" update="false" />
+            <one-to-many class="bdsm.model.Com.ComBrnVendorXref" />
+    </set>
+  </class>
+  <class name="bdsm.model.Com.ComBrnVendorXrefHist" table="COMBRNVENDORXREF_HIST">
+        <composite-id>
+            <key-property column="IDBRN" name="idBrn" type="string"/>
+            <key-property column="IDVENDOR" name="vendorId" type="string"/>
+            <key-property column="DTMLOG" name="dtmLog" type="timestamp"/>
+    </composite-id>
+        <property column="FLGDEFAULT" name="flgDefault" type="string"/>
+        
+        <property column="IDUPDATEDBY" name="idUpdatedBy" type="string"/>
+        <property column="IDUPDATEDSPV" name="idUpdatedSpv" type="string"/>
+        <property column="DTMUPDATED" name="dtmUpdated" type="timestamp"/>
+        <property column="DTMUPDATEDSPV" name="dtmUpdatedSpv" type="timestamp"/>
+  </class>
+    <class name="bdsm.model.Com.ComDenomMast" table="COMDENOMMAST">
+    <id column="IDDENOM" name="denomId" type="string"/>
+    <property column="CCY" name="codCcy" type="string"/>
+    <property column="TYPDENOM" name="denomType" type="string"/>
+    <property column="VALDENOM" name="valDenom" type="integer"/>
+    <property column="NAMDENOM" name="namDenom" type="string"/>
+        
+	<property column="IDCREATEDBY" name="idCreatedBy" type="string"/>
+        <property column="IDCREATEDSPV" name="idCreatedSpv" type="string"/>
+        <property column="DTMCREATED" name="dtmCreated" type="timestamp"/>
+        <property column="DTMCREATEDSPV" name="dtmCreatedSpv" type="timestamp"/>
+        <property column="IDUPDATEDBY" name="idUpdatedBy" type="string"/>
+        <property column="IDUPDATEDSPV" name="idUpdatedSpv" type="string"/>
+        <property column="DTMUPDATED" name="dtmUpdated" type="timestamp"/>
+        <property column="DTMUPDATEDSPV" name="dtmUpdatedSpv" type="timestamp"/>
+        	
+  </class>
+    <query name="ComDenomMast#getListDenom">
+        <query-param name="idCCy" type="string"/>
+       <![CDATA[
+			 FROM ComDenomMast com
+			WHERE com.codCcy = :idCCy
+                        ]]>		
+    </query>
+    <sql-query name="ComDenomMast#getListDenomEdit">
+        <query-param name="pidUser" type="string"/>
+        <query-param name="ptxnType" type="string"/>
+        <query-param name="ptxnStatus" type="string"/>
+        
+        <return-scalar column="denomId" type="string"/>
+        <return-scalar column="codCcy" type="string"/>
+        <return-scalar column="denomType" type="string"/>
+        <return-scalar column="valDenom" type="string"/>
+        <return-scalar column="namDenom" type="string"/>
+        <![CDATA[
+                        select IDDENOM as denomId,CCY as codCcy,TYPEDENOM as denomType,VALDENOM as valDenom,NAMDENOM as namDenom 
+                        from COMDENOMMAST a
+                        where not exists(select 1
+                        from tmp_comdenom b
+                        where a.iddenom = b.iddenom
+                        and b.userid = :pidUser
+                        and b.txnstatus = :ptxnStatus
+                        and b.txntype = :ptxnType)
+       ]]>
+    </sql-query>
+    <sql-query name="ComDenomMast#getListDenomEditBatch">
+        <query-param name="pidUser" type="string"/>
+        <query-param name="ptxnId" type="string"/>
+        <query-param name="ptxnType" type="string"/>
+        <query-param name="ptxnStatus" type="string"/>
+        
+        <return-scalar column="denomId" type="string"/>
+        <return-scalar column="codCcy" type="string"/>
+        <return-scalar column="denomType" type="string"/>
+        <return-scalar column="valDenom" type="string"/>
+        <return-scalar column="namDenom" type="string"/>
+        <![CDATA[
+                        select IDDENOM as denomId,
+                               CCY as codCcy,
+                               TYPEDENOM as denomType,VALDENOM as valDenom,NAMDENOM as namDenom 
+                        from COMDENOMMAST a
+                        where not exists(select 1
+                        from tmp_comdenom b
+                        where a.iddenom = b.iddenom
+                        and b.userid = :pidUser
+                        and b.txnid = :ptxnId
+                        and b.txnstatus = :ptxnStatus
+                        and b.txntype = :ptxnType)
+       ]]>
+    </sql-query>  
+    <query name="ComTxnID#getbranchvendor">
+        <query-param name="pBranch" type="string"/>
+        <query-param name="pType" type="string"/>
+        
+        <![CDATA[
+                        FROM ComBrnMast com
+			WHERE com.idBrn = :pBranch
+                        AND com.branchType = :pType
+       ]]>
+    </query>
+      
+</hibernate-mapping>

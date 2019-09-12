@@ -1,0 +1,20 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package main;
+
+/**
+ *
+ * @author USER
+ */
+public class Test {
+
+    public static void main(String[] args) {
+        String s="5021,bbc_world,Asia Business Report,2013-11-19 08:30:00,2013-11-19 08:45:00";
+        String sp[] = s.split(",");
+        for (int i=0;i<sp.length;i++){
+            System.out.println("Data Ke " + i +" : " + sp[i]);
+        }
+    }
+}

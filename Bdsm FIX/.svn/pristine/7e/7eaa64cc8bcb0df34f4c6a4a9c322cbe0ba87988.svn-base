@@ -1,0 +1,61 @@
+package bdsm.scheduler.dao;
+
+import bdsm.model.BaseModel;
+import bdsm.scheduler.model.FixEmailAccess;
+import bdsm.scheduler.model.FixEmailAccessPK;
+import bdsmhost.dao.BaseDao;
+import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+
+public class FixEmailAccessDao extends BaseDao {
+
+    public FixEmailAccessDao(Session session) {
+        super(session);
+    }
+
+    public String getSpv(String grpId) {
+        List<FixEmailAccess> spvList = null;
+        String retVal = "";
+        Criteria criteriaQuery = getSession().createCriteria(FixEmailAccess.class);
+        criteriaQuery.add(Restrictions.eq("grpId", grpId));
+        criteriaQuery.add(Restrictions.eq("cdAccess", "010"));
+        spvList = criteriaQuery.list();
+        for (int i = 0; i < spvList.size(); i++) {
+            FixEmailAccess fx = spvList.get(i);
+            FixEmailAccessPK fk = fx.getFixEmailAccessPK();
+            retVal += fk.getSender() + ";";
+        }
+        return retVal;
+    }
+
+    public List<FixEmailAccess> get(FixEmailAccessPK fixEmailAccessPK) {
+        Criteria criteriaQuery = getSession().createCriteria(FixEmailAccess.class);
+        if (fixEmailAccessPK.getSender() != null) {
+            criteriaQuery.add(Restrictions.ilike("fixEmailAccessPK.sender", fixEmailAccessPK.getSender()));
+        }
+        if (fixEmailAccessPK.getIdScheduler() != null) {
+            criteriaQuery.add(Restrictions.eq("fixEmailAccessPK.idScheduler", fixEmailAccessPK.getIdScheduler()));
+        }
+        return criteriaQuery.list();
+    }
+
+    @Override
+    protected boolean doInsert(BaseModel baseModel) {
+        getSession().save((FixEmailAccess) baseModel);
+        return true;
+    }
+
+    @Override
+    protected boolean doUpdate(BaseModel baseModel) {
+        getSession().update((FixEmailAccess) baseModel);
+        return true;
+    }
+
+    @Override
+    protected boolean doDelete(BaseModel baseModel) {
+        getSession().delete((FixEmailAccess) baseModel);
+        return true;
+    }
+}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+ <class lazy="false" name="bdsm.model.GLCostCentreXref" table="GL_COST_CENTRE_XREF">      
+       <composite-id name="compositeId" class="bdsm.model.GLCostCentreXrefPK">
+            <key-property name="codGLAcct"    column="COD_GL_ACCT"    type="string" />
+            <key-property name="codCCBrn" column="COD_CC_BRN" type="integer"  />            
+            <key-property name="codLob"    column="COD_LOB"    type="integer" />
+            <key-property name="flgMntStatus" column="FLG_MNT_STATUS" type="string"  />
+            <key-property name="codEntityVpd" column="COD_ENTITY_VPD" type="integer"  />
+        </composite-id>       
+    <property name="datLastMnt" column="DAT_LAST_MNT" type="timestamp"/>
+    <property name="codLast" column="COD_LAST_MNT_MAKERID" type="string"/>
+    <property name="codLastMntChkrid" column="COD_LAST_MNT_CHKRID" type="string"/>
+    <property name="ctrUpdatStrlno" column="CTR_UPDAT_SRLNO"  type="integer"/>
+    <property name="codMntAction" column="COD_MNT_ACTION"  type="string"/>
+  </class>
+</hibernate-mapping>

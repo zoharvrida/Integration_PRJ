@@ -1,0 +1,31 @@
+package bdsm.scheduler.dao;
+
+import bdsm.model.BaseModel;
+import bdsm.scheduler.model.FixMappingExtract;
+import bdsmhost.dao.BaseDao;
+import org.hibernate.Session;
+
+public class FixMappingExtractDao extends BaseDao {
+
+    public FixMappingExtractDao(Session session) {
+        super(session);
+    }
+
+    @Override
+    protected boolean doInsert(BaseModel baseModel) {
+        getSession().save((FixMappingExtract) baseModel);
+        return true;
+    }
+
+    @Override
+    protected boolean doUpdate(BaseModel baseModel) {
+        getSession().update(baseModel);
+        return true;
+    }
+
+    @Override
+    protected boolean doDelete(BaseModel baseModel) {
+        getSession().delete(baseModel);
+        return true;
+    }
+}

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+	<class name="bdsm.fcr.model.LnAcctDtls" table="LN_ACCT_DTLS" lazy="false">
+		<composite-id name="lnAcctDtlsPK" class="bdsm.fcr.model.LnAcctDtlsPK">
+			<key-property name="codAcctNo"       column="COD_ACCT_NO"        type="string" />
+			<key-property name="flgMntStatus"  column="FLG_MNT_STATUS"  type="string" />
+			<key-property name="codEntityVpd"  column="COD_ENTITY_VPD"  type="integer" />
+		</composite-id>
+		<property name="codProd"      column="COD_PROD"       type="integer" />
+		<property name="codCcBrn"      column="COD_CC_BRN"       type="integer" />
+			
+	</class>
+</hibernate-mapping>

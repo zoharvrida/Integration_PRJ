@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.scheduler.model.CiChUfCASADetails" table="TMP_DDFCH_DETAILS">
+    <id column="ID" name="id_Data" type="integer">
+      <generator class="increment"/>
+    </id>
+    <property column="Record_Id"                name="record_id"                type="integer"/>
+    <property column="COD_ACCT_NO"              name="cod_acct_no"              type="string"/>
+    <property column="TUJUAN_REK"               name="tujuan_rek"               type="string"/>
+    <property column="SUMBER_DANA_REK"          name="sumber_dana_rek"          type="string"/>
+    <property column="MEDIA_MUTASI"             name="media_mutasi"             type="string"/>
+    <property column="KEPEMILIKAN"              name="kepemilikan"              type="string"/>
+    <property column="E_STATEMENT_EMAIL"        name="email_Statement"          type="string"/>
+    <property column="E_STATEMENT_BRANCH"       name="branch_Statement"         type="string"/>
+    <property column="RESPCODE"                 name="respcode"                 type="integer"/>
+    <property column="COMMENT_RESP"             name="comment_resp"             type="string"/>
+    <property column="STATUS"                   name="status"                   type="string"/>
+    <property column="DTMREQUEST"               name="dtmRequest"               type="timestamp"/>
+    <property column="DTMPROCESS"               name="dtmProcess"               type="timestamp"/>
+    <property column="DTMFINISH"                name="dtmFinish"                type="timestamp"/>
+    <property column="CREATED_BY"               name="createdBy"                type="string"/>
+    <property column="UPDATED_BY"               name="updatedBy"                type="string"/>
+    <property column="ID_BATCH"                 name="id_Batch"                 type="string"/>
+    <property column="DATA"                     name="data"                    type="string"/>
+    <property column="REC_TYPE"                 name="rec_Type"                    type="string"/>
+    
+  </class>
+</hibernate-mapping>

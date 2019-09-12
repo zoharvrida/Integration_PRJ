@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.scheduler.model.TmpPmFinInstDirMast" table="TMP_PM_FIN_INST_DIR_MAST">
+        <composite-id class="bdsm.scheduler.model.TmpPmFinInstDirMastPK" name="compositeId">
+            <key-property column="BATCH_NO" name="batchNo" type="string"/>
+            <key-property column="RECORD_ID" name="recordId" type="integer"/>
+            <key-property column="cod_fin_inst_id" name="codFinInstId" type="integer"/>
+        </composite-id>
+        <property column="COD_EXT_INST_KEY" name="codExtInstKey" type="integer"/>
+        <property column="NAM_BANK" name="namBank" type="string"/>
+        <property column="NAM_BRN_CITY" name="brnCity" type="string"/>
+        <property column="NAM_BRN_COUNTRY" name="brnCountry" type="string"/>
+        <property column="NAM_BRN_STATE" name="brnProvince" type="string"/>
+        <property column="COD_CIRCLE_ID" name="codCircleId" type="string"/>   
+        <property column="TXT_BRN_ADD1" name="txtBrnAdd1" type="string"/>
+        <property column="TXT_BRN_ADD2" name="txtBrnAdd2" type="string"/>
+        <property column="TXT_BRN_ADD3" name="txtBrnAdd3" type="string"/>
+        <property column="NAM_BRANCH" name="namBranch" type="string"/>
+        <property column="COD_ZONE_ID" name="codZoneId" type="string"/>
+        <property column="txt_brn_zip" name="txtBrnZip" type="string"/>
+        <property column="FIN_INST_PHONE" name="finInstPhone" type="string"/>
+        <property column="COD_BANK" name="codBank" type="string"/>
+        <property column="COD_BI" name="codBi" type="string"/>
+        <property column="COD_CC_BRN" name="codCcBrn" type="string"/>
+        <property column="COD_ENTITY_VPD" name="codEntityVpd" type="integer"/>
+        <property column="FLG_MNT_STATUS" name="flgMntStatus" type="string"/>
+        <property column="FLG_INTERNAL_CLG" name="flgInternalClg" type="string"/>
+        <property column="FLG_STATUS" name="flgstatus" type="string"/>
+        <property column="CTR_UPDAT_SRLNO" name="ctrUpdatSrlNo" type="string"/>
+        <property column="cod_nostro_gl_acct" name="codNostroGlAcct" type="integer"/>
+        <property column="STATUS_REASON" name="statusReason" type="string"/>
+        <property column="CMD" name="cmd" type="string"/>
+        <property column="details_network" name="detailsNetwork" type="string"/>
+        <property column="cod_last_mnt_makerid" name="codLastMntMakerid" type="string"/>
+  </class>
+</hibernate-mapping>

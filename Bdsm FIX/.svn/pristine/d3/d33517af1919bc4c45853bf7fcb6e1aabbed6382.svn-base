@@ -1,0 +1,43 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bdsm.scheduler;
+
+/**
+ *
+ * @author bdsm
+ */
+public class StatusDefinition {
+
+    private static final String[] OK_WORDS = {"ok"};
+    private static final String[] NOT_OK_WORDS = {"not ok","notok"};
+    public static final String PROCESS = "P";
+    public static final String DONE = "D";
+    public static final String REQUEST = "Q";
+    public static final String ERROR = "E";
+    public static final String REJECT = "R";
+    public static final String IN = "I";
+    public static final String XTRACT = "X";
+    public static final String UNAUTHORIZED = "U";
+    public static final String AUTHORIZED = "A";
+    public static final String REJECTED = "R";
+    public static final String RESPONSE = "S";
+    public static final String IGNORED = "G";
+
+    public static String getOkWords(String words) {
+        for (int i=0;i<OK_WORDS.length;i++){
+            if (words.equalsIgnoreCase(OK_WORDS[i]))
+                return words;
+        }
+        return "";
+    }
+
+    public static String getNotOkWords(String words) {
+        for (int i=0;i<NOT_OK_WORDS.length;i++){
+            if (words.equalsIgnoreCase(NOT_OK_WORDS[i]))
+                return words;
+        }        
+        return "";
+    }
+}

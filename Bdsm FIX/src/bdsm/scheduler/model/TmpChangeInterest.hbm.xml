@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.scheduler.model.TmpChangeInterest" table="TMP_CHANGE_INTEREST_RATE">
+    <composite-id class="bdsm.scheduler.model.TmpChangeInterestPK" name="compositeId">
+      <key-property column="BATCHNO"         name="batchNo"        type="string"/>
+      <key-property column="RECORDID"        name="recordId"       type="integer"/>
+        </composite-id>   
+   
+    <property column="DAT_AMANDEMENT"      name="datAmandement"    type="date"/>
+    <property column="CONTRACT_REF_NO" name="contractNumber" type="string"/>
+    <property column="RATE_CODE"       name="rateCode" type="string"/>
+    <property column="SPREAD_VARIANCE" name="variance"     type="double"/>
+    <property column="IDCREATEDBY"     name="idCreatedBy"  type="string"/>
+    <property column="DTMCREATEDBY"    name="dtmCreated"   type="timestamp"  /> 
+    <property column="IDCREATEDSPV"    name="idCreatedSpv" type="string"/>
+    <property column="DTMCREATEDSPV"   name="dtmCreatedSpv" type="timestamp"  />
+    <property column="FLAG_STATUS"     name="flagStatus"   type="string"/>
+    <property column="STATUS_REASON"   name="statusReason" type="string"/>
+    
+<property column="COMPONENT"   name="component" type="string"/>
+    <property column="EFFECTIVE_RATE" name="efectiveRate"     type="double"/>
+
+                
+  </class>
+</hibernate-mapping>

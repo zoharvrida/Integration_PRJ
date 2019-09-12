@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+	<!-- Model -->
+	<class name="bdsm.model.MfcUdMaster" table="MFCUDMASTER" lazy="false">
+		<composite-id name="compositeId" class="bdsm.model.MfcUdMasterPK">
+			<key-property name="noCif"  column="noCif"  type="int" />
+			<key-property name="noUd"   column="noUd"   type="string" />
+		</composite-id>
+		
+		<property name="typeUD"          column="TYPE_UD"          type="string" />
+		<property name="payeeName"       column="PAYEE_NAME"       type="string" />
+		<property name="payeeCountry"    column="PAYEE_COUNTRY"    type="string" />
+		<property name="tradingProduct"  column="TRADING_PRODUCT"  type="string" />
+		<property name="dtIssued"        column="DT_ISSUED"        type="date" />
+		<property name="dtExpiry"        column="dtExpiry"         type="date" />
+		<property name="ccyUd"           column="ccyUd"            type="string" />
+		<property name="amtLimit"        column="amtLimit"         type="double" />
+		<property name="amtAvail"        column="amtAvail"         type="double" />
+		<property name="cdBranch"        column="cdBranch"         type="integer" />
+		<property name="status"          column="status"           type="string" />
+		<property name="remarks"         column="remarks"          type="string" />
+		<property name="idCreatedBy"     column="idCreatedBy"      type="string" />
+		<property name="idCreatedSpv"    column="idCreatedSpv"     type="string" />
+		<property name="dtmCreated"      column="dtmCreated"       type="timestamp" />
+		<property name="dtmCreatedSpv"   column="dtmCreatedSpv"    type="timestamp" />
+		<property name="idUpdatedBy"     column="idUpdatedBy"      type="string" />
+		<property name="idUpdatedSpv"    column="idUpdatedSpv"     type="string" />
+		<property name="dtmUpdated"      column="dtmUpdated"       type="timestamp" />
+		<property name="dtmUpdatedSpv"   column="dtmUpdatedSpv"    type="timestamp" />
+		<property name="amtLimitUsd"     column="AMTLIMITUSD"      type="double" />
+		<property name="amtAvailUsd"     column="AMTAVAILUSD"      type="double" />
+		<property name="ratFcyLim"       column="RATFCYLIM"        type="double" />
+		<property name="ratUsdLim"       column="RATUSDLIM"        type="double" />
+	</class>
+	
+	<!-- Query -->
+	<query name="MfcUdMaster#listByNoUD">
+		<![CDATA[
+			SELECT a 
+			  FROM MfcUdMaster a, BaBankMast b
+			 WHERE a.compositeId.noUd = :noUd
+			   AND a.dtExpiry >= b.datProcess
+		]]>
+	</query>
+</hibernate-mapping>

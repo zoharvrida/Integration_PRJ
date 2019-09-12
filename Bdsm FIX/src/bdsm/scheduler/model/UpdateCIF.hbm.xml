@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class lazy="false" name="bdsm.scheduler.model.UpdateCIFTmp" table="tmp_update_cif">
+        <id column="id" name="id" type="int">
+            <generator class="increment"/>
+        </id>
+        <property column="cod_cust_id" name="codCustID" type="int"/>
+        <property column="bdi_nik" name="bdiNIK" type="string"/>
+        <property column="bdi_full_name" name="bdiFullName" type="string"/>
+        <property column="bdi_date_of_birth" name="bdiDateOfBirth" type="string"/>
+        <property column="bdi_place_of_birth" name="bdiPlaceOfBirth" type="string"/>
+        <property column="bdi_moth_name" name="bdiMothName" type="string"/>
+        <property column="duk_nik" name="dukNIK" type="string"/>
+        <property column="duk_full_name" name="dukFullName" type="string"/>
+        <property column="duk_date_of_birth" name="dukDateOfBirth" type="string"/>
+        <property column="duk_place_of_birth" name="dukPlaceOfBirth" type="string"/>
+        <property column="duk_moth_name" name="dukMothName" type="string"/>
+        <property column="status" name="status" type="string"/>
+        <property column="statusreason" name="statusReason" type="string"/>
+        <property column="nobatch" name="noBatch" type="string"/>
+    </class>
+</hibernate-mapping>

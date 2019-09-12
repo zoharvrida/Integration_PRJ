@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<!-- Model -->
+  <class lazy="false" name="bdsm.scheduler.model.TmpSMSTrans" table="TMP_SMS_TRANS">
+    <composite-id class="bdsm.scheduler.model.TmpSMSTransPK" name="compositeID">
+      <key-property column="idrec" name="qId" type="big_decimal"/>
+      <key-property column="cod_cust" name="cod_cust" type="big_decimal"/>
+      <key-property column="cod_acct_no" name="cod_acct_no" type="string"/>
+      <key-property column="idbatch" name="batchID" type="string"/>
+      <key-property column="profile" name="profile" type="string"/>
+        </composite-id>
+    <property column="flg_cust_typ" name="flg_cust_typ" type="string"/>
+    <property column="ref_phone_mobile" name="ref_phone_mobile" type="string"/>
+    <property column="ref_cust_email" name="ref_cust_email" type="string"/>
+    <property column="cod_acct_title" name="cod_acct_title" type="string"/>
+    <property column="acctbrn" name="acctbrn" type="big_decimal"/>
+    <property column="cod_lob" name="cod_lob" type="big_decimal"/>
+    <property column="cod_txn_mnemonic" name="cod_txn_mnemonic" type="string"/>
+    <property column="cod_txn_literal" name="cod_txn_literal" type="string"/>
+    <property column="flg_drcr" name="flg_drcr" type="string"/>
+    <property column="acctccy" name="acctccy" type="string"/>
+    <property column="amt_acct" name="amt_acct" type="big_decimal"/>
+    <property column="amt_txn_lcy" name="amt_txn_lcy" type="big_decimal"/>
+    <property column="txt_txn_desc" name="txt_txn_desc" type="string"/>
+    <property column="cod_msg_typ" name="cod_msg_typ" type="string"/>
+    <property column="dat_txn" name="dat_txn" type="timestamp"/>
+    <property column="udfacct" name="udfacct" type="string"/>
+    <property column="udfcif" name="udfcif" type="string"/>
+    <property column="cod_user_id" name="cod_user_id" type="string"/>
+    </class>
+    
+    <query name="SMSTrans#getGreatData">
+		<![CDATA[
+			SELECT ar
+			  FROM TmpSMSTrans ar
+                          where compositeID.profile = :pProfile
+						  and compositeID.batchID = :pBatch
+						  and cod_txn_mnemonic <> '0'
+		]]>
+   </query>
+</hibernate-mapping>

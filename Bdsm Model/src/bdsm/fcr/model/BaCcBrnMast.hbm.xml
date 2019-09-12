@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+	<class name="bdsm.fcr.model.BaCcBrnMast" table="BA_CC_BRN_MAST" lazy="false">
+		<composite-id name="compositeId" class="bdsm.fcr.model.BaCcBrnMastPK">
+			<key-property name="codccBrn"     column="COD_CC_BRN"     type="integer" />            
+			<key-property name="flgMntStatus"  column="FLG_MNT_STATUS"  type="string" />
+			<key-property name="codEntityVpd"  column="COD_ENTITY_VPD"  type="integer" />
+		</composite-id>
+		<property name="codBrnType"      column="COD_BRN_TYPE"       type="integer" />
+		<property name="codMainBranch"      column="COD_MAIN_BRANCH"       type="integer" />
+		<property name="namBranch"      column="NAM_BRANCH"       type="string" />
+		<property name="namBranchShrt"      column="NAM_BRANCH_SHRT"       type="string" />
+		<property name="namCcCity"      column="NAM_CC_CITY"       type="string" />
+		<property name="namCcCountry"      column="NAM_CC_COUNTRY"       type="string" />
+		<property name="updtSrlNo"      column="CTR_UPDAT_SRLNO"       type="integer" />
+		<property name="codCcBrnXref"      column="COD_CC_BRN_XREF"       type="integer" />
+		
+		
+	</class>
+</hibernate-mapping>

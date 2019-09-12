@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.scheduler.model.FixMappingExtract" table="FIXMAPPINGEXTRACT" lazy="false">
+        <composite-id name="fixMappingExtractPK" class="bdsm.scheduler.model.FixMappingExtractPK">
+            <key-property name="noBatch"   column="noBatch"   type="string"/>
+            <key-property name="extractFilename"   column="extractFilename"   type="string"/>
+        </composite-id>
+        <property name="responseFilename"  column="responseFilename"  type="string"/>
+    </class>
+</hibernate-mapping>

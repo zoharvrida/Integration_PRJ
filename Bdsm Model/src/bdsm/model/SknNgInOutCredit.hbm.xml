@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping 
+		PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.SknNgInOutCreditParent" abstract="true" polymorphism="explicit">
+		<composite-id name="compositeId" class="bdsm.model.SknNgPK">
+			<key-property name="batchNo"   column="BATCH_NO"   type="string" />
+			<key-property name="recordId"  column="RECORD_ID"  type="integer" />
+		</composite-id>
+		
+		<property name="tipeRecord"       column="TIPE_RECORD"      type="string" />
+		<property name="kodeDke"          column="KODE_DKE"         type="string" />
+		<property name="typeDB"           column="TYPE"             type="character"  access="property" />
+		<property name="extractStatusDB"  column="EXTRACT_STATUS"   type="character"  access="property" />
+		<property name="idCreatedBy"      column="ID_CREATED_BY"    type="string" />
+		<property name="idCreatedSpv"     column="ID_CREATED_SPV"   type="string" />
+		<property name="dtmCreated"       column="DTM_CREATED"      type="timestamp" />
+		<property name="dtmCreatedSpv"    column="DTM_CREATED_SPV"  type="timestamp" />
+		<property name="idUpdatedBy"      column="ID_UPDATED_BY"    type="string" />
+		<property name="idUpdatedSpv"     column="ID_UPDATED_SPV"   type="string" />
+		<property name="dtmUpdated"       column="DTM_UPDATED"      type="timestamp" />
+		<property name="dtmUpdatedSpv"    column="DTM_UPDATED_SPV"  type="timestamp" />
+		
+		
+		<!-- subclass -->
+		<union-subclass name="bdsm.model.SknNgInOutCreditHeader" table="SKNNG_IN_OUT_CREDIT_HEADER" dynamic-insert="true">
+			<property name="batchId"                          column="BATCH_ID"                    type="string" />
+			<property name="jamTanggalMessage"                column="JAM_TANGGAL_MESSAGE"         type="string" />
+			<property name="jumlahRecords"                    column="JUMLAH_RECORDS"              type="string" />
+			<property name="totalNominal"                     column="TOTAL_NOMINAL"               type="string" />
+			<property name="tanggalBatch"                     column="TANGGAL_BATCH"               type="string" />
+			<property name="jenisSettlement"                  column="JENIS_SETELMEN"              type="string" />
+			<property name="identitasPesertaPengirimPenerus"  column="IDENTITAS_PESERTA_PENGIRIM"  type="string" />
+			<property name="sandiKotaAsal"                    column="SANDI_KOTA_PENGIRIM"         type="string" />
+			<property name="flagRejectDB"                     column="FLG_REJECT"                  type="character"  access="property" />
+			<property name="comments"                         column="MESSAGE"                     type="string" />
+		</union-subclass>
+		
+		<union-subclass name="bdsm.model.SknNgInOutCreditDetail" table="SKNNG_IN_OUT_CREDIT_DETAIL" dynamic-insert="true">
+			<property name="identitasPesertaPengirimAsal"       column="IDENTITAS_PESERTA_PENGIRIM"  type="string" />
+			<property name="sandiKotaAsal"                      column="SANDI_KOTA_ASAL"             type="string" />
+			<property name="senderName"                         column="NAMA_PENGIRIM"               type="string" />
+			<property name="sourceAccount"                      column="NO_REK_PENGIRIM"             type="string" />
+			<property name="alamatNasabahPengirim"              column="ALAMAT_PENGIRIM"             type="string" />
+			<property name="jenisNasabahPengirim"               column="JENIS_PENGIRIM"              type="string" />
+			<property name="statusKependudukanNasabahPengirim"  column="STATUS_PENDUDUK_PENGIRIM"    type="string" />
+			<property name="nomorIdentitasNasabahPengirim"      column="IDENTITAS_PENGIRIM"          type="string" />
+			<property name="identitasPesertaPenerimaPenerus"    column="IDENTITAS_PENERUS"           type="string" />
+			<property name="identitasPesertaPenerimaAkhir"      column="IDENTITAS_PENERIMA_AKHIR"    type="string" />
+			<property name="sandiKotaTujuan"                    column="SANDI_KOTA_TUJUAN"           type="string" />
+			<property name="namaNasabahPenerima"                column="NAMA_PENERIMA"               type="string" />
+			<property name="destinationAccount"                 column="NO_REK_PENERIMA"             type="string" />
+			<property name="alamatNasabahPenerima"              column="ALAMAT_PENERIMA"             type="string" />
+			<property name="jenisNasabahPenerima"               column="JENIS_PENERIMA"              type="string" />
+			<property name="statusKependudukanNasabahPenerima"  column="STATUS_PENDUDUK_PENERIMA"    type="string" />
+			<property name="nomorIdentitasNasabahPenerima"      column="IDENTITAS_PENERIMA"          type="string" />
+			<property name="jenisTransaksi"                     column="JENIS_TRANSAKSI"             type="string" />
+			<property name="jenisSaranaTransaksi"               column="JENIS_SARANA_TRANSAKSI"      type="string" />
+			<property name="nominal"                            column="NOMINAL_TRANSAKSI"           type="string" />
+			<property name="nomorUrut"                          column="NOMOR_URUT"                  type="string" />
+			<property name="nomorReferensi"                     column="NOMOR_REFERENSI"             type="string" />
+			<property name="nomorReferensiTransaksiAsal"        column="NOMOR_REFERENSI_ASAL"        type="string" />
+			<property name="bebanBiaya"                         column="BEBAN_BIAYA"                 type="string" />
+			<property name="keterangan"                         column="KETERANGAN"                  type="string" />
+			<property name="SOR"                                column="SOR"                         type="string" />
+			<property name="periodeKonfirmasi"                  column="PERIODE_KONFIRMASI"          type="string" />
+			<property name="parentRecordId"                     column="PARENT_RECORD_ID"            type="integer" />
+		</union-subclass>
+		
+		<union-subclass name="bdsm.model.SknNgInOutCreditFooter" table="SKNNG_IN_OUT_CREDIT_FOOTER" dynamic-insert="true">
+			<property name="CRC"             column="CRC"               type="string" />
+			<property name="parentRecordId"  column="PARENT_RECORD_ID"  type="integer" />
+		</union-subclass>
+	</class>
+	
+	
+	<!-- Query -->
+	<query name="SknNgInOutCreditHeader#listByBatchNo">
+		<![CDATA[
+			 FROM SknNgInOutCreditHeader WHERE compositeId.batchNo = :batchNo
+			ORDER BY compositeId.recordId  
+		]]>
+	</query>
+	
+	<query name="SknNgInOutCreditDetail#listByBatchNoAndParentRecordId">
+		<![CDATA[
+			   FROM SknNgInOutCreditDetail 
+			  WHERE compositeId.batchNo = :batchNo
+			    AND parentRecordId      = :parentRecordId
+			  ORDER BY compositeId.recordId
+		]]>
+	</query>
+	
+	<query name="SknNgInOutCreditFooter#getByBatchNoAndParentRecordId">
+		<![CDATA[
+			 FROM SknNgInOutCreditFooter 
+			WHERE compositeId.batchNo = :batchNo
+			  AND parentRecordId      = :parentRecordId  
+		]]>
+	</query>
+    
+    <sql-query name="SKN#IPPengirim">
+		<query-param name="pId" type="string"/>
+        
+		<return-scalar column="IPP" type="string"/>
+		<return-scalar column="SKA" type="string"/>
+        <return-scalar column="PRI" type="int"/>
+		<return-scalar column="COD_FIN_INST" type="string"/>
+        <return-scalar column="COD_PROVINCE" type="string"/>
+        <return-scalar column="COD_BI_OFF" type="string"/>
+        <return-scalar column="COD_CITY" type="string"/>
+        <![CDATA[
+            SELECT CAST(C.IDENTITAS_PESERTA_PENGIRIM AS VARCHAR2(16)) as IPP,
+			 CAST(C.SANDI_KOTA_ASAL AS VARCHAR2(16)) as SKA,
+			 C.PARENT_RECORD_ID as PRI,
+			 (SELECT DISTINCT cast(A.COD_FIN_INST_ID as varchar2(16))
+					FROM PM_FIN_INST_DIR_MAST A, ST_ROUTING_NO_DTLS B
+				 WHERE A.COD_BI = C.IDENTITAS_PESERTA_PENGIRIM
+					 AND A.COD_FIN_INST_ID = B.COD_ROUTING_NO
+					 AND A.FLG_MNT_STATUS = 'A'
+					 AND A.COD_ENTITY_VPD = 11
+					 AND ROWNUM < 2) COD_FIN_INST,
+				(SELECT DISTINCT cast(b.cod_province as varchar2(16))
+					FROM PM_FIN_INST_DIR_MAST A, ST_ROUTING_NO_DTLS B
+				 WHERE A.COD_BI = C.IDENTITAS_PESERTA_PENGIRIM
+					 AND A.COD_FIN_INST_ID = B.COD_ROUTING_NO
+					 AND A.FLG_MNT_STATUS = 'A'
+					 AND A.COD_ENTITY_VPD = 11
+					 AND ROWNUM < 2) COD_PROVINCE,
+					 (SELECT DISTINCT cast(b.cod_bi_off_code as varchar2(16))
+					FROM PM_FIN_INST_DIR_MAST A, ST_ROUTING_NO_DTLS B
+				 WHERE A.COD_BI = C.IDENTITAS_PESERTA_PENGIRIM
+					 AND A.COD_FIN_INST_ID = B.COD_ROUTING_NO
+					 AND A.FLG_MNT_STATUS = 'A'
+					 AND A.COD_ENTITY_VPD = 11
+					 AND ROWNUM < 2) COD_BI_OFF,
+					 (SELECT DISTINCT cast(b.Cod_City as varchar2(16))
+					FROM PM_FIN_INST_DIR_MAST A, ST_ROUTING_NO_DTLS B
+				 WHERE A.COD_BI = C.IDENTITAS_PESERTA_PENGIRIM
+					 AND A.COD_FIN_INST_ID = B.COD_ROUTING_NO
+					 AND A.FLG_MNT_STATUS = 'A'
+					 AND A.COD_ENTITY_VPD = 11
+					 AND ROWNUM < 2) COD_CITY
+	FROM TMP_SKNNG_IN_OUT_CREDIT_DETAIL C
+ WHERE C.BATCH_NO = :pId
+ ORDER BY TO_NUMBER(C.PARENT_RECORD_ID)
+		]]>
+	</sql-query>
+    
+    <sql-query name="SKN#IPPengirimSKA">
+		<query-param name="pId" type="string"/>
+        
+		<return-scalar column="IPP" type="string"/>
+		<return-scalar column="SKA" type="string"/>
+        <return-scalar column="PRI" type="int"/>
+		<return-scalar column="COD_FIN_INST" type="string"/>
+        <return-scalar column="COD_PROVINCE" type="string"/>
+        <return-scalar column="COD_BI_OFF" type="string"/>
+        <return-scalar column="COD_CITY" type="string"/>
+        <![CDATA[
+            SELECT CAST(C.IDENTITAS_PESERTA_PENGIRIM AS VARCHAR2(16)) as IPP,
+			 CAST(C.SANDI_KOTA_ASAL AS VARCHAR2(16)) as SKA,
+			 C.PARENT_RECORD_ID as PRI,
+			 (SELECT DISTINCT CAST(A.COD_FIN_INST_ID AS VARCHAR2(16))
+					FROM PM_FIN_INST_DIR_MAST A, ST_ROUTING_NO_DTLS B
+				 WHERE A.COD_BI = C.IDENTITAS_PESERTA_PENGIRIM
+					 AND A.COD_FIN_INST_ID = B.COD_ROUTING_NO
+					 AND A.FLG_MNT_STATUS = 'A'
+					 AND A.COD_ENTITY_VPD = 11
+                     AND B.COD_CITY = C.SANDI_KOTA_ASAL
+					 AND ROWNUM < 2) COD_FIN_INST,
+				(SELECT DISTINCT CAST(b.cod_province AS VARCHAR2(16))
+					FROM PM_FIN_INST_DIR_MAST A, ST_ROUTING_NO_DTLS B
+				 WHERE A.COD_BI = C.IDENTITAS_PESERTA_PENGIRIM
+					 AND A.COD_FIN_INST_ID = B.COD_ROUTING_NO
+					 AND A.FLG_MNT_STATUS = 'A'
+					 AND A.COD_ENTITY_VPD = 11
+                     AND B.COD_CITY = C.SANDI_KOTA_ASAL
+					 AND ROWNUM < 2) COD_PROVINCE,
+					 (SELECT DISTINCT CAST(b.cod_bi_off_code AS VARCHAR2(16))
+					FROM PM_FIN_INST_DIR_MAST A, ST_ROUTING_NO_DTLS B
+				 WHERE A.COD_BI = C.IDENTITAS_PESERTA_PENGIRIM
+					 AND A.COD_FIN_INST_ID = B.COD_ROUTING_NO
+					 AND A.FLG_MNT_STATUS = 'A'
+					 AND A.COD_ENTITY_VPD = 11
+                     AND B.COD_CITY = C.SANDI_KOTA_ASAL
+					 AND ROWNUM < 2) COD_BI_OFF,
+					 (SELECT DISTINCT CAST(b.Cod_City AS VARCHAR2(16))
+					FROM PM_FIN_INST_DIR_MAST A, ST_ROUTING_NO_DTLS B
+				 WHERE A.COD_BI = C.IDENTITAS_PESERTA_PENGIRIM
+					 AND A.COD_FIN_INST_ID = B.COD_ROUTING_NO
+					 AND A.FLG_MNT_STATUS = 'A'
+					 AND A.COD_ENTITY_VPD = 11
+                     AND B.COD_CITY = C.SANDI_KOTA_ASAL
+					 AND ROWNUM < 2) COD_CITY
+	FROM TMP_SKNNG_IN_OUT_CREDIT_DETAIL C
+ WHERE C.BATCH_NO = :pId
+ ORDER BY TO_NUMBER(C.PARENT_RECORD_ID)
+		]]>
+	</sql-query>
+    
+    <sql-query name="SKN#IPPenerima">
+		<query-param name="pId" type="string"/>
+        
+		<return-scalar column="IPA" type="string"/>
+		<return-scalar column="SKT" type="string"/>
+        <return-scalar column="PRI" type="int"/>
+		<return-scalar column="COD_FIN_INST" type="string"/>
+        <return-scalar column="COD_PROVINCE" type="string"/>
+        <return-scalar column="COD_BI_OFF" type="string"/>
+        <return-scalar column="COD_CITY" type="string"/>
+        <![CDATA[
+            SELECT CAST(C.IDENTITAS_PENERIMA_AKHIR AS VARCHAR2(16)) as IPA,
+			 CAST(C.SANDI_KOTA_TUJUAN AS VARCHAR2(16)) as SKT,
+			 C.PARENT_RECORD_ID as PRI,
+			 (SELECT DISTINCT CAST(A.COD_FIN_INST_ID AS VARCHAR2(16))
+					FROM PM_FIN_INST_DIR_MAST A, ST_ROUTING_NO_DTLS B
+				 WHERE A.COD_BI = C.IDENTITAS_PENERIMA_AKHIR
+					 AND A.COD_FIN_INST_ID = B.COD_ROUTING_NO
+					 AND A.FLG_MNT_STATUS = 'A'
+					 AND A.COD_ENTITY_VPD = 11
+					 AND ROWNUM < 2) COD_FIN_INST,
+				(SELECT DISTINCT CAST(b.cod_province AS VARCHAR2(16))
+					FROM PM_FIN_INST_DIR_MAST A, ST_ROUTING_NO_DTLS B
+				 WHERE A.COD_BI = C.IDENTITAS_PENERIMA_AKHIR
+					 AND A.COD_FIN_INST_ID = B.COD_ROUTING_NO
+					 AND A.FLG_MNT_STATUS = 'A'
+					 AND A.COD_ENTITY_VPD = 11
+					 AND ROWNUM < 2) COD_PROVINCE,
+					 (SELECT DISTINCT CAST(b.cod_bi_off_code AS VARCHAR2(16))
+					FROM PM_FIN_INST_DIR_MAST A, ST_ROUTING_NO_DTLS B
+				 WHERE A.COD_BI = C.IDENTITAS_PENERIMA_AKHIR
+					 AND A.COD_FIN_INST_ID = B.COD_ROUTING_NO
+					 AND A.FLG_MNT_STATUS = 'A'
+					 AND A.COD_ENTITY_VPD = 11
+					 AND ROWNUM < 2) COD_BI_OFF,
+					 (SELECT DISTINCT CAST(b.Cod_City AS VARCHAR2(16))
+					FROM PM_FIN_INST_DIR_MAST A, ST_ROUTING_NO_DTLS B
+				 WHERE A.COD_BI = C.IDENTITAS_PENERIMA_AKHIR
+					 AND A.COD_FIN_INST_ID = B.COD_ROUTING_NO
+					 AND A.FLG_MNT_STATUS = 'A'
+					 AND A.COD_ENTITY_VPD = 11
+					 AND ROWNUM < 2) COD_CITY
+	FROM TMP_SKNNG_IN_OUT_CREDIT_DETAIL C
+ WHERE C.BATCH_NO = :pId
+ ORDER BY TO_NUMBER(C.PARENT_RECORD_ID)
+		]]>
+	</sql-query>
+    
+    <sql-query name="SKN#IPPenerimaSKT">
+		<query-param name="pId" type="string"/>
+        
+		<return-scalar column="IPA" type="string"/>
+		<return-scalar column="SKT" type="string"/>
+        <return-scalar column="PRI" type="int"/>
+		<return-scalar column="COD_FIN_INST" type="string"/>
+        <return-scalar column="COD_PROVINCE" type="string"/>
+        <return-scalar column="COD_BI_OFF" type="string"/>
+        <return-scalar column="COD_CITY" type="string"/>
+        <![CDATA[
+            SELECT CAST(C.IDENTITAS_PENERIMA_AKHIR AS VARCHAR2(16)) as IPA,
+			 CAST(C.SANDI_KOTA_TUJUAN AS VARCHAR2(16)) as SKT,
+			 C.PARENT_RECORD_ID as PRI,
+			 (SELECT DISTINCT CAST(A.COD_FIN_INST_ID AS VARCHAR2(16))
+					FROM PM_FIN_INST_DIR_MAST A, ST_ROUTING_NO_DTLS B
+				 WHERE A.COD_BI = C.IDENTITAS_PENERIMA_AKHIR
+					 AND A.COD_FIN_INST_ID = B.COD_ROUTING_NO
+					 AND A.FLG_MNT_STATUS = 'A'
+					 AND A.COD_ENTITY_VPD = 11
+					 AND B.COD_CITY = C.SANDI_KOTA_TUJUAN
+					 AND ROWNUM < 2) COD_FIN_INST,
+				(SELECT DISTINCT CAST(B.COD_PROVINCE AS VARCHAR2(16))
+					FROM PM_FIN_INST_DIR_MAST A, ST_ROUTING_NO_DTLS B
+				 WHERE A.COD_BI = C.IDENTITAS_PENERIMA_AKHIR
+					 AND A.COD_FIN_INST_ID = B.COD_ROUTING_NO
+					 AND A.FLG_MNT_STATUS = 'A'
+					 AND A.COD_ENTITY_VPD = 11
+					 AND B.COD_CITY = C.SANDI_KOTA_TUJUAN
+					 AND ROWNUM < 2) COD_PROVINCE,
+					 (SELECT DISTINCT CAST(B.COD_BI_OFF_CODE AS VARCHAR2(16))
+					FROM PM_FIN_INST_DIR_MAST A, ST_ROUTING_NO_DTLS B
+				 WHERE A.COD_BI = C.IDENTITAS_PENERIMA_AKHIR
+					 AND A.COD_FIN_INST_ID = B.COD_ROUTING_NO
+					 AND A.FLG_MNT_STATUS = 'A'
+					 AND A.COD_ENTITY_VPD = 11
+					 AND B.COD_CITY = C.SANDI_KOTA_TUJUAN
+					 AND ROWNUM < 2) COD_BI_OFF,
+					 (SELECT DISTINCT CAST(B.COD_CITY AS VARCHAR2(16))
+					FROM PM_FIN_INST_DIR_MAST A, ST_ROUTING_NO_DTLS B
+				 WHERE A.COD_BI = C.IDENTITAS_PENERIMA_AKHIR
+					 AND A.COD_FIN_INST_ID = B.COD_ROUTING_NO
+					 AND A.FLG_MNT_STATUS = 'A'
+					 AND A.COD_ENTITY_VPD = 11
+					 AND B.COD_CITY = C.SANDI_KOTA_TUJUAN
+					 AND ROWNUM < 2) COD_CITY
+	FROM TMP_SKNNG_IN_OUT_CREDIT_DETAIL C
+ WHERE C.BATCH_NO = :pId
+ ORDER BY TO_NUMBER(C.PARENT_RECORD_ID)
+		]]>
+	</sql-query>
+	<sql-query name="SKN#FULLHEADER">
+	<query-param name="pId" type="string"/>
+	
+	<return-scalar column="PRI" type="int"/>
+	<return-scalar column="JTM" type="string"/>
+    <return-scalar column="HITUNG" type="int"/>
+	<![CDATA[
+		SELECT B.*
+	FROM TMP_SKNNG_IN_OUT_CREDIT_DETAIL A, TMP_SKNNG_IN_OUT_CREDIT_HEADER B
+ WHERE B.BATCH_NO = :pid
+	 AND A.BATCH_NO = B.BATCH_NO
+	 AND A.PARENT_RECORD_ID = B.PARENT_RECORD_ID
+ ORDER BY TO_NUMBER(b.PARENT_RECORD_ID)
+	]]>
+	</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+   <class name="bdsm.rpt.model.FixMasterReport" table="FIXMASTERREPORT" lazy="false">
+        <composite-id name="compositeId" class="bdsm.rpt.model.FixMasterReportPK">
+            <key-property name="idReport"        column="idReport"        type="string" />
+            <key-property name="idScheduler"     column="idScheduler"     type="integer" />
+        </composite-id>
+      <property name="namScheduler"   column="namScheduler"   type="string"/>
+      <property name="reportName"     column="reportName"     type="string"/>
+      <property name="paramCount"     column="paramCount"     type="string"/>
+      <property name="remarks"        column="remarks"        type="string"/>
+   </class>
+</hibernate-mapping>
+

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+	
+<hibernate-mapping default-access="field">
+	<!-- Model  -->
+	<class name="bdsm.scheduler.model.EOD_BOD_ProcMast" table="EOD_BOD_PROC_MAST" lazy="false">
+		<id name="procId" column="PROC_ID" type="integer">
+			<generator class="assigned" />
+		</id>
+		
+		<property name="moduleName"       column="MODULE_NAME"         type="string" />
+		<property name="procedureName"    column="PROCEDURE_NAME"      type="string" />
+		<property name="type"             column="TYPE"                type="integer" />
+		<property name="procIdDepend"     column="PROC_ID_DEPEND"      type="integer" />
+		<property name="flagEomDB"        column="FLG_EOM"             type="character"  access="property" />
+		<property name="flagProcDB"       column="FLG_PROC"            type="character"  access="property" />
+		<property name="datLastStartRun"  column="DAT_LAST_START_RUN"  type="timestamp" />
+		<property name="datLastEndRun"    column="DAT_LAST_END_RUN"    type="timestamp" />
+	</class>
+
+	<!-- Query -->
+	<query name="EOD_BOD_ProcMast#resetProcAndDateByType">
+		<![CDATA[
+			UPDATE EOD_BOD_ProcMast
+			   SET flagProcDB      = 'Q',
+			       datLastStartRun = NULL,
+			       datLastEndRun   = NULL
+			 WHERE type = :pType
+			   AND 0    = (SELECT COUNT(procId) FROM EOD_BOD_ProcMast WHERE type = :pType AND flagProcDB IN ('Q', 'P'))
+		]]>
+	</query>
+
+	<sql-query name="EOD_BOD_ProcMast#listSuccessorProcId">
+		<return-scalar column="proc_id" type="integer"/>
+		
+		<![CDATA[
+			 SELECT proc_id
+			   FROM eod_bod_proc_mast
+			  WHERE proc_id          <> :procId
+			  START WITH proc_id     = :procId
+			CONNECT BY PRIOR proc_id = proc_id_depend
+			  ORDER BY proc_id
+		]]>
+	</sql-query>
+
+	<query name="EOD_BOD_ProcMast#updateProcFlagByProcIdList">
+		<![CDATA[
+			UPDATE EOD_BOD_ProcMast
+			   SET flagProcDB = :flgProc
+			 WHERE procId     IN (:procIdList)
+		]]>
+	</query>
+</hibernate-mapping>

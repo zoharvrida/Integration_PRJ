@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping 
+		PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		
+<hibernate-mapping>
+	<!-- Model -->
+	<class name="bdsm.scheduler.model.TmpIncDrNoteParent" abstract="true" polymorphism="explicit">
+		<composite-id name="compositeId" class="bdsm.scheduler.model.TmpIncDrNotePK">
+			<key-property name="fileId"    column="FILEID"    type="string" />
+			<key-property name="recordId"  column="RECORDID"  type="long" />
+		</composite-id>
+		
+		<property name="moduleName"             column="MODULENAME"      type="string" />
+		<property name="target"                 column="TARGET"          type="string" />
+		<property name="recordType"             column="RECORDTYPE"      type="string" />
+		<property name="recordName"             column="RECORDNAME"      type="string" />
+		<property name="data"                   column="DATA"            type="string" />
+		<property name="length"                 column="LENGTH"          type="short" />
+		<property name="comments"               column="COMMENTS"        type="string" />
+		<property name="recordStatus"           column="RECORDSTATUS"    type="string" />
+		<property name="dateTimeProcessStart"   column="DTMPROCSTART"    type="time" />
+		<property name="dateTimeProcessFinish"  column="DTMPROCFINISH"   type="time" />
+		
+		
+		<!-- subclass -->
+		<union-subclass name="bdsm.scheduler.model.TmpIncDrNoteDetail" table="TMP_INCDRNOTE_DETAIL">
+			<property name="clearingDate"        column="CLEARING_DATE"        type="string" />
+			<property name="chequeNo"            column="CHQ_NO"               type="integer" />
+			<property name="payersClearingCode"  column="PYRS_CLEARING_CODE"   type="integer" />
+			<property name="payersAccountNo"     column="PYRS_ACCT_NO"         type="long" />
+			<property name="transactionCode"     column="TXN_CODE"             type="byte" />
+			<property name="amount"              column="AMOUNT"               type="big_decimal" />
+			<property name="payeeClearingCode"   column="PAYEE_CLEARING_CODE"  type="integer" />
+			<property name="SOR"                 column="SOR"                  type="string" />
+			<property name="BDSMBatchNo"         column="BDSM_BATCH_NO"        type="string" />
+			<property name="BDSMRecordId"        column="BDSM_RECORD_ID"       type="integer" />
+		</union-subclass>
+		
+		<union-subclass name="bdsm.scheduler.model.TmpIncDrNoteFooter" table="TMP_INCDRNOTE_FOOTER">
+			<property name="checksum"  column="CHECKSUM"  type="integer" />
+		</union-subclass>
+		
+	</class>
+</hibernate-mapping>

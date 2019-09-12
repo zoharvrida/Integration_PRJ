@@ -1,0 +1,15 @@
+<!DOCTYPE validators PUBLIC
+              "-//Apache Struts//XWork Validator 1.0.2//EN"
+              "http://struts.apache.org/dtds/xwork-validator-1.0.2.dtd">
+<validators>
+   <field name="grpiD">
+        <field-validator type="requiredstring" short-circuit="true">
+            <message>Select one of the following Group</message>
+        </field-validator>
+    </field>
+    <field name="schedImport">
+        <field-validator type="requiredstring">
+            <message>Select one of the following Scheduler</message>
+        </field-validator>
+    </field>
+</validators>

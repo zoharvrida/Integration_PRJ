@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.scheduler.model.TmpMaintenanceRrm01" table="TMP_RRM01">
+    <composite-id class="bdsm.scheduler.model.TmpMaintenanceRrm01PK" name="compositeId">
+      <key-property column="BATCHNO" name="batchiId" type="string"/>
+      <key-property column="RECORDID" name="recordId" type="integer"/>
+      <key-property column="COD_ID" name="codId" type="string"/>
+    </composite-id>
+    
+    <property column="CMD" name="cmd" type="string"/>
+    <property column="NAM_ALIAS" name="namAlias" type="string"/>
+    <property column="NAM_MTHR_MAID" name="namMother" type="string"/>
+    <property column="COD_DEBT_TYPE" name="golPemilik" type="string"/>
+    <property column="DEBTOR_STATUS" name="statusPemilik" type="string"/>
+    <property column="COD_CC_BRN" name="branchLocation" type="string"/>
+    <property column="COD_DIST" name="sandiData" type="string"/>
+    <property column="COD_REL_LBU" name="relBank" type="string"/>
+    <property column="COD_CONN_LBU" name="relConnBank" type="string"/>
+    <property column="IDCREATEDBY"     name="idCreatedBy"  type="string"/>
+    <property column="DTMCREATEDBY"    name="dtmCreated"   type="timestamp"  /> 
+    <property column="IDCREATEDSPV"    name="idCreatedSpv" type="string"/>
+    <property column="DTMCREATEDSPV"   name="dtmCreatedSpv" type="timestamp"  />
+    <property column="FLAG_STATUS"     name="flagStatus"   type="string"/>
+    <property column="STATUS_REASON"   name="statusReason" type="string"/>
+    
+  </class>
+</hibernate-mapping>

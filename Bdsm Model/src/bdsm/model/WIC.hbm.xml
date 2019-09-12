@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.WIC" lazy="false" table="WIC" polymorphism="explicit">
+		<id name="WICNo"  column="WIC_NO"  type="integer" />
+		
+		<property name="customerType"              column="CUSTOMER_TYPE"               type="integer" />
+		<property name="idType"                    column="ID_TYPE"                     type="string" />
+		<property name="idNumber"                  column="ID_NUMBER"                   type="string" />
+		<property name="idExpiredDate"             column="ID_EXPIRED_DATE"             type="date" />
+		<property name="name"                      column="NAME"                        type="string" />
+		<property name="birthDate"                 column="BIRTH_DATE"                  type="date" />
+		<property name="birthPlace"                column="BIRTH_PLACE"                 type="string" />
+		<property name="genderDB"                  column="GENDER"                      type="character"  access="property" />
+		<property name="maritalStatus"             column="MARITAL_STATUS"              type="integer" />
+		<property name="address1"                  column="ADDRESS1"                    type="string" />
+		<property name="address2"                  column="ADDRESS2"                    type="string" />
+		<property name="address3"                  column="ADDRESS3"                    type="string" />
+		<property name="postalCode"                column="POSTAL_CODE"                 type="string" />
+		<property name="city"                      column="CITY"                        type="string" />
+		<property name="state"                     column="STATE"                       type="string" />
+		<property name="country"                   column="COUNTRY"                     type="string" />
+		<property name="citizenship"               column="CITIZENSHIP"                 type="string" />
+		<property name="occupation"                column="OCCUPATION"                  type="integer" />
+		<property name="notes"                     column="NOTES"                       type="string" />
+		<property name="residentialEqualIdentity"  column="RESIDENTIAL_EQUAL_IDENTITY"  type="boolean" />
+		<property name="residentialAddress1"       column="RESIDENTIAL_ADDRESS1"        type="string" />
+		<property name="residentialAddress2"       column="RESIDENTIAL_ADDRESS2"        type="string" />
+		<property name="residentialAddress3"       column="RESIDENTIAL_ADDRESS3"        type="string" />
+		<property name="residentialPostalCode"     column="RESIDENTIAL_POSTAL_CODE"     type="string" />
+		<property name="residentialCity"           column="RESIDENTIAL_CITY"            type="string" />
+		<property name="residentialState"          column="RESIDENTIAL_STATE"           type="string" />
+		<property name="residentialCountry"        column="RESIDENTIAL_COUNTRY"         type="string" />
+		<property name="businessType"              column="BUSINESS_TYPE"               type="string" />
+		<property name="sourceOfFunds"             column="SOURCE_OF_FUNDS"             type="string" />
+		<property name="sourceOfFundsOthers"       column="SOURCE_OF_FUNDS_OTHERS"      type="string" />
+		<property name="trxPurpose"                column="TRX_PURPOSE"                 type="string" />
+		<property name="jobTitle"                  column="JOB_TITLE"                   type="string" />
+		<property name="officeName"                column="OFFICE_NAME"                 type="string" />
+		<property name="officeAddress1"            column="OFFICE_ADDRESS1"             type="string" />
+		<property name="officeAddress2"            column="OFFICE_ADDRESS2"             type="string" />
+		<property name="officeAddress3"            column="OFFICE_ADDRESS3"             type="string" />
+		<property name="homePhoneNo"               column="HOME_PHONE_NO"               type="string" />
+		<property name="officePhoneNo"             column="OFFICE_PHONE_NO"             type="string" />
+		<property name="mobilePhoneNo"             column="MOBILE_PHONE_NO"             type="string" />
+		<property name="incomePerMonthType"        column="INCOME_PER_MONTH_TYPE"       type="integer" />
+		<property name="instanceRepresented"       column="INSTANCE_REPRESENTED"        type="string" />
+		<property name="accountRepresented"        column="ACCOUNT_REPRESENTED"         type="string" />
+		<property name="authLetterNo"              column="AUTH_LETTER_NO"              type="string" />
+		<property name="accountBranch"             column="ACCOUNT_BRANCH"              type="string" />
+		<property name="highRiskWIC"               column="HIGH_RISK_WIC"               type="string" />
+		<property name="highRiskCountry"           column="HIGH_RISK_COUNTRY"           type="string" />
+		<property name="branch"                    column="BRANCH"                      type="integer" />
+		<property name="dtmCreated"                column="CREATED_DTM"                 type="timestamp" />
+		<property name="dtmUpdated"                column="UPDATED_DTM"                 type="timestamp" />
+		<property name="requester"                 column="REQUESTER"                   type="string" />
+		<property name="approver"                  column="APPROVER"                    type="string" />
+		<property name="flagStatusDB"              column="FLAG_STATUS"                 type="character"  access="property" />
+	</class>
+	
+	<class name="bdsm.model.WICHistory" table="WIC_HIST" >
+		<composite-id access="property">
+			<key-property name="WICNo"       column="WIC_NO"             type="integer" />
+			<key-property name="dtmCreated"  column="PROCESS_DATE_TIME"  type="timestamp" />
+		</composite-id>
+		
+		<property name="customerType"              column="CUSTOMER_TYPE"               type="integer" />
+		<property name="idType"                    column="ID_TYPE"                     type="string" />
+		<property name="idNumber"                  column="ID_NUMBER"                   type="string" />
+		<property name="idExpiredDate"             column="ID_EXPIRED_DATE"             type="date" />
+		<property name="name"                      column="NAME"                        type="string" />
+		<property name="birthDate"                 column="BIRTH_DATE"                  type="date" />
+		<property name="birthPlace"                column="BIRTH_PLACE"                 type="string" />
+		<property name="genderDB"                  column="GENDER"                      type="character"  access="property" />
+		<property name="maritalStatus"             column="MARITAL_STATUS"              type="integer" />
+		<property name="address1"                  column="ADDRESS1"                    type="string" />
+		<property name="address2"                  column="ADDRESS2"                    type="string" />
+		<property name="address3"                  column="ADDRESS3"                    type="string" />
+		<property name="postalCode"                column="POSTAL_CODE"                 type="string" />
+		<property name="city"                      column="CITY"                        type="string" />
+		<property name="state"                     column="STATE"                       type="string" />
+		<property name="country"                   column="COUNTRY"                     type="string" />
+		<property name="citizenship"               column="CITIZENSHIP"                 type="string" />
+		<property name="occupation"                column="OCCUPATION"                  type="integer" />
+		<property name="notes"                     column="NOTES"                       type="string" />
+		<property name="residentialEqualIdentity"  column="RESIDENTIAL_EQUAL_IDENTITY"  type="boolean" />
+		<property name="residentialAddress1"       column="RESIDENTIAL_ADDRESS1"        type="string" />
+		<property name="residentialAddress2"       column="RESIDENTIAL_ADDRESS2"        type="string" />
+		<property name="residentialAddress3"       column="RESIDENTIAL_ADDRESS3"        type="string" />
+		<property name="residentialPostalCode"     column="RESIDENTIAL_POSTAL_CODE"     type="string" />
+		<property name="residentialCity"           column="RESIDENTIAL_CITY"            type="string" />
+		<property name="residentialState"          column="RESIDENTIAL_STATE"           type="string" />
+		<property name="residentialCountry"        column="RESIDENTIAL_COUNTRY"         type="string" />
+		<property name="businessType"              column="BUSINESS_TYPE"               type="string" />
+		<property name="sourceOfFunds"             column="SOURCE_OF_FUNDS"             type="string" />
+		<property name="sourceOfFundsOthers"       column="SOURCE_OF_FUNDS_OTHERS"      type="string" />
+		<property name="trxPurpose"                column="TRX_PURPOSE"                 type="string" />
+		<property name="jobTitle"                  column="JOB_TITLE"                   type="string" />
+		<property name="officeName"                column="OFFICE_NAME"                 type="string" />
+		<property name="officeAddress1"            column="OFFICE_ADDRESS1"             type="string" />
+		<property name="officeAddress2"            column="OFFICE_ADDRESS2"             type="string" />
+		<property name="officeAddress3"            column="OFFICE_ADDRESS3"             type="string" />
+		<property name="homePhoneNo"               column="HOME_PHONE_NO"               type="string" />
+		<property name="officePhoneNo"             column="OFFICE_PHONE_NO"             type="string" />
+		<property name="mobilePhoneNo"             column="MOBILE_PHONE_NO"             type="string" />
+		<property name="incomePerMonthType"        column="INCOME_PER_MONTH_TYPE"       type="integer" />
+		<property name="instanceRepresented"       column="INSTANCE_REPRESENTED"        type="string" />
+		<property name="accountRepresented"        column="ACCOUNT_REPRESENTED"         type="string" />
+		<property name="authLetterNo"              column="AUTH_LETTER_NO"              type="string" />
+		<property name="accountBranch"             column="ACCOUNT_BRANCH"              type="string" />
+		<property name="highRiskWIC"               column="HIGH_RISK_WIC"               type="string" />
+		<property name="highRiskCountry"           column="HIGH_RISK_COUNTRY"           type="string" />
+		<property name="branch"                    column="BRANCH"                      type="integer" />
+		<property name="requester"                 column="REQUESTER"                   type="string" />
+		<property name="approver"                  column="APPROVER"                    type="string" />
+		<property name="flagStatusDB"              column="FLAG_STATUS"                 type="character"  access="property" />
+		<property name="processType"               column="PROCESS_TYPE"                type="character"  access="property" />
+		<property name="dtmCreatedOld"             column="CREATED_DTM"                 type="timestamp"  access="property" />
+		<property name="dtmUpdatedOld"             column="UPDATED_DTM"                 type="timestamp"  access="property" />
+		<property name="processRequester"          column="PROCESS_REQUESTER"           type="string"     access="property" />
+		<property name="processApprover"           column="PROCESS_APPROVER"            type="string"     access="property" /> 
+	</class>
+	
+	
+	<class name="bdsm.model.WICTrx" lazy="false" table="WIC_TRX">
+		<id name="trxNo"  column="TRX_NO"  type="long" />
+		
+		<property name="WICNo"            column="WIC_NO"           type="integer" />
+		<property name="refNo"            column="TRX_REF_NO"       type="string" />
+		<property name="type"             column="TRX_TYPE"         type="string" />
+		<property name="dateTime"         column="TRX_DATE_TIME"    type="timestamp" />
+		<property name="fastPath"         column="TRX_FAST_PATH"    type="integer" />
+		<property name="CIFNo"            column="TRX_CIF_NO"       type="long" />
+		<property name="accountNo"        column="TRX_ACCT_NO"      type="string" />
+		<property name="currencyCode"     column="TRX_COD_CCY"      type="integer" />
+		<property name="amount"           column="TRX_AMOUNT"       type="big_decimal" />
+		<property name="debitOrCreditDB"  column="TRX_D_OR_C"       type="character"  access="property" />
+		<property name="narrative"        column="TRX_NARRATIVE"    type="string" />
+		<property name="branch"           column="TRX_BRANCH"       type="integer" />
+		<property name="tellerId"         column="TRX_TELLER_ID"    type="string" />
+		<property name="requester"        column="REQUESTER"        type="string" />
+		<property name="approver"         column="APPROVER"         type="string" />
+		<property name="flagStatusDB"     column="FLAG_STATUS"      type="character"  access="property" />
+		<property name="dtmCreated"       column="CREATED_DTM"      type="timestamp" />
+		<property name="dtmUpdated"       column="UPDATED_DTM"      type="timestamp" />
+	</class>
+	
+	
+	<!-- Query -->
+	<query name="WIC#getMaximumWICNo">
+		<![CDATA[
+			SELECT MAX(WICNo)
+			FROM WIC
+		]]>
+	</query>
+	
+	<query name="WIC#getByCustomerTypeAndId">
+		<![CDATA[
+			 FROM WIC
+			WHERE customerType    = :customerType
+			  AND idType          = :idType
+			  AND UPPER(idNumber) = :idNumber
+			  AND flagStatusDB    = COALESCE(:flagStatusDB, flagStatusDB)
+		]]>
+	</query>
+	
+	<query name="WICTrx#getMaximumTrxNo">
+		<![CDATA[
+			SELECT MAX(trxNo)
+			FROM WICTrx
+		]]>
+	</query>
+	
+	<query name="WICTrx#getByWICNoAndTrxRefNo">
+		<![CDATA[
+			 FROM WICTrx
+			WHERE WICNo        = COALESCE(:WICNo, WICNo)
+			  AND refNo        = :refNo
+			  AND flagStatusDB = COALESCE(:flagStatusDB, flagStatusDB)
+		]]>
+	</query>
+	
+</hibernate-mapping>

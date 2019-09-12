@@ -1,0 +1,82 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bdsm.scheduler.processor;
+
+import bdsm.scheduler.*;
+import bdsm.scheduler.model.FixQXtract;
+import bdsm.scheduler.util.FileUtil;
+import bdsm.scheduler.util.MailUtil;
+import bdsm.scheduler.util.SchedulerUtil;
+import java.util.Map;
+import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+/**
+ *
+ * @author bdsm
+ */
+public abstract class BaseProcessor implements IBdsmClass {
+
+    public BaseProcessor(Map context) {
+        this.context = context;
+    }
+
+    public boolean execute() throws Exception {
+        this.session = (Session) this.context.get(MapKey.session);        
+        this.tx = session.beginTransaction();
+        boolean result = false;
+        boolean hasFile = false;
+        if (context.get(MapKey.param5) != null) {
+            hasFile = true;
+        }
+        try {
+            result = doExecute();
+            this.session.flush();
+            this.tx.commit();
+            this.session.clear();
+            this.context.put(MapKey.fixQXtract, this.fixQXtract);
+            if (hasFile) {
+                FileUtil.moveFile(context.get(MapKey.param5).toString(), PropertyPersister.dirFixInOk, "");
+            }
+        } catch (Exception ex) {
+            this.session.flush();
+            this.tx.rollback();
+            setFixQXtract(ex);
+            this.session.clear();
+            if (hasFile) {
+                FileUtil.moveFile(context.get(MapKey.param5).toString(), PropertyPersister.dirFixInErr, "");
+            }
+            throw new Exception(ex);
+        }
+        return result;
+    }
+
+    protected abstract boolean doExecute() throws Exception;
+
+    protected Logger getLogger() {
+        return Logger.getLogger(getClass().getName());
+    }
+
+    private void setFixQXtract(Exception ex) {
+        this.fixQXtract = new FixQXtract();
+        this.fixQXtract.setIdScheduler(ScheduleDefinition.emailOnly);
+        this.fixQXtract.setFlgProcess(StatusDefinition.REQUEST);
+        this.fixQXtract.setDtmRequest(SchedulerUtil.getTime());
+        this.fixQXtract.setReason(ex.getMessage());
+        if (this.context.get(MapKey.param1) != null) {
+            this.fixQXtract.setParam1(MailUtil.createEmailSubject(this.context.get(MapKey.param1).toString()));
+        }
+        if (this.context.get(MapKey.param2) != null) {
+            this.fixQXtract.setParam2(this.context.get(MapKey.param2).toString());
+        }
+        this.fixQXtract.setParam4(ex.getMessage());
+        this.context.put(MapKey.fixQXtract, this.fixQXtract);
+    }
+    protected Map context;
+    protected Session session;
+    protected FixQXtract fixQXtract;
+    protected Transaction tx;
+}

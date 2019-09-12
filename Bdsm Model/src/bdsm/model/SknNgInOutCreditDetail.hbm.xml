@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.model.SknNgIncomingCreditDetail" table="TMP_SKNNG_GEN1_CREDIT_DETAIL">
+    <composite-id class="bdsm.model.HostSknngInOutCreditPK" name="compositeId">
+      <key-property column="FILEID" name="batchNo" type="string"/>
+      <key-property column="RECORDID" name="recordId" type="integer"/>
+      <key-property column="PARENTRECID" name="parentRecordId" type="integer"/>
+		</composite-id> 		
+    <property column="clearingDate" name="clearingDate" type="string"/>
+    <property column="referenceNo" name="referenceNo" type="string"/>
+    <property column="remitterName" name="remitterName" type="string"/>
+    <property column="beneficiaryName" name="beneficiaryName" type="string"/>
+    <property column="beneficiaryAccount" name="beneficiaryAccount" type="string"/>
+    <property column="remarks" name="remarks" type="string"/>
+    <property column="amount" name="amountDbl" type="double"/>
+    <property column="receiverBankCode" name="receiverBankCode" type="string"/>
+    <property column="senderBICode" name="senderBICode" type="string"/>
+    <property column="senderSknCoordinatorCode" name="senderSknCoordinatorCode" type="string"/>
+    <property column="transactionCode" name="transactionCode" type="string"/>
+    <property column="bankType" name="bankType" type="string"/>
+    <property column="remitterResidencyStatus" name="remitterResidencyStatus" type="string"/>
+    <property column="remitterCitizenshipStatus" name="remitterCitizenshipStatus" type="string"/>
+    <property column="beneficiaryProvinceCode" name="beneficiaryProvinceCode" type="string"/>
+    <property column="beneficiaryCityCode" name="beneficiaryCityCode" type="string"/>
+    <property column="receiverSknCoordinatorCode" name="receiverSknCoordinatorCode" type="string"/>
+    <property column="senderClearingCode" name="senderClearingCode" type="string"/>
+    <property column="sor" name="sor" type="string"/>
+    <property column="recordType" name="recordType" type="string"/>
+    <property column="recordName" name="recordName" type="string"/>
+    <property column="data" name="jData" type="string"/>
+    <property column="length" name="length" type="integer"/>
+    <property column="comments" name="comments" type="string"/>
+    <property column="recordStatus" name="recordStatus" type="string"/>
+    <property column="cod_Entity_Vpd" name="codEntityVpd" type="integer"/>
+	</class>
+</hibernate-mapping>

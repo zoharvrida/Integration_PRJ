@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.model.ARParamDetails" table="AR_PARAM_DETAILS" lazy="false">
+      <composite-id>
+         <key-property column="IDSCHEDULER" name="idScheduler" type="integer"/>
+         <key-property column="IDORDER" name="idOrder" type="integer"/>
+      </composite-id>
+
+      <property name="type"   column="TYPE"   type="string"/>
+      <property name="fieldName"   column="FIELDNAME"   type="string"/>
+      <property name="fieldType"   column="FIELDTYPE"   type="string"/>
+      <property name="fieldFormat"   column="FIELDFORMAT"   type="string"/>
+      <property name="maxLength"   column="MAXLENGTH"   type="integer"/>
+      <property name="deffVal"   column="DEFVALUE"   type="string"/>
+    </class>
+
+    <query name="ARDetails#listDetails">
+        <![CDATA[
+            SELECT s
+            FROM ARParamDetails s
+            WHERE s.idScheduler = :pIdscheduler
+                AND s.type LIKE '%' || :pType || '%'
+            ORDER BY s.idOrder
+        ]]>
+    </query>
+
+    <query name="ARDetailsReader#listDetails">
+        <![CDATA[
+            SELECT s
+              FROM ARParamDetails s
+             WHERE s.idScheduler = :pIdscheduler
+               AND ((s.type LIKE '%' || :pType || '%') OR (s.type LIKE '%' || :pFlag || '%'))
+             ORDER BY s.type, s.idOrder
+        ]]>
+    </query>
+</hibernate-mapping>

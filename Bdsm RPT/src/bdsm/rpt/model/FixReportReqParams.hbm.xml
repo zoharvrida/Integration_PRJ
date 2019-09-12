@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.rpt.model.FixReportReqParams" table="FIXREPORTREQPARAMS">
+    <composite-id class="bdsm.rpt.model.FixReportReqParamsPK" name="compositeId">
+      <key-property column="idBatch" name="idBatch" type="string"/>
+      <key-property column="idReport" name="idReport" type="integer"/>
+      <key-property column="noSeq" name="noSeq" type="integer"/>
+      <key-property column="value" name="value" type="string"/>
+    </composite-id>
+  </class>
+</hibernate-mapping>

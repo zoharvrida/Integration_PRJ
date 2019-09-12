@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.FCRCustomerCardMaster" table="CM_CUSTCARD_MAST">
+		<composite-id>
+			<key-property name="cardNo" column="COD_CARD_NO" type="string" />
+			<key-property name="maintenanceStatusDB" column="FLG_MNT_STATUS" type="character" access="property" />
+			<key-property name="entityVPD" column="COD_ENTITY_VPD" type="integer" />
+		</composite-id>
+		
+		<property name="customerId" column="COD_CUST_ID" type="string" />
+		<property name="customerNameEmbossed" column="NAM_CUST_EMBOSSED" type="string" />
+		<property name="issueDate" column="DAT_ISSUE" type="date" />
+		<property name="expiryDate" column="DAT_EXPIRY" type="date" />
+	</class>
+	
+	<!-- Query -->
+	<sql-query name="fcrCustomerCardMaster#getAccounts">
+		<![CDATA[
+			SELECT CAST(acc.cod_acct_no AS VARCHAR(16)), 
+				acc.flg_mnt_status, 
+				acc.cod_entity_vpd,
+				acc.cod_cust, 
+				acc.cod_acct_stat, 
+				acc.cod_acct_title
+			FROM cm_custcard_acct_xref cax
+				INNER JOIN ch_acct_mast acc
+					ON cax.cod_acct_no = acc.cod_acct_no
+			WHERE cax.cod_card_no = :cardNo
+				AND cax.flg_mnt_status = :maintenanceStatus
+				AND cax.cod_entity_vpd = :entityVPD
+		]]>
+	</sql-query>
+</hibernate-mapping>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+      <class  name="bdsm.scheduler.model.UfcrCfFlyUsrTmpSrc" table="tmp_fcr_cf_flyuser" lazy="false">
+        <id       name="id"        column="id"        type="int" >
+            <generator class="increment"/>
+        </id>
+        <property name="CodUserId"  column="COD_USER_ID"  type="string"/>
+        <property name="SourceCodTempl"  column="SOURCE_COD_TEMPL"  type="string"/>
+        <property name="SourceNamTempl"  column="SOURCE_NAM_TEMPL"  type="string"/>
+        <property name="codBrnSource"  column="COD_BRN_SOURCE"  type="string"/>
+        <property name="SourceNamBranch"  column="SOURCE_NAM_BRANCH"  type="string"/>
+        <property name="TargetCodTempl"  column="TARGET_COD_TEMPL"  type="string"/>
+        <property name="TargetNamTempl"  column="TARGET_NAM_TEMPL"  type="string"/>
+        <property name="codBrnTarget"  column="COD_BRN_TARGET"  type="string"/>
+        <property name="TargetNamBranch"  column="TARGET_NAM_BRANCH"  type="string"/>
+        <property name="EfektifDate"  column="EFEKTIF_DATE"  type="string"/>
+        <property name="status"  column="STATUS"  type="string"/>
+        <property name="statusreason"  column="STATUSREASON"  type="string"/>
+        <property name="nobatch"  column="NOBATCH"  type="string"/>
+    </class>
+</hibernate-mapping>

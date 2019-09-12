@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.MPAcctReg" table="MP_ACCT_REG" lazy="false">
+		<id name="id"  column="ID_REG" type="long" />
+		
+		<property name="noAccount"       column="NO_ACCOUNT"     type="string" />
+		<property name="codeClass"       column="COD_CLASS"      type="integer" />
+		<property name="dateCommitment"  column="DAT_COMMIT"     type="date" />
+		<property name="dateExpiry"      column="DAT_EXPIRY"     type="date" />
+		<property name="idCreatedBy"     column="CREATEDBY"      type="string" />
+		<property name="idCreatedSpv"    column="CREATEDSPV"     type="string" />
+		<property name="dtmCreated"      column="DTMCREATED"     type="timestamp" />
+		<property name="dtmCreatedSpv"   column="DTMCREATEDSPV"  type="timestamp" />
+		<property name="deletedDB"       column="FLG_DELETED"    type="character"  access="property" />
+		
+		<set name="details" cascade="save-update, delete-orphan" lazy="false">
+			<key column="ID_REG" update="false" />
+			<one-to-many class="bdsm.model.MPAcctRegDtls" />
+		</set>
+	</class>
+	
+	<class name="bdsm.model.MPAcctRegDtls" table="MP_ACCT_REG_DTLS" lazy="false">
+		<composite-id>
+			<key-property name="acctRegId"      column="ID_REG"     type="long" />
+			<key-property name="codeComponent"  column="COD_COMP"   type="integer" />
+		</composite-id>
+		
+		<property name="amountValue"    column="AMT_VAL"        type="big_decimal" />
+		<property name="counterValue"   column="CTR_VAL"        type="double" />
+		<property name="stringValue"    column="STR_VAL"        type="string" />
+		<property name="idCreatedBy"    column="CREATEDBY"      type="string" />
+		<property name="idCreatedSpv"   column="CREATEDSPV"     type="string" />
+		<property name="dtmCreated"     column="DTMCREATED"     type="timestamp" />
+		<property name="dtmCreatedSpv"  column="DTMCREATEDSPV"  type="timestamp" />
+	</class>
+	
+	
+	<!-- Query -->
+	<query name="MPAcctReg#getMaximumId">
+		<![CDATA[
+			SELECT MAX(id)
+			  FROM MPAcctReg
+		]]>
+	</query>
+	
+	<query name="MPAcctReg#getByActiveAccountNo">
+		<![CDATA[
+			SELECT acct
+			  FROM MPAcctReg acct, BaBankMast bank
+			 WHERE bank.compositeId.flgMntStatus    = 'A'
+			   AND acct.noAccount                   = :accountNo
+			   AND COALESCE(acct.deletedDB, 'N')    = 'N'
+			   AND COALESCE(acct.dateExpiry, 
+			       bank.datProcess)                 >= :date
+			 ORDER BY acct.dtmCreated DESC
+		]]>
+	</query>
+	
+	
+</hibernate-mapping>

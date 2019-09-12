@@ -1,0 +1,302 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bdsm.scheduler.processor;
+
+import bdsm.scheduler.MapKey;
+import bdsm.scheduler.PropertyPersister;
+import bdsm.scheduler.StatusDefinition;
+import bdsm.scheduler.dao.*;
+import bdsm.scheduler.model.FixClassConfig;
+import bdsm.scheduler.model.FixQXtract;
+import bdsm.scheduler.model.FixSchedulerXtract;
+import bdsm.scheduler.model.UlcTmpSrc;
+import bdsm.scheduler.util.FileUtil;
+import bdsm.scheduler.util.SchedulerUtil;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.util.Map;
+import java.util.Properties;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
+import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.poifs.filesystem.NPOIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.eventusermodel.XSSFReader;
+import org.apache.poi.xssf.model.SharedStringsTable;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.xml.sax.Attributes;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.helpers.XMLReaderFactory;
+
+/**
+ *
+ * @author NCBS
+ */
+public class UlcWorker2 extends BaseProcessor {
+    
+    public UlcWorker2(Map context) {
+        super(context);
+    }
+    
+    @Override
+    protected boolean doExecute() throws Exception {
+        String configFile;
+        configFile = "excelutil.properties";
+        UlcTmpSrcDao ulcTmpSrcDao = new UlcTmpSrcDao(session);
+        FixClassConfigDao classConfigDao = new FixClassConfigDao(session);
+        FixSchedulerXtractDao fixSchedulerXtractDao = new FixSchedulerXtractDao(session);
+        UlcTmpSrc ulcTmpSrc = null;;
+        FixClassConfig fClassConfig = null;
+        FixSchedulerXtract fixSchedulerXtract = null;
+        String extFile = "";
+        String BatchID = context.get(MapKey.batchNo).toString();
+        String status = context.get(MapKey.status).toString();
+        String param1 = context.get(MapKey.param1).toString();
+        String sourceProcess = context.get(MapKey.processSource).toString();
+        int idScheduler = Integer.valueOf(context.get(MapKey.idScheduler).toString());
+        getLogger().info("Done Prepare before execute status U/A");
+        if (status.equals(StatusDefinition.UNAUTHORIZED)) {
+            String outFileName = FileUtil.getDateTimeFormatedFileName(FilenameUtils.getBaseName(context.get(MapKey.param1).toString().replace("UDFULC ", "")) + "{hhmmss}.xls");
+            String param5 = context.get(MapKey.param5).toString();
+            /*
+             * --------Begin Memory Management of Read Excel File BDSM FIX
+             * v1.0-------
+             */
+            readExcel(param5, configFile, ulcTmpSrc, ulcTmpSrcDao);
+            /*
+             * Bellow Code Moved to readEXCEL method
+             */
+            /*
+             * excel = new bdsm.util.ExcelUtil(param5, configFile);
+             * List<String[]> data = excel.getData(); for (int i = 0; i <
+             * data.size(); i++) { String[] rowData = data.get(i);
+             *
+             * ulcTmpSrc = new UlcTmpSrc();
+             * ulcTmpSrc.setCodAcctNo(rowData[0].trim());
+             * ulcTmpSrc.setCodFieldTag(rowData[1].trim());
+             * ulcTmpSrc.setCodTask(rowData[2].trim());
+             * ulcTmpSrc.setFieldValue(rowData[3].trim());
+             * ulcTmpSrc.setCmd(rowData[4].trim());
+             * ulcTmpSrc.setBatch(BatchID.trim());
+             * ulcTmpSrcDao.insert(ulcTmpSrc); }
+             */
+            /*
+             * ----------------------------------END-----------------------------------
+             */
+            //buat ilangin bug
+            ulcTmpSrcDao.get(BatchID);
+            getLogger().info("LBU : Import Excel file from Requestor Success");
+
+            // do filter and validation
+            ulcTmpSrcDao.runUploadUlc(BatchID);
+            getLogger().info("LBU : Filter and Validate Source Data Done");
+            
+            fClassConfig = classConfigDao.get(getClass().getName(), sourceProcess, StatusDefinition.UNAUTHORIZED).get(0);
+            idScheduler = fClassConfig.getIdScheduler();
+            getLogger().info("Getting IdScheduler = " + idScheduler + " for Source: " + sourceProcess + " and Status : " + StatusDefinition.UNAUTHORIZED + "DONE");
+            fixSchedulerXtract = fixSchedulerXtractDao.get(idScheduler);
+            extFile = fixSchedulerXtract.getFileFormat();
+            outFileName = outFileName.replace(".xls", "." + extFile);
+            getLogger().info("Getting file Extension Done : " + outFileName);
+            if (!sourceProcess.equalsIgnoreCase("sftp")) {
+                fixQXtract = new FixQXtract();
+                fixQXtract.setIdScheduler(idScheduler);
+                fixQXtract.setFlgProcess(StatusDefinition.REQUEST);
+                fixQXtract.setDtmRequest(SchedulerUtil.getTime());
+                fixQXtract.setParam1("RE: " + param1);
+                FixEmailAccessDao fixEmailAccessDao = new FixEmailAccessDao(session);
+                fixQXtract.setParam2(fixEmailAccessDao.getSpv(context.get(MapKey.grpId).toString()));
+                fixQXtract.setParam4(PropertyPersister.emailApproval);
+                fixQXtract.setParam5(outFileName);
+                fixQXtract.setParam6(BatchID);
+                getLogger().info("ULCWORKER Register FixQXtract Done");
+            }
+            return true;
+        } else if (status.equals(StatusDefinition.AUTHORIZED)) {
+
+            //excel = new ExcelUtil("", configFile);
+
+            ulcTmpSrcDao.runInsertUlc(BatchID);
+            getLogger().info("LBU : Run insert to FCR Done");
+            
+            ulcTmpSrcDao.runUpdateUlc(BatchID);
+            getLogger().info("LBU : Run update to FCR Done");
+
+            //do write excel and send email --> Moved To Fix Execute UlcGenReport
+            String out2FileName = FileUtil.getDateTimeFormatedFileName(FilenameUtils.getBaseName(context.get(MapKey.param1).toString().replace("RE: UDFULC ", "")) + "{hhmmss}.xls");
+            getLogger().info("ULCWORKER Register FixQXtract");
+            fClassConfig = classConfigDao.get(getClass().getName(), sourceProcess, StatusDefinition.AUTHORIZED).get(0);
+            idScheduler = fClassConfig.getIdScheduler();
+            getLogger().info("Getting IdScheduler = " + idScheduler + " for Source: " + sourceProcess + " and Status : " + StatusDefinition.AUTHORIZED + "DONE");
+            fixSchedulerXtract = fixSchedulerXtractDao.get(idScheduler);
+            extFile = fixSchedulerXtract.getFileFormat();
+            out2FileName = out2FileName.replace(".xls", "." + extFile);
+            getLogger().info("Getting file Extention DONE : " + out2FileName);
+            fixQXtract = new FixQXtract();
+            fixQXtract.setIdScheduler(idScheduler);
+            fixQXtract.setFlgProcess(StatusDefinition.REQUEST);
+            fixQXtract.setDtmRequest(SchedulerUtil.getTime());
+            fixQXtract.setParam1(param1);
+            FixEmailAccessDao fixEmailAccessDao = new FixEmailAccessDao(session);
+            fixQXtract.setParam3(fixEmailAccessDao.getSpv(context.get(MapKey.grpId).toString()));
+            FixInboxDao fixInboxDao = new FixInboxDao(session);
+            if (!context.get(MapKey.itemIdLink).toString().equals("")) {
+                fixQXtract.setParam2(fixInboxDao.get(context.get(MapKey.itemIdLink).toString()).getSender());
+            }
+            if (context.get(MapKey.spvAuth).toString().equals("N")) {
+                fixQXtract.setParam2(context.get(MapKey.param2).toString());
+            }
+            fixQXtract.setParam4(PropertyPersister.emailDone);
+            fixQXtract.setParam5(out2FileName);
+            fixQXtract.setParam6(BatchID);
+            getLogger().info("ULCWORKER Register FixQXtract Done");
+            return true;
+        } else if (status.equals(StatusDefinition.REJECTED)) {
+            getLogger().info("ULCWORKER Register FixQXtract");
+            ulcTmpSrcDao.runRejectUlc(BatchID);
+            fixQXtract = new FixQXtract();
+            fixQXtract.setIdScheduler(idScheduler);
+            fixQXtract.setFlgProcess(StatusDefinition.REQUEST);
+            fixQXtract.setDtmRequest(SchedulerUtil.getTime());
+            fixQXtract.setParam1(param1);
+            FixInboxDao fixInboxDao = new FixInboxDao(session);
+            if (!context.get(MapKey.itemIdLink).toString().equals("")) {
+                fixQXtract.setParam2(fixInboxDao.get(context.get(MapKey.itemIdLink).toString()).getSender());
+            }
+            fixQXtract.setParam4(PropertyPersister.emailRejected);
+            fixQXtract.setParam5("");
+            getLogger().info("ULCWORKER Register FixQXtract");
+            return true;
+            
+        } else {
+            return false;
+        }
+    }
+    
+    private void readExcel(String param5, String configFile, UlcTmpSrc ulcTmpSrc, UlcTmpSrcDao ulcTmpSrcDao) throws FileNotFoundException, IOException, InvalidFormatException, OpenXML4JException, SAXException {
+        loadConfig(configFile);
+        if (FilenameUtils.getExtension(param5).equalsIgnoreCase("xls")) {
+            readXLS(param5, ulcTmpSrc, ulcTmpSrcDao);
+        } else if (FilenameUtils.getExtension(param5).equalsIgnoreCase("xlsx")) {
+            readXLSX(param5, ulcTmpSrc, ulcTmpSrcDao);
+        }
+    }
+    
+    private void readXLS(String param5, UlcTmpSrc ulcTmpSrc, UlcTmpSrcDao ulcTmpSrcDao) throws FileNotFoundException, IOException {
+        NPOIFSFileSystem file = new NPOIFSFileSystem(new File(param5));
+        //BufferedInputStream file = new BufferedInputStream(new FileInputStream(new File(param5)));
+        try {
+            HSSFWorkbook workbook = new HSSFWorkbook(file.getRoot(), true);
+            HSSFSheet sheet = workbook.getSheetAt(sheetData - 1);
+            
+            if (rowCnt == 0) {
+                rowCnt = sheet.getPhysicalNumberOfRows() + rowDataStartOn - headerRow;
+            }
+            for (int i = rowDataStartOn - headerRow; i < rowCnt - headerRow; i++) {
+                Row row = sheet.getRow(i);
+                if (columnCnt == 0) {
+                    columnCnt = row.getPhysicalNumberOfCells() + cellDataStartOn - rowNumCell;
+                }
+                int j = cellDataStartOn - rowNumCell;
+                ulcTmpSrc = new UlcTmpSrc();
+                ulcTmpSrc.setCodAcctNo(getStringCellVal(row.getCell(j)));
+                ulcTmpSrc.setCodFieldTag(getStringCellVal(row.getCell(j + 1)));
+                ulcTmpSrc.setCodTask(getStringCellVal(row.getCell(j + 2)));
+                ulcTmpSrc.setFieldValue(getStringCellVal(row.getCell(j + 3)));
+                ulcTmpSrc.setCmd(getStringCellVal(row.getCell(j + 4)));
+                ulcTmpSrc.setBatch(context.get(MapKey.batchNo).toString());
+                ulcTmpSrcDao.insert(ulcTmpSrc);
+            }
+        } finally {
+            file.close();
+        }
+    }
+    
+    private void readXLSX(String param5, UlcTmpSrc ulcTmpSrc, UlcTmpSrcDao ulcTmpSrcDao) throws FileNotFoundException, IOException, InvalidFormatException, OpenXML4JException, SAXException {
+
+        //OPCPackage pkg = OPCPackage.open(new File(param5));
+        
+        try {
+            //XSSFReader r = new XSSFReader(pkg);
+            //InputStream sheet2 = r.getSheet("rId1");
+            XSSFWorkbook workbook = new XSSFWorkbook(param5);
+            //SXSSFWorkbook workbook = new SXSSFWorkbook(wb, 100);
+            //XSSFSheet sheet = (XSSFSheet) workbook.getSheetAt(sheetData - 1);
+            XSSFSheet sheet = workbook.getSheetAt(sheetData - 1);
+            
+            if (rowCnt == 0) {
+                rowCnt = sheet.getPhysicalNumberOfRows() + rowDataStartOn - headerRow;
+            }
+            for (int i = rowDataStartOn - headerRow; i < rowCnt - headerRow; i++) {
+                Row row = sheet.getRow(i);
+                if (columnCnt == 0) {
+                    columnCnt = row.getPhysicalNumberOfCells() + cellDataStartOn - rowNumCell;
+                }
+                int j = cellDataStartOn - rowNumCell;
+                ulcTmpSrc = new UlcTmpSrc();
+                ulcTmpSrc.setCodAcctNo(getStringCellVal(row.getCell(j)));
+                ulcTmpSrc.setCodFieldTag(getStringCellVal(row.getCell(j + 1)));
+                ulcTmpSrc.setCodTask(getStringCellVal(row.getCell(j + 2)));
+                ulcTmpSrc.setFieldValue(getStringCellVal(row.getCell(j + 3)));
+                ulcTmpSrc.setCmd(getStringCellVal(row.getCell(j + 4)));
+                ulcTmpSrc.setBatch(context.get(MapKey.batchNo).toString());
+                ulcTmpSrcDao.insert(ulcTmpSrc);
+            }
+        } catch (Exception e) {
+            getLogger().error("Read XLS Error : " + e.getMessage());
+        } finally {
+            //file.close();
+            //pkg.close();
+        }
+    }
+    
+    private void loadConfig(String confFile) throws FileNotFoundException, IOException {
+        
+        Properties properties = new Properties();
+        InputStream in = UlcWorker2.class.getClassLoader().getResourceAsStream(confFile);
+        //InputStream in = new FileInputStream(new File(configFile));
+        properties.load(in);
+        headerRow = Integer.parseInt(properties.getProperty("row_header_position"));
+        rowNumCell = Integer.parseInt(properties.getProperty("row_num_cell"));
+        rowDataStartOn = Integer.parseInt(properties.getProperty("row_data_start_on"));
+        cellDataStartOn = Integer.parseInt(properties.getProperty("cell_data_start_on"));
+        columnCnt = Integer.parseInt(properties.getProperty("column_count"));
+        rowCnt = Integer.parseInt(properties.getProperty("row_count"));
+        sheetData = Integer.parseInt(properties.getProperty("sheet_data"));
+        in.close();
+    }
+    
+    private String getStringCellVal(Cell cell) {
+        String ret = null;
+        if (cell == null) {
+            ret = "";
+        } else if (cell.getCellType() == 0) {
+            ret = String.valueOf((long) cell.getNumericCellValue());
+        } else if (cell.getCellType() == 1) {
+            ret = cell.getStringCellValue();
+        }
+        return ret.trim();
+    }
+    private int headerRow;
+    private int rowNumCell;
+    private int rowDataStartOn;
+    private int columnCnt;
+    private int rowCnt;
+    private int cellDataStartOn;
+    private int sheetData;
+}

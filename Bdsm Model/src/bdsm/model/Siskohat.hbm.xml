@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<!-- Model -->
+	<class name="bdsm.model.SkhtBranchRegionMapping" table="SKHT_BRANCH_REGION_MAPPING" lazy="false">
+		<id name="branchCode" column="BRANCH_CODE" type="integer" />
+		
+		<property name="branchName"    column="BRANCH_NAME"     type="string" />
+		<property name="branchAddress" column="BRANCH_ADDRESS"  type="string" />
+		<property name="coreProvCode"  column="CORE_PROV_CODE"  type="integer" />
+		<property name="coreProvName"  column="CORE_PROV_NAME"  type="string" />
+		<property name="coreCityCode"  column="CORE_CITY_CODE"  type="integer" />
+		<property name="coreCityName"  column="CORE_CITY_NAME"  type="string" />
+		<property name="skhtProvCode"  column="SKHT_PROV_CODE"  type="integer" />
+		<property name="skhtProvName"  column="SKHT_PROV_NAME"  type="string" />
+		<property name="skhtCityCode"  column="SKHT_CITY_CODE"  type="integer" />
+		<property name="skhtCityName"  column="SKHT_CITY_NAME"  type="string" />
+		<property name="idCreatedBy"   column="ID_CREATED_BY"   type="string" />
+		<property name="dtmCreated"    column="DTM_CREATED_BY"  type="timestamp" />
+		<property name="idCreatedSpv"  column="ID_CREATED_SPV"  type="string" />
+		<property name="dtmCreatedSpv" column="DTM_CREATED_SPV" type="timestamp" />
+		<property name="idUpdatedBy"   column="ID_UPDATED_BY"   type="string" />
+		<property name="dtmUpdated"    column="DTM_UPDATED_BY"  type="timestamp" />
+		<property name="idUpdatedSpv"  column="ID_UPDATED_SPV"  type="string" />
+		<property name="dtmUpdatedSpv" column="DTM_UPDATED_SPV" type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.SkhtCoreMapping" table="SKHT_CORE_MAPPING" lazy="false">
+		<composite-id access="property">
+			<key-property name="moduleName" column="MODULE_NAME" type="string" />
+			<key-property name="coreValue"  column="CORE_VALUE"  type="string" />
+			<key-property name="skhtValue"  column="SKHT_VALUE"  type="string" />
+		</composite-id>
+		
+		<property name="idCreatedBy"   column="ID_CREATED_BY"   type="string" />
+		<property name="dtmCreated"    column="DTM_CREATED_BY"  type="timestamp" />
+		<property name="idCreatedSpv"  column="ID_CREATED_SPV"  type="string" />
+		<property name="dtmCreatedSpv" column="DTM_CREATED_SPV" type="timestamp" />
+		<property name="idUpdatedBy"   column="ID_UPDATED_BY"   type="string" />
+		<property name="dtmUpdated"    column="DTM_UPDATED_BY"  type="timestamp" />
+		<property name="idUpdatedSpv"  column="ID_UPDATED_SPV"  type="string" />
+		<property name="dtmUpdatedSpv" column="DTM_UPDATED_SPV" type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.SkhtDepositReq" table="SKHT_DEPOSIT_REQ" lazy="false" polymorphism="explicit">
+		<id name="refNo" column="REF_NO" type="string" />
+		
+		<property name="hajiTypeDB"       column="HAJI_TYPE"       type="character" access="property" />
+		<property name="trxDate"          column="TRX_DATE"        type="date" />
+		<property name="jamaahName"       column="JAMAAH_NAME"     type="string" />
+		<property name="NIK"              column="NIK"             type="string" />
+		<property name="birthPlace"       column="BIRTH_PLACE"     type="string" />
+		<property name="birthDate"        column="BIRTH_DATE"      type="date" />
+		<property name="address"          column="ADDRESS"         type="string" />
+		<property name="postalCode"       column="POSTAL_CODE"     type="integer" />
+		<property name="villageName"      column="VILLAGE_NAME"    type="string" />
+		<property name="districtName"     column="DISTRICT_NAME"   type="string" />
+		<property name="cityName"         column="CITY_NAME"       type="string" />
+		<property name="genderDB"         column="GENDER"          type="character" access="property" />
+		<property name="acctNo"           column="ACCT_NO"         type="string" />
+		<property name="currencyCode"     column="CURRENCY_CODE"   type="integer" />
+		<property name="initialDeposit"   column="INITIAL_DEPOSIT" type="big_decimal" />
+		<property name="acctVA"           column="ACCT_VA"         type="string" />
+		<property name="bpsBranchCode"    column="BPS_BRANCH_CODE" type="integer" />
+		<property name="provinceCode"     column="PROVINCE_CODE"   type="integer" />
+		<property name="cityCode"         column="CITY_CODE"       type="integer" />
+		<property name="occupationCodeDB" column="OCCUPATION_CODE" type="character" access="property" />
+		<property name="educationCode"    column="EDUCATION_CODE"  type="integer" />
+		<property name="maritalStatusDB"  column="MARITAL_STATUS"  type="character" access="property" />
+		<property name="fatherName"       column="FATHER_NAME"     type="string" />
+		<property name="cifNumber"        column="CIF_NUMBER"      type="integer" />
+		<property name="idCreatedBy"      column="ID_CREATED_BY"   type="string" />
+		<property name="dtmCreated"       column="DTM_CREATED_BY"  type="timestamp" />
+		<property name="idCreatedSpv"     column="ID_CREATED_SPV"  type="string" />
+		<property name="dtmCreatedSpv"    column="DTM_CREATED_SPV" type="timestamp" />
+		<property name="idUpdatedBy"      column="ID_UPDATED_BY"   type="string" />
+		<property name="dtmUpdated"       column="DTM_UPDATED_BY"  type="timestamp" />
+		<property name="idUpdatedSpv"     column="ID_UPDATED_SPV"  type="string" />
+		<property name="dtmUpdatedSpv"    column="DTM_UPDATED_SPV" type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.SkhtDepositResp" table="SKHT_DEPOSIT_RESP" lazy="false" polymorphism="explicit">
+		<id name="refNo" column="REF_NO" type="string" />
+		
+		<property name="hajiTypeDB"       column="HAJI_TYPE"       type="character" access="property" />
+		<property name="jamaahName"       column="JAMAAH_NAME"     type="string" />
+		<property name="NIK"              column="NIK"             type="string" />
+		<property name="birthPlace"       column="BIRTH_PLACE"     type="string" />
+		<property name="birthDate"        column="BIRTH_DATE"      type="date" />
+		<property name="address"          column="ADDRESS"         type="string" />
+		<property name="postalCode"       column="POSTAL_CODE"     type="integer" />
+		<property name="villageName"      column="VILLAGE_NAME"    type="string" />
+		<property name="districtName"     column="DISTRICT_NAME"   type="string" />
+		<property name="cityName"         column="CITY_NAME"       type="string" />
+		<property name="genderDB"         column="GENDER"          type="character" access="property" />
+		<property name="acctNo"           column="ACCT_NO"         type="string" />
+		<property name="currencyCode"     column="CURRENCY_CODE"   type="integer" />
+		<property name="initialDeposit"   column="INITIAL_DEPOSIT" type="big_decimal" />
+		<property name="acctVA"           column="ACCT_VA"         type="string" />
+		<property name="bpsBranchCode"    column="BPS_BRANCH_CODE" type="integer" />
+		<property name="provinceCode"     column="PROVINCE_CODE"   type="integer" />
+		<property name="cityCode"         column="CITY_CODE"       type="integer" />
+		<property name="occupationCodeDB" column="OCCUPATION_CODE" type="character" access="property" />
+		<property name="educationCode"    column="EDUCATION_CODE"  type="integer" />
+		<property name="maritalStatusDB"  column="MARITAL_STATUS"  type="character" access="property" />
+		<property name="fatherName"       column="FATHER_NAME"     type="string" />
+		<property name="responseCode"     column="RESPONSE_CODE"   type="string" />
+		<property name="responseDesc"     column="RESPONSE_DESC"   type="string" />
+		<property name="validationNo"     column="VALIDATION_NO"   type="string" />
+		<property name="jamaahName2"      column="JAMAAH_NAME2"    type="string" />
+		<property name="NIK2"             column="NIK2"            type="string" />
+		<property name="address2"         column="ADDRESS2"        type="string" />
+		<property name="departureYear"    column="DEPARTURE_YEAR"  type="string" />
+		<property name="embarkasi"        column="EMBARKASI"       type="string" />
+		<property name="kloter"           column="KLOTER"          type="string" />
+		<property name="idCreatedBy"      column="ID_CREATED_BY"   type="string" />
+		<property name="dtmCreated"       column="DTM_CREATED_BY"  type="timestamp" />
+		<property name="idCreatedSpv"     column="ID_CREATED_SPV"  type="string" />
+		<property name="dtmCreatedSpv"    column="DTM_CREATED_SPV" type="timestamp" />
+		<property name="idUpdatedBy"      column="ID_UPDATED_BY"   type="string" />
+		<property name="dtmUpdated"       column="DTM_UPDATED_BY"  type="timestamp" />
+		<property name="idUpdatedSpv"     column="ID_UPDATED_SPV"  type="string" />
+		<property name="dtmUpdatedSpv"    column="DTM_UPDATED_SPV" type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.SkhtPrintReq" table="SKHT_PRINT_REQ" lazy="false">
+		<id name="refNo" column="REF_NO" type="string" />
+		
+		<property name="hajiTypeDB"    column="HAJI_TYPE"       type="character" access="property" />
+		<property name="validationNo"  column="VALIDATION_NO"   type="string" />
+		<property name="bpsBranchCode" column="BPS_BRANCH_CODE" type="integer" />
+		<property name="cifNumber"     column="CIF_NUMBER"      type="integer" />
+		<property name="acctNo"        column="ACCT_NO"         type="string" />
+		<property name="portionNo"     column="PORTION_NO"      type="integer" />
+		<property name="idCreatedBy"   column="ID_CREATED_BY"   type="string" />
+		<property name="dtmCreated"    column="DTM_CREATED_BY"  type="timestamp" />
+		<property name="idCreatedSpv"  column="ID_CREATED_SPV"  type="string" />
+		<property name="dtmCreatedSpv" column="DTM_CREATED_SPV" type="timestamp" />
+		<property name="idUpdatedBy"   column="ID_UPDATED_BY"   type="string" />
+		<property name="dtmUpdated"    column="DTM_UPDATED_BY"  type="timestamp" />
+		<property name="idUpdatedSpv"  column="ID_UPDATED_SPV"  type="string" />
+		<property name="dtmUpdatedSpv" column="DTM_UPDATED_SPV" type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.SkhtPrintDep" table="SKHT_PRINT_DEP" lazy="false">
+		<id name="refNo" column="REF_NO" type="string" />
+		
+		<property name="hajiTypeDB"      column="HAJI_TYPE"       type="character" access="property" />
+		<property name="trxDate"         column="TRX_DATE"        type="date" />
+		<property name="jamaahName"      column="JAMAAH_NAME"     type="string" />
+		<property name="NIK"             column="NIK"             type="string" />
+		<property name="birthPlace"      column="BIRTH_PLACE"     type="string" />
+		<property name="birthDate"       column="BIRTH_DATE"      type="date" />
+		<property name="address"         column="ADDRESS"         type="string" />
+		<property name="postalCode"      column="POSTAL_CODE"     type="integer" />
+		<property name="villageName"     column="VILLAGE_NAME"    type="string" />
+		<property name="districtName"    column="DISTRICT_NAME"   type="string" />
+		<property name="cityName"        column="CITY_NAME"       type="string" />
+		<property name="genderDB"        column="GENDER"          type="character" access="property" />
+		<property name="acctNo"          column="ACCT_NO"         type="string" />
+		<property name="currencyCode"    column="CURRENCY_CODE"   type="integer" />
+		<property name="initialDeposit"  column="INITIAL_DEPOSIT" type="big_decimal" />
+		<property name="acctVA"          column="ACCT_VA"         type="string" />
+		<property name="bpsBranchCode"   column="BPS_BRANCH_CODE" type="integer" />
+		<property name="provinceCode"    column="PROVINCE_CODE"   type="integer" />
+		<property name="cityCode"        column="CITY_CODE"       type="integer" />
+		<property name="education"       column="EDUCATION"       type="string" />
+		<property name="maritalStatusDB" column="MARITAL_STATUS"  type="character" access="property" />
+		<property name="fatherName"      column="FATHER_NAME"     type="string" />
+		<property name="responseCode"    column="RESPONSE_CODE"   type="string" />
+		<property name="responseDesc"    column="RESPONSE_DESC"  type="string" />
+		<property name="validationNo"    column="VALIDATION_NO"   type="string" />
+		<property name="provinceName"    column="PROVINCE_NAME"   type="string" />
+		<property name="occupation"      column="OCCUPATION"      type="string" />
+		<property name="ageInYear"       column="AGE_IN_YEAR"     type="integer" />
+		<property name="ageInMonth"      column="AGE_IN_MONTH"    type="integer" />
+		<property name="bankName"        column="BANK_NAME"       type="string" />
+		<property name="branchName"      column="BRANCH_NAME"     type="string" />
+		<property name="branchAddress"   column="BRANCH_ADDRESS"  type="string" />
+		<property name="idCreatedBy"     column="ID_CREATED_BY"   type="string" />
+		<property name="dtmCreated"      column="DTM_CREATED_BY"  type="timestamp" />
+		<property name="idCreatedSpv"    column="ID_CREATED_SPV"  type="string" />
+		<property name="dtmCreatedSpv"   column="DTM_CREATED_SPV" type="timestamp" />
+		<property name="idUpdatedBy"     column="ID_UPDATED_BY"   type="string" />
+		<property name="dtmUpdated"      column="DTM_UPDATED_BY"  type="timestamp" />
+		<property name="idUpdatedSpv"    column="ID_UPDATED_SPV"  type="string" />
+		<property name="dtmUpdatedSpv"   column="DTM_UPDATED_SPV" type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.SkhtPaidOffInqReq" table="SKHT_PAIDOFF_INQ_REQ" lazy="false" polymorphism="explicit">
+		<id name="refNo" column="REF_NO" type="string" />
+		
+		<property name="trxDate"       column="TRX_DATE"        type="date" />
+		<property name="acctNo"        column="ACCT_NO"         type="string" />
+		<property name="bpsBranchCode" column="BPS_BRANCH_CODE" type="integer" />
+		<property name="cifNumber"     column="CIF_NUMBER"      type="integer" />
+		<property name="portionNo"     column="PORTION_NO"      type="long" />
+		<property name="idCreatedBy"   column="ID_CREATED_BY"   type="string" />
+		<property name="dtmCreated"    column="DTM_CREATED_BY"  type="timestamp" />
+		<property name="idCreatedSpv"  column="ID_CREATED_SPV"  type="string" />
+		<property name="dtmCreatedSpv" column="DTM_CREATED_SPV" type="timestamp" />
+		<property name="idUpdatedBy"   column="ID_UPDATED_BY"   type="string" />
+		<property name="dtmUpdated"    column="DTM_UPDATED_BY"  type="timestamp" />
+		<property name="idUpdatedSpv"  column="ID_UPDATED_SPV"  type="string" />
+		<property name="dtmUpdatedSpv" column="DTM_UPDATED_SPV" type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.SkhtPaidOffInqResp" table="SKHT_PAIDOFF_INQ_RESP" lazy="false" polymorphism="explicit">
+		<id name="refNo" column="REF_NO" type="string" />
+		
+		<property name="hajiTypeDB"    column="HAJI_TYPE"       type="character" access="property" />
+		<property name="jamaahName"    column="JAMAAH_NAME"     type="string" />
+		<property name="acctNo"        column="ACCT_NO"         type="string" />
+		<property name="currencyCode"  column="CURRENCY_CODE"   type="integer" />
+		<property name="bpsBranchCode" column="BPS_BRANCH_CODE" type="integer" />
+		<property name="responseCode"  column="RESPONSE_CODE"   type="string" />
+		<property name="responseDesc"  column="RESPONSE_DESC"   type="string" />
+		<property name="validationNo"  column="VALIDATION_NO"   type="string" />
+		<property name="embarkasi"     column="EMBARKASI"       type="string" />
+		<property name="kloter"        column="KLOTER"          type="string" />
+		<property name="portionNo"     column="PORTION_NO"      type="long" />
+		<property name="BPIHCost"      column="BPIH_COST"       type="big_decimal" />
+		<property name="USDExchange"   column="USD_EXCHANGE"    type="big_decimal" />
+		<property name="bpihInIDR"     column="BPIH_IN_IDR"     type="string" />
+		<property name="residualCost"  column="RESIDUAL_COST"   type="big_decimal" />
+		<property name="flgPaidOffDB"  column="FLG_PAIDOFF"     type="character" access="property"/>
+		<property name="delayYear"     column="DELAY_YEAR"      type="string" />
+		<property name="PIHKCode"      column="PIHK_CODE"       type="integer" />
+		<property name="PIHKName"      column="PIHK_NAME"       type="string" />
+		<property name="idCreatedBy"   column="ID_CREATED_BY"   type="string" />
+		<property name="dtmCreated"    column="DTM_CREATED_BY"  type="timestamp" />
+		<property name="idCreatedSpv"  column="ID_CREATED_SPV"  type="string" />
+		<property name="dtmCreatedSpv" column="DTM_CREATED_SPV" type="timestamp" />
+		<property name="idUpdatedBy"   column="ID_UPDATED_BY"   type="string" />
+		<property name="dtmUpdated"    column="DTM_UPDATED_BY"  type="timestamp" />
+		<property name="idUpdatedSpv"  column="ID_UPDATED_SPV"  type="string" />
+		<property name="dtmUpdatedSpv" column="DTM_UPDATED_SPV" type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.SkhtPaidOffReq" table="SKHT_PAIDOFF_REQ" lazy="false">
+		<id name="refNo" column="REF_NO" type="string" />
+		
+		<property name="hajiTypeDB"     column="HAJI_TYPE"       type="character" access="property" />
+		<property name="jamaahName"     column="JAMAAH_NAME"     type="string" />
+		<property name="acctNo"         column="ACCT_NO"         type="string" />
+		<property name="currencyCode"   column="CURRENCY_CODE"   type="integer" />
+		<property name="finalDeposit"   column="FINAL_DEPOSIT"   type="big_decimal" />
+		<property name="bpsBranchCode"  column="BPS_BRANCH_CODE" type="integer" />
+		<property name="validationNo"   column="VALIDATION_NO"   type="string" />
+		<property name="embarkasi"      column="EMBARKASI"       type="string" />
+		<property name="kloter"         column="KLOTER"          type="string" />
+		<property name="portionNo"      column="PORTION_NO"      type="long" />
+		<property name="BPIHCost"       column="BPIH_COST"       type="big_decimal" />
+		<property name="USDExchange"    column="USD_EXCHANGE"    type="big_decimal" />
+		<property name="BPIHInIDR"      column="BPIH_IN_IDR"     type="big_decimal" />
+		<property name="residualCost"   column="RESIDUAL_COST"   type="big_decimal" />
+		<property name="flgPaidOffDB"   column="FLG_PAIDOFF"     type="character" access="property" />
+		<property name="delayYear"      column="DELAY_YEAR"      type="string" />
+		<property name="PIHKCode"       column="PIHK_CODE"       type="integer" />
+		<property name="PIHKName"       column="PIHK_NAME"       type="string" />
+		<property name="trxDate"        column="TRX_DATE"        type="date" />
+		<property name="initialDeposit" column="INITIAL_DEPOSIT" type="big_decimal" />
+		<property name="idCreatedBy"    column="ID_CREATED_BY"   type="string" />
+		<property name="dtmCreated"     column="DTM_CREATED_BY"  type="timestamp" />
+		<property name="idCreatedSpv"   column="ID_CREATED_SPV"  type="string" />
+		<property name="dtmCreatedSpv"  column="DTM_CREATED_SPV" type="timestamp" />
+		<property name="idUpdatedBy"    column="ID_UPDATED_BY"   type="string" />
+		<property name="dtmUpdated"     column="DTM_UPDATED_BY"  type="timestamp" />
+		<property name="idUpdatedSpv"   column="ID_UPDATED_SPV"  type="string" />
+		<property name="dtmUpdatedSpv"  column="DTM_UPDATED_SPV" type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.SkhtPaidOffResp" table="SKHT_PAIDOFF_RESP" lazy="false">
+		<id name="refNo" column="REF_NO" type="string" />
+		
+		<property name="hajiTypeDB"        column="HAJI_TYPE"           type="character" access="property" />
+		<property name="jamaahName"        column="JAMAAH_NAME"         type="string" />
+		<property name="acctNo"            column="ACCT_NO"             type="string" />
+		<property name="currencyCode"      column="CURRENCY_CODE"       type="integer" />
+		<property name="finalDeposit"      column="FINAL_DEPOSIT"       type="big_decimal" />
+		<property name="bpsBranchCode"     column="BPS_BRANCH_CODE"     type="integer" />
+		<property name="responseCode"      column="RESPONSE_CODE"       type="string" />
+		<property name="responseDesc"      column="RESPONSE_DESC"       type="string" />
+		<property name="validationNo"      column="VALIDATION_NO"       type="string" />
+		<property name="embarkasi"         column="EMBARKASI"           type="string" />
+		<property name="kloter"            column="KLOTER"              type="string" />
+		<property name="portionNo"         column="PORTION_NO"          type="long" />
+		<property name="BPIHCost"          column="BPIH_COST"           type="big_decimal" />
+		<property name="USDExchange"       column="USD_EXCHANGE"        type="big_decimal" />
+		<property name="BPIHInIDR"         column="BPIH_IN_IDR"         type="big_decimal" />
+		<property name="residualCost"      column="RESIDUAL_COST"       type="big_decimal" />
+		<property name="flgPaidOffDB"      column="FLG_PAIDOFF"         type="character" access="property" />
+		<property name="delayYear"         column="DELAY_YEAR"          type="string" />
+		<property name="PIHKCode"          column="PIHK_CODE"           type="integer" />
+		<property name="PIHKName"          column="PIHK_NAME"           type="string" />
+		<property name="trxDate"           column="TRX_DATE"            type="date" />
+		<property name="initialDeposit"    column="INITIAL_DEPOSIT"     type="big_decimal" />
+		<property name="genderDB"          column="GENDER"              type="character" access="property" />
+		<property name="fatherName"        column="FATHER_NAME"         type="string" />
+		<property name="birthPlace"        column="BIRTH_PLACE"         type="string" />
+		<property name="birthDate"         column="BIRTH_DATE"          type="date" />
+		<property name="delayYearHIJ"      column="DELAY_YEAR_HIJ"      type="integer" />
+		<property name="address"           column="ADDRESS"             type="string" />
+		<property name="villageName"       column="VILLAGE_NAME"        type="string" />
+		<property name="districtName"      column="DISTRICT_NAME"       type="string" />
+		<property name="cityName"          column="CITY_NAME"           type="string" />
+		<property name="provinceName"      column="PROVINCE_NAME"       type="string" />
+		<property name="postalCode"        column="POSTAL_CODE"         type="integer" />
+		<property name="bankName"          column="BANK_NAME"           type="string" />
+		<property name="branchName"        column="BRANCH_NAME"         type="string" />
+		<property name="branchAddress"     column="BRANCH_ADDRESS"      type="string" />
+		<property name="ageInYear"         column="AGE_IN_YEAR"         type="integer" />
+		<property name="ageInMonth"        column="AGE_IN_MONTH"        type="integer" />
+		<property name="yearPaidOffMasehi" column="YEAR_PAIDOFF_MASEHI" type="integer" />
+		<property name="acctVA"            column="ACCT_VA"             type="string" />
+		<property name="idCreatedBy"       column="ID_CREATED_BY"       type="string" />
+		<property name="dtmCreated"        column="DTM_CREATED_BY"      type="timestamp" />
+		<property name="idCreatedSpv"      column="ID_CREATED_SPV"      type="string" />
+		<property name="dtmCreatedSpv"     column="DTM_CREATED_SPV"     type="timestamp" />
+		<property name="idUpdatedBy"       column="ID_UPDATED_BY"       type="string" />
+		<property name="dtmUpdated"        column="DTM_UPDATED_BY"      type="timestamp" />
+		<property name="idUpdatedSpv"      column="ID_UPDATED_SPV"      type="string" />
+		<property name="dtmUpdatedSpv"     column="DTM_UPDATED_SPV"     type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.SkhtPrintPaid" table="SKHT_PRINT_PAID" lazy="false">
+		<id name="refNo" column="REF_NO" type="string" />
+		
+		<property name="hajiTypeDB"        column="HAJI_TYPE"            type="character" access="property" />
+		<property name="trxDate"           column="TRX_DATE"             type="date" />
+		<property name="jamaahName"        column="JAMAAH_NAME"          type="string" />
+		<property name="BPIHCost"          column="BPIH_COST"            type="big_decimal" />
+		<property name="birthPlace"        column="BIRTH_PLACE"          type="string" />
+		<property name="birthDate"         column="BIRTH_DATE"           type="date" />
+		<property name="address"           column="ADDRESS"              type="string" />
+		<property name="postalCode"        column="POSTAL_CODE"          type="integer" />
+		<property name="villageName"       column="VILLAGE_NAME"         type="string" />
+		<property name="districtName"      column="DISTRICT_NAME"        type="string" />
+		<property name="cityName"          column="CITY_NAME"            type="string" />
+		<property name="genderDB"          column="GENDER"               type="character" access="property" />
+		<property name="acctNo"            column="ACCT_NO"              type="string" />
+		<property name="currencyCode"      column="CURRENCY_CODE"        type="integer" />
+		<property name="initialDeposit"    column="INITIAL_DEPOSIT"      type="big_decimal" />
+		<property name="acctVA"            column="ACCT_VA"              type="string" />
+		<property name="bpsBranchCode"     column="BPS_BRANCH_CODE"      type="integer" />
+		<property name="provinceCode"      column="PROVINCE_CODE"        type="integer" />
+		<property name="cityCode"          column="CITY_CODE"            type="integer" />
+		<property name="education"         column="EDUCATION"            type="string" />
+		<property name="maritalStatusDB"   column="MARITAL_STATUS"       type="character" access="property" />
+		<property name="validationNo"      column="VALIDATION_NO"        type="string" />
+		<property name="provinceName"      column="PROVINCE_NAME"        type="string" />
+		<property name="occupation"        column="OCCUPATION"           type="string" />
+		<property name="ageInYear"         column="AGE_IN_YEAR"          type="integer" />
+		<property name="ageInMonth"        column="AGE_IN_MONTH"         type="integer" />
+		<property name="bankName"          column="BANK_NAME"            type="string" />
+		<property name="branchName"        column="BRANCH_NAME"          type="string" />
+		<property name="branchAddress"     column="BRANCH_ADDRESS"       type="string" />
+		<property name="responseCode"      column="RESPONSE_CODE"        type="string" />
+		<property name="responseDesc"      column="RESPONSE_DESC"        type="string" />
+		<property name="portionNo"         column="PORTION_NO"           type="integer" />
+		<property name="fatherName"        column="FATHER_NAME"          type="string" />
+		<property name="embarkasi"         column="EMBARKASI"            type="string" />
+		<property name="BPIHInIDR"         column="BPIH_IN_IDR"          type="big_decimal" />
+		<property name="residualCost"      column="RESIDUAL_COST"        type="big_decimal" />
+		<property name="flgPaidOff"        column="FLG_PAIDOFF"          type="integer" />
+		<property name="delayYear"         column="DELAY_YEAR"           type="integer" />
+		<property name="paidOffHIJJYear"   column="PAID_OFF_HIJJ_YEAR"   type="integer" />
+		<property name="PIHKCode"          column="PIHK_CODE"            type="integer" />
+		<property name="PIHKName"          column="PIHK_NAME"            type="string" />
+		<property name="paidOffMasehiYear" column="PAID_OFF_MASEHI_YEAR" type="integer" />
+		<property name="checksum"          column="CHECKSUM"             type="string" />
+		<property name="paidOffYear"       column="PAID_OFF_YEAR"        type="integer" />
+		<property name="USDExchange"       column="USD_EXCHANGE_RATE"    type="big_decimal" />
+		<property name="idCreatedBy"       column="ID_CREATED_BY"        type="string" />
+		<property name="dtmCreated"        column="DTM_CREATED_BY"       type="timestamp" />
+		<property name="idCreatedSpv"      column="ID_CREATED_SPV"       type="string" />
+		<property name="dtmCreatedSpv"     column="DTM_CREATED_SPV"      type="timestamp" />
+		<property name="idUpdatedBy"       column="ID_UPDATED_BY"        type="string" />
+		<property name="dtmUpdated"        column="DTM_UPDATED_BY"       type="timestamp" />
+		<property name="idUpdatedSpv"      column="ID_UPDATED_SPV"       type="string" />
+		<property name="dtmUpdatedSpv"     column="DTM_UPDATED_SPV"      type="timestamp" />
+	</class>
+	
+	<class name="bdsm.model.SkhtWSAuditTrail" table="SKHT_WS_AUDIT_TRAIL" lazy="false">
+		<composite-id>
+			<key-property name="refNo"       column="REF_NO"       type="string" />
+			<key-property name="profileName" column="PROFILE_NAME" type="string" />
+			<key-property name="methodName"  column="METHOD_NAME"  type="string" />
+			<key-property name="typeReqDB"   column="TYPE_REQ"     type="character" access="property" />
+		</composite-id>
+		
+		<property name="content" type="text">
+			<column name="CONTENT" sql-type="CLOB" />
+		</property>
+		
+		<property name="dtmCreated" column="DTM_LOG" type="timestamp" />
+	</class>
+	
+	
+	
+	<!-- Query -->
+	<sql-query name="Siskohat#ViewDataScreen">
+		<query-param name="acctNo" type="string" />
+		<query-param name="cifNo" type="string" />
+		
+		<return-scalar column="namCustFull" type="string" />
+		<return-scalar column="codNatId" type="string" />
+		<return-scalar column="birthPlace" type="string" />
+		<return-scalar column="datBirthCust" type="string" />
+		<return-scalar column="codCustSex" type="string" />
+		<return-scalar column="txtCustSex" type="string" />
+		<return-scalar column="txtCustAdrAdd1" type="string" />
+		<return-scalar column="txtCustAdrZip" type="string" />
+		<return-scalar column="desaName" type="string" />
+		<return-scalar column="kecamatanName" type="string" />
+		<return-scalar column="namPermadrCity" type="string" />
+		<return-scalar column="codPermadrCity" type="string" />
+		<return-scalar column="namPermadrState" type="string" />
+		<return-scalar column="codPermadrState" type="string" />
+		<return-scalar column="setoranAwal" type="string"/>
+		<return-scalar column="terbilang" type="string"/>
+		<return-scalar column="currencyCode" type="string"/>
+		<return-scalar column="txtOccuptnCatCore" type="string" />
+		<return-scalar column="txtProfessCat" type="string" />
+		<return-scalar column="occupationdesc" type="string" />   
+		<return-scalar column="marstatdesc" type="string" /> 
+		<return-scalar column="codCustMarstat" type="string" />
+		<return-scalar column="txtCustEducn" type="string" /> 
+		<return-scalar column="codCustEducn" type="string" />
+		<return-scalar column="fatherName" type="string" />
+		
+		
+		<![CDATA[
+			WITH input_ AS (
+			   SELECT :cifNo AS cifNo, :cifNost AS cifNost, :acctNo AS acctNo FROM dual
+			)
+			SELECT   NVL(
+			            (
+			              SELECT TRIM(regexp_replace(f.prop_val3_new, '#+', ' '))
+			                FROM cs_propagate_log f
+			               WHERE f.cod_cust_id  = b.cifNo
+			                 AND f.dat_last_mnt = (SELECT g.dat_process FROM ba_bank_mast g)
+			                 AND f."TIMESTAMP"  = (
+			                   SELECT MAX("TIMESTAMP")
+			                     FROM cs_propagate_log f
+			                    WHERE f.cod_cust_id  = b.cifNo
+			                      AND f.dat_last_mnt = (SELECT g.dat_process FROM ba_bank_mast g)
+			                 )
+			             )
+			           , a.nam_cust_full
+			         ) AS namCustFull
+			       , NVL(
+			            (
+			              SELECT f.prop_val1_new
+			                FROM cs_propagate_log f
+			               WHERE f.cod_cust_id  = b.cifNo
+			                 AND f.dat_last_mnt = (SELECT g.dat_process FROM ba_bank_mast g)
+			                 AND f."TIMESTAMP"  = (
+			                   SELECT MAX("TIMESTAMP")
+			                     FROM cs_propagate_log f
+			                    WHERE f.cod_cust_id  = b.cifNo
+			                      AND f.dat_last_mnt = (SELECT g.dat_process FROM ba_bank_mast g)
+			                 )
+			             )
+			           , a.cod_cust_natl_id
+			         ) AS codNatId
+			       , (
+			           SELECT skht_value 
+			             FROM skht_core_mapping
+			            WHERE module_name = 'gender'
+			              AND core_value = a.txt_cust_sex
+			         ) AS codCustSex
+			       , (
+			           SELECT txt_lov_name
+			             FROM bdsm_lov_mast
+			            WHERE cod_field_tag = (SELECT cod_field_tag FROM bdsm_field_mast WHERE nam_field = 'Siskohat_Gender')
+			              AND txt_lov_value = (
+			                SELECT skht_value 
+			                  FROM skht_core_mapping
+			                 WHERE module_name = 'gender'
+			                   AND core_value = a.txt_cust_sex
+			              ) 
+			         ) AS txtCustSex
+			       , (
+			           SELECT b.field_value
+			             FROM udf_cust_log_details b
+			            WHERE b.cod_cust_id    = b.cifNost
+			              AND b.flg_mnt_status = 'A'
+			              AND b.cod_field_tag  = (
+			                    SELECT cod_field_tag
+			                      FROM udf_field_mast
+			                     WHERE nam_field = 'Tempat_Lahir/Akta_Diterbitkan'
+			                  )
+			         ) AS birthPlace
+			       , TO_CHAR(a.dat_birth_cust, 'DD-MM-YYYY') AS datBirthCust
+			       , CAST(TRIM(a.txt_permadr_add1) AS VARCHAR2(25)) AS txtCustAdrAdd1
+			       , CAST(TRIM(a.txt_permadr_zip) AS VARCHAR2(5)) AS txtCustAdrZip
+			       , NVL(
+			             SUBSTR(a.txt_permadr_add3, 1, INSTR(a.txt_permadr_add3, ',') - 1)
+			           , a.txt_permadr_add3
+			         ) AS desaName
+			       , NVL(
+			             TRIM(SUBSTR(a.txt_permadr_add3, INSTR(a.txt_permadr_add3, ',') + 1))
+			           , a.txt_permadr_add3
+			         ) AS kecamatanName
+			       , NVL(
+			           (SELECT SUBSTR(maps.skht_value, INSTR(maps.skht_value, '_') + 1)
+			              FROM skht_core_mapping maps
+			             WHERE maps.module_name = 'city'
+			               AND maps.core_value  = (
+			                 SELECT cit.city_code
+			                   FROM ba_city_master cit
+			                  WHERE cit.city_name      = a.nam_permadr_city
+			                    AND cit.flg_mnt_status = 'A'
+			               )
+			            )
+			          , ' ') AS codPermadrCity
+			       , NVL(
+			           (SELECT maps.skht_value
+			              FROM skht_core_mapping maps
+			             WHERE maps.module_name = 'cityDesc'
+			               AND maps.core_value  = a.nam_permadr_city)
+			           , ' '
+			         ) AS namPermadrCity
+			       , NVL(
+			           (SELECT maps.skht_value
+			              FROM skht_core_mapping maps
+			             WHERE maps.module_name = 'state' 
+			               AND maps.core_value  = (
+			                 SELECT TRIM(cod_state)
+			                   FROM ba_state_codes
+			                  WHERE nam_state      = a.nam_permadr_state
+			                    AND flg_mnt_status = 'A'
+			               )
+			           )
+			           , ' ') AS codPermadrState
+			       , NVL(
+			           (SELECT maps.skht_value
+			              FROM skht_core_mapping maps
+			             WHERE maps.module_name = 'stateDesc'
+			               AND maps.core_value  = a.nam_permadr_state)
+			           , ' '
+			         ) AS namPermadrState
+			       , CAST(c.cod_ccy AS VARCHAR2(10)) AS currencyCode
+			       , (SELECT "VALUE" FROM "PARAMETER" WHERE cdparam = 'SISKOHAT.Haji.Regular') AS setoranAwal
+			       , (SELECT strval FROM "PARAMETER" WHERE cdparam = 'SISKOHAT.Haji.Regular') AS terbilang
+			       , d.txt_occuptn_cat AS txtOccuptnCatCore
+			       , (
+			           SELECT skht_value
+			             FROM skht_core_mapping
+			            WHERE module_name = 'occupation'
+			              AND core_value  = CAST(d.txt_occuptn_cat AS VARCHAR2(105))
+			         ) AS txtProfessCat
+			       , (
+			           SELECT skht_value
+			             FROM skht_core_mapping
+			            WHERE module_name = 'occupationDesc'
+			              AND core_value  =
+			                NVL(  (SELECT txt_profession
+			                         FROM ci_prof_codes prof
+			                        WHERE CAST(prof.txt_profess_cat AS VARCHAR2(120)) = d.txt_occuptn_cat
+			                          AND flg_mnt_status = 'A')
+			                     , '-')
+			         ) AS occupationdesc
+			       , (
+			           SELECT skht_value
+			             FROM skht_core_mapping
+			            WHERE module_name = 'marStat'
+			              AND core_value  = a.cod_cust_marstat || '-' || a.txt_cust_sex
+			         ) AS codCustMarstat
+			       , (
+			           SELECT skht_value
+			             FROM skht_core_mapping
+			            WHERE module_name = 'marStatDesc'
+			              AND core_value  = 
+			                NVL(   (SELECT display_text || '-' || a.txt_cust_sex
+			                          FROM mow_scrn_dropdown_mast
+			                         WHERE ctl_name   = 'cmbMartialStatus'
+			                           AND item_index = a.cod_cust_marstat)
+			                     , a.cod_cust_marstat)
+			         ) AS marstatdesc
+			       , (
+			           SELECT skht_value
+			             FROM skht_core_mapping
+			            WHERE module_name = 'lastEdu'
+			              AND core_value  = a.txt_cust_educn
+			         ) AS codCustEducn
+			       , (
+			           SELECT skht_value
+			             FROM skht_core_mapping
+			            WHERE module_name = 'lastEduDesc'
+			              AND core_value  = 
+			                NVL(   (SELECT display_text
+			                          FROM mow_scrn_dropdown_mast
+			                         WHERE ctl_name   = 'ctlEducation'
+			                           AND item_index = a.txt_cust_educn)
+			                     , a.txt_cust_educn)
+			         ) AS txtCustEducn
+			       , (
+			           SELECT b.field_value
+			             FROM udf_cust_log_details b
+			            WHERE b.cod_cust_id    = b.cifNost
+			              AND b.flg_mnt_status = 'A'
+			              AND b.cod_field_tag  = (
+			                SELECT masts.cod_field_tag
+			                  FROM udf_field_mast masts
+			                 WHERE masts.nam_field      = 'Nama_Ayah_Kandung.'
+			                   AND masts.flg_mnt_status = 'A'
+			              )
+			         ) AS fatherName
+			  FROM ci_custmast a CROSS JOIN input_ b
+			  JOIN ch_acct_mast c
+			    ON c.cod_cust           = a.cod_cust_id
+			       AND c.cod_acct_no    = CAST(b.acctNo AS CHAR(16))
+			       AND c.cod_cust       = b.cifNo
+			       AND a.flg_mnt_status = 'A'
+			       AND c.flg_mnt_status = 'A'
+			  LEFT JOIN ci_custdetl d
+			    ON d.cod_cust_id        = c.cod_cust
+			       AND d.flg_mnt_status = 'A'
+		]]>
+	</sql-query>
+</hibernate-mapping>

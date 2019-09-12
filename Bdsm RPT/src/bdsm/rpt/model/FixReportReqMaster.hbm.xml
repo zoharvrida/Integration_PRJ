@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.rpt.model.FixReportReqMaster" table="FIXREPORTREQMASTER">
+    <composite-id class="bdsm.rpt.model.FixReportReqMasterPK" name="compositeId">
+      <key-property column="idBatch" name="idBatch" type="string"/>
+    </composite-id>
+    <property column="idReport" name="idReport" type="integer"/>
+    <property column="status" name="status" type="string"/>
+    <property column="idRequest" name="idRequest" type="string"/>
+    <property column="dtmRequest" name="dtmRequest" type="timestamp"/>
+    <property column="dtmFinish" name="dtmFinish" type="timestamp"/>
+    <property column="filePath" name="filePath" type="string"/>
+    <property column="qId" name="qid" type="integer"/>
+  </class>
+</hibernate-mapping>

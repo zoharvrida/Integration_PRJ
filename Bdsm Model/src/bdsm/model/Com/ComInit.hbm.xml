@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="bdsm.model.Com.ComVaultMast" table="COMVAULTMAST" lazy="false">
+        <id column="IDCD" name="txnId" type="string"/>
+		
+      <property column="IDBRANCH" name="idBranch" type="integer"/>
+      <property column="COD_CCY" name="codCcy" type="string"/>
+      <property column="IDVENDOR" name="idVendor" type="string"/>
+      <property column="AMOUNT" name="amount" type="big_decimal"/>
+      <property column="STATUS" name="status" type="string"/>
+		
+        <set name="details" cascade="save-update, delete-orphan" lazy="false">
+            <key column="IDCD" update="false" />
+            <one-to-many class="bdsm.model.Com.ComVaultDtls" />
+        </set>
+    </class>
+    
+    <class name="bdsm.model.Com.ComVaultDtls" table="COMVAULTDTLS" lazy="false">
+        <composite-id>
+            <key-property column="IDCD" name="txnId" type="string"/>
+            <key-property column="IDVAULTDET" name="txnDtlsId" type="string"/>
+        </composite-id>
+        <property column="IDDENOM" name="denomId" type="string"/>
+        <property column="PIECE" name="piece" type="integer"/>
+        <property column="AMOUNT" name="amount" type="big_decimal"/>
+  </class>
+  <class name="bdsm.model.Com.ComVaultDtlsHist" table="COMVAULTDTLS_HIST">
+    <composite-id class="bdsm.model.ComVaultMastHistPK" name="pk">
+      <key-property column="IDVAULT" name="txnId" type="string"/>
+      <key-property column="IDVAULTDET" name="txndtlId" type="string"/>
+      <key-property column="DTMLOG" name="dtmLog" type="timestamp"/>
+    </composite-id>
+        <property column="IDDENOM" name="denomId" type="string"/>
+    <property column="PIECE" name="piece" type="integer"/>
+    <property column="AMOUNT" name="amount" type="big_decimal"/>
+  </class>
+  <query name="ComVaultMast#getListMastByVendor">
+		
+			 FROM ComVaultMast
+			WHERE idVendor = COALESCE(:vendorID, idVendor)
+			  AND status   = :statusScreen
+			  AND idBranch = :branchId
+                          AND codCcy = :ccyCod
+		
+  </query>
+  <query name="ComVaultDtls#getListDtlByVendor">
+		
+			 FROM ComVaultDtls
+			WHERE ComVaultMast.txnId = ComVaultDtls.txnId
+		
+  </query>
+</hibernate-mapping>

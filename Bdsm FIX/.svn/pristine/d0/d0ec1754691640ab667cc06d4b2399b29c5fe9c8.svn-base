@@ -1,0 +1,112 @@
+annotation.processing.enabled=true
+annotation.processing.enabled.in.editor=false
+annotation.processing.processors.list=
+annotation.processing.run.all.processors=true
+annotation.processing.source.output=${build.generated.sources.dir}/ap-source-output
+application.title=Bdsm FIX
+application.vendor=bdsm
+build.classes.dir=${build.dir}/classes
+build.classes.excludes=**/*.java,**/*.form
+# This directory is removed when the project is cleaned:
+build.dir=build
+build.generated.dir=${build.dir}/generated
+build.generated.sources.dir=${build.dir}/generated-sources
+# Only compile against the classpath explicitly listed here:
+build.sysclasspath=ignore
+build.test.classes.dir=${build.dir}/test/classes
+build.test.results.dir=${build.dir}/test/results
+# Uncomment to specify the preferred debugger connection transport:
+#debug.transport=dt_socket
+debug.classpath=\
+    ${run.classpath}
+debug.test.classpath=\
+    ${run.test.classpath}
+# This directory is removed when the project is cleaned:
+dist.dir=dist
+dist.jar=${dist.dir}/Bdsm_FIX.jar
+dist.javadoc.dir=${dist.dir}/javadoc
+endorsed.classpath=
+excludes=
+file.reference.commons-beanutils-1.8.0.jar=D:\\BDSM\\build_prd\\lib_app\\commons-beanutils-1.8.0.jar
+file.reference.commons-chain-1.2.jar=D:\\BDSM\\build_prd\\lib_app\\commons-chain-1.2.jar
+file.reference.commons-collections-3.1.jar=D:\\BDSM\\build_prd\\lib_app\\commons-collections-3.1.jar
+file.reference.commons-digester-2.0.jar=D:\\BDSM\\build_prd\\lib_app\\commons-digester-2.0.jar
+file.reference.commons-fileupload-1.2.2.jar=D:\\BDSM\\build_prd\\lib_app\\commons-fileupload-1.2.2.jar
+file.reference.iText-2.1.7.js2.jar=../../../BDSM/lib/iText-2.1.7.js2.jar
+file.reference.jasperreports-5.1.2.jar=../../../BDSM/lib/jasperreports-5.1.2.jar
+file.reference.jasperreports-applet-5.1.2.jar=../../../BDSM/lib/jasperreports-applet-5.1.2.jar
+file.reference.jasperreports-fonts-5.1.2.jar=../../../BDSM/lib/jasperreports-fonts-5.1.2.jar
+file.reference.jasperreports-javaflow-5.1.2.jar=../../../BDSM/lib/jasperreports-javaflow-5.1.2.jar
+includes=**
+jar.compress=false
+javac.classpath=\
+    ${reference.Bdsm_Dao.jar}:\
+    ${reference.Bdsm_Model.jar}:\
+    ${reference.EWSJavaApi.jar}:\
+    ${reference.Bdsm_Util.jar}:\
+    ${libs.Mail.classpath}:\
+    ${libs.Log4J.classpath}:\
+    ${file.reference.iText-2.1.7.js2.jar}:\
+    ${file.reference.jasperreports-5.1.2.jar}:\
+    ${file.reference.jasperreports-applet-5.1.2.jar}:\
+    ${file.reference.jasperreports-fonts-5.1.2.jar}:\
+    ${file.reference.jasperreports-javaflow-5.1.2.jar}:\
+    ${libs.Oracle.classpath}:\
+    ${libs.POI.classpath}:\
+    ${libs.FIX.classpath}:\
+    ${libs.Hibernate 2.5.classpath}:\
+    ${libs.Java_mail.classpath}:\
+    ${file.reference.commons-beanutils-1.8.0.jar}:\
+    ${file.reference.commons-chain-1.2.jar}:\
+    ${file.reference.commons-collections-3.1.jar}:\
+    ${file.reference.commons-digester-2.0.jar}:\
+    ${file.reference.commons-fileupload-1.2.2.jar}
+# Space-separated list of extra javac options
+javac.compilerargs=
+javac.deprecation=false
+javac.processorpath=\
+    ${javac.classpath}
+javac.source=1.5
+javac.target=1.5
+javac.test.classpath=\
+    ${javac.classpath}:\
+    ${build.classes.dir}
+javac.test.processorpath=\
+    ${javac.test.classpath}
+javadoc.additionalparam=
+javadoc.author=false
+javadoc.encoding=${source.encoding}
+javadoc.noindex=false
+javadoc.nonavbar=false
+javadoc.notree=false
+javadoc.private=false
+javadoc.splitindex=true
+javadoc.use=true
+javadoc.version=false
+javadoc.windowtitle=
+main.class=
+manifest.file=manifest.mf
+meta.inf.dir=${src.dir}/META-INF
+mkdist.disabled=false
+platform.active=default_platform
+project.Bdsm_Dao=../../_Integration/BDSM DAO
+project.Bdsm_Model=../../Bdsm Model
+project.Bdsm_Util=../Bdsm Util
+project.EWSJavaApi=../../EWSJavaApi
+reference.Bdsm_Dao.jar=${project.Bdsm_Dao}/dist/Bdsm_Dao.jar
+reference.Bdsm_Model.jar=${project.Bdsm_Model}/dist/Bdsm_Model.jar
+reference.Bdsm_Util.jar=${project.Bdsm_Util}/dist/Bdsm_Util.jar
+reference.EWSJavaApi.jar=${project.EWSJavaApi}/dist/EWSJavaApi.jar
+run.classpath=\
+    ${javac.classpath}:\
+    ${build.classes.dir}
+# Space-separated list of JVM arguments used when running the project
+# (you may also define separate properties like run-sys-prop.name=value instead of -Dname=value
+# or test-sys-prop.name=value to set system properties for unit tests):
+run.jvmargs=
+run.test.classpath=\
+    ${javac.test.classpath}:\
+    ${build.test.classes.dir}
+source.encoding=UTF-8
+src.dir=src
+test.src.dir=test

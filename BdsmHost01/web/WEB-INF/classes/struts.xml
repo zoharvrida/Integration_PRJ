@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"classpath://struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.multipart.maxSize" value="1099511627776" />
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<constant name="struts.devMode" value="false" />
+	<constant name="struts.custom.i18n.resources" value="ApplicationResources" />
+
+	<package name="bdsmhost" extends="json-default" namespace="/">
+		<action name="login" class="bdsmhost.web.LoginAction">
+			<result type="json"  />
+		</action>
+		<action name="user_*" method="{1}" class="bdsmhost.web.MasterUserAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<!-- begin of Module Parameter -->
+		<action name="procTimePutLog_*" method="{1}" class="bdsmhost.web.ProcTimerPutLogAction">
+			<result type="json" />
+		</action>
+		<action name="fixMasterReport_*" method="{1}" class="bdsmhost.web.FixMasterReportAction">
+			<result type="json" />
+		</action>
+		<action name="fixMasterTemplateDelete_*" method="{1}" class="bdsmhost.web.FixMasterTemplateDeleteAction">
+			<result type="json" />
+		</action>
+		<action name="fixMasterReportDelete_*" method="{1}" class="bdsmhost.web.FixMasterReportDeleteAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="xrefReportTemplate_*" method="{1}" class="bdsmhost.web.XrefReportTemplateAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<!-- end of Module Parameter -->
+		<!-- Begin of FixAccess Scheduler-->
+		<action name="fixSchedulerXtract_*" method="{1}" class="bdsmhost.web.FixSchedulerXtractAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="fixSchedulerXtractPassword_*" method="{1}" class="bdsmhost.web.FixSchedulerXtractPasswordAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="fixSchedulerImport_*" method="{1}" class="bdsmhost.web.FixSchedulerImportAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="fixSchedulerImportPassword_*" method="{1}" class="bdsmhost.web.FixSchedulerImportPasswordAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<!-- end of FixAccess Scheduler-->
+		<!-- begin FixAccessEmail -->
+		<action name="fixAccessEmail_*" method="{1}" class="bdsmhost.web.FixAccessEmailAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="fixAccessEmailReq_*" method="{1}" class="bdsmhost.web.FixAccessEmailReqAction">
+			<result type="json" />
+		</action>
+		<action name="fixAccessEmailSup_*" method="{1}" class="bdsmhost.web.FixAccessEmailSupAction">
+			<result type="json" />
+		</action>
+		<action name="fixAccessEmailMon_*" method="{1}" class="bdsmhost.web.FixAccessEmailMonAction">
+			<result type="json" />
+		</action>
+		<action name="fixSchedulerImportGroup_*" method="{1}" class="bdsmhost.web.FixSchedulerImportGroupAction">
+			<result type="json" />
+		</action>
+		<!-- end of FixAccessEmail -->
+		<!-- begin of Report Request -->
+		<action name="fixReportParam_*" method="{1}" class="bdsmhost.web.FixReportParamAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<!-- end of Report Request -->
+		<!-- begin of Report Download -->
+		<action name="fixReportDownload_*" method="{1}" class="bdsmhost.web.FixReportDownloadAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<!-- end of Report Download -->
+		<action name="adUser_*" method="{1}" class="bdsmhost.web.ADUserAction">
+			<result type="json"/>
+		</action>
+		<action name="userComp_*" method="{1}" class="bdsmhost.web.MasterUserCompAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="template_*" method="{1}" class="bdsmhost.web.MasterTemplateAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="date_*" method="{1}" class="bdsmhost.web.BusinessDateAction">
+			<result type="json" />
+		</action>
+		<action name="menuaccess_*" method="{1}" class="bdsmhost.web.MenuAccessAction">
+			<result type="json"  />
+		</action>
+		<action name="menu_*" method="{1}" class="bdsmhost.web.MasterMenuAction">
+			<result type="json" />
+		</action>
+		<action name="xrefTemplateMenu_*" method="{1}" class="bdsmhost.web.XrefTemplateMenuAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="ciCustmast_*" method="{1}" class="bdsmhost.web.FcrCiCustmastAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="ciCustMastHost_*" method="{1}" class="bdsmhost.web.fcr.CiCustMastAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="mfcSlMaster_*" method="{1}" class="bdsmhost.web.MfcSlMasterAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="mfcUdMaster_*" method="{1}" class="bdsmhost.web.MfcUdMasterAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="mfcUdMasterLLD_*" method="{1}" class="bdsmhost.web.MfcUdMasterLLDAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="baCcyCode_*" method="{1}" class="bdsmhost.web.BaCcyCodeAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="saveFcyTxnFlag" class="bdsmhost.web.SaveFcyTxnFlagAction" method="save">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="saveFcyTxnUnflag" class="bdsmhost.web.SaveFcyTxnUnflagAction" method="save">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="mfcNoBook_*" method="{1}" class="bdsmhost.web.MfcNoBookAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="fcyTxnFlagCIF_*" method="{1}" class="bdsmhost.web.FcyTxnFlagCIFAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="fcyTxnFlagUD_*" method="{1}" class="bdsmhost.web.FcyTxnFlagUDAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="mfcTxnMaster_*" method="{1}" class="bdsmhost.web.MfcTxnMasterAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="saveFcyTxnFlag_*" method="{1}" class="bdsmhost.web.SaveFcyTxnFlagAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="saveFcyTxnUnflag_*" method="{1}" class="bdsmhost.web.SaveFcyTxnUnflagAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="fcyTxnManInputList_*" method="{1}" class="bdsmhost.web.FcyTxnManInputListAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="mfcTxnDetails_*" method="{1}" class="bdsmhost.web.MfcTxnDetailsAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+	  <action name="FCRDataMasterHost_*" method="{1}" class="bdsmhost.web.fcr.DataMasterAction">
+			<result type="json" />
+		</action>
+		<!-- begin of FCR TAG type -->
+		<action name="fcrBaCcyRate_*" method="{1}" class="bdsmhost.web.FcrBaCcyRateAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="fcyTxnManInputCIF_*" method="{1}" class="bdsmhost.web.FcyTxnManInputCIFAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="fcyTxnManInputUD_*" method="{1}" class="bdsmhost.web.FcyTxnManInputUDAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="fcyTxnManInput_*" method="{1}" class="bdsmhost.web.FcyTxnManInputAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="fcyTxnSummLimMonthly_*" method="{1}" class="bdsmhost.web.FcyTxnSummLimMonthlyAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="fcyTxnSummLimUD_*" method="{1}" class="bdsmhost.web.FcyTxnSummLimUDAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="fcyTxnSummPendingTxn_*" method="{1}" class="bdsmhost.web.FcyTxnSummPendingTxnAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="fcrChAcctMast_*" method="{1}" class="bdsmhost.web.FcrChAcctMastAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="FCRChAcctMastHost_*" method="{1}" class="bdsmhost.web.fcr.ChAcctMastAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="fcrTdAcctMast_*" method="{1}" class="bdsmhost.web.FcrTdAcctMastAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="FCRCustomerCardHost_*" method="{1}" class="bdsmhost.web.FCRCustomerCardHostAction">
+			<result type="json" />
+		</action>
+		<action name="FCRCardInventory_*" method="{1}" class="bdsmhost.web.FCR_CMPreembossCardInventoryHostAction">
+			<result type="json" />
+		</action>
+		<action name="FCRDataMasterHost_*" method="{1}" class="bdsmhost.web.fcr.DataMasterAction">
+			<result type="json" />
+		</action>
+		<!-- end of FCR TAG type -->
+		
+		<action name="fileDownload_*" method="{1}" class="bdsmhost.web.FileDownloadAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="fileUpload_*" method="{1}" class="bdsmhost.web.FileUploadAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>		
+		<action name="TPINHost_*" method="{1}" class="bdsmhost.web.TPINHostAction">
+			<result type="json" />
+		</action>
+		<action name="SknNgFinInstRouting_*" method="{1}" class="bdsmhost.web.fcr.SknNgFinInstRoutingAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="SknNgGeneralFileUpload_*" method="{1}" class="bdsmhost.web.SknNgGeneralFileUploadAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="SknNgIncomingCredit_*" method="{1}" class="bdsmhost.web.SknNgIncomingCreditAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="SknNgInwardDebit_*" method="{1}" class="bdsmhost.web.SknNgInwardDebitAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="SknNgOutwardCredit_*" method="{1}" class="bdsmhost.web.SknNgOutwardCreditAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="SknNgOutwardDebit_*" method="{1}" class="bdsmhost.web.SknNgOutwardDebitAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="SknNgSMODebit_*" method="{1}" class="bdsmhost.web.SknNgOutwardSMODebitAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="SknNgReturInwardDebit_*" method="{1}" class="bdsmhost.web.SknNgReturInwardDebitAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="AmortOpenReg_*" method="{1}" class="bdsmhost.web.AmortizeAccountRegAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="AmortizeGiftProgramMaster_*" method="{1}" class="bdsmhost.web.AmortizeGiftProgramMasterAction">
+			<result type="json">
+				<param name="root">action</param>
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="AmortizeGiftProgramDetail_*" method="{1}" class="bdsmhost.web.AmortizeGiftProgramDetailAction">
+			<result type="json">
+				<param name="root">action</param>
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="WICHost_*" method="{1}" class="bdsmhost.web.WICAction">
+			<result type="json">
+				<param name="root">action</param>
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="ktp_*" method="{1}" class="bdsmhost.web.KtpAction">
+			<result type="json" />
+		</action>
+		<!--26001: CASA Opening  -->
+		<action name="CustomerSearchHost_*" method="{1}" class="bdsmhost.web.CustomerSearchHostAction">
+			<result type="json" />
+		</action>
+		<action name="Screen_*" method="{1}" class="bdsmhost.web.ScreenProcessingAction">
+			<result type="json" >
+				<param name="root">action</param>
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="MitraPasti_*" method="{1}" class="bdsmhost.web.MitraPastiAction">
+			<result type="json">
+				<param name="root">action</param>
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="kk_*" method="{1}" class="bdsmhost.web.KkAction">
+			<result type="json" />
+		</action>
+		<!--COM Start  -->
+		<action name="CashDelivery_*" method="{1}" class="bdsmhost.web.ComCashDeliveryAction">
+			<result type="json" />
+		</action>
+		<action name="DenomOps_*" method="{1}" class="bdsmhost.web.ComDenomOperationAction">
+			<result type="json" />
+		</action>
+		<!--COM End  -->
+		<action name="EKTPReader_*" method="{1}" class="bdsmhost.web.EKTPReaderAction">
+			<result type="json" />
+		</action>
+		<action name="valasMidRate_*" method="{1}" class="bdsmhost.web.ValasMidRateAction">
+			<result type="json" >
+				<param name="root">action</param>
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="BICloseRate_*" method="{1}" class="bdsmhost.web.fcr.BICloseRateAction">
+			<result type="json" />
+		</action>
+		<action name="screenMsg_*" method="{1}" class="bdsmhost.web.ScreenMessageAction">
+			<result type="json" >
+				<param name="root">action</param>
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="menuRed_*" method="{1}" class="bdsmhost.web.MenuRedirectionAction">
+			<result type="json" >
+				<param name="root">action</param>
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<action name="prodInq_*" method="{1}" class="bdsmhost.web.ChProdMastAction">
+			<result type="json" >
+				<param name="root">action</param>
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<!-- MCR -->
+		<action name="MCRRate_*" method="{1}" class="bdsmhost.web.MCRRateAction">
+			<result type="json" />
+		</action>
+		<action name="MCRCalcUSDequivalent_*" method="{1}" class="bdsmhost.web.MCRCalcAction">
+			<result type="json" /> 
+		</action>
+		<!--END MCR -->
+		<action name="FcyTxnSummLimForward_*" method="{1}" class="bdsmhost.web.FcyTxnSummLimForwardAction">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		
+		<action name="Biller_*" method="{1}" class="bdsmhost.web.BillerAction">
+			<result type="json">
+				<param name="root">action</param>
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		 <!--SISKOHAT-->
+		<action name="SKHT_*" method="{1}" class="bdsmhost.web.SKHTAction">
+			<result type="json">
+				<param name="root">action</param>
+				<param name="ignoreHierarchy">false</param>
+			</result>
+		</action>
+		<!--SISKOHAT-->
+	</package>
+
+</struts>

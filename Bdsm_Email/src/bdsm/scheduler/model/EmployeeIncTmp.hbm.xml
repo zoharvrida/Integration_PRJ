@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.scheduler.model.EmployeeIncTmp" table="TMP_EMP_INC">
+    <id column="id" name="id" type="int">
+      <generator class="increment"/>
+    </id>
+    <property column="COD_CUST_ID" name="codCustID" type="integer"/>
+    <property column="NEW_VALUE" name="newValue" type="string"/>
+    <property column="DAT_APPLIED" name="datApplied" type="date"/>
+    <property column="STATUS" name="status" type="string"/>
+    <property column="STATUSREASON" name="statusReason" type="string"/>
+    <property column="NOBATCH" name="noBatch" type="string"/>
+  </class>
+</hibernate-mapping>

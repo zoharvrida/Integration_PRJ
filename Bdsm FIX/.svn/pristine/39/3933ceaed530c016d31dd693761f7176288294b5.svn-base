@@ -1,0 +1,61 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bdsm.scheduler.processor;
+
+import bdsm.model.EodMast;
+import bdsm.model.EodProcMast;
+import bdsm.scheduler.IBdsmClass;
+import bdsm.scheduler.MapKey;
+import bdsm.tdr.dao.FixTdrDao;
+import bdsmhost.dao.EodMastDao;
+import bdsmhost.dao.EodProcMastDao;
+import bdsmhost.dao.FcrBaBankMastDao;
+import java.util.Map;
+
+/**
+ *
+ * @author USER
+ */
+public class TDRAmortization extends BaseProcessor implements IBdsmClass {
+
+    private boolean terminated;
+
+    public TDRAmortization(Map context) {
+        super(context);
+        terminated = false;
+    }
+
+    @Override
+    protected boolean doExecute() throws Exception {
+        //initialize required dao
+        EodProcMastDao eodDao = new EodProcMastDao(session);
+        EodMastDao eodMastDao = new EodMastDao(session);
+        FixTdrDao tdrDao = new FixTdrDao(session);
+        FcrBaBankMastDao bankMastDao = new FcrBaBankMastDao(session);
+        //intialize required model
+        EodProcMast eodProcMast = null;
+        EodMast eodMast = null;
+        try {
+            eodProcMast = eodDao.get(context.get(MapKey.param4).toString(), context.get(MapKey.param1).toString(), Integer.parseInt(context.get(MapKey.param2).toString()));
+            eodMast = eodMastDao.get(bankMastDao.get().getDatProcess(), eodProcMast.getType(), eodProcMast.getProcId(), eodProcMast.getModuleId());
+            //do fill into Gefu temp table
+            tdrDao.doFillAmort(context.get(MapKey.param6).toString(), context.get(MapKey.param1).toString(), context.get(MapKey.param4).toString(),Integer.parseInt(context.get(MapKey.param2).toString()));
+            // update status progress
+            eodMast.setProgress("D");
+            eodMast.setActivity("Done");
+            eodMast.setRemark("Process ID "+eodMast.getProcessId()+" Done");
+            eodMastDao.update(eodMast);               
+        } catch (Exception ex) {
+            //update status progress
+            getLogger().error(eodMast.getProcessId()+" Error");
+            getLogger().error(ex, ex);
+            eodMast.setProgress("A");
+            eodMast.setActivity("Aborted");
+            eodMast.setRemark(eodMast.getProcessId()+" Error");
+            eodMastDao.update(eodMast);
+        }
+        return true;
+    }
+}

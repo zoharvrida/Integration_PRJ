@@ -1,0 +1,15 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bdsm.scheduler;
+
+/**
+ *
+ * @author bdsm
+ */
+public class ScheduleDefinition {
+
+    public static final int emailOnly = 1;
+    public static final int sftpOnly = 2;
+}

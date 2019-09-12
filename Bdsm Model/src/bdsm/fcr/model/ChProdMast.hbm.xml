@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+	
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.fcr.model.ChProdMast" table="CH_PROD_MAST" lazy="false">
+		<composite-id name="compositeId" class="bdsm.fcr.model.ChProdMastPK">
+			<key-property name="codProd"       column="COD_PROD"        type="integer" />            
+			<key-property name="flgMntStatus"  column="FLG_MNT_STATUS"  type="string" />
+			<key-property name="codEntityVpd"  column="COD_ENTITY_VPD"  type="integer" />
+		</composite-id>
+		
+		<property name="codCcy"         column="COD_CCY"          type="integer" />
+		<property name="codTypProd"     column="COD_TYP_PROD"     type="string" />
+		<property name="codProdType"    column="COD_PROD_TYPE"    type="string" />
+		<property name="namProduct"     column="NAM_PRODUCT"      type="string" />
+		<property name="datProdExpiry"  column="DAT_PROD_EXPIRY"  type="date" />
+	</class>
+</hibernate-mapping>

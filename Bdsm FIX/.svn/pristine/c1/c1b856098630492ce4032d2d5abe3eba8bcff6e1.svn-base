@@ -1,0 +1,108 @@
+package bdsm.scheduler;
+
+import bdsm.model.Parameter;
+import bdsm.scheduler.util.EncryptionUtil;
+import bdsm.util.HibernateUtil;
+import bdsmhost.dao.ParameterDao;
+import java.util.List;
+import javax.crypto.Cipher;
+import org.apache.log4j.Logger;
+import org.hibernate.Session;
+
+public final class PropertyPersister {
+
+    public static String url;
+    public static String username;//FIX.mailAddr
+    public static int mailSleep;//FIX.mailSleep
+    public static int mailTimeout;	//FIX.mailTimeout
+    public static int fileSleep;//FIX.fileSleep
+    public static int fileTimeout;	//FIX.fileTimeout    
+    public static int fixInPeriod;	//FIX.fixInPeriod
+    public static int fixResPeriod;	//FIX.fixResPeriod
+    public static String password;//FIX.mailPwd
+    public static String dirFixIn;//FIX.dirIn
+    public static String dirResp;	//FIX.dirResp
+    public static String dirFixInProc;//FIX.dirInProc
+    public static String dirFixInOk;//FIX.dirInOk
+    public static String dirFixInErr;//FIX.dirInErr
+    public static String dirFixOut;//FIX.dirOut
+    public static String dirFixOutOk;//FIX.dirOutOk
+    public static String dirFixOutErr;//FIX.dirOutErr
+    public static String adminEmail;//FIX.adminemail
+    public static int maxProcess;//FIX.maxProcess
+    public static String reportDirTemp;
+    // Email Body
+    public static String emailApproval;
+    public static String emailDone;
+    public static String emailRejected;
+    private static Logger logger = Logger.getLogger(PropertyPersister.class);
+    static {
+        System.setProperty("javax.xml.parsers.SAXParserFactory", "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl");
+        Session session = HibernateUtil.getSession();
+        ParameterDao parameterDao = new ParameterDao(session);
+        List<Parameter> list = parameterDao.getList();
+        HibernateUtil.closeSession(session);
+
+        url = getValue("FIX.url", list).toString();
+        username = getValue("FIX.mailAddr", list).toString();
+        try {
+            password = EncryptionUtil.getAES(getValue("FIX.mailPwd", list).toString(), (getValue("FIX.mailAddr", list).toString() + "@@@@@@@@@@@@@@@@").substring(0, 16), Cipher.DECRYPT_MODE);
+        } catch (Exception ex) {
+            logger.error("Error Decrypt Email Password : " + ex,ex);
+        }
+        logger.debug("url : " + url);
+        logger.debug("username : " + username);
+        logger.debug("password : " + password);
+        adminEmail = getValue("FIX.adminemail", list).toString();
+        maxProcess = Integer.parseInt(getValue("FIX.maxProcess", list).toString());
+        mailSleep = Integer.parseInt(getValue("FIX.mailSleep", list).toString());
+        mailTimeout = Integer.parseInt(getValue("FIX.mailTimeout", list).toString());
+        fileSleep = Integer.parseInt(getValue("FIX.fileSleep", list).toString());
+        fileTimeout = Integer.parseInt(getValue("FIX.fileTimeout", list).toString());
+        dirResp = getValue("FIX.dirResp", list).toString();
+        dirFixIn = getValue("FIX.dirIn", list).toString();
+        dirFixInProc = getValue("FIX.dirInProc", list).toString();
+        dirFixInOk = getValue("FIX.dirInOk", list).toString();
+        dirFixInErr = getValue("FIX.dirInErr", list).toString();
+        dirFixOut = getValue("FIX.dirOut", list).toString();
+        dirFixOutErr = getValue("FIX.dirOutErr", list).toString();
+        dirFixOutOk = getValue("FIX.dirOutOk", list).toString();
+        reportDirTemp = getValue("FIX.reportDirTemp", list).toString();
+        emailApproval = "Dear Sir/Madam,<br/>"
+                + "<br/>"
+                + "Your approval is required for the attached file to be processed further. <br/>"
+                + "<br/>"
+                + "Please reply this email with:<br/>"
+                + "<b>Ok</b>, if you approve the file to be processed, or<br/>"
+                + "<b>Not ok</b>, if otherwise.<br/>"
+                + "<br/>"
+                + "Thanks & regards,<br/>"
+                + "- BDSM -";
+        emailDone = "Dear Sir/Madam,<br/>"
+                + "<br/>"
+                + "Process Upload LBU CODE Done. <br/>"
+                + "<br/>"
+                + "Thanks & regards,<br/>"
+                + "- BDSM -";
+        emailRejected = "Dear Sir/Madam,<br/>"
+                + "<br/>"
+                + "Your requested process to upload LBU CODE has been Rejected by Supervisor. <br/>"
+                + "<br/>"
+                + "Thanks & regards,<br/>"
+                + "- BDSM -";
+
+    }
+
+    private static Object getValue(String cdParam, List<Parameter> list) {
+        for (Parameter p : list) {
+            if (p.getCdParam().equals(cdParam)) {
+                if (p.getTypParam().equalsIgnoreCase("S")) {
+                    return p.getStrVal();
+                } else if (p.getTypParam().equalsIgnoreCase("N")) {
+                    return p.getValue();
+                }
+            }
+        }
+        return null;
+    }
+}

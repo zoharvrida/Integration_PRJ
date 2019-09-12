@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+   <class name="bdsm.model.EktpUser" table="MASTERUSER" lazy="false">
+      <id       name="idUser"        column="idUser"        type="string" >
+         <generator class="assigned"/>
+      </id>
+      <property name="idTemplate"    column="idTemplate"    type="string"/>
+      <property name="namUser"       column="namUser"       type="string"/>
+      <property name="cdBranch"      column="cdBranch"      type="int"   />
+      <property name="isAd"          column="isAd"          type="string"/>
+      <property name="ktpUser"       column="ktpUser"       type="string"/>
+      <property name="ktpPwd"        column="ktpPwd"        type="string"/>
+      <property name="nikUser"       column="nikUser"       type="string"/>
+      <property name="ipUser"        column="ipUser"        type="string"/>
+      <property name="ktpMaxQuery"   column="ktpMaxQuery"   type="int"   />
+   </class>
+    <sql-query name="ektp#getMinimumQuota">
+            <query-param name="pSystem" type="string"/>
+            <query-param name="pMenu" type="string"/>
+            <query-param name="pktpMax" type="integer"/>
+
+            <return-scalar column="ktpUser" type="string"/>
+            <return-scalar column="idUser" type="string"/>
+            <return-scalar column="maxQuery" type="integer"/>
+
+		<![CDATA[
+			select ktpuser as ktpUser,iduser as idUser,counter as maxQuery from (
+                            select a.ktpuser,a.iduser, counter, dtmReq from(
+                            select a.ktpuser,a.iduser, count(1) counter, Max(dtmrequest) dtmReq
+                            from ektp_log a
+                            where a.datlog=trunc(sysdate)
+                            and a.flgrespfromexternal='Y'
+                            and a.system_src=:pSystem
+                            and a.menu_src=:pMenu
+                            --and a.IDUSER = b.IDUSER
+                            and a.ktpuser in (
+                                select c.ktpuser from masteruser c)
+                            group by a.ktpuser,a.iduser) a, masteruser b
+                            where a.ktpuser = b.ktpuser
+                            and a.iduser = b.iduser
+                            and a.counter < :pktpMax - nvl(b.KTPMAXQUERY,0)
+                            union
+                            select ktpuser,iduser, 0, sysdate-1
+                            from MASTERUSER
+                            where ktpuser is not null
+                            and ktpuser not in (select a.ktpuser
+                            from ektp_log a, masteruser b
+                            where a.datlog=trunc(sysdate)
+                            and a.flgrespfromexternal='Y'
+                            and a.system_src=:pSystem
+                            and a.menu_src=:pMenu
+                            and a.IDUSER = b.IDUSER)
+                            order by 3, 4, 1
+                        ) where rownum <=1
+		]]>
+	</sql-query>
+</hibernate-mapping>

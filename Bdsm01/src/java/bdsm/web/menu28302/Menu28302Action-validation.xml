@@ -1,0 +1,104 @@
+<!DOCTYPE validators PUBLIC
+              "-//Apache Struts//XWork Validator 1.0.2//EN"
+              "http://struts.apache.org/dtds/xwork-validator-1.0.2.dtd">
+<validators>
+    <field name="noCif">
+        <field-validator type="required">
+            <message>CIF No must not be empty.</message>
+        </field-validator>
+        <field-validator type="int">
+            <param name="min">0</param>
+            <message>CIF No should not be negative</message>
+        </field-validator>
+        <field-validator type="regex">
+            <param name="regex"><![CDATA[^[0-9]*$]]></param>
+            <message>CIF No only accept numbers.</message>
+        </field-validator>
+    </field>
+    <field name="namCustFull">
+        <field-validator type="required">
+            <message>Please press &lt;TAB&gt; after keying CIF No.</message>
+        </field-validator>
+    </field>
+    <field name="noUd">
+        <field-validator type="requiredstring">
+            <message>UD No must not be empty.</message>
+        </field-validator>
+        <field-validator type="regex">
+            <param name="regex"><![CDATA[^[a-zA-Z0-9\.\-\/]*$]]></param>
+            <message>Should not type special character in UD No.</message>
+        </field-validator>
+    </field>
+    <field name="txtCatUD">
+        <field-validator type="required">
+            <message>UD Category must not be empty.</message>
+        </field-validator>
+    </field>
+    <field name="txtTypeUD">
+        <field-validator type="required">
+            <message>UD Type must not be empty.</message>
+        </field-validator>
+    </field>
+    <!--
+    <field name="payeeName">
+        <field-validator type="required">
+            <message>Seller/Payee Origin must not be empty.</message>
+        </field-validator>
+    </field>
+    <field name="payeeCountry">
+        <field-validator type="required">
+            <message>Seller/Payee Country must not be empty.</message>
+        </field-validator>
+    </field>
+    <field name="tradingProduct">
+        <field-validator type="required">
+            <message>Trading Product must not be empty.</message>
+        </field-validator>
+    </field>
+    -->
+    <field name="dtExpiry">
+        <field-validator type="regex">
+            <param name="regex"><![CDATA[\d{2}/\d{2}/\d{4}]]></param>
+            <message>Date Expiry must be correct date.</message>
+        </field-validator>
+    </field>
+    <field name="ccyUd">
+        <field-validator type="requiredstring" short-circuit="true">
+            <message>UD Currency must not be empty.</message>
+        </field-validator>
+    </field>
+    <field name="amtLimitScr">
+        <field-validator type="required">
+            <message>Amount Limit must not be empty.</message>
+        </field-validator>
+        <field-validator type="double">
+            <param name="minInclusive">1.00</param>
+            <message>Amount limit must be greater than 0</message>
+        </field-validator>
+        <field-validator type="regex">
+            <param name="regex"><![CDATA[^[.,0-9]*$]]></param>
+            <message>Amount Limit only accept numbers.</message>
+        </field-validator>
+    </field>
+    <field name="ratFcyIdrScr">
+        <field-validator type="required">
+            <message>FCY/IDR Rate must not be empty.</message>
+        </field-validator>
+        <field-validator type="double">
+            <param name="minInclusive">1.00</param>
+            <message>FCY/IDR Rate must be greater than 0</message>
+        </field-validator>
+        <field-validator type="regex">
+            <param name="regex"><![CDATA[^[.,0-9]*$]]></param>
+            <message>FCY/IDR Rate only accept numbers.</message>
+        </field-validator>
+    </field>  
+	<!--
+    <field name="remarks">
+        <field-validator type="regex">
+            <param name="regex"><![CDATA[^[a-zA-Z0-9\ _]*$]]></param>
+            <message>Should not type special character in Remarks.</message>
+        </field-validator>
+    </field>
+	-->
+</validators>

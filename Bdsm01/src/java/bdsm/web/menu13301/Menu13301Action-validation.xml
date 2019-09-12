@@ -1,0 +1,19 @@
+<!DOCTYPE validators PUBLIC
+              "-//Apache Struts//XWork Validator 1.0.2//EN"
+              "http://struts.apache.org/dtds/xwork-validator-1.0.2.dtd">
+<validators>
+   <field name="idschedProfile">
+        <field-validator type="requiredstring" short-circuit="true">
+            <message>Profile ID must not be empty.</message>
+        </field-validator>
+    </field>
+    <field name="namschedProfile">
+        <field-validator type="requiredstring" short-circuit="true">
+            <message>Profile Name must not be empty.</message>
+        </field-validator>
+        <field-validator type="regex">
+            <param name="regex"><![CDATA[^[a-zA-Z0-9\ _@.;-]*$]]></param>  
+            <message>Should not type special character in Request Email</message>
+        </field-validator>
+    </field>
+</validators>

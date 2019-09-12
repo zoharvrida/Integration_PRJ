@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.scheduler.model.TmpHrEmployeeFlag" table="TMP_HR_EMPLOYEE_FLAG">
+    <composite-id class="bdsm.scheduler.model.TmpHrEmployeeFlagPK" name="compositeId">
+      <key-property column="BATCH_NO" name="batchNo" type="string"/>
+      <key-property column="RECORD_ID" name="recordId" type="integer"/>
+      <key-property column="COD_ACCT_NO" name="codAcctNo" type="string"/>
+    </composite-id>
+    <property column="FLG_EMP_ACCT" name="flgEmpAcct" type="string"/>
+    <property column="COD_LAST_MNT_MAKERID" name="codLastMntMakerid" type="string"/>
+    <property column="COD_LAST_MNT_CHKRID" name="codLastMntChkrid" type="string"/>
+    <property column="DAT_LAST_MNT" name="datLastMnt" type="timestamp"/>
+    <property column="FLG_STATUS" name="flgStatus" type="string"/>
+    <property column="STATUS_REASON" name="statusReason" type="string"/>
+    
+     
+  </class>
+</hibernate-mapping>

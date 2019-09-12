@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class lazy="false" name="bdsm.model.HostSknngInOutCreditDetail" table="TMP_SKNNG_IN_OUT_CREDIT_DETAIL">
+    <composite-id class="bdsm.model.HostSknngInOutCreditPK" name="compositeId">
+      <key-property column="BATCH_NO" name="batchNo" type="string"/>
+      <key-property column="RECORD_ID" name="recordId" type="integer"/>
+      <key-property column="PARENT_RECORD_ID" name="parentRecordId" type="integer"/>
+    </composite-id>
+    <property column="TIPE_RECORD" name="tipeRecord" type="string"/>
+    <property column="KODE_DKE" name="kodeDKE" type="string"/>
+    <property column="IDENTITAS_PESERTA_PENGIRIM" name="identitasPesertaPengirimAsal" type="string"/>
+    <property column="SANDI_KOTA_ASAL" name="sandiKotaAsal" type="string"/>
+    <property column="NAMA_PENGIRIM" name="senderName" type="string"/>
+    <property column="no_Rek_Pengirim" name="sourceAccount" type="string"/>
+    <property column="alamat_Pengirim" name="alamatNasabahPengirim" type="string"/>
+    <property column="jenis_Pengirim" name="jenisNasabahPengirim" type="string"/>
+    <property column="status_Penduduk_Pengirim" name="statusPendudukNasabahPengirim" type="string"/>
+    <property column="identitas_Pengirim" name="identitasNasabahPengirim" type="string"/>
+    <property column="identitas_Penerus" name="identitasPesertaPenerimaPenerus" type="string"/>
+    <property column="identitas_Penerima_Akhir" name="identitasPesertaPenerimaAkhir" type="string"/>
+    <property column="sandi_Kota_Tujuan" name="sandiKotaTujuan" type="string"/>
+    <property column="nama_Penerima" name="namaNasabahPenerima" type="string"/>
+    <property column="no_Rek_Penerima" name="destinationAccount" type="string"/>
+    <property column="alamat_Penerima" name="alamatNasabahPenerima" type="string"/>
+    <property column="jenis_Penerima" name="jenisNasabahPenerima" type="string"/>
+    <property column="status_Penduduk_Penerima" name="statusPendudukNasabahPenerima" type="string"/>
+    <property column="identitas_Penerima" name="identitasNasabahPenerima" type="string"/>
+    <property column="jenis_Transaksi" name="jenisTransaksi" type="string"/>
+    <property column="jenis_Sarana_Transaksi" name="jenisSaranaTransaksi" type="string"/>
+    <property column="nominal_Transaksi" name="nominal" type="string"/>
+    <property column="nomor_Urut" name="nomorUrut" type="string"/>
+    <property column="nomor_Referensi" name="nomorReferensi" type="string"/>
+    <property column="nomor_Referensi_Asal" name="nomorReferensiTrasaksiAsal" type="string"/>
+    <property column="beban_Biaya" name="bebanBiaya" type="string"/>
+    <property column="keterangan" name="Keterangan" type="string"/>
+    <property column="sor" name="sor" type="string"/>
+    <property column="type" name="type" type="string"/>
+    <property column="EXTRACT_STATUS" name="extractStatus" type="string"/>
+    <property column="MESSAGE" name="message" type="string"/>
+    <property column="ID_CREATED_BY" name="idCreatedBy" type="string"/>
+    <property column="ID_CREATED_SPV" name="idCreatedSpv" type="string"/>
+    <property column="DTM_CREATED" name="dtmCreated" type="timestamp"/>
+    <property column="DTM_CREATED_SPV" name="dtmCreatedSpv" type="timestamp"/>
+    <property column="ID_UPDATED_BY" name="idUpdatedBy" type="string"/>
+    <property column="ID_UPDATED_SPV" name="idUpdatedSpv" type="string"/>
+    <property column="DTM_UPDATED" name="dtmUpdated" type="timestamp"/>
+    <property column="DTM_UPDATED_SPV" name="dtmUpdatedSpv" type="timestamp"/>
+  </class>
+</hibernate-mapping>

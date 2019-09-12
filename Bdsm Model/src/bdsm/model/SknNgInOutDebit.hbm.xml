@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping 
+		PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+		
+<hibernate-mapping default-access="field">
+	<!-- Model -->
+	<class name="bdsm.model.SknNgInOutDebitParent" abstract="true" polymorphism="explicit">
+		<composite-id name="compositeId" class="bdsm.model.SknNgPK">
+			<key-property name="batchNo"   column="BATCH_NO"   type="string" />
+			<key-property name="recordId"  column="RECORD_ID"  type="integer" />
+		</composite-id>
+		
+		<property name="tipeRecord" column="TIPE_RECORD" type="string" />
+		<property name="kodeDke"          column="KODE_DKE"         type="string" />
+		<property name="typeDB"           column="TYPE"             type="character"  access="property" />
+		<property name="extractStatusDB"  column="EXTRACT_STATUS"   type="character"  access="property" />
+		<property name="idCreatedBy"      column="ID_CREATED_BY"    type="string" />
+		<property name="idCreatedSpv"     column="ID_CREATED_SPV"   type="string" />
+		<property name="dtmCreated"       column="DTM_CREATED"      type="timestamp" />
+		<property name="dtmCreatedSpv"    column="DTM_CREATED_SPV"  type="timestamp" />
+		<property name="idUpdatedBy"      column="ID_UPDATED_BY"    type="string" />
+		<property name="idUpdatedSpv"     column="ID_UPDATED_SPV"   type="string" />
+		<property name="dtmUpdated"       column="DTM_UPDATED"      type="timestamp" />
+		<property name="dtmUpdatedSpv"    column="DTM_UPDATED_SPV"  type="timestamp" />
+		
+		
+		<!-- subclass -->
+		<union-subclass name="bdsm.model.SknNgInOutDebitHeader" table="SKNNG_IN_OUT_DEBIT_HEADER" dynamic-insert="true">
+			<property name="batchId"                   column="BATCH_ID"                    type="string" />
+			<property name="jamTanggalMessage"         column="JAM_TANGGAL_MESSAGE"         type="string" />
+			<property name="jumlahRecords"             column="JUMLAH_RECORDS"              type="string" />
+			<property name="totalNominal"              column="TOTAL_NOMINAL"               type="string" />
+			<property name="tanggalBatch"              column="TANGGAL_BATCH"               type="string" />
+			<property name="jenisSetelmen"             column="JENIS_SETELMEN"              type="string" />
+			<property name="identitasPesertaPengirim"  column="IDENTITAS_PESERTA_PENGIRIM"  type="string" />
+			<property name="sandiKotaPengirim"         column="SANDI_KOTA_PENGIRIM"         type="string" />
+			<property name="hPlus1"                    column="H_PLUS_1"                    type="boolean" />
+			<property name="approved"                  column="APPROVED"                    type="boolean" />
+			<property name="statusDB"                  column="STATUS"                      type="character"  access="property" /> 
+			<property name="comments"                  column="COMMENTS"                    type="string" />
+		</union-subclass>
+		
+		<union-subclass name="bdsm.model.SknNgInOutDebitDetail" table="SKNNG_IN_OUT_DEBIT_DETAIL" dynamic-insert="true">
+			<property name="identitasPesertaPenerima"  column="IDENTITAS_PESERTA_PENERIMA"  type="string" />
+			<property name="sandiKotaPenerbit"         column="SANDI_KOTA_PENERBIT"         type="string" />
+			<property name="namaNasabahPemegang"       column="NAMA_NASABAH_PEMEGANG"       type="string" />
+			<property name="destCreditAccount"         column="DEST_CREDIT_ACCOUNT"         type="string" />
+			<property name="nomorIdentitasPemegang"    column="NOMOR_IDENTITAS_PEMEGANG"    type="string" />
+			<property name="debitAccount"              column="DEBIT_ACCOUNT"               type="string" />
+			<property name="jenisTransaksi"            column="JENIS_TRANSAKSI"             type="string" />
+			<property name="nomorWarkat"               column="NOMOR_WARKAT"                type="string" />
+			<property name="nominal"                   column="NOMINAL"                     type="string" />
+			<property name="nomorUrut"                 column="NOMOR_URUT"                  type="string" />
+			<property name="nomorReferensi"            column="NOMOR_REFERENSI"             type="string" />
+			<property name="bebanBiaya"                column="BEBAN_BIAYA"                 type="string" />
+			<property name="sor"                       column="SOR"                         type="string" />
+			<property name="parentRecordId"            column="PARENT_RECORD_ID"            type="integer" />
+			<property name="recordStatus"              column="RECORD_STATUS"               type="string" />
+			<property name="comments"                  column="COMMENTS"                    type="string" />
+		</union-subclass>
+		
+		<union-subclass name="bdsm.model.SknNgInOutDebitFooter" table="SKNNG_IN_OUT_DEBIT_FOOTER" dynamic-insert="true">
+			<property name="crc"             column="CRC"               type="string" />
+			<property name="parentRecordId"  column="PARENT_RECORD_ID"  type="integer" />
+		</union-subclass>
+		
+	</class>
+	
+	
+	<!-- Query -->
+		<query name="SknNgInOutDebitHeader#listBatchNoByBranchNo">
+		<![CDATA[
+			SELECT DISTINCT SUBSTRING(s.compositeId.batchNo, 16, 6)
+			FROM SknNgInOutDebitHeader s, FixLog f
+			WHERE s.compositeId.batchNo = f.fixLogPK.inboxId
+			    AND s.compositeId.batchNo LIKE CONCAT(:pBatchNo, '%')
+				AND COALESCE(TO_CHAR(s.approved), ' ') LIKE :pApproved 
+		]]>
+	</query>
+	
+	<query name="SknNgInOutDebitHeader#listByBatchNoGrid">
+		<![CDATA[
+			SELECT l.fcrFileName, s
+			FROM SknNgInOutDebitHeader s, FixLog l
+			WHERE l.fixLogPK.inboxId = s.compositeId.batchNo
+				AND s.compositeId.batchNo = :pBatchNo
+				AND COALESCE(TO_CHAR(s.approved), ' ') LIKE :pApproved 
+			ORDER BY s.compositeId.recordId
+		]]>
+	</query>
+	
+	<query name="SknNgInOutDebitHeader#updateApprovedByBatchNoAndRecordIdCollection">
+		<![CDATA[
+			UPDATE SknNgInOutDebitHeader
+			SET approved = :pApproved,
+				idUpdatedSpv = :userId,
+				dtmUpdatedSpv = :currentTime
+			WHERE compositeId.batchNo = :pBatchNo
+				AND compositeId.recordId IN (:pcolRecordId) 
+		]]>
+	</query>
+	
+	<query name="SknNgInOutDebitHeader#updateStatusByBatchNoCollectionAndHPlus1">
+		<![CDATA[
+			UPDATE SknNgInOutDebitHeader
+			SET statusDB = :status
+			WHERE compositeId.batchNo IN (:pcolBatchNo)
+				AND hPlus1 = :hPlus1
+				AND approved = true
+		]]>
+	</query>
+	
+	
+	<sql-query name="SknNgInOutDebitDetail#listGrid">
+		<![CDATA[
+			SELECT DISTINCT 
+				A.tipe_record, 
+				A.kode_dke, 
+				A.batch_no, 
+				A.record_id, 
+				A.parent_record_id, 
+				A.identitas_peserta_penerima, 
+				A.sandi_kota_penerbit, 
+				A.nama_nasabah_pemegang, 
+				A.dest_credit_account, 
+				A.nomor_identitas_pemegang, 
+				A.debit_account, 
+				A.jenis_transaksi, 
+				A.nomor_warkat, 
+				REPLACE(A.nominal, ',', '.') AS NOMINAL, 
+				A.nomor_urut, 
+				A.nomor_referensi, 
+				A.beban_biaya, 
+				A.sor, 
+				A.id_created_by, 
+				A.id_created_spv, 
+				A.dtm_created, 
+				A.dtm_created_spv, 
+				A.id_updated_by, 
+				A.id_updated_spv, 
+				A.dtm_updated, 
+				A.dtm_updated_spv, 
+				A.type, 
+				A.extract_status, 
+				A.message, 
+				B.recordstatus, 
+				B.comments, 
+				C.batch_id,
+				C.total_nominal, 
+				C.identitas_peserta_pengirim, 
+				C.jam_tanggal_message, 
+				C.jumlah_records, 
+				C.tanggal_batch, 
+				C.sandi_kota_pengirim, 
+				D.message AS FOOTER_MESSAGE
+			FROM sknng_in_out_debit_detail A 
+				INNER JOIN tmp_incdrnote_detail B 
+					ON A.batch_no = B.fileid
+				INNER JOIN sknng_in_out_debit_header C 
+					ON A.batch_no = C.batch_no
+						AND A.parent_record_id = C.record_id
+				INNER JOIN sknng_in_out_debit_footer D 
+					ON A.batch_no = D.batch_no
+			WHERE A.batch_no = :pBatchNo
+				AND COALESCE(A.extract_status, ' ') LIKE :pExtractStatus
+				AND COALESCE(:pBatchId, C.batch_id) = C.batch_id
+			ORDER BY A.record_id  
+		]]>
+	</sql-query>
+	
+	<query name="SknNgInOutDebitHeader#updateApprovedByBatchNoAllCollection">
+		<![CDATA[
+			UPDATE SknNgInOutDebitHeader
+			SET approved = :pApproved,
+				idUpdatedSpv = :userId,
+				dtmUpdatedSpv = :currentTime
+			WHERE compositeId.batchNo = :pBatchNo 
+		]]>
+	</query>
+</hibernate-mapping>

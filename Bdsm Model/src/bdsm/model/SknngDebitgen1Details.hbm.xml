@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class lazy="false" name="bdsm.model.SknngInOutDebitGen1Details" table="SKNNG_IN_OUT_DEBIT_GEN1_DETAIL">
+		<composite-id class="bdsm.model.SknngInOutDebitPK" name="compositeId">
+			<key-property column="FILE_ID" name="fileId" type="string"/>
+			<key-property column="RECORD_ID" name="recordId" type="integer"/>
+			<key-property column="PARENT_ID" name="parentId" type="integer"/>
+			<key-property column="RECORDIDBYPARENT" name="parentRecordId" type="integer"/>
+		</composite-id>
+		<property column="TIPE_RECORD" name="tipeRecord" type="string"/>
+		<property column="KODE_DKE" name="kodeDKE" type="string"/>
+		<property column="REFERENCE_NO" name="refNo" type="string"/>
+		<property column="NO_URUT" name="noUrut" type="string"/>
+		<property column="NO_WARKAT" name="noWarkat" type="string"/>
+		<property column="SANDI_KLIRING_TERTARIK" name="SandiKliringtertarik" type="string"/>
+		<property column="ACCOUNT_NO" name="AccountNo" type="string"/>
+		<property column="TRANSACTION_CODE" name="TransactionCode" type="string"/>
+		<property column="BANK_TYPE" name="BankType" type="string"/>
+		<property column="AMOUNT" name="Amount" type="string"/>
+		<property column="SANDI_KLIRING_ASAL" name="SandiKliringAsal" type="string"/>
+		<property column="SANDI_PENYELENGGARA_ASAL" name="sandiPenyelanggaraAsal" type="string"/>
+		<property column="SOR" name="SOR" type="string"/>
+		<property column="ERROR_CODE" name="errCode" type="string"/>
+		<property column="MESSAGE" name="message" type="string"/>
+		<property column="STATUS_CONVERSION" name="ConversionStat" type="string"/>
+		<property column="FLG_REJECT" name="flgReject" type="string"/>
+		<property column="EXTRACT_STATUS" name="extractStatus" type="string"/>
+		<property column="COD_OFF_BI" name="cod_Bi_off" type="string"/>
+		<property column="COD_SECTOR" name="cod_Sector" type="string"/>
+		<property column="ID_CREATED_BY" name="idCreatedBy" type="string"/>
+		<property column="ID_CREATED_SPV" name="idCreatedSpv" type="string"/>
+		<property column="DTM_CREATED" name="dtmCreated" type="timestamp"/>
+		<property column="DTM_CREATED_SPV" name="dtmCreatedSpv" type="timestamp"/>
+		<property column="ID_UPDATED_BY" name="idUpdatedBy" type="string"/>
+		<property column="ID_UPDATED_SPV" name="idUpdatedSpv" type="string"/>
+		<property column="DTM_UPDATED" name="dtmUpdated" type="timestamp"/>
+		<property column="DTM_UPDATED_SPV" name="dtmUpdatedSpv" type="timestamp"/>
+	</class>
+	<query name="SknngDebitgen1Details#listByBatchNoGrid">
+            <![CDATA[
+            SELECT l.fcrFileName, s, f
+			FROM SknngInOutDebitGen1Details s, FixLog l, SknngInOutDebitGen1Details f
+			WHERE l.fixLogPK.fileName LIKE CONCAT ('%', s.compositeId.fileId, '%')
+				AND s.compositeId.fileId  = f.compositeId.fileId
+				AND s.compositeId.parentId = f.compositeId.parentId  
+				AND s.compositeId.fileId  = :pBatchNo
+			ORDER BY s.compositeId.parentId
+             ]]>
+	</query>
+	<query name="SknngDebitgen1Details#listByBatchApproval">
+            <![CDATA[
+            SELECT l.fcrFileName, s, f
+			FROM SknngInOutDebitGen1Details s,FixLog l, SknngInOutDebitGen1Details f
+			WHERE l.fixLogPK.fileName LIKE CONCAT ('%', s.compositeId.fileId, '%')
+			AND s.compositeId.fileId  = f.compositeId.fileId
+                            AND s.compositeId.parentId = f.compositeId.parentId  
+                            AND s.compositeId.fileId  = :pBatchNo
+                            AND s.extractStatus = :pXtract
+                            AND s.flgReject = :pFlag
+			ORDER BY s.compositeId.parentId
+             ]]>
+	</query>
+</hibernate-mapping>

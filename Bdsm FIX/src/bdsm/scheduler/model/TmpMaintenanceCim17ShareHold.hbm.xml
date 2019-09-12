@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class lazy="false" name="bdsm.scheduler.model.TmpMaintenanceCim17ShareHold" table="TMP_CIM17_SHAREHOLD">
+        <composite-id class="bdsm.scheduler.model.TmpMaintenanceCim17ShareHoldPK" name="compositeId">
+            <key-property column="BATCHNO" name="batchiId" type="string"/>
+            <key-property column="RECORDID" name="recordId" type="integer"/>
+            <key-property column="COD_CUST_ID" name="cif" type="integer"/>
+        </composite-id>
+    
+        <property column="nam_maj_sharehldr1" name="namMajShareHldr1" type="string"/>
+        <property column="nam_maj_sharehldr2" name="namMajShareHldr2" type="string"/>
+        <property column="nam_maj_sharehldr3" name="namMajShareHldr3" type="string"/>
+        <property column="nam_maj_sharehldr4" name="namMajShareHldr4" type="string"/>
+        <property column="nam_maj_sharehldr5" name="namMajShareHldr5" type="string"/>
+        <property column="nam_maj_sharehldr6" name="namMajShareHldr6" type="string"/>
+        <property column="nam_maj_sharehldr7" name="namMajShareHldr7" type="string"/>
+        <property column="nam_maj_sharehldr8" name="namMajShareHldr8" type="string"/>
+        <property column="nam_maj_sharehldr9" name="namMajShareHldr9" type="string"/>
+        <property column="nam_maj_sharehldr10" name="namMajShareHldr10" type="string"/>
+        <property column="cod_maj_sharehldr_rel1" name="relationShip1" type="string"/>
+        <property column="cod_maj_sharehldr_rel2" name="relationShip2" type="string"/>
+        <property column="cod_maj_sharehldr_rel3" name="relationShip3" type="string"/>
+        <property column="cod_maj_sharehldr_rel4" name="relationShip4" type="string"/>
+        <property column="cod_maj_sharehldr_rel5" name="relationShip5" type="string"/>
+        <property column="cod_maj_sharehldr_rel6" name="relationShip6" type="string"/>
+        <property column="cod_maj_sharehldr_rel7" name="relationShip7" type="string"/>
+        <property column="cod_maj_sharehldr_rel8" name="relationShip8" type="string"/>
+        <property column="cod_maj_sharehldr_rel9" name="relationShip9" type="string"/>
+        <property column="cod_maj_sharehldr_rel10" name="relationShip10" type="string"/>
+        <property column="IDCREATEDBY"     name="idCreatedBy"  type="string"/>
+        <property column="DTMCREATEDBY"    name="dtmCreated"   type="timestamp"  /> 
+        <property column="IDCREATEDSPV"    name="idCreatedSpv" type="string"/>
+        <property column="DTMCREATEDSPV"   name="dtmCreatedSpv" type="timestamp"  />
+        <property column="FLAG_STATUS"     name="flagStatus"   type="string"/>
+        <property column="STATUS_REASON"   name="statusReason" type="string"/>
+    
+    
+</class>
+</hibernate-mapping>

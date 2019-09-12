@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+
+<hibernate-mapping>
+	<!-- Model -->
+	<class name="bdsm.fcr.model.BaSite" table="BA_SITE" lazy="false">
+		<composite-id name="compositeId" class="bdsm.fcr.model.BaSitePK">
+			<key-property name="macroName"     column="MACRO_NAME"      type="string" />
+			<key-property name="macroValue"    column="MACRO_VALUE"     type="string" />
+			<key-property name="flgMntStatus"  column="FLG_MNT_STATUS"  type="string" />
+			<key-property name="codEntityVPD"  column="COD_ENTITY_VPD"  type="integer" />
+		</composite-id>
+		
+		<property name="macroType"          column="MACRO_TYPE"            type="string" />
+		<property name="macroDescription"   column="MACRO_DESCRIPTION"     type="string" />
+		<property name="codMntAction"       column="COD_MNT_ACTION"        type="string" />
+		<property name="codLastMntMakerId"  column="COD_LAST_MNT_MAKERID"  type="string" />
+		<property name="codLastMntChkrId"   column="COD_LAST_MNT_CHKRID"   type="string" />
+		<property name="datLastMnt"         column="DAT_LAST_MNT"          type="timestamp" />
+	</class>
+	
+	
+	<!-- Query -->
+	<query name="BaSite#getByMacroName">
+		<![CDATA[
+			  FROM BaSite 
+			 WHERE compositeId.macroName    = :macroName
+			   AND compositeId.flgMntStatus = 'A'
+		]]>
+	</query>
+</hibernate-mapping>

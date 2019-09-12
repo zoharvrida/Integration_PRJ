@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+
+<hibernate-mapping>
+	<!-- Model -->
+	<class name="bdsm.model.MfcNoBook_LLD" table="MFCNOBOOK_LLD" lazy="false">
+		<composite-id name="compositeId" class="bdsm.model.MfcNoBookPK">
+			<key-property name="noAcct"  column="NOACCT"  type="string" />
+			<key-property name="refTxn"  column="REFTXN"  type="string" />
+			<key-property name="typMsg"  column="TYPMSG"  type="string" />
+		</composite-id>
+		
+		<property name="typAcct"        column="TYPACCT"        type="string" />
+		<property name="dtPost"         column="DTPOST"         type="date" />
+		<property name="dtValue"        column="DTVALUE"        type="date" />
+		<property name="dtmTxn"         column="DTMTXN"         type="timestamp" />
+		<property name="ccyTxn"         column="CCYTXN"         type="string" />
+		<property name="amtTxn"         column="AMTTXN"         type="double" />
+		<property name="ratFcyIdr"      column="RATFCYIDR"      type="double" />
+		<property name="amtTxnLcy"      column="AMTTXNLCY"      type="double" />
+		<property name="ratUsdIdr"      column="RATUSDIDR"      type="double" />
+		<property name="amtTxnUsd"      column="AMTTXNUSD"      type="double" />
+		<property name="txnDesc"        column="TXNDESC"        type="string" />
+		<property name="txnBranch"      column="TXNBRANCH"      type="integer" />
+		<property name="status"         column="STATUS"         type="string" />
+		<property name="idTxn"          column="IDTXN"          type="string" />
+		<property name="documentType"   column="DOCUMENT_TYPE"  type="integer" />
+		<property name="channelId"      column="CHANNEL_ID"     type="string" />
+		<property name="idCreatedBy"    column="IDCREATEDBY"    type="string" />
+		<property name="idCreatedSpv"   column="IDCREATEDSPV"   type="string" />
+		<property name="dtmCreated"     column="DTMCREATED"     type="timestamp" />
+		<property name="dtmCreatedSpv"  column="DTMCREATEDSPV"  type="timestamp" />
+		<property name="idUpdatedBy"    column="IDUPDATEDBY"    type="string" />
+		<property name="idUpdatedSpv"   column="IDUPDATEDSPV"   type="string" />
+		<property name="dtmUpdated"     column="DTMUPDATED"     type="timestamp" />
+		<property name="dtmUpdatedSpv"  column="DTMUPDATEDSPV"  type="timestamp" />
+	</class>
+	
+	
+	<!-- Query -->
+	<sql-query name="MfcNoBook_LLD#listLLDPendingTransaction">
+		<![CDATA[
+			SELECT CAST(a.dtmTxn AS Timestamp) dtmTxn, 
+			       a.dtPost, 
+			       refTxn, 
+			       a.idTxn,
+			       CAST(a.ccyTxn as VARCHAR2(3)) ccyTxn, 
+			       a.amtTxn, 
+			       a.txnBranch, 
+			       CAST(typMsg as VARCHAR2(1)) typMsg, 
+			       CAST(noAcct as VARCHAR2(16)) noAcct,
+			       CAST(a.typacct as VARCHAR2(1)) typacct,
+			       a.typTrx
+			  FROM MfcNoBook a
+			 INNER JOIN (
+			         SELECT value
+			           FROM parameter
+			          WHERE cdparam = 'LLD_LIMIT_AMOUNT'
+			       ) param
+			       ON 1 = 1
+			  LEFT JOIN mfcnobook_lld lld
+			       USING (noacct, typmsg, reftxn)
+			 WHERE noAcct  = CAST(:pNoAcct AS CHAR(16)) 
+			   AND a.status  = 'P'
+			   AND a.typacct = 'L' -- LLD
+			   AND a.amttxnusd > param.value 
+			   AND lld.typacct IS NULL
+			 ORDER BY dtmTxn
+		]]>
+	</sql-query>
+
+</hibernate-mapping>

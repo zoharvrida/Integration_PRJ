@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+      <class  name="bdsm.scheduler.model.UcpTmpSrc" table="ucp_tmp_src" lazy="false">
+        <id       name="id"        column="id"        type="int" >
+            <generator class="increment"/>
+        </id>
+        <property name="CodCustId"  column="COD_CUST_ID"  type="string"/>
+        <property name="Ktp"  column="KTP"  type="string"/>
+        <property name="CusType"  column="CUS_TYPE"  type="string"/>
+        <property name="CusNamShrt"  column="CUS_NAM_SHRT"  type="string"/>
+        <property name="CusNamFirst"  column="CUS_NAM_FIRST"  type="string"/>
+        <property name="CusNamMid"  column="CUS_NAM_MID"  type="string"/>
+        <property name="CusNamLast"  column="CUS_NAME_LAST"  type="string"/>
+        <property name="NoBatch"  column="NOBATCH"  type="string"/>
+    </class>
+</hibernate-mapping>

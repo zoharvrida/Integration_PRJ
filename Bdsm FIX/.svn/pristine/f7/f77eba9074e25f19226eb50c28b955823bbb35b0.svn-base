@@ -1,0 +1,11 @@
+package bdsm.scheduler.exception;
+
+public class FIXException extends Exception{
+    public FIXException(String ex){
+        super(ex);
+    }
+    
+    public FIXException(Throwable ex){
+        super(ex);
+    }
+}

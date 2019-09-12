@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+   <class name="bdsm.model.Com.TmpComTrx" table="TMP_COMDENOM">
+     <composite-id class="bdsm.model.Com.TmpComTrxPK" name="pk">
+      <key-property column="userid" name="userId" type="string"/>
+      <key-property column="iddenom" name="idDenom" type="integer"/>
+      <key-property column="cod_ccy" name="codCcy" type="string"/>
+      <key-property column="txnstatus" name="txnStatus" type="string"/>
+      <key-property column="recstatus" name="recStatus" type="string"/>
+      <key-property column="txntype" name="txnType" type="string"/>
+      <key-property column="txnid" name="txnId" type="string"/>
+      <key-property column="txnseq" name="txnSeq" type="string"/>
+    </composite-id> 
+    <property column="PIECE" name="piece" type="integer"/>
+    <property column="AMOUNT" name="amount" type="big_decimal"/>
+  </class>
+  <query name="TmpComTrx#getListDenom">
+       <![CDATA[
+			 FROM TmpComTrx tmp
+			WHERE tmp.pk.userId = :iduser
+                        AND tmp.pk.codCcy = :codccy
+                        AND tmp.pk.txnStatus = :txnstatus
+                        AND tmp.pk.txnId = :txnid
+                        AND tmp.pk.txnType = :txntype
+                        AND tmp.pk.txnSeq = :txnseq
+                        ]]>		
+    </query>
+    <query name="TmpComTrx#checkListBatch">
+       <![CDATA[
+			 FROM TmpComTrx tmp
+			WHERE tmp.pk.txnId = :txnid
+                        ]]>		
+    </query>
+</hibernate-mapping>

@@ -1,0 +1,23 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bdsm.scheduler.processor;
+
+import bdsm.scheduler.IBdsmWorker;
+import org.apache.log4j.Logger;
+import org.hibernate.Session;
+
+/**
+ *
+ * @author bdsm
+ */
+public abstract class BaseReflection implements IBdsmWorker {
+
+    protected Session session;    
+
+    protected Logger getLogger() {
+        return Logger.getLogger(this.getClass().getName());
+    }
+    
+}

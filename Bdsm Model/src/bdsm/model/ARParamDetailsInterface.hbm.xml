@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+    <class name="bdsm.model.ARParamDetailsInterface" table="INT_PARAM_DETAILS" lazy="false">
+      <composite-id>
+         <key-property column="IDSCHEDULER" name="idScheduler" type="integer"/>
+         <key-property column="IDORDER" name="idOrder" type="integer"/>
+         <key-property name="typTrx"   column="TYPE_FIELD"   type="string"/>
+         <key-property name="type"   column="TYPE"   type="string"/>
+         <key-property name="typScheduler"   column="TYPE_SCHEDULER"   type="string"/>
+      </composite-id>
+
+      
+      <property name="fieldName"   column="FIELDNAME"   type="string"/>
+      <property name="fieldType"   column="FIELDTYPE"   type="string"/>
+      <property name="fieldFormat"   column="FIELDFORMAT"   type="string"/>
+      <property name="maxLength"   column="MAXLENGTH"   type="integer"/>
+      <property name="deffVal"   column="DEFVALUE"   type="string"/>
+      <property name="padding"   column="PADDING_CHAR"   type="string"/>
+      <property name="paddType"   column="PADDING_FLAG"   type="string"/>
+      <property name="contextRef"   column="CONTEXT_REFERAL"   type="string"/>
+      <property name="paramRef"   column="PARAM_REFERAL"   type="string"/>
+      <property name="customRef"   column="CUSTOM_REFERRAL"   type="string"/>
+      <property name="idenRel"   column="IDENTIFIER_RELATION"   type="string"/>
+      <property name="suffix"   column="SUFFIX"   type="string"/>
+      <property name="idenOpr"   column="IDENTIFIER_OPR"   type="string"/>
+      <property name="idenNumber"   column="IDENTIFIER_NUMBER"   type="integer"/>
+      <property name="defaultVal"   column="DEFAULT_VALUE"   type="string"/>
+      <property column="ID_ORDER_OUTPUT" name="idOrderoutput" type="integer"/>
+      <property column="FLG_MANDATORY" name="flgMandatory" type="string"/>
+      <property name="fieldFormatOut"   column="FIELDFORMAT_OUT"   type="string"/>
+      
+    </class>
+
+    <query name="ARDetails#listDetailsInt">
+		<![CDATA[
+			SELECT s
+			FROM ARParamDetailsInterface s
+			WHERE s.idScheduler = :pIdscheduler
+				AND s.type LIKE '%' || :pType || '%'
+                AND s.typTrx = :pFlag
+                AND s.typScheduler = :pTypSched
+			ORDER BY s.idOrder
+		]]>
+	</query>
+    <query name="ARDetails#listDetailsNoParse">
+		<![CDATA[
+			SELECT s
+			FROM ARParamDetailsInterface s
+			WHERE s.idScheduler = :pIdscheduler
+                AND s.typTrx = :pFlag
+                AND s.typScheduler = :pTypSched
+			ORDER BY s.idOrder
+		]]>
+	</query>
+    <query name="ARDetails#listDetailsIntNegasi">
+		<![CDATA[
+			SELECT s
+			FROM ARParamDetailsInterface s
+			WHERE s.idScheduler = :pIdscheduler
+				AND s.type NOT LIKE '%' || :pType || '%'
+                AND s.typTrx = :pFlag
+                AND s.typScheduler = :pTypSched
+			ORDER BY s.idOrder
+		]]>
+	</query>
+    <query name="ARDetails#listDetailsIntAll">
+		<![CDATA[
+			SELECT s
+			FROM ARParamDetailsInterface s
+			WHERE s.idScheduler = :pIdscheduler
+				AND s.type NOT LIKE '%' || :pType || '%'
+                AND s.type LIKE '%' || :pTypeL || '%'
+                AND s.typTrx = :pFlag
+                AND s.typScheduler = :pTypSched
+			ORDER BY s.idOrder
+		]]>
+	</query>
+    <query name="ARDetails#listDetailsIntAllLike">
+		<![CDATA[
+			SELECT s
+			FROM ARParamDetailsInterface s
+			WHERE s.idScheduler = :pIdscheduler
+				AND (s.type LIKE '%' || :pType || '%'
+                OR s.type LIKE '%' || :pTypeL || '%')
+                AND s.typTrx = :pFlag
+                AND s.typScheduler = :pTypSched
+			ORDER BY s.idOrder
+		]]>
+	</query>
+    
+    <query name="ARDetails#listDetailsIntOutput">
+		<![CDATA[
+			SELECT s
+			FROM ARParamDetailsInterface s
+			WHERE s.idScheduler = :pIdscheduler
+				AND (s.type LIKE '%' || :pType || '%'
+                OR s.type LIKE '%' || :pTypeL || '%')
+                AND s.typTrx = :pFlag
+                AND s.typScheduler = :pTypSched
+			ORDER BY s.idOrderoutput
+		]]>
+	</query>
+</hibernate-mapping>

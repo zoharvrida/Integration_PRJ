@@ -44,6 +44,7 @@
 		<mapping resource="bdsm/model/EktpLog.hbm.xml"    />
  		<mapping resource="bdsm/fcr/model/DataMaster.hbm.xml"    />
         <mapping resource="bdsm/model/FcrBaCcBrnMast.hbm.xml"    />
+        <mapping resource="bdsm/model/ETax.hbm.xml"    />
       
 
     </session-factory>

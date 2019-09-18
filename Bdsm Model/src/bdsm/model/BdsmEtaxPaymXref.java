@@ -1,18 +1,18 @@
-package bdsm.web.menu32102;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-import bdsm.web.ModelDrivenBaseContentAction;
-import bdsm.model.BdsmEtaxPaymXref;
+package bdsm.model;
+
 import java.sql.Date;
-import java.util.Map;
-import org.apache.struts2.interceptor.validation.SkipValidation;
-import org.apache.struts2.json.JSONException;
-import org.apache.struts2.json.JSONUtil;
+
 /**
  *
- * @author v00024535
+ * @author rptuatdrsuperid
  */
-@SuppressWarnings("serial")
-public class Menu32102Action extends ModelDrivenBaseContentAction<Object> {
+public class BdsmEtaxPaymXref extends BaseModel{
 private String billCode;
 private String paymentType;
 private String taxPayeeNo;
@@ -38,103 +38,6 @@ private Date dtmResp;
 private Date dtmPost;
 private String errCode;
 private String errDesc;
-
-
-    public Menu32102Action() {
-    }
-    
-    public final String doPost()
-    {
-        getLogger().info("[Begin] doPostTransaction()");
-        try {            
-            if (isValidSession()) {
-                return this.doPostTrx_();
-            } else {
-                return logout();
-            }
-            
-        } catch (Throwable e) {
-            this.getLogger().fatal(e, e);
-            return ERROR;
-        } finally {
-            this.getLogger().info("[ End ] doPostTransaction()");
-        }        
-    }
-    
-    private final String doPostTrx_()
-    {
-        
-        return SUCCESS;
-    }
-
-    public final String doValidateLimit()
-    {
-        getLogger().info("[Begin] ValidateLimit()");
-        try {            
-            if (isValidSession()) {
-                return this.ValidateLimit_();
-            } else {
-                return logout();
-            }
-            
-        } catch (Throwable e) {
-            this.getLogger().fatal(e, e);
-            return ERROR;
-        } finally {
-            this.getLogger().info("[ End ] ValidateLimit()");
-        }        
-    }
-    
-    private String ValidateLimit_()
-    {
-        this.getLogger().info("User Auth ID : " + this.getCodAuthId());
-        this.getLogger().info("Payment Type : " + this.getTaxAmount());
-        
-        Map<String, String> requestMap = this.createParameterMapFromHTTPRequest();
-        requestMap.put("methodName", "validateLimitUser");
-        requestMap.put("codAuthid", this.getCodAuthId());
-        requestMap.put("taxAmount", String.valueOf(this.getTaxAmount()));
-        
-        try
-        {
-         Map<String, ? extends Object> resultMap = this.callHostHTTPRequest("ETAX", "callMethod", requestMap);
-         Map ErrCode = (Map) resultMap.get("errCode");
-         Map ErrDesc = (Map) resultMap.get("errDesc");
-         this.getLogger().debug("Error Code: " + ErrCode);
-         this.getLogger().debug("Error Desc: " + ErrDesc);
-        }catch(Exception e)
-        {
-            this.getLogger().debug("Error Authorize Limit User: " + e, e);
-        }
-        
-        return SUCCESS;
-    }
-    
-    
-    @Override
-    public String doAdd() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public String exec() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public String doEdit() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public String doDelete() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }   
-
-    @Override
-    public Object getModel() {
-        return null;
-    }  
 
     /**
      * @return the billCode
@@ -457,32 +360,27 @@ private String errDesc;
     public void setDtmPost(Date dtmPost) {
         this.dtmPost = dtmPost;
     }
-
-    /**
-     * @return the errCode
-     */
-    public String getErrCode() {
+     
+    public String geterrCode() {
         return errCode;
     }
 
     /**
-     * @param errCode the errCode to set
+     * @param dtmPost the dtmPost to set
      */
-    public void setErrCode(String errCode) {
+    public void seterrCode(String errCode) {
         this.errCode = errCode;
     }
-
-    /**
-     * @return the errDesc
-     */
-    public String getErrDesc() {
+    
+    public String geterrDesc() {
         return errDesc;
     }
 
     /**
-     * @param errDesc the errDesc to set
+     * @param dtmPost the dtmPost to set
      */
-    public void setErrDesc(String errDesc) {
+    public void seterrDesc(String errDesc) {
         this.errDesc = errDesc;
     }
+    
 }

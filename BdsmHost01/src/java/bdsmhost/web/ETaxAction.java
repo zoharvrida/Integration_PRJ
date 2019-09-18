@@ -4,6 +4,10 @@ package bdsmhost.web;
 import bdsm.fcr.model.BaCcyCode;
 import bdsm.fcr.model.ChAcctMast;
 import bdsm.fcr.model.GLMaster;
+import bdsm.model.MasterLimitEtax;
+import bdsmhost.dao.MasterLimitEtaxDao;
+import bdsmhost.dao.BdsmEtaxPaymXrefDao;
+import bdsm.model.BdsmEtaxPaymXref;
 import bdsm.fcr.service.AccountService;
 import bdsm.fcr.service.DataMasterService;
 import bdsm.model.ETaxInquiryBillingReq;
@@ -45,6 +49,11 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
     private Integer branchCode;    
     private Integer currencyCode;
     private GLMaster glMaster;
+    private BdsmEtaxPaymXref paymentReq;
+    private String codAuthid;
+    private String taxAmount;
+    private String errCode;
+    private String errDesc;
 
     public String inquiryBilling() {
 
@@ -139,6 +148,84 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
         }
         return SUCCESS;
     }
+    
+    public void validateLimitUser() {        
+       
+        String idUser = null;
+        int TotAmount = 0;
+        int limAmount;
+        
+       
+       idUser = codAuthid;
+       TotAmount = Integer.parseInt(taxAmount);
+        
+        try
+        {
+            BdsmEtaxPaymXrefDao mleDao = new BdsmEtaxPaymXrefDao(this.getHSession());
+            limAmount = mleDao.cleans(idUser, TotAmount);
+            if (limAmount == 1)
+            {
+                this.errCode = "0000";
+                this.errDesc = "Success";
+            } else if (limAmount == 99)
+            {
+                this.errCode = "1000";
+                this.errDesc = "Template User Unauthorized to do transactions"; 
+                
+            } else if (limAmount == 97)
+            {
+                this.errCode = "2000";
+                this.errDesc = "user limit will be exceed"; 
+            } else if (limAmount == 98)
+            {
+                this.errCode = "3000";
+                this.errDesc = "Trx is greater then user limit"; 
+            } else
+            {
+                this.errCode = "9999";
+                this.errDesc = "General Error"; 
+            }
+        }catch(Exception e)
+        {
+           this.getLogger().debug("Error Authorize Limit User: " + e, e);
+        }       
+    
+           
+    }
+    
+    
+    public String PostingEtaxPaymentRequest() { 
+        BdsmEtaxPaymXrefDao mle =  new BdsmEtaxPaymXrefDao(this.getHSession());
+        BdsmEtaxPaymXref paym =  new BdsmEtaxPaymXref();
+        paym.setBillCode(this.paymentReq.getBillCode());
+        paym.setCodAcctCcy(this.paymentReq.getCodAcctCcy());
+        paym.setCodAcctNo(this.paymentReq.getCodAcctNo());
+        paym.setCodAuthId(this.paymentReq.getCodAuthId());
+        paym.setCodCcBrn(this.paymentReq.getCodCcBrn());
+        paym.setCodSspcpNo(this.paymentReq.getCodSspcpNo());
+        paym.setCodStanId(this.paymentReq.getCodStanId());
+        paym.setCodTrxBrn(this.paymentReq.getCodTrxBrn());
+        paym.setCodUserId(this.paymentReq.getCodUserId());
+        paym.setDtmPost(this.paymentReq.getDtmPost());
+        paym.setDtmRequest(this.paymentReq.getDtmRequest());
+        paym.setDtmResp(this.paymentReq.getDtmResp());
+        paym.setDtmTrx(this.paymentReq.getDtmTrx());
+        paym.setPaymentType(this.paymentReq.getPaymentType());
+        paym.setRefNtb(this.paymentReq.getRefNtb());
+        paym.setRefNtpn(this.paymentReq.getRefNtpn());
+        paym.setRefUsrNo(this.paymentReq.getRefUsrNo());
+        paym.setTaxAmount(this.paymentReq.getTaxAmount());
+        paym.setTaxCcy(this.paymentReq.getTaxCcy());
+        paym.setTaxPayeeAcct(this.paymentReq.getTaxPayeeAcct());
+        paym.setTaxPayeeAddr(this.paymentReq.getTaxPayeeAcct());
+        paym.setTaxPayeeName(this.paymentReq.getTaxPayeeName());
+        paym.setTaxPayeeNo(this.paymentReq.getTaxPayeeNo());
+        paym.seterrCode(this.paymentReq.geterrCode());
+        paym.seterrDesc(this.paymentReq.geterrDesc());
+        mle.insert(paym);       
+        return SUCCESS;
+    }
+    
     
     private String getErrorMessageFromException(Exception ex) {
         Throwable t = ex;
@@ -300,6 +387,8 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
     public void setGlMaster(GLMaster glMaster) {
         this.glMaster = glMaster;
     }
+
+   
     
     
 }

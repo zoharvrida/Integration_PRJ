@@ -54,6 +54,7 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
     private String taxAmount;
     private String errCode;
     private String errDesc;
+	private BdsmEtaxPaymXref mdp = new BdsmEtaxPaymXref();
 
     public String inquiryBilling() {
 
@@ -151,18 +152,18 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
     
     public void validateLimitUser() {        
        
-        String idUser = null;
+        
         int TotAmount = 0;
         int limAmount;
         
        
-       idUser = codAuthid;
-       TotAmount = Integer.parseInt(taxAmount);
+       codAuthid = mdp.getCodAuthId();       
+       TotAmount = mdp.getTaxAmount();
         
         try
         {
             BdsmEtaxPaymXrefDao mleDao = new BdsmEtaxPaymXrefDao(this.getHSession());
-            limAmount = mleDao.cleans(idUser, TotAmount);
+            limAmount = mleDao.cleans(codAuthid, TotAmount);
             if (limAmount == 1)
             {
                 this.errCode = "0000";
@@ -189,6 +190,8 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
         {
            this.getLogger().debug("Error Authorize Limit User: " + e, e);
         }       
+        mdp.seterrCode(this.errCode);
+        mdp.seterrDesc(this.errDesc);
     
            
     }

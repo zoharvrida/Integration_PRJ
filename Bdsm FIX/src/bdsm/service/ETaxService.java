@@ -4,6 +4,8 @@ import bdsm.model.ETaxBillingInfo;
 import bdsm.model.ETaxBillingType;
 import bdsm.model.ETaxInquiryBillingReq;
 import bdsm.model.ETaxInquiryBillingResp;
+import bdsm.model.EtaxPaymentXrefReq;
+import bdsm.model.EtaxPaymentXrefResp;
 import static bdsm.util.EncryptionUtil.getAES;
 import static bdsm.util.EncryptionUtil.hashSHA256;
 
@@ -68,6 +70,29 @@ public class ETaxService {
         //LOGGER.debug("Siskohat GL: " + java.util.Arrays.asList(this.BPKHAccounts));
     }
 
+   
+    public EtaxPaymentXrefResp paymentBilling(EtaxPaymentXrefReq request) throws Exception
+    {
+            Map<String, Object> mapData = this.buildInitialData(request, "ETAX_PMT", null); 
+            LOGGER.debug("ETax WS Endpoin: " + this.URL);
+            LOGGER.debug("ETax Request: " + request.toString());
+            LOGGER.debug("ETax mapData: " + mapData);
+            Map<String, Object> result;
+            EtaxPaymentXrefResp resp = new EtaxPaymentXrefResp();
+            try {
+            LOGGER.debug("LOGGER requestWebService: " + mapData);
+            result = this.requestWebService(mapData, "payment");
+            LOGGER.debug("LOGGER responWebService: " + result);
+        } catch (RuntimeException ex) {
+            result = new LinkedHashMap<String, Object>(0);
+            result.put("code_status", "99999");
+            result.put("desc_status", "BDSM - " + ex.getMessage());
+        }
+            
+            
+            return resp;
+    }
+    
     public ETaxInquiryBillingResp inquiryBilling(ETaxInquiryBillingReq request) throws Exception {
         Map<String, Object> mapData = this.buildInitialData(request, "ETAX_INQ", null);
         LOGGER.debug("ETax WS Endpoin: " + this.URL);
@@ -214,6 +239,108 @@ public class ETaxService {
         }
 
         return mapResult;
+    }
+    
+    private Map<String, Object> buildInitialDataPaym(Object input, String middlewareServiceCode, String specificDataMethod) throws Exception {
+        String refNo,BinNo,AuthToken,AccType,AcctNo,TxtAmount,TxtCcy,TxtBillId;
+        String TxtBrnNo,CodCcBrn,CodUserId,CodDjpTs;
+        Class[] bc = new Class[0];
+        Object[] bo = new Object[0];
+        Method method;
+        try {
+            method = input.getClass().getMethod("getUser_ref_no", bc);
+            refNo = method.invoke(input, bo).toString();
+        } catch (Exception ex) {
+            refNo = "";
+        }
+        try {
+            method = input.getClass().getMethod("getBin_no", bc);
+            BinNo = method.invoke(input, bo).toString();
+        } catch (Exception ex) {
+            BinNo = "";
+        }
+        try {
+            method = input.getClass().getMethod("getAcct_type", bc);
+            AccType = method.invoke(input, bo).toString();
+        } catch (Exception ex) {
+            AccType = "";
+        }
+        try {
+            method = input.getClass().getMethod("getAuth_token", bc);
+            AuthToken = method.invoke(input, bo).toString();
+        } catch (Exception ex) {
+            AuthToken = "";
+        }
+        try {
+            method = input.getClass().getMethod("getAcct_no", bc);
+            AcctNo = method.invoke(input, bo).toString();
+        } catch (Exception ex) {
+            AcctNo = "";
+        }
+        try {
+            method = input.getClass().getMethod("getAmount", bc);
+            TxtAmount = method.invoke(input, bo).toString();
+        } catch (Exception ex) {
+            TxtAmount = "";
+        }
+        try {
+            method = input.getClass().getMethod("getAmount", bc);
+            TxtAmount = method.invoke(input, bo).toString();
+        } catch (Exception ex) {
+            TxtAmount = "";
+        }
+        try {
+            method = input.getClass().getMethod("getCcy", bc);
+            TxtCcy = method.invoke(input, bo).toString();
+        } catch (Exception ex) {
+            TxtCcy = "";
+        }
+        try {
+            method = input.getClass().getMethod("getBilling_id", bc);
+            TxtBillId = method.invoke(input, bo).toString();
+        } catch (Exception ex) {
+            TxtBillId = "";
+        }
+        try {
+            method = input.getClass().getMethod("getBranch_code", bc);
+            TxtBrnNo = method.invoke(input, bo).toString();
+        } catch (Exception ex) {
+            TxtBrnNo = "";
+        }
+        try {
+            method = input.getClass().getMethod("getBranch_code", bc);
+            TxtBrnNo = method.invoke(input, bo).toString();
+        } catch (Exception ex) {
+            TxtBrnNo = "";
+        }
+        try {
+            method = input.getClass().getMethod("getCost_center", bc);
+            CodCcBrn = method.invoke(input, bo).toString();
+        } catch (Exception ex) {
+            CodCcBrn = "";
+        }
+        try {
+            method = input.getClass().getMethod("getUser_id", bc);
+            CodUserId = method.invoke(input, bo).toString();
+        } catch (Exception ex) {
+            CodUserId = "";
+        }        
+        
+        Map<String, Object> mapData = new LinkedHashMap<String, Object>(0);
+        mapData.put("channel_id", "BDSM");
+        mapData.put("usr_ref_no",refNo);
+        mapData.put("service_code","ETAX_PMT");
+        mapData.put("bin_no", BinNo);
+        mapData.put("auth_token",AuthToken);
+        mapData.put("acct_type", AccType);
+        mapData.put("acct_no", AcctNo);
+        mapData.put("amount", TxtAmount);
+        mapData.put("ccy", TxtCcy);
+        mapData.put("billing_id",TxtBillId);
+        mapData.put("branch_code",TxtBrnNo);
+        mapData.put("cost_center",CodCcBrn);
+        mapData.put("user_id",CodUserId);
+        return mapData;
     }
 
     @SuppressWarnings("rawtypes")

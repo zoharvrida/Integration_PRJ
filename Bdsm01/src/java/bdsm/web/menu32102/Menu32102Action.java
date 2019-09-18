@@ -38,6 +38,7 @@ private Date dtmResp;
 private Date dtmPost;
 private String errCode;
 private String errDesc;
+private BdsmEtaxPaymXref mdp =  new BdsmEtaxPaymXref();
 
 
     public Menu32102Action() {
@@ -87,13 +88,13 @@ private String errDesc;
     
     private String ValidateLimit_()
     {
-        this.getLogger().info("User Auth ID : " + this.getCodAuthId());
-        this.getLogger().info("Payment Type : " + this.getTaxAmount());
+        this.getLogger().info("User Auth ID : " + mdp.getCodAuthId());
+        this.getLogger().info("Payment Type : " + mdp.getTaxAmount());
         
         Map<String, String> requestMap = this.createParameterMapFromHTTPRequest();
         requestMap.put("methodName", "validateLimitUser");
-        requestMap.put("codAuthid", this.getCodAuthId());
-        requestMap.put("taxAmount", String.valueOf(this.getTaxAmount()));
+        requestMap.put("codAuthid", mdp.getCodAuthId());
+        requestMap.put("taxAmount", String.valueOf(mdp.getTaxAmount()));
         
         try
         {

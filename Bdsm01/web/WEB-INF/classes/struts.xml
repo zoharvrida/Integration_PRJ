@@ -134,6 +134,7 @@
             <result name="30503" type="chain">30503_input</result>
             <result name="31301" type="chain">31301_input</result>
             <result name="31302" type="chain">31302_input</result>
+            <result name="32101" type="chain">32101_input</result>
             <result name="input">/WEB-INF/menu/menu.jsp</result>
             <!--result name="input">/WEB-INF/menu/menu_static2.jsp</result>-->
             <result name="error">/WEB-INF/menu/error.jsp</result>
@@ -953,6 +954,24 @@
         </action>
         <!-- Menu 31302 end -->
         
+        <action name="32101_*" method="{1}" class="bdsm.web.menu32101.Menu32101ActionTemp">
+            <interceptor-ref name="timerStack"></interceptor-ref>
+            <result name="buttons">/WEB-INF/32101/buttons.jsp</result>
+            <result name="input">/WEB-INF/32101/main.jsp</result>
+            <result name="success">/WEB-INF/32101/inquiryBilling.jsp</result>
+            <result name="blank">/WEB-INF/blank.jsp</result>
+            <result name="inquiryAcct">/WEB-INF/32101/inquiryAccount.jsp</result>
+        </action>
+        <action name="32102_*" method="{1}" class="bdsm.web.menu32102.Menu32102Action">
+            <interceptor-ref name="tokenTimerStack" />
+            <interceptor-ref name="scope" >
+                <param name="session">ETaxInquiryBillingResp</param>
+                <param name="autoCreateSession">true</param>
+            </interceptor-ref>
+            <result name="buttons">/WEB-INF/32102/buttons.jsp</result>
+            <result name="input">/WEB-INF/32102/main.jsp</result>
+            <result name="success">/WEB-INF/32102/main.jsp</result>
+        </action>
         
         <!-- Dialog start -->
         <action name="dlg" class="bdsm.dialog.DialogAction">
@@ -1411,6 +1430,11 @@
         </action>
 
         <action name="conf_*" method="{1}" class="bdsm.dialog.json.DialogConfirmationAction">
+            <result type="json">
+                <param name="ignoreHierarchy">false</param>
+            </result>
+        </action>
+        <action name="32101_*" method="{1}" class="bdsm.dialog.json.Dialog32101Action">
             <result type="json">
                 <param name="ignoreHierarchy">false</param>
             </result>

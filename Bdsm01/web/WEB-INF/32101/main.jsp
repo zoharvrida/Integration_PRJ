@@ -23,7 +23,12 @@
         <s:token name="refTokens"/>
     </s:form>
     <sj:a id="tempformData" formIds="formData" targets="ph-temp" cssClass="ui-helper-hidden" onBeforeTopics="beforeSubmitInquiryBilling"></sj:a>
-
+    <s:form id="formDataReInquiry" action="32101_reInquiryBilling">
+        <s:hidden name="billingId" />
+        <s:token name="refTokens"/>
+    </s:form>
+    <sj:a id="tempformDataReInquiry" formIds="formDataReInquiry" targets="ph-temp" cssClass="ui-helper-hidden" onBeforeTopics="beforeSubmitReInquiryBilling"></sj:a>
+    
     <s:form id="frmDlgAuth" action="dlg">
         <s:hidden name="dialog" value="dlgAuth" />
         <s:hidden name="idMenu" value="%{#session.idMenu}" />
@@ -106,14 +111,14 @@
             <s:token />
             <hr class="ui-widget-content" />
         </fieldset>
-
-        <div id="divETaxAkhir"></div>
-        <div id="divETaxPelunasanMessage"></div>
     </s:form>
     <s:form id="frmReinquiry" name="frmReinquiry" action="32101_reInquiryBilling" theme="css_xhtml">
         <fieldset id="fsReinquiry" class="ui-widget-content ui-corner-all" style="border: 0px; display: none;">
             <table>
                 <tbody>
+                    <tr>
+                        <td colspan="4" id="errMsgReinq" style="text-align:center"></td>
+                    </tr>
                     <tr>
                         <td>
                             <s:label id="lblIDBillingReinq" key="label.etax.idbilling" requiredLabel="true" />
@@ -141,7 +146,10 @@
             <hr class="ui-widget-content" />
         </fieldset>
     </s:form>
-
+    
+    <div id="divETaxAkhir"></div>
+    <div id="divETaxPelunasanMessage"></div>
+        
     <s:form id="frmMain" name="frmMain" action="32101_inquiryBilling" theme="css_xhtml" style="">
         <fieldset id="fsDataETax" class="ui-widget-content ui-corner-all" style="display: none;">
             <legend class="ui-widget-header ui-corner-all"><s:text name="label.etax.fieldset.legend.data.billing" /></legend>
@@ -763,6 +771,548 @@
         <%--<s:hidden name="strData.cifNo" />--%>
     </s:form>
 
+    <s:form id="frmMainReInquiry" name="frmMainReInquiry" action="32101_reInquiryBilling" theme="css_xhtml" style="">
+        <fieldset id="fsMainReInquiry" class="ui-widget-content ui-corner-all" style="display: none;">
+            <legend id="fsMainReInquiryLegend" class="ui-widget-header ui-corner-all"><s:text name="label.etax.fieldset.legend.billing.details.reinquiry.legend.djp" /></legend>
+            <fieldset id="fsBillingDetailsDJPReInquiry" class="ui-widget-content ui-corner-all" style="display: none;">
+                <legend class="ui-widget-header ui-corner-all"><s:text name="label.etax.fieldset.legend.billing.details.djp.reinquiry" /></legend>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <s:label id="lblIDBilling" key="label.etax.idbilling" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.billingId"
+                                    size="40"
+                                    maxlength="15" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblNominal" key="label.etax.nominal" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.amount"
+                                    size="40"
+                                    maxlength="40" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <s:label id="lblNPWP" key="label.etax.npwp" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.npwp"
+                                    size="40"
+                                    maxlength="40" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblTaxPeriod" key="label.etax.taxPeriod" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.masaPajak"
+                                    size="40"
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <s:label id="lblWPName" key="label.etax.wpName" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.wpName"
+                                    size="40"
+                                    maxlength="40" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblSKNumber" key="label.etax.skNumber" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.nomorSK"
+                                    size="40"
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>                                
+                        </tr>
+                        <tr>
+                            <td>
+                                <s:label id="lblJenisSetoran" key="label.etax.jenisSetoran" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.kodeJenisSetoran"
+                                    size="40"
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblOPNumber" key="label.etax.opNumber" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.nop"
+                                    size="40"
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <s:label id="lblKodeMAP" key="label.etax.kodeMAP" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.akun"
+                                    size="40"
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblCurrency" key="label.etax.currency" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.ccy"
+                                    size="40"
+                                    maxlength="40" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <s:label id="lblWPAddress" key="label.etax.wpAddress" />
+                            </td>
+                            <td>
+                                <s:textarea 
+                                    name="etax.billingInfo.wpAddress"
+                                    cols="45"
+                                    rows="2" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    cssStyle="resize: none"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblTrxTime" key="label.etax.trxTime" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.responseTimeString"
+                                    size="40"
+                                    maxlength="40" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+            <fieldset id="fsBillingDetailsDJBCReInquiry" class="ui-widget-content ui-corner-all" disabled="disabled" style="display: none;">
+                <legend class="ui-widget-header ui-corner-all"><s:text name="label.etax.fieldset.legend.billing.details.djbc.reinquiry" /></legend>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <s:label id="lblIDBilling" key="label.etax.idbilling" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.billingId"
+                                    size="40"
+                                    maxlength="15" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblDocDate" key="label.etax.docDate" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.tanggalDokumen"
+                                    size="40"
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <s:label id="lblWPName" key="label.etax.wpName" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.wpName"
+                                    size="40"
+                                    maxlength="40" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblKPBCCode" key="label.etax.kpbcCode" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.kodeKPBC"
+                                    size="40"
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <s:label id="lblIDWajibBayar" key="label.etax.idWajibBayar" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.idWajibBayar"
+                                    size="40"
+                                    maxlength="40" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblNominal" key="label.etax.nominal" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.amount"
+                                    size="40"
+                                    maxlength="40" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <s:label id="lblDocType" key="label.etax.docType" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.jenisDokumen"
+                                    size="40"
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblCurrency" key="label.etax.currency" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.ccy"
+                                    size="40"
+                                    maxlength="40" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <s:label id="lblDocNumber" key="label.etax.docNumber" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.nomorDokumen"
+                                    size="40"
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblTrxTime" key="label.etax.trxTime" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.responseTimeString"
+                                    size="40"
+                                    maxlength="40" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+            <fieldset id="fsBillingDetailsDJAReInquiry" class="ui-widget-content ui-corner-all" disabled="disabled" style="display: none;">
+                <legend class="ui-widget-header ui-corner-all"><s:text name="label.etax.fieldset.legend.billing.details.dja.reinquiry" /></legend>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <s:label id="lblIDBilling" key="label.etax.idbilling" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.billingId"
+                                    size="40"
+                                    maxlength="15" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblKodeSatker" key="label.etax.kodeSatker" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.kodeSatker"
+                                    size="40"
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <s:label id="lblWPName" key="label.etax.wpName" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.wpName"
+                                    size="40"
+                                    maxlength="40" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblNominal" key="label.etax.nominal" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.amount"
+                                    size="40"
+                                    maxlength="40" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <s:label id="lblKL" key="label.etax.kl" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.kl"
+                                    size="40"
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblCurrency" key="label.etax.currency" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.ccy"
+                                    size="40"
+                                    maxlength="40" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <s:label id="lblUnitEselon1" key="label.etax.unitEselon1" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.billingInfo.unitEselon1"
+                                    size="40"
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+            <fieldset id="fsResultReInquiry" class="ui-widget-content ui-corner-all" style="display: none;">
+                <legend class="ui-widget-header ui-corner-all"><s:text name="label.etax.fieldset.legend.billing.payment" /></legend>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <s:label id="lblPaymentType" key="label.etax.payment.type" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.paymentType"
+                                    size="40"
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblNTPN" key="label.etax.ntpn"/>
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.ntpn"
+                                    size="40"
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <s:label id="lblBranchCode" key="label.etax.branch" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.branchCode"
+                                    size="40"
+                                    maxlength="12" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblNTB" key="label.etax.ntb" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.ntb"
+                                    size="40"
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <s:label id="lblAmount" key="label.etax.nominal" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.creditNominalLCE"
+                                    size="40"
+                                    maxlength="12" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblSTAN" key="label.etax.stan" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.stan"
+                                    size="40"
+                                    maxlength="12" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <s:label id="lblPaymentTime" key="label.etax.paymentTime" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.paymentTime"
+                                    size="40"
+                                    maxlength="12" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblStatus" key="label.etax.status" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.responseDesc"
+                                    size="40"
+                                    maxlength="12" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <s:label id="lblTanggalBuku" key="label.etax.tanggalBuku" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.djpTS"
+                                    size="40"
+                                    maxlength="12" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                            <td>
+                                <s:label id="lblReffNo" key="label.etax.reffNo" />
+                            </td>
+                            <td>
+                                <s:textfield 
+                                    name="etax.refNo"
+                                    size="40"
+                                    maxlength="12" 
+                                    cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                    readonly="true"
+                                    />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <sj:a id="btnPrintReInq" button="true" key="button.confirm">Cetak BPN</sj:a>
+                                <sj:a id="btnCancelReInq" button="true" key="button.submit">Kembali</sj:a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </fieldset>
+            <div id="divETaxAkhirLoadReInquiry"></div>
+            <div id="divETaxAkhirMessReInquiry"></div>
+        </fieldset>
+
+        <s:token id="tokenReInquiry" />
+
+        <s:hidden name="state" value="%{#state}" />
+        <s:hidden name="rate" value="%{#etax.exchangeRate}"/>
+    </s:form>
+        
     <%-- Buttons --%>
     <sj:a id="btnLookupHajiType" button="true">...</sj:a>
 
@@ -1023,16 +1573,75 @@
                 }
             }
             function setViewStateReinquiry(state) {
+                setStateReInq(state);
                 switch (state) {
                     case -1:
                         $('#fsReinquiry').attr('disabled', 'disabled');
                         $('#fsReinquiry').hide();
+                        
+                        $('#fsDataETaxReInquiry').hide();
+                        $('#fsResultReInquiry').hide();
+                        $('#fsMainReInquiry').hide();
                         break;
                     case 0:
                         $('#frmReinquiry').trigger('reset');
                         
                         $('#fsReinquiry').removeAttr('disabled');
                         $('#fsReinquiry').show();
+                        break;
+                    case 99:
+                        // just hide all details but don't reset
+                        $('#fsDataETaxReInquiry').hide();
+                        $('#fsResultReInquiry').hide();
+                        $('#fsMainReInquiry').hide();
+                        $('#frmReinquiry').removeAttr('disabled');
+                        $('#frmReinquiry').show();
+                        break;
+                    case 11:
+                    case 12:
+                    case 13:
+                        $('#fsDataETaxReInquiry').show();
+                        $('#fsMainReInquiry').show();
+                        if(state == 11) {
+                            $('#fsMainReInquiryLegend').text('DJP');
+                            
+                            $('#fsBillingDetailsDJPReInquiry').show();
+                            $('#fsBillingDetailsDJBCReInquiry').hide();
+                            $('#fsBillingDetailsDJAReInquiry').hide();
+
+                            $('#fsResultReInquiry').show();
+
+                            $("label[for='lblWPName']").text('Nama Wajib Pajak:');
+                            $("#tableBillingInfoReInquiry tr:nth-child(2)").show();
+                            $("#tableBillingInfoReInquiry tr:nth-child(4)").hide();
+                            $("#tableBillingInfoReInquiry tr:nth-child(7)").show();
+                        } else if(state == 12) {
+                            $('#fsMainReInquiryLegend').text('DJBC');
+                            
+                            $('#fsBillingDetailsDJBCReInquiry').show();
+                            $('#fsBillingDetailsDJPReInquiry').hide();
+                            $('#fsBillingDetailsDJAReInquiry').hide();
+
+                            $('#fsResultReInquiry').show();
+
+                            $("label[for='lblWPName']").text('Nama Wajib Bayar:');
+                            $("#tableBillingInfoReInquiry tr:nth-child(2)").hide();
+                            $("#tableBillingInfoReInquiry tr:nth-child(4)").show();
+                            $("#tableBillingInfoReInquiry tr:nth-child(7)").hide();
+                        } else if(state == 13) {
+                            $('#fsMainReInquiryLegend').text('DJA');
+                            
+                            $('#fsBillingDetailsDJAReInquiry').show();
+                            $('#fsBillingDetailsDJBCReInquiry').hide();
+                            $('#fsBillingDetailsDJPReInquiry').hide();
+
+                            $('#fsResultReInquiry').show();
+
+                            $("label[for='lblWPName']").text('Nama Wajib Bayar:');
+                            $("#tableBillingInfoReInquiry tr:nth-child(2)").hide();
+                            $("#tableBillingInfoReInquiry tr:nth-child(4)").hide();
+                            $("#tableBillingInfoReInquiry tr:nth-child(7)").hide();
+                        }
                         break;
                 }
             }
@@ -1042,8 +1651,11 @@
             function setState(state) {
                 $("#frmMain_state").val(state);
             }
-            function getSupposedState() {
-                return '1';
+            function getStateReInq() {
+                return $("#frmMainReInquiry_state").val();
+            }
+            function setStateReInq(state) {
+                $("#frmMainReInquiry_state").val(state);
             }
             jQuery(document).ready(function () {
                 var currentState = <s:property value="%{state}" />;
@@ -1153,12 +1765,6 @@
                         // no-op
                     });
                 });
-                $("#btnReinqClear").unsubscribe("click");
-                $("#btnReinqClear").subscribe("click", function (event) {
-                    event.originalEvent.defaultPrevented = true;
-                    console.log('btnReinqClear triggered');
-                    setView(1, 0);
-                });
                 
                 $("#btnConfirm").unsubscribe("click");
                 $("#btnConfirm").subscribe("click", function (event) {
@@ -1175,6 +1781,103 @@
                         console.log('CANCEL OK');
                     });
                 });
+                
+                
+                $("#btnReinqOk").unsubscribe("click");
+                $("#btnReinqOk").subscribe("click", function (event) {
+                    event.originalEvent.defaultPrevented = true;
+                    //console.log('BTN OK CLICKED!!');
+                    //TODO: clearResult();
+                    $("#errMsgReinq").html("");
+                    
+                    var billingId = $.trim($('#frmReinquiry_billingId').val());
+                    if (billingId == '') {
+                        messageBoxClass(1, "divETaxAkhirMess", 'Must Fill Billing ID', function () {
+                            $("#ph-main").scrollTop(0);
+                        });
+                        $('#frmReinquiry_billingId').focus();
+                        return;
+                    } else {
+                        $('#formDataReInquiry_billingId').attr('value', $('#frmReinquiry_billingId').val());
+                        $('#tempformDataReInquiry').click();
+                        var messaging = "Please Waiting Your Request . . . . .";
+                        waitingMessage(3, messaging, "divETaxAkhir");
+
+                        inqParam = {};
+                        inqParam.onClose = function (etax) {
+                            var responseCode = etax['responseCode'];
+                            if(responseCode != undefined && parseInt(responseCode) == 0) {
+                                // set data
+                                for(var propt1 in etax){
+                                    if(propt1 == 'debitAccountNo' ||
+                                            propt1 == 'debitAccountName' ||
+                                            propt1 == 'glAccountNo' ||
+                                            propt1 == 'glAccountName') {
+                                        continue;
+                                    }
+                                    console.log("FIELD 1 :" + propt1 + " " + etax[propt1]);
+                                    $("#frmMainReInquiry_etax_" + propt1).val(etax[propt1]);
+                                }
+                                var billingInfo = etax['billingInfo'];
+                                if(billingInfo != null) {
+                                    for(var propt2 in billingInfo){
+                                        console.log("FIELD 2 :" + propt2 + " " + billingInfo[propt2]);
+                                        $("#frmMainReInquiry_etax_billingInfo_" + propt2).val(billingInfo[propt2]);
+                                    }
+                                }
+                                var rate = etax['exchangeRate'];
+                                $('#frmMainReInquiry_rate').val(rate);
+                                
+                                var billingIdPref = billingId.substring(0, 1);
+                                switch(billingIdPref) {
+                                    case '0':
+                                    case '1':
+                                    case '2':
+                                    case '3':
+                                        setView(1, 11);
+                                        break;
+                                    case '4':
+                                    case '5':
+                                    case '6':
+                                        setView(1, 12);
+                                        break;
+                                    case '7':
+                                    case '8':
+                                    case '9':
+                                        setView(1, 13);
+                                        break;
+                                }
+                                // payment type
+                                var paymentType = etax['accountType'];
+                                switch(paymentType) {
+                                    case '00':
+                                        $('#frmMainReInquiry_etax_paymentType').val('Setoran Tunai');
+                                        break;
+                                    case '20':
+                                        $('#frmMainReInquiry_etax_paymentType').val('Db CASA');
+                                        break;
+                                    case '40':
+                                        $('#frmMainReInquiry_etax_paymentType').val('Cek/BG');
+                                        break;
+                                }
+                            } else {
+                                setView(1, 99);
+                                var responseMsg = etax['responseDesc'];
+                                $("#errMsgReinq").html("<ul id=\"actionError\" class=\"errorMessage\"><li><span>"+responseMsg+"</span></li></ul>");
+                            }
+
+                            $("div[role='dialog']").find("div[id='divETaxAkhir']")
+                                    .dialog("close")
+                                    .dialog("destroy");
+                        };
+                    }
+                });
+                $("#btnReinqClear").unsubscribe("click");
+                $("#btnReinqClear").subscribe("click", function (event) {
+                    event.originalEvent.defaultPrevented = true;
+                    console.log('btnReinqClear triggered');
+                    setView(1, 0);
+                });
                 /* === [BEGIN] alter display === */
 
                 $wtg = $("div[role='dialog']").find("div[id='divETaxAkhir']");
@@ -1188,14 +1891,14 @@
                 $wtg.remove();
 
                 $("#ph-main").find("div[id^='wwctrl_lbl']").remove(); /* because tag s:label generate double text */
-                $("#frmPayment, #frmMain, #frmReinquiry").find('.wwlbl').attr('style', 'width:100%;float:left;text-align:right;vertical-align:middle');
-                $("#frmPayment, #frmMain, #frmReinquiry").find("div[id^='wwgrp_lbl']").parent().width(165);
-                $("#fsBillingDetailsDJBC").find("div[id^='wwgrp_lbl']").parent().width(180);
+                $("#frmPayment, #frmMain, #frmReinquiry, #frmMainReInquiry").find('.wwlbl').attr('style', 'width:100%;float:left;text-align:right;vertical-align:middle');
+                $("#frmPayment, #frmMain, #frmReinquiry, #frmMainReInquiry").find("div[id^='wwgrp_lbl']").parent().width(165);
+                $("#fsBillingDetailsDJBC, #fsBillingDetailsDJBCReInquiry").find("div[id^='wwgrp_lbl']").parent().width(180);
                 $("#frmPayment_acctNoInq").parent().append('&nbsp;').append($("#btnSearchInq").detach());
                 $("#frmPayment_hajiTypeDesc").parent().append('&nbsp;').append($("#btnLookupHajiType").detach());
-                $("#frmMain, #frmReinquiry").find("table > tbody > tr > td:nth-child(2)").css("min-width", "260px");
-                $("#frmMain, #frmReinquiry").find("tbody").children().css("height", "26px");
-                $("#frmMain > fieldset > legend, #frmReinquiry > fieldset > legend")
+                $("#frmMain, #frmMainReInquiry").find("table > tbody > tr > td:nth-child(2)").css("min-width", "260px");
+                $("#frmMain, #frmMainReInquiry").find("tbody").children().css("height", "26px");
+                $("#frmMain > fieldset > legend, #frmMainReInquiry > fieldset > legend")
                         .css("margin-left", "10px")
                         .css("text-align", "center")
                         .css("width", function () {

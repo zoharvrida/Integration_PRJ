@@ -49,31 +49,6 @@ public class Menu32101ActionTemp extends ModelDrivenBaseContentAction<Object> {
     public String doInput() {
         getLogger().info("[Begin] doInput()");
         try {
-            /*
-            Map<String, String> requestMap = new HashMap<String, String>();
-            requestMap.put("methodName", "checkCutOff");
-
-            try {
-                Map<String, ? extends Object> resultMap = this.callHostHTTPRequest("SKHT", "callMethod", requestMap);
-                Map<String, ? extends Object> objData = (Map<String, ? extends Object>) resultMap.get("objData");
-
-                if (objData.get("cutoff") != null) {
-                    this.getServletRequest().setAttribute("resultType", "cutoff");
-                    return "result";
-                }
-            } catch (Exception ex) {
-                this.getLogger().error(ex, ex);
-                return ERROR;
-            }*/
-            ETaxBillingInfo _info = new ETaxBillingInfo();
-            _info.setBillingId("abc");
-            
-            //setBillingInfo(_info);
-            
-            ETaxInquiryBillingResp _etax = new ETaxInquiryBillingResp();
-            _etax.setNomorKPPN("9876543210");
-            setEtax(etax);
-            
             setState("0");
         } finally {
             this.getLogger().info("[ End ] doInput()");
@@ -238,6 +213,88 @@ public class Menu32101ActionTemp extends ModelDrivenBaseContentAction<Object> {
             this.getLogger().debug("Error Inquiry GL Account: " + er, er);
         }
         return "inquiryAcct";
+    }
+    
+    /**
+     * ReInquiry Billing Action
+     *
+     * @return
+     */
+    public final String reInquiryBilling() {
+        getLogger().info("[Begin] reInquiryBilling()");
+        try {
+            if (isValidSession()) {
+                return this.reInquiryBilling_();
+            } else {
+                return logout();
+            }
+        } catch (Throwable e) {
+            this.getLogger().fatal(e, e);
+            return ERROR;
+        } finally {
+            this.getLogger().info("[ End ] reInquiryBilling()");
+        }
+    }
+    
+    private String reInquiryBilling_() {
+        this.getLogger().info("ID Billing : " + this.getBillingId());
+
+        Map<String, String> requestMap = this.createParameterMapFromHTTPRequest();
+        requestMap.put("methodName", "reInquiryBilling");
+        requestMap.put("billingId", this.getBillingId());
+
+        try {
+            Map<String, ? extends Object> resultMap = this.callHostHTTPRequest("ETAX", "callMethod", requestMap);
+            this.getLogger().debug("Result Map: " + resultMap);
+            Map viewData = (Map) resultMap.get("reInquiryResp");
+            if(viewData == null) {
+                viewData = new HashMap();
+            }
+            Map billingInfo = null;
+            if (viewData.containsKey("billingInfo")) {
+                billingInfo = (Map) viewData.get("billingInfo");
+            }
+            Map objData = (Map) resultMap.get("objData");
+            this.getLogger().debug("viewData: " + viewData);
+
+            this.etax = new ETaxInquiryBillingResp();
+            ClassConverterUtil.MapToClass(viewData, this.etax);
+            if (billingInfo != null) {
+                ETaxBillingInfo info = new ETaxBillingInfo();
+                ClassConverterUtil.MapToClass(billingInfo, info);
+                this.etax.setBillingInfo(info);
+            }
+            etax.setExchangeRate(1);
+            
+            BigDecimal amount = etax.getAmount();
+            double rate = etax.getExchangeRate();
+            if(amount != null) {
+                BigDecimal amountLCE = amount.multiply(BigDecimal.valueOf(rate));
+                etax.setNominalLCE(amountLCE);
+                etax.setCreditNominalLCE(amountLCE);
+            }
+            if(objData.containsKey("kppnAccountNo")) {
+                this.etax.setKppnAccountNo((String) objData.get("kppnAccountNo"));
+            }
+            if(objData.containsKey("kppnAccountCcyCode")) {
+                this.etax.setKppnAccountCcyCode((Long) objData.get("kppnAccountCcyCode"));
+            }
+            if(objData.containsKey("kppnAccountCcyName")) {
+                this.etax.setKppnAccountCcyName((String) objData.get("kppnAccountCcyName"));
+            }
+            if(objData.containsKey("kppnAccountName")) {
+                this.etax.setKppnAccountName((String) objData.get("kppnAccountName"));
+            }
+            this.etax.setCashBranchGL(String.valueOf(session.get("cdBranch")));
+            
+            //setAmount(etax.getAmount());
+            this.getLogger().debug("etax : " + this.etax);
+            this.getLogger().debug("etax response time: " + this.etax.getResponseTimeString());
+            this.setContentData(JSONUtil.serialize(this.etax));
+        } catch (Exception er) {
+            this.getLogger().debug("Error ReInquiry Billing: " + er, er);
+        }
+        return "reinquiry";
     }
     
     @Override

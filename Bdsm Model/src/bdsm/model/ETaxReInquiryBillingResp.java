@@ -7,7 +7,7 @@ import java.util.Date;
  * @author v00017250
  */
 @SuppressWarnings("serial")
-public class ETaxInquiryBillingResp extends BaseModel {
+public class ETaxReInquiryBillingResp extends BaseModel {
 
     /**
      * @return the ntb

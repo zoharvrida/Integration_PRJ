@@ -6,6 +6,9 @@
 
 package bdsm.model;
 
+import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
+import java.util.Map;
 /**
  *
  * @author rptuatdrsuperid

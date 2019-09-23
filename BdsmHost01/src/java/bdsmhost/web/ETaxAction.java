@@ -4,8 +4,6 @@ package bdsmhost.web;
 import bdsm.fcr.model.BaCcyCode;
 import bdsm.fcr.model.ChAcctMast;
 import bdsm.fcr.model.GLMaster;
-import bdsm.model.MasterLimitEtax;
-import bdsmhost.dao.MasterLimitEtaxDao;
 import bdsmhost.dao.BdsmEtaxPaymXrefDao;
 import bdsm.model.BdsmEtaxPaymXref;
 import bdsm.fcr.service.AccountService;
@@ -25,6 +23,7 @@ import static bdsmhost.web.ModelDrivenBaseHostAction.LOGGER;
 import static com.opensymphony.xwork2.Action.ERROR;
 import static com.opensymphony.xwork2.Action.SUCCESS;
 import com.opensymphony.xwork2.ActionSupport;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import org.apache.struts2.json.annotations.JSON;
@@ -48,13 +47,26 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
     private String glNo;
     private Integer branchCode;    
     private Integer currencyCode;
-    private GLMaster glMaster;
-    private BdsmEtaxPaymXref paymentReq;
+    private GLMaster glMaster;    
     private String codAuthid;
     private String taxAmount;
     private String errCode;
     private String errDesc;
-	private BdsmEtaxPaymXref mdp = new BdsmEtaxPaymXref();
+    private BdsmEtaxPaymXref epv;
+    
+    public String PostingEtaxPaymentRequest() { 
+        try
+           {
+               ETaxService etaxService = new ETaxService(this.getHSession());
+            this.inquiryResp = etaxService.paymentBilling();
+           }catch(Exception ex)
+           {
+              this.getLogger().info("Exception: " + ex, ex);
+            return this.quitOfError(this.getErrorMessageFromException(ex));
+           }
+                      
+        return SUCCESS;
+    }
 
     public String inquiryBilling() {
 
@@ -69,7 +81,7 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
             inquiryReq.setUserId("ebanking");            
             
             ETaxService etaxService = new ETaxService(this.getHSession());
-            this.inquiryResp = etaxService.inquiryBilling(inquiryReq);
+            etaxService.inquiryBilling(inquiryReq);
             
             // get credit account
             getCreditAccount();
@@ -153,12 +165,11 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
     public void validateLimitUser() {        
        
         
-        int TotAmount = 0;
-        int limAmount;
-        
+       // BigDecimal TotAmount = 0;
+        int limAmount;        
        
-       codAuthid = mdp.getCodAuthId();       
-       TotAmount = mdp.getTaxAmount();
+       codAuthid = epv.getCodAuthId();       
+       BigDecimal TotAmount = epv.getInqBillResp().getAmount();
         
         try
         {
@@ -190,44 +201,14 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
         {
            this.getLogger().debug("Error Authorize Limit User: " + e, e);
         }       
-        mdp.seterrCode(this.errCode);
-        mdp.seterrDesc(this.errDesc);
+        epv.getLimitVal().setErrCode(this.errCode);
+        epv.getLimitVal().setErrDesc(this.errDesc);
     
            
     }
     
     
-    public String PostingEtaxPaymentRequest() { 
-        BdsmEtaxPaymXrefDao mle =  new BdsmEtaxPaymXrefDao(this.getHSession());
-        BdsmEtaxPaymXref paym =  new BdsmEtaxPaymXref();
-        paym.setBillCode(this.paymentReq.getBillCode());
-        paym.setCodAcctCcy(this.paymentReq.getCodAcctCcy());
-        paym.setCodAcctNo(this.paymentReq.getCodAcctNo());
-        paym.setCodAuthId(this.paymentReq.getCodAuthId());
-        paym.setCodCcBrn(this.paymentReq.getCodCcBrn());
-        paym.setCodSspcpNo(this.paymentReq.getCodSspcpNo());
-        paym.setCodStanId(this.paymentReq.getCodStanId());
-        paym.setCodTrxBrn(this.paymentReq.getCodTrxBrn());
-        paym.setCodUserId(this.paymentReq.getCodUserId());
-        paym.setDtmPost(this.paymentReq.getDtmPost());
-        paym.setDtmRequest(this.paymentReq.getDtmRequest());
-        paym.setDtmResp(this.paymentReq.getDtmResp());
-        paym.setDtmTrx(this.paymentReq.getDtmTrx());
-        paym.setPaymentType(this.paymentReq.getPaymentType());
-        paym.setRefNtb(this.paymentReq.getRefNtb());
-        paym.setRefNtpn(this.paymentReq.getRefNtpn());
-        paym.setRefUsrNo(this.paymentReq.getRefUsrNo());
-        paym.setTaxAmount(this.paymentReq.getTaxAmount());
-        paym.setTaxCcy(this.paymentReq.getTaxCcy());
-        paym.setTaxPayeeAcct(this.paymentReq.getTaxPayeeAcct());
-        paym.setTaxPayeeAddr(this.paymentReq.getTaxPayeeAcct());
-        paym.setTaxPayeeName(this.paymentReq.getTaxPayeeName());
-        paym.setTaxPayeeNo(this.paymentReq.getTaxPayeeNo());
-        paym.seterrCode(this.paymentReq.geterrCode());
-        paym.seterrDesc(this.paymentReq.geterrDesc());
-        mle.insert(paym);       
-        return SUCCESS;
-    }
+    
     
     
     private String getErrorMessageFromException(Exception ex) {

@@ -7,6 +7,7 @@
 package bdsmhost.dao;
 import bdsm.model.BaseModel;
 import bdsm.model.MasterLimitEtax;
+import java.math.BigDecimal;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -34,16 +35,10 @@ public class BdsmEtaxPaymXrefDao extends BaseDao {
     
     public BdsmEtaxPaymXrefDao(Session session) {
 		super(session);
-	}
-    
-	public MasterLimitEtax get(String idUser) {
-        Criteria criteriaQuery = getSession().createCriteria(MasterLimitEtax.class);
-        criteriaQuery.add(Restrictions.eq("idUser", idUser));  
+	}   
+	
         
-        return (MasterLimitEtax) criteriaQuery.uniqueResult();
-    }
-        
-        public int cleans(String param,int param2) throws SQLException {
+        public int cleans(String param,BigDecimal param2) throws SQLException {
         int modCode;        
         Connection cnctn = ((SessionImpl) super.getSession()).connection();
         String query = null;
@@ -52,7 +47,7 @@ public class BdsmEtaxPaymXrefDao extends BaseDao {
             CallableStatement stmt = cnctn.prepareCall(query);
             stmt.registerOutParameter(1, java.sql.Types.INTEGER);
             stmt.setString(2, param);
-            stmt.setInt(3, param2);
+            stmt.setBigDecimal(3, param2);
             workResult = stmt.executeUpdate();
             ErrGenerated = stmt.getInt(1);
             stmt.close();

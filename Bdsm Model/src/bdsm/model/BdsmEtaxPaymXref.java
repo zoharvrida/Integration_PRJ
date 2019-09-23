@@ -6,13 +6,18 @@
 
 package bdsm.model;
 
-import java.sql.Date;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  *
  * @author rptuatdrsuperid
  */
 public class BdsmEtaxPaymXref extends BaseModel{
+private String ntb; 
+private String binNo;
+private String ServiceCode;
+private String channelId;
 private String billCode;
 private String paymentType;
 private String taxPayeeNo;
@@ -23,6 +28,7 @@ private int taxAmount;
 private String taxPayeeAcct;
 private String codAcctNo;
 private String codAcctCcy;
+private String codAcctType;
 private String codTrxBrn;
 private String codCcBrn;
 private String refNtb;
@@ -38,11 +44,18 @@ private Date dtmResp;
 private Date dtmPost;
 private String errCode;
 private String errDesc;
+private ETaxBillingInfo BillInfo;
+private ETaxInquiryBillingResp InqBillResp;
+private ETaxInquiryBillingReq InqBillReq;
+private MasterLimitEtax limitVal;
+private String seterrCode;
+private String seterrDesc;
 
     /**
      * @return the billCode
      */
-    public String getBillCode() {
+
+public String getBillCode() {
         return billCode;
     }
 
@@ -51,6 +64,17 @@ private String errDesc;
      */
     public void setBillCode(String billCode) {
         this.billCode = billCode;
+    }
+    
+    public String getcodAcctType() {
+        return codAcctType;
+    }
+
+    /**
+     * @param billCode the billCode to set
+     */
+    public void setcodAcctType(String codAcctType) {
+        this.codAcctType = codAcctType;
     }
 
     /**
@@ -360,27 +384,165 @@ private String errDesc;
     public void setDtmPost(Date dtmPost) {
         this.dtmPost = dtmPost;
     }
-     
-    public String geterrCode() {
+
+    /**
+     * @return the errCode
+     */
+    public String getErrCode() {
         return errCode;
     }
 
     /**
-     * @param dtmPost the dtmPost to set
+     * @param errCode the errCode to set
      */
-    public void seterrCode(String errCode) {
+    public void setErrCode(String errCode) {
         this.errCode = errCode;
     }
-    
-    public String geterrDesc() {
+
+    /**
+     * @return the errDesc
+     */
+    public String getErrDesc() {
         return errDesc;
     }
 
     /**
-     * @param dtmPost the dtmPost to set
+     * @param errDesc the errDesc to set
      */
-    public void seterrDesc(String errDesc) {
+    public void setErrDesc(String errDesc) {
         this.errDesc = errDesc;
     }
+
+    /**
+     * @return the BillInfo
+     */
+    public ETaxBillingInfo getBillInfo() {
+        return BillInfo;
+    }
+
+    /**
+     * @param BillInfo the BillInfo to set
+     */
+    public void setBillInfo(ETaxBillingInfo BillInfo) {
+        this.BillInfo = BillInfo;
+    }
+
+    /**
+     * @return the InqBillResp
+     */
+    public ETaxInquiryBillingResp getInqBillResp() {
+        return InqBillResp;
+    }
+
+    /**
+     * @param InqBillResp the InqBillResp to set
+     */
+    public void setInqBillResp(ETaxInquiryBillingResp InqBillResp) {
+        this.InqBillResp = InqBillResp;
+    }
+
+    /**
+     * @return the seterrCode
+     */
+    public String getSeterrCode() {
+        return seterrCode;
+    }
+
+    /**
+     * @param seterrCode the seterrCode to set
+     */
+    public void setSeterrCode(String seterrCode) {
+        this.seterrCode = seterrCode;
+    }
+
+    /**
+     * @return the seterrDesc
+     */
+    public String getSeterrDesc() {
+        return seterrDesc;
+    }
+
+    /**
+     * @param seterrDesc the seterrDesc to set
+     */
+    public void setSeterrDesc(String seterrDesc) {
+        this.seterrDesc = seterrDesc;
+    }
+
+    /**
+     * @return the limitVal
+     */
+    public MasterLimitEtax getLimitVal() {
+        return limitVal;
+    }
+
+    /**
+     * @param limitVal the limitVal to set
+     */
+    public void setLimitVal(MasterLimitEtax limitVal) {
+        this.limitVal = limitVal;
+    }
+
+    /**
+     * @return the ServiceCode
+     */
+    public String getServiceCode() {
+        return ServiceCode;
+    }
+
+    /**
+     * @param ServiceCode the ServiceCode to set
+     */
+    public void setServiceCode(String ServiceCode) {
+        this.ServiceCode = ServiceCode;
+    }
+
+    /**
+     * @return the channelId
+     */
+    public String getChannelId() {
+        return channelId;
+    }
+
+    /**
+     * @param channelId the channelId to set
+     */
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
+    }
+
+    /**
+     * @return the ntb
+     */
+    public String getNtb() {
+        return ntb;
+    }
+
+    /**
+     * @param ntb the ntb to set
+     */
+    public void setNtb(String ntb) {
+        this.ntb = ntb;
+    }
+
+    /**
+     * @return the binNo
+     */
+    public String getBinNo() {
+        return binNo;
+    }
+
+    /**
+     * @param binNo the binNo to set
+     */
+    public void setBinNo(String binNo) {
+        this.binNo = binNo;
+    }
+  
+
+    /**
+     * @return the billCode
+     */
+    
     
 }

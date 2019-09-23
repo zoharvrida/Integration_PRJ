@@ -23,6 +23,7 @@
         <s:token name="refTokens"/>
     </s:form>
     <sj:a id="tempformData" formIds="formData" targets="ph-temp" cssClass="ui-helper-hidden" onBeforeTopics="beforeSubmitInquiryBilling"></sj:a>
+    
     <s:form id="formPosting" action="32102_doValidateLimit">
         <s:hidden name="billingId" />
         <s:hidden name="paymentType" />
@@ -777,10 +778,11 @@
         <s:hidden name="rate" value="%{#etax.exchangeRate}"/>
         <%--<s:hidden name="strData.cifNo" />--%>
     </s:form>
+             
     <s:form id="formValidateAcc" action="32102_main">
         <s:token />
     </s:form>
-
+    
     <%-- Buttons --%>
     <sj:a id="btnLookupHajiType" button="true">...</sj:a>
 
@@ -1072,11 +1074,14 @@
             }
             jQuery(document).ready(function () {
                 var currentState = <s:property value="%{state}" />;
+                
                 setState(currentState);
                 console.log('Current State: ' + currentState);
                 $('#mpnResponseX').hide();
                 $('#btnPayment').hide();
                 /* === [BEGIN] event hook === */
+                
+                
                 $("#btnOk").unsubscribe("click");
                 $("#btnOk").subscribe("click", function (event) {
                     event.originalEvent.defaultPrevented = true;
@@ -1120,6 +1125,7 @@
                                     console.log("FIELD 1 :" + propt1 + " " + etax[propt1]);
                                     $("#frmMain_etax_" + propt1).val(etax[propt1]);
                                 }
+                                
                                 var billingInfo = etax['billingInfo'];
                                 if(billingInfo != null) {
                                     for(var propt2 in billingInfo){
@@ -1157,7 +1163,7 @@
                                 var responseMsg = etax['responseDesc'];
                                 $("#errMsg").html("<ul id=\"actionError\" class=\"errorMessage\"><li><span>"+responseMsg+"</span></li></ul>");
                             }
-
+                            
                             $("div[role='dialog']").find("div[id='divETaxAkhir']")
                                     .dialog("close")
                                     .dialog("destroy");
@@ -1260,9 +1266,12 @@
                         $('#formPosting_billingId').attr('value', $('#frmPayment_billingId').val());
                         $('#formPosting_paymentType').attr('value', $('#frmPayment_paymentType').val());
                         $('#tempformPosting').click();
+                        
                         var messaging = "Please Waiting Your Request . . . . .";
                         waitingMessage(3, messaging, "divETaxAkhirLoad");
+                         
                         $('#mpnResponseX').show();
+                        
                         $("div[role='dialog']").find("div[id='divETaxAkhirLoad']")
                                     .dialog("close")
                                     .dialog("destroy");

@@ -23,6 +23,15 @@
         <s:token name="refTokens"/>
     </s:form>
     <sj:a id="tempformData" formIds="formData" targets="ph-temp" cssClass="ui-helper-hidden" onBeforeTopics="beforeSubmitInquiryBilling"></sj:a>
+    
+    <s:form id="formPosting" action="32102_doValidateLimit">
+        <s:hidden name="billingId" />
+        <s:hidden name="paymentType" />
+        <s:hidden name="codAuthid" value="%{#session.idUser}" />
+        <s:hidden name="idMaintainedSpv" />
+        <s:token name="refTokens"/>
+    </s:form>
+    <sj:a id="tempformPosting" formIds="formPosting" targets="ph-temp" cssClass="ui-helper-hidden"></sj:a>
 
     <s:form id="frmDlgAuth" action="dlg">
         <s:hidden name="dialog" value="dlgAuth" />
@@ -752,17 +761,28 @@
                     </tr>
                 </tbody>
             </table>
-            <div id="divETaxAkhirLoad"></div>
-            <div id="divETaxAkhirMess"></div>
+            
         </fieldset>
-
+        <div  id="btnPayment">
+            <sj:a id="button_payment" button="true" key="button.confirm">Payment</sj:a>
+            <br>
+        </div>    
+        <div  id="mpnResponseX">               
+            <s:include value="/WEB-INF/32102/main.jsp" >
+            </s:include>
+        </div>
         <s:token />
-
+        <div id="divETaxAkhirLoad"></div>
+        <div id="divETaxAkhirMess"></div>
         <s:hidden name="state" value="%{#state}" />
         <s:hidden name="rate" value="%{#etax.exchangeRate}"/>
         <%--<s:hidden name="strData.cifNo" />--%>
     </s:form>
-
+             
+    <s:form id="formValidateAcc" action="32102_main">
+        <s:token />
+    </s:form>
+    
     <%-- Buttons --%>
     <sj:a id="btnLookupHajiType" button="true">...</sj:a>
 
@@ -918,6 +938,8 @@
                     $('#fsDebitGL').hide();                    
                     $('#fsDebitCash').hide();
                     $('#fsCredit').hide();
+                    $('#mpnResponseX').hide();
+                    $('#btnPayment').hide();
                     $('#fsInquiry').attr('disabled', 'disabled');
                     $('#fsInquiry').hide();
                 } else if(state == 0) {
@@ -937,6 +959,8 @@
                     $('#fsDebitGL').hide();
                     $('#fsDebitCash').hide();
                     $('#fsCredit').hide();
+                    $('#mpnResponseX').hide();
+                    $('#btnPayment').hide();
                     $('#fsInquiry').removeAttr('disabled');
                     $('#fsInquiry').show();
                     // buttons
@@ -966,6 +990,8 @@
                     $('#fsDebitGL').hide();                    
                     $('#fsDebitCash').hide();
                     $('#fsCredit').hide();
+                    $('#mpnResponseX').hide();
+                    $('#btnPayment').hide();
                     $('#fsInquiry').removeAttr('disabled');
                     $('#fsInquiry').show();
                 } else if(state == 11 || state == 12 || state == 13) {
@@ -1014,6 +1040,7 @@
                     }
                     //$('#fsDebitCASA').show();
                     $('#fsCredit').show();
+                    $('#btnPayment').show();
                     $('#fsInquiry').show();
                     
                     // buttons
@@ -1047,10 +1074,14 @@
             }
             jQuery(document).ready(function () {
                 var currentState = <s:property value="%{state}" />;
+                
                 setState(currentState);
                 console.log('Current State: ' + currentState);
-
+                $('#mpnResponseX').hide();
+                $('#btnPayment').hide();
                 /* === [BEGIN] event hook === */
+                
+                
                 $("#btnOk").unsubscribe("click");
                 $("#btnOk").subscribe("click", function (event) {
                     event.originalEvent.defaultPrevented = true;
@@ -1094,6 +1125,7 @@
                                     console.log("FIELD 1 :" + propt1 + " " + etax[propt1]);
                                     $("#frmMain_etax_" + propt1).val(etax[propt1]);
                                 }
+                                
                                 var billingInfo = etax['billingInfo'];
                                 if(billingInfo != null) {
                                     for(var propt2 in billingInfo){
@@ -1131,7 +1163,7 @@
                                 var responseMsg = etax['responseDesc'];
                                 $("#errMsg").html("<ul id=\"actionError\" class=\"errorMessage\"><li><span>"+responseMsg+"</span></li></ul>");
                             }
-
+                            
                             $("div[role='dialog']").find("div[id='divETaxAkhir']")
                                     .dialog("close")
                                     .dialog("destroy");
@@ -1229,6 +1261,21 @@
                         console.log('STATE: ' + currentState);
                     }
                 }
+                $("#button_payment").unsubscribe("click");
+                $("#button_payment").subscribe("click", function (event) {
+                        $('#formPosting_billingId').attr('value', $('#frmPayment_billingId').val());
+                        $('#formPosting_paymentType').attr('value', $('#frmPayment_paymentType').val());
+                        $('#tempformPosting').click();
+                        
+                        var messaging = "Please Waiting Your Request . . . . .";
+                        waitingMessage(3, messaging, "divETaxAkhirLoad");
+                         
+                        $('#mpnResponseX').show();
+                        
+                        $("div[role='dialog']").find("div[id='divETaxAkhirLoad']")
+                                    .dialog("close")
+                                    .dialog("destroy");
+                });
             });
 
             function myDialog(eButton, title, eDialog, eId, eDesc, closeFunction) {

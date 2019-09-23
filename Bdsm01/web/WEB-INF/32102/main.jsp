@@ -2,26 +2,36 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="sj" uri="/struts-jquery-tags" %>
 
-    <s:set var="requestMethod" scope="request">${pageContext.request.method}</s:set>
 
-    <s:form id="frmMain" name="frmMain"  theme="css_xhtml">
-        <fieldset id="fsDataPayment" class="ui-widget-content ui-corner-all">
-			<legend class="ui-widget-header ui-corner-all"><s:text name="label.etax.fieldset.legend.mpn.response" /></legend>
+<s:set var="requestMethod" scope="request">${pageContext.request.method}</s:set>
+
+<s:if test="%{#request.requestMethod.equals('POST')}">
+    <script type="text/javascript" src="_js/validation_theme_css_xhtml.js"></script>
+    <script type="text/javascript" src="_js/pdf/fpdf.bundled.js"></script>
+
+    <s:url var="ajaxUpdateTitle" action="32102_title_" />
+    <s:url var="ajaxUpdateButton" action="32102_buttons" />
+    <sj:a id="tempTitle" href="%{ajaxUpdateTitle}" targets="ph-title" cssClass="ui-helper-hidden" />
+    <sj:a id="tempButtons" href="%{ajaxUpdateButton}" targets="ph-buttons" cssClass="ui-helper-hidden" />
+
+    <s:actionmessage id="actionMessage" />
+    <s:actionerror name="actionError" />
+    <s:form id="frmMain" >
         <table>
             <tbody>
                 <tr>
                     <td>
-                        <s:label id="lblntb" key="label.etax.ntb" />
+                        <s:label id="lblntb" key="label.ntb" />
                     </td>
                     <td>
                         <s:textfield 
-                            name="billCode"
+                            name="ntb"
                             size="40"
                             cssClass="cls-alphabet-spc ui-widget ui-widget-content"
                             />
                     </td>
                     <td>
-                        <s:label id="lblnptn" key="label.etax.ntpn" />
+                        <s:label id="lblnptn" key="label.ntpn" />
                     </td>
                     <td>
                         <s:textfield 
@@ -33,7 +43,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <s:label id="lbltanggalBuku" key="label.etax.tanggalBuku" />
+                        <s:label id="lbltanggalBuku" key="label.tanggalBuku" />
                     </td>
                     <td>
                         <s:textfield 
@@ -43,7 +53,7 @@
                             />
                     </td>
                     <td>
-                        <s:label id="lbltanggalTransaksi" key="label.etax.tanggalTransaksi" />
+                        <s:label id="lbltanggalTransaksi" key="label.tanggalTransaksi" />
                     </td>
                     <td>
                         <s:textfield 
@@ -55,7 +65,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <s:label id="lblresponseCode" key="label.etax.responseCode" />
+                        <s:label id="lblresponseCode" key="label.responseCode" />
                     </td>
                     <td>
                         <s:textfield 
@@ -65,7 +75,7 @@
                             />
                     </td>
                     <td>
-                        <s:label id="lblstan" key="label.etax.stan" />
+                        <s:label id="lblstan" key="label.stan" />
                     </td>
                     <td>
                         <s:textfield 
@@ -77,7 +87,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <s:label id="lblresponseDescription" key="label.etax.responseDescription" />
+                        <s:label id="lblresponseDescription" key="label.responseDescription" />
                     </td>
                     <td>
                         <s:textfield 
@@ -87,7 +97,7 @@
                             />
                     </td>
                     <td>
-                        <s:label id="lblnoRefTransaksi" key="label.etax.reffNo" />
+                        <s:label id="lblnoRefTransaksi" key="label.noRefTransaksi" />
                     </td>
                     <td>
                         <s:textfield 
@@ -101,18 +111,13 @@
                 <tr>
                     <td></td>
                     <td>
-                        <sj:submit
-                            id="btnCetak"
-                            buttonIcon="ui-icon-gear"
-                            button="true"
-                            targets="ph-main"
-                            key="button.generate.bpn"
-                            disabled="true"
-                            />
+                        <sj:a id="btnConfirm" button="true" key="button.button.cetak.bpn">Cetak BPN</sj:a>
+                        <sj:a id="btnPaymentCancel" button="true" key="button.kembali">Kembali</sj:a>
                         </td>
                     </tr>
                 </tbody>
             </table>
-        </fieldset>
-       <s:token name="paymentToken"/>
+        <s:token />
     </s:form>
+
+</s:if>

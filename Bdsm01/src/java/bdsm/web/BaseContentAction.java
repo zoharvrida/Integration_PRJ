@@ -284,15 +284,6 @@ public abstract class BaseContentAction extends ActionSupport implements Session
         String response = bdsm.util.HttpUtil.request(this.getBdsmHost() + serviceName + "_" + methodName, requestMap);
         return (Map<String, ? extends Object>) JSONUtil.deserialize(response);
     }
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    protected Map callHostHTTPRequestExtend(String serviceName, String methodName, java.util.Map requestMap,ServletContext context) 
-                throws org.apache.struts2.json.JSONException {
-        if (requestMap == null)
-            requestMap = new java.util.HashMap();
-        requestMap.put("token", bdsm.util.BdsmUtil.generateToken(context.getInitParameter("tokenKey"), context.getInitParameter("tzToken")));
-        String response = bdsm.util.HttpUtil.request(context.getInitParameter("bdsmHost") + serviceName + "_" + methodName, requestMap);
-        return (Map<String, ? extends Object>) JSONUtil.deserialize(response);
-    }
 
     /**
      * Function : method to get session id

@@ -430,6 +430,14 @@
 			</result>
 		</action>
 		<!--SISKOHAT-->
+		<!--ETAX-->
+        <action name="ETAX_*" method="{1}" class="bdsmhost.web.ETaxAction">
+            <result type="json">
+                <param name="root">action</param>
+                <param name="ignoreHierarchy">false</param>
+            </result>
+        </action>
+        <!--ETAX-->
 	</package>
 
 </struts>

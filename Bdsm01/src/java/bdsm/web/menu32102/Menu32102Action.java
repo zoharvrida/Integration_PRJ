@@ -124,7 +124,7 @@ public class Menu32102Action extends ModelDrivenBaseContentAction<Object> {
     @Override
     public String doDelete() {
         throw new UnsupportedOperationException("Not supported yet.");
-    }
+    }   
 
     @Override
     public Object getModel() {

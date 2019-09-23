@@ -1,9 +1,13 @@
 package bdsm.web.menu32102;
 
-import bdsm.web.ModelDrivenBaseContentAction;
 import bdsm.model.BdsmEtaxPaymXref;
 import bdsm.model.ETaxInquiryBillingResp;
+import bdsm.model.MasterLimitEtax;
+import bdsm.util.ClassConverterUtil;
 import bdsm.web.InquiryEtaxAction;
+import bdsm.web.ModelDrivenBaseContentAction;
+import static com.opensymphony.xwork2.Action.SUCCESS;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -13,12 +17,14 @@ import java.util.Map;
 @SuppressWarnings("serial")
 public class Menu32102Action extends ModelDrivenBaseContentAction<Object> {
 
-    private BdsmEtaxPaymXref mdp = new BdsmEtaxPaymXref();
-    private String codAuthid;
+    private BdsmEtaxPaymXref epv ;
+    private String idMaintainedBy;
     private String idMaintainedSpv;
     private ETaxInquiryBillingResp etax;
+    //private ETaxInquiryBillingResponse etax;
     private String billingId;
     private int paymentType;
+    private String amount;
 
     public Menu32102Action() {
     }
@@ -45,10 +51,12 @@ public class Menu32102Action extends ModelDrivenBaseContentAction<Object> {
         return SUCCESS;
     }
 
-    public final String doValidateLimit() {
+    public String doValidateLimit() {
         getLogger().info("[Begin] ValidateLimit()");
         try {
+            System.out.println("ADAAAA ");
             if (isValidSession()) {
+                System.out.println("MASUK VALID");
                 return this.ValidateLimit_();
             } else {
                 return logout();
@@ -64,31 +72,33 @@ public class Menu32102Action extends ModelDrivenBaseContentAction<Object> {
 
     private String ValidateLimit_() {
         try {
-            System.out.println("bill  "+billingId);
-            System.out.println("bill 2 "+paymentType);
             InquiryEtaxAction inquiry = new InquiryEtaxAction();
             inquiry.InquiryEtax(billingId, paymentType, getServletRequest(),getServletContext());
-            System.out.println("asfa "+inquiry.getEtax());
-            this.etax = inquiry.getEtax();
+            this.etax = inquiry.getEtax();     
+            this.epv.setInqBillResp(etax);
+            //this.epv.setBillInfo(etax.getBillingInfo());
+            //this.epv.setCodAuthId(idMaintainedBy);
+            if(this.getIdMaintainedSpv().isEmpty())
+            {
+            this.setIdMaintainedSpv(this.getIdMaintainedBy());            
+            }            
             
             Map<String, String> requestMap = this.createParameterMapFromHTTPRequest();
             requestMap.put("methodName", "validateLimitUser");
-            requestMap.put("codAuthid", codAuthid);
-            requestMap.put("taxAmount", String.valueOf(this.etax.getAmount()));
-            System.out.println("ETAX 2 " + this.etax);
-
+            requestMap.put("idMaintainedBy", this.getIdMaintainedBy());
+            requestMap.put("amount", this.getAmount());
             Map<String, ? extends Object> resultMap = this.callHostHTTPRequest("ETAX", "callMethod", requestMap);
-            Map viewData = (Map) resultMap.get("mdpResp");
-            System.out.println("RESPONSE " + resultMap.get("mdpResp"));
-            System.out.println(viewData.get("errCode"));
-            System.out.println(viewData.get("errDesc"));
-            this.getLogger().debug("Error Code: " + viewData.get("errCode"));
-            this.getLogger().debug("Error Desc: " + viewData.get("errDesc"));
-            if (viewData.get("errDesc").toString().equalsIgnoreCase("SUCCESS")) {
+           
+            this.getLogger().debug("Error Code: " + getEpv().getLimitVal().getErrCode().toString());
+            this.getLogger().debug("Error Desc: " + getEpv().getLimitVal().getErrDesc().toString());
+            if (getEpv().getLimitVal().getErrCode().toString().equalsIgnoreCase("0000")) {
                 System.out.println("MASUK DO POSTING");
+                requestMap = this.createParameterMapFromHTTPRequest();
+                requestMap.put("methodName", "PostingEtaxPaymentRequest");
+                this.callHostHTTPRequest("ETAX", "callMethod", requestMap);
             }
         } catch (Exception e) {
-            this.getLogger().debug("Error Authorize Limit User: " + e, e);
+            this.getLogger().debug("Error Authorize Limit User: " +getEpv().getLimitVal().getErrDesc().toString()+ e, e);
         }
 
         return SUCCESS;
@@ -96,7 +106,9 @@ public class Menu32102Action extends ModelDrivenBaseContentAction<Object> {
 
     @Override
     public String doAdd() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        System.out.println("DO ADD " + getEtax().toString());
+        doValidateLimit();
+        return SUCCESS;
     }
 
     @Override
@@ -134,34 +146,6 @@ public class Menu32102Action extends ModelDrivenBaseContentAction<Object> {
     }
 
     /**
-     * @return the codAuthid
-     */
-    public String getCodAuthid() {
-        return codAuthid;
-    }
-
-    /**
-     * @param codAuthid the codAuthid to set
-     */
-    public void setCodAuthid(String codAuthid) {
-        this.codAuthid = codAuthid;
-    }
-
-    /**
-     * @return the etax
-     */
-    public ETaxInquiryBillingResp getEtax() {
-        return etax;
-    }
-
-    /**
-     * @param etax the etax to set
-     */
-    public void setEtax(ETaxInquiryBillingResp etax) {
-        this.etax = etax;
-    }
-
-    /**
      * @return the billingId
      */
     public String getBillingId() {
@@ -188,4 +172,62 @@ public class Menu32102Action extends ModelDrivenBaseContentAction<Object> {
     public void setPaymentType(int paymentType) {
         this.paymentType = paymentType;
     }
+
+    /**
+     * @return the idMaintainedBy
+     */
+    public String getIdMaintainedBy() {
+        return idMaintainedBy;
+    }
+
+    /**
+     * @param idMaintainedBy the idMaintainedBy to set
+     */
+    public void setIdMaintainedBy(String idMaintainedBy) {
+        this.idMaintainedBy = idMaintainedBy;
+    }
+
+    /**
+     * @return the amount
+     */
+    public String getAmount() {
+        return amount;
+    }
+
+    /**
+     * @param amount the amount to set
+     */
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    /**
+     * @return the etax
+     */
+    public ETaxInquiryBillingResp getEtax() {
+        return etax;
+    }
+
+    /**
+     * @param etax the etax to set
+     */
+    public void setEtax(ETaxInquiryBillingResp etax) {
+        this.etax = etax;
+    }
+
+    /**
+     * @return the epv
+     */
+    public BdsmEtaxPaymXref getEpv() {
+        return epv;
+    }
+
+    /**
+     * @param epv the epv to set
+     */
+    public void setEpv(BdsmEtaxPaymXref epv) {
+        this.epv = epv;
+    }
+    
+    
 }

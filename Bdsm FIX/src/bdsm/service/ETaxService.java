@@ -89,7 +89,7 @@ public class ETaxService {
             epv.setDtmResp(datF1.parse(result.get("response_time").toString()));
             epv.setServiceCode(result.get("service_code").toString());
             epv.setChannelId(result.get("channel_id").toString());
-            epv.setbinNo(result.get("bin_no").toString());
+            epv.setBinNo(result.get("bin_no").toString());
             epv.setCodAuthId(result.get("auth_token").toString());
             epv.setcodAcctType(result.get("acct_type").toString());
             epv.setCodAcctNo(result.get("acct_no").toString());

@@ -58,7 +58,7 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
         try
            {
                ETaxService etaxService = new ETaxService(this.getHSession());
-            this.inquiryResp = etaxService.paymentBilling();
+               etaxService.paymentBilling();
            }catch(Exception ex)
            {
               this.getLogger().info("Exception: " + ex, ex);

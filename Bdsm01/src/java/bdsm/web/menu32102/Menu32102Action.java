@@ -4,11 +4,11 @@ import bdsm.model.BdsmEtaxPaymXref;
 import bdsm.model.ETaxInquiryBillingResp;
 import bdsm.model.MasterLimitEtax;
 import bdsm.util.ClassConverterUtil;
-import bdsm.web.InquiryEtaxAction;
 import bdsm.web.ModelDrivenBaseContentAction;
 import static com.opensymphony.xwork2.Action.SUCCESS;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.struts2.json.JSONUtil;
 
 /**
  *
@@ -21,93 +21,50 @@ public class Menu32102Action extends ModelDrivenBaseContentAction<Object> {
     private String idMaintainedBy;
     private String idMaintainedSpv;
     private ETaxInquiryBillingResp etax;
-    //private ETaxInquiryBillingResponse etax;
-    private String billingId;
-    private int paymentType;
-    private String amount;
+    private MasterLimitEtax limVal;
+    private String state;
+    private String responseStatus;
+    private String contentData;
+    private String dialogState;
 
     public Menu32102Action() {
     }
 
-    public final String doPost() {
-        getLogger().info("[Begin] doPostTransaction()");
+    @Override
+    public String doAdd() {
         try {
-            if (isValidSession()) {
-                return this.doPostTrx_();
-            } else {
-                return logout();
-            }
-
-        } catch (Throwable e) {
-            this.getLogger().fatal(e, e);
-            return ERROR;
-        } finally {
-            this.getLogger().info("[ End ] doPostTransaction()");
-        }
-    }
-
-    private final String doPostTrx_() {
-
-        return SUCCESS;
-    }
-
-    public String doValidateLimit() {
-        getLogger().info("[Begin] ValidateLimit()");
-        try {
-            System.out.println("ADAAAA ");
-            if (isValidSession()) {
-                System.out.println("MASUK VALID");
-                return this.ValidateLimit_();
-            } else {
-                return logout();
-            }
-
-        } catch (Throwable e) {
-            this.getLogger().fatal(e, e);
-            return ERROR;
-        } finally {
-            this.getLogger().info("[ End ] ValidateLimit()");
-        }
-    }
-
-    private String ValidateLimit_() {
-        try {
-            InquiryEtaxAction inquiry = new InquiryEtaxAction();
-            inquiry.InquiryEtax(billingId, paymentType, getServletRequest(),getServletContext());
-            this.etax = inquiry.getEtax();     
-            this.epv.setInqBillResp(etax);
-            //this.epv.setBillInfo(etax.getBillingInfo());
-            //this.epv.setCodAuthId(idMaintainedBy);
-            if(this.getIdMaintainedSpv().isEmpty())
-            {
-            this.setIdMaintainedSpv(this.getIdMaintainedBy());            
-            }            
-            
             Map<String, String> requestMap = this.createParameterMapFromHTTPRequest();
             requestMap.put("methodName", "validateLimitUser");
             requestMap.put("idMaintainedBy", this.getIdMaintainedBy());
-            requestMap.put("amount", this.getAmount());
-            Map<String, ? extends Object> resultMap = this.callHostHTTPRequest("ETAX", "callMethod", requestMap);
-           
-            this.getLogger().debug("Error Code: " + getEpv().getLimitVal().getErrCode().toString());
-            this.getLogger().debug("Error Desc: " + getEpv().getLimitVal().getErrDesc().toString());
-            if (getEpv().getLimitVal().getErrCode().toString().equalsIgnoreCase("0000")) {
-                System.out.println("MASUK DO POSTING");
-                requestMap = this.createParameterMapFromHTTPRequest();
-                requestMap.put("methodName", "PostingEtaxPaymentRequest");
-                this.callHostHTTPRequest("ETAX", "callMethod", requestMap);
+            Map<String, ? extends Object> resultMap = this.callHostHTTPRequest("ETAX", "callMethod", requestMap,this.getTokenKey(),this.getTzToken());
+            Map viewData = (Map) resultMap.get("epv");
+            if(viewData == null) {
+                viewData = new HashMap();
+            }
+            Map limitInfo = (Map) resultMap.get("limVal");
+            
+            this.epv = new BdsmEtaxPaymXref();
+            ClassConverterUtil.MapToClass(viewData, this.epv);
+            
+            MasterLimitEtax limit = new MasterLimitEtax();
+            ClassConverterUtil.MapToClass(limitInfo, limit);
+            this.epv.setLimitVal(limit);
+            
+            this.getLogger().debug("Error Code: " + this.epv.getLimitVal().getErrCode().toString());
+            this.getLogger().debug("Error Desc: " + this.epv.getLimitVal().getErrDesc().toString());
+            if(!this.epv.getLimitVal().getErrCode().toString().equalsIgnoreCase("0000")){
+                setDialogState("0");
+                setResponseStatus("0");
+            }else{
+                this.setContentData(JSONUtil.serialize(this.epv));
+                setResponseStatus("1");
+                setDialogState("1");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             this.getLogger().debug("Error Authorize Limit User: " +getEpv().getLimitVal().getErrDesc().toString()+ e, e);
         }
 
-        return SUCCESS;
-    }
-
-    @Override
-    public String doAdd() {
-        System.out.println("DO ADD " + getEtax().toString());
-        doValidateLimit();
         return SUCCESS;
     }
 
@@ -124,7 +81,7 @@ public class Menu32102Action extends ModelDrivenBaseContentAction<Object> {
     @Override
     public String doDelete() {
         throw new UnsupportedOperationException("Not supported yet.");
-    }   
+    }
 
     @Override
     public Object getModel() {
@@ -145,35 +102,7 @@ public class Menu32102Action extends ModelDrivenBaseContentAction<Object> {
         this.idMaintainedSpv = idMaintainedSpv;
     }
 
-    /**
-     * @return the billingId
-     */
-    public String getBillingId() {
-        return billingId;
-    }
-
-    /**
-     * @param billingId the billingId to set
-     */
-    public void setBillingId(String billingId) {
-        this.billingId = billingId;
-    }
-
-    /**
-     * @return the paymentType
-     */
-    public int getPaymentType() {
-        return paymentType;
-    }
-
-    /**
-     * @param paymentType the paymentType to set
-     */
-    public void setPaymentType(int paymentType) {
-        this.paymentType = paymentType;
-    }
-
-    /**
+        /**
      * @return the idMaintainedBy
      */
     public String getIdMaintainedBy() {
@@ -186,21 +115,6 @@ public class Menu32102Action extends ModelDrivenBaseContentAction<Object> {
     public void setIdMaintainedBy(String idMaintainedBy) {
         this.idMaintainedBy = idMaintainedBy;
     }
-
-    /**
-     * @return the amount
-     */
-    public String getAmount() {
-        return amount;
-    }
-
-    /**
-     * @param amount the amount to set
-     */
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
     /**
      * @return the etax
      */
@@ -227,6 +141,76 @@ public class Menu32102Action extends ModelDrivenBaseContentAction<Object> {
      */
     public void setEpv(BdsmEtaxPaymXref epv) {
         this.epv = epv;
+    }
+
+    /**
+     * @return the limVal
+     */
+    public MasterLimitEtax getLimVal() {
+        return limVal;
+    }
+
+    /**
+     * @param limVal the limVal to set
+     */
+    public void setLimVal(MasterLimitEtax limVal) {
+        this.limVal = limVal;
+    }
+
+    /**
+     * @return the state
+     */
+    public String getState() {
+        return state;
+    }
+
+    /**
+     * @param state the state to set
+     */
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    /**
+     * @return the responseStatus
+     */
+    public String getResponseStatus() {
+        return responseStatus;
+    }
+
+    /**
+     * @param responseStatus the responseStatus to set
+     */
+    public void setResponseStatus(String responseStatus) {
+        this.responseStatus = responseStatus;
+    }
+
+    /**
+     * @return the contentData
+     */
+    public String getContentData() {
+        return contentData;
+    }
+
+    /**
+     * @param contentData the contentData to set
+     */
+    public void setContentData(String contentData) {
+        this.contentData = contentData;
+    }
+
+    /**
+     * @return the dialogState
+     */
+    public String getDialogState() {
+        return dialogState;
+    }
+
+    /**
+     * @param dialogState the dialogState to set
+     */
+    public void setDialogState(String dialogState) {
+        this.dialogState = dialogState;
     }
     
     

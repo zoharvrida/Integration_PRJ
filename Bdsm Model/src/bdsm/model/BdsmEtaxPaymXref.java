@@ -6,6 +6,7 @@
 
 package bdsm.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -13,8 +14,7 @@ import java.util.Date;
  *
  * @author rptuatdrsuperid
  */
-public class BdsmEtaxPaymXref extends BaseModel{
-private String ntb; 
+public class BdsmEtaxPaymXref extends BaseModel implements Serializable{
 private String binNo;
 private String ServiceCode;
 private String channelId;
@@ -24,7 +24,7 @@ private String taxPayeeNo;
 private String taxPayeeName;
 private String taxPayeeAddr;
 private String taxCcy;
-private int taxAmount;
+private BigDecimal taxAmount;
 private String taxPayeeAcct;
 private String codAcctNo;
 private String codAcctCcy;
@@ -150,14 +150,14 @@ public String getBillCode() {
     /**
      * @return the taxAmount
      */
-    public int getTaxAmount() {
+    public BigDecimal getTaxAmount() {
         return taxAmount;
     }
 
     /**
      * @param taxAmount the taxAmount to set
      */
-    public void setTaxAmount(int taxAmount) {
+    public void setTaxAmount(BigDecimal taxAmount) {
         this.taxAmount = taxAmount;
     }
 
@@ -514,16 +514,10 @@ public String getBillCode() {
     /**
      * @return the ntb
      */
-    public String getNtb() {
-        return ntb;
-    }
 
     /**
      * @param ntb the ntb to set
      */
-    public void setNtb(String ntb) {
-        this.ntb = ntb;
-    }
 
     /**
      * @return the binNo

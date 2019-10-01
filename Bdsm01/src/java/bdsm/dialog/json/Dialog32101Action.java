@@ -1,5 +1,6 @@
 package bdsm.dialog.json;
 
+import bdsm.model.BdsmEtaxPaymXref;
 import bdsm.model.ETaxInquiryBillingResp;
 import bdsm.model.ETaxPaymentType;
 import bdsm.util.BdsmUtil;
@@ -29,6 +30,8 @@ public class Dialog32101Action extends BaseDialogAction {
     private Map<String, String> customerTypes;
     
     private ETaxInquiryBillingResp etax;
+    
+    private BdsmEtaxPaymXref epv;
 
     @SkipValidation
     public String loadInputParams() throws Exception {
@@ -177,5 +180,19 @@ public class Dialog32101Action extends BaseDialogAction {
     @Override
     public List doList() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * @return the epv
+     */
+    public BdsmEtaxPaymXref getEpv() {
+        return epv;
+    }
+
+    /**
+     * @param epv the epv to set
+     */
+    public void setEpv(BdsmEtaxPaymXref epv) {
+        this.epv = epv;
     }
 }

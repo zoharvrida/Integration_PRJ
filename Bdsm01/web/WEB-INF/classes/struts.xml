@@ -964,13 +964,10 @@
         </action>
         <action name="32102_*" method="{1}" class="bdsm.web.menu32102.Menu32102Action">
             <interceptor-ref name="tokenTimerStack" />
-            <interceptor-ref name="scope" >
-                <param name="session">ETaxInquiryBillingResp</param>
-                <param name="autoCreateSession">true</param>
-            </interceptor-ref>
             <result name="buttons">/WEB-INF/32102/buttons.jsp</result>
             <result name="input">/WEB-INF/32102/main.jsp</result>
-            <result name="success">/WEB-INF/32102/main.jsp</result>
+            <result name="success">/WEB-INF/32101/main.jsp</result>
+            <result name="blank">/WEB-INF/blank.jsp</result>
         </action>
         
         <!-- Dialog start -->

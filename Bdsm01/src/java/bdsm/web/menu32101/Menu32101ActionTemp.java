@@ -1,5 +1,6 @@
 package bdsm.web.menu32101;
 
+import bdsm.model.BdsmEtaxPaymXref;
 import bdsm.model.ETaxBillingInfo;
 import bdsm.model.ETaxInquiryBillingResp;
 import bdsm.util.BdsmUtil;
@@ -40,10 +41,11 @@ public class Menu32101ActionTemp extends ModelDrivenBaseContentAction<Object> {
     private ETaxInquiryBillingResp etax;
     private String noAccount;
     private String typeAccount;
+    private BdsmEtaxPaymXref epv;
 
     public Menu32101ActionTemp() {
     }
-
+            
     @SuppressWarnings("unchecked")
     @Override
     public String doInput() {
@@ -67,12 +69,15 @@ public class Menu32101ActionTemp extends ModelDrivenBaseContentAction<Object> {
             }*/
             ETaxBillingInfo _info = new ETaxBillingInfo();
             _info.setBillingId("abc");
-            
             //setBillingInfo(_info);
             
             ETaxInquiryBillingResp _etax = new ETaxInquiryBillingResp();
             _etax.setNomorKPPN("9876543210");
             setEtax(etax);
+            
+            BdsmEtaxPaymXref _epv = new BdsmEtaxPaymXref();
+            _epv.setBillCode("abc");
+            setEpv(epv);
             
             setState("0");
         } finally {
@@ -144,7 +149,7 @@ public class Menu32101ActionTemp extends ModelDrivenBaseContentAction<Object> {
         try {
             Map<String, ? extends Object> resultMap = this.callHostHTTPRequest("ETAX", "callMethod", requestMap);
             this.getLogger().debug("Result Map: " + resultMap);
-            Map viewData = (Map) resultMap.get("inquiryResp");
+            Map viewData = (Map) resultMap.get("etax");
             if(viewData == null) {
                 viewData = new HashMap();
             }
@@ -387,6 +392,20 @@ public class Menu32101ActionTemp extends ModelDrivenBaseContentAction<Object> {
 
     public void setTypeAccount(String typeAccount) {
         this.typeAccount = typeAccount;
+    }
+
+    /**
+     * @return the epv
+     */
+    public BdsmEtaxPaymXref getEpv() {
+        return epv;
+    }
+
+    /**
+     * @param epv the epv to set
+     */
+    public void setEpv(BdsmEtaxPaymXref epv) {
+        this.epv = epv;
     }
     
 

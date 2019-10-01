@@ -24,11 +24,9 @@
     </s:form>
     <sj:a id="tempformData" formIds="formData" targets="ph-temp" cssClass="ui-helper-hidden" onBeforeTopics="beforeSubmitInquiryBilling"></sj:a>
     
-    <s:form id="formPosting" action="32102_doValidateLimit">
+    <s:form id="formPosting" action="32102_doAdd">
         <s:hidden name="billingId" />
         <s:hidden name="paymentType" />
-        <s:hidden name="codAuthid" value="%{#session.idUser}" />
-        <s:hidden name="idMaintainedSpv" />
         <s:token name="refTokens"/>
     </s:form>
     <sj:a id="tempformPosting" formIds="formPosting" targets="ph-temp" cssClass="ui-helper-hidden"></sj:a>
@@ -64,6 +62,10 @@
         <s:hidden name="globalState" />
     </s:form>
     
+    <script type="text/javascript">
+		<%@include file="formValidation.js" %>  
+    </script>
+        
     <s:form id="frmPayment" name="frmPayment" action="32101_inquiryBilling" theme="css_xhtml">
         <fieldset id="fsInquiry" class="ui-widget-content ui-corner-all" style="border: 0px; display: none;">
             <table>
@@ -151,7 +153,7 @@
         </fieldset>
     </s:form>
 
-    <s:form id="frmMain" name="frmMain" action="32101_inquiryBilling" theme="css_xhtml" style="">
+    <s:form id="frmMain" name="frmMain" action="32102_add" theme="css_xhtml" style="">
         <fieldset id="fsDataETax" class="ui-widget-content ui-corner-all" style="display: none;">
             <legend class="ui-widget-header ui-corner-all"><s:text name="label.etax.fieldset.legend.data.billing" /></legend>
             <fieldset id="fsBillingInfo" class="ui-widget-content ui-corner-all">
@@ -750,6 +752,21 @@
                                 />
                         </td>
                     </tr>
+                    <s:hidden name ="etax.refNo" />
+                    <s:hidden name ="etax.branchCode" />
+                    <s:hidden name ="etax.costCenter" />
+                    <s:hidden name ="etax.userId" />
+                    <s:hidden name ="etax.djpTS" />
+                    <s:hidden name ="etax.creditAccountName" />
+                    <s:hidden name ="etax.nomorKPPN" />
+                    <s:hidden name ="etax.kppnAccountCcyCode" />
+                    <s:hidden name ="etax.pmtType" />
+                    <s:hidden name="state" value="%{#state}" />
+                    <s:hidden name="responseStatus" />
+                    <s:hidden name="dialogState" />
+                    <s:hidden name="idMaintainedBy" value="%{#session.idUser}" />
+                    <s:hidden name="idMaintainedSpv"  />
+                    
                     <tr></tr>
                     <tr>
                         <td></td>
@@ -764,17 +781,23 @@
             
         </fieldset>
         <div  id="btnPayment">
-            <sj:a id="button_payment" button="true" key="button.confirm">Payment</sj:a>
+        <sj:submit
+            id="btnPosting"
+            buttonIcon="ui-icon-gear"
+            button="true"
+            targets="ph-main"
+            key="button.payment"
+            onBeforeTopics="btnPosting_beforeSubmit"
+            />
             <br>
         </div>    
         <div  id="mpnResponseX">               
-            <s:include value="/WEB-INF/32102/main.jsp" >
-            </s:include>
+            <s:include value="/WEB-INF/32102/main.jsp" > </s:include>
         </div>
-        <s:token />
+            <s:token/>
         <div id="divETaxAkhirLoad"></div>
         <div id="divETaxAkhirMess"></div>
-        <s:hidden name="state" value="%{#state}" />
+        
         <s:hidden name="rate" value="%{#etax.exchangeRate}"/>
         <%--<s:hidden name="strData.cifNo" />--%>
     </s:form>
@@ -899,6 +922,9 @@
 
             function setView(viewState, globalState) {
                 var currGlobalState = $("#frmView_globalState").val();
+                
+                $('#frmMain_state').val(globalState);
+                console.log("STATE FORM MAIN"+ $('#frmMain_state').val());
                 var currState = getState();
                 //console.log('currState: ' + currState + ', viewState: ' + viewState + ', currGlobalState: ' + currGlobalState + ', globalState: ' + globalState);
                 if(currState == viewState && currGlobalState == globalState) {
@@ -1069,15 +1095,54 @@
             function setState(state) {
                 $("#frmMain_state").val(state);
             }
+            function getResponseStatus() {
+                return $("#frmMain_responseStatus").val();
+            }
+            function setResponseStatus(responseStatus) {
+                $("#frmMain_responseStatus").val(responseStatus);
+            }
+            function getDialogState() {
+                return $("#frmMain_dialogState").val();
+            }
+            function setDialogState(dialogState) {
+                $("#frmMain_dialogState").val(dialogState);
+            }
+            
             function getSupposedState() {
                 return '1';
             }
             jQuery(document).ready(function () {
                 var currentState = <s:property value="%{state}" />;
+                var currentStatus = $('#frmMain_responseStatus').val();
+                var currentDialog = $('#frmMain_dialogState').val();
                 
                 setState(currentState);
-                console.log('Current State: ' + currentState);
-                $('#mpnResponseX').hide();
+                if(currentDialog == "0"){
+                    dlgParams = {};
+                    dlgParams.idMaintainedBy = "frmMain_idMaintainedBy";
+                    dlgParams.idMaintainedSpv = "frmMain_idMaintainedSpv";
+                    dlgParams.onSubmit = function() {
+                        $("#btnPosting").unsubscribe("btnPosting_beforeSubmit");
+                        $("#btnPosting").click();
+                    };
+                    $("#ph-dlg").dialog("option", "position", "center");
+                    $("#ph-dlg").dialog("option", "width", "320");
+                    $("#ph-dlg").dialog("option", "height", "180");
+                    $("#ph-dlg")
+                        .html("Please wait...")
+                        .unbind("dialogopen")
+                        .bind("dialogopen", function() {
+                            $("#aDlgAuth").click();
+                        })
+                        .dialog("open");
+                }
+                if(currentStatus == "0"){
+                    $('#mpnResponseX').hide();
+                }else{
+                    $('#mpnResponseX').show();
+                    $("#btnPosting").button("disable");
+                }
+                
                 $('#btnPayment').hide();
                 /* === [BEGIN] event hook === */
                 
@@ -1261,21 +1326,25 @@
                         console.log('STATE: ' + currentState);
                     }
                 }
-                $("#button_payment").unsubscribe("click");
-                $("#button_payment").subscribe("click", function (event) {
-                        $('#formPosting_billingId').attr('value', $('#frmPayment_billingId').val());
-                        $('#formPosting_paymentType').attr('value', $('#frmPayment_paymentType').val());
-                        $('#tempformPosting').click();
-                        
-                        var messaging = "Please Waiting Your Request . . . . .";
-                        waitingMessage(3, messaging, "divETaxAkhirLoad");
-                         
-                        $('#mpnResponseX').show();
-                        
-                        $("div[role='dialog']").find("div[id='divETaxAkhirLoad']")
-                                    .dialog("close")
-                                    .dialog("destroy");
-                });
+                $("#btnPosting")
+				.unsubscribe("btnPosting_beforeSubmit")
+				.subscribe("btnPosting_beforeSubmit", function(event) {
+					event.originalEvent.options.submit = false;
+                                        $("#errMsg").html("");
+                                        if (validateForm_frmMainAwal()) {
+                                            
+                                            $("#btnPosting").unsubscribe("btnPosting_beforeSubmit");
+                                            $("#btnPosting").click();
+                                            $("#frmMain_responseStatus").val(0);
+                                            $("#frmMain_dialogState").val(0);
+                                            
+                                            var messaging = "Please Waiting Your Request . . . . .";
+                                            waitingMessage(3, messaging, "divETaxAkhir");
+                                        }
+					else {
+						messageBoxClass(1, "divETaxAkhir", 'Please fill All Mandatory Field', function(){ $("#ph-main").scrollTop(0); });
+					}
+				});
             });
 
             function myDialog(eButton, title, eDialog, eId, eDesc, closeFunction) {

@@ -8,11 +8,14 @@ import bdsmhost.dao.BdsmEtaxPaymXrefDao;
 import bdsm.model.BdsmEtaxPaymXref;
 import bdsm.fcr.service.AccountService;
 import bdsm.fcr.service.DataMasterService;
+import bdsm.model.ETaxBillingInfo;
 import bdsm.model.ETaxInquiryBillingReq;
 import bdsm.model.ETaxInquiryBillingResp;
+import bdsm.model.MasterLimitEtax;
 import bdsm.model.Parameter;
 import bdsmhost.fcr.dao.DataMasterDAO;
 import bdsm.service.ETaxService;
+import bdsm.util.ClassConverterUtil;
 import bdsm.util.HibernateUtil;
 import bdsmhost.dao.ETaxCurrencyDao;
 import bdsmhost.dao.ParameterDao;
@@ -26,6 +29,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.apache.struts2.json.annotations.JSON;
 import org.hibernate.Session;
 
@@ -40,7 +44,8 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
     private String billingId;
     private String paymentType;
     private ETaxInquiryBillingReq inquiryReq;
-    private ETaxInquiryBillingResp inquiryResp;
+    private ETaxInquiryBillingResp etax;
+    private MasterLimitEtax limVal;
     private List currencyList;
     private String accountNo;
     private HashMap accountDetail;
@@ -49,20 +54,21 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
     private Integer currencyCode;
     private GLMaster glMaster;    
     private String codAuthid;
-    private String taxAmount;
+    private String amount;
     private String errCode;
     private String errDesc;
     private BdsmEtaxPaymXref epv;
+    private String idMaintainedBy;
+    private String idMaintainedSpv;
     
     public String PostingEtaxPaymentRequest() { 
         try
            {
                ETaxService etaxService = new ETaxService(this.getHSession());
-               etaxService.paymentBilling();
+               this.epv = etaxService.paymentBilling(etax);
            }catch(Exception ex)
            {
               this.getLogger().info("Exception: " + ex, ex);
-            return this.quitOfError(this.getErrorMessageFromException(ex));
            }
                       
         return SUCCESS;
@@ -81,7 +87,16 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
             inquiryReq.setUserId("ebanking");            
             
             ETaxService etaxService = new ETaxService(this.getHSession());
-            etaxService.inquiryBilling(inquiryReq);
+            this.etax = etaxService.inquiryBilling(inquiryReq);
+            if(paymentType.equalsIgnoreCase("1")){
+                this.etax.setPmtType("00");
+            }else if(paymentType.equalsIgnoreCase("2")){
+                this.etax.setPmtType("20");
+            }
+            else {
+                this.etax.setPmtType("40");
+            }
+            
             
             // get credit account
             getCreditAccount();
@@ -91,7 +106,7 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
             return this.quitOfError(this.getErrorMessageFromException(ex));
         }
 
-        this.getLogger().info("inquiryResp: " + this.inquiryResp);
+        this.getLogger().info("inquiryResp: " + this.etax);
 
         return SUCCESS;
     }
@@ -163,53 +178,50 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
     }
     
     public void validateLimitUser() {        
-       
-        
        // BigDecimal TotAmount = 0;
-        int limAmount;        
-       
-       codAuthid = epv.getCodAuthId();       
-       BigDecimal TotAmount = epv.getInqBillResp().getAmount();
-        
+       int limAmount;      
+       if(this.getIdMaintainedSpv().length() == 0){
+           codAuthid = this.getIdMaintainedBy();
+       }else{
+           codAuthid = this.getIdMaintainedSpv(); 
+       }
+       BigDecimal TotAmount = etax.getAmount();
         try
         {
             BdsmEtaxPaymXrefDao mleDao = new BdsmEtaxPaymXrefDao(this.getHSession());
             limAmount = mleDao.cleans(codAuthid, TotAmount);
             if (limAmount == 1)
             {
-                this.errCode = "0000";
-                this.errDesc = "Success";
+                this.setErrCode("0000");
+                this.setErrDesc("Success");
+                this.PostingEtaxPaymentRequest();
             } else if (limAmount == 99)
             {
-                this.errCode = "1000";
-                this.errDesc = "Template User Unauthorized to do transactions"; 
+                this.setErrCode("1000");
+                this.setErrDesc("Template User Unauthorized to do transactions"); 
                 
             } else if (limAmount == 97)
             {
-                this.errCode = "2000";
-                this.errDesc = "user limit will be exceed"; 
+                this.setErrCode("2000");
+                this.setErrDesc("user limit will be exceed"); 
             } else if (limAmount == 98)
             {
-                this.errCode = "3000";
-                this.errDesc = "Trx is greater then user limit"; 
+                this.setErrCode("3000");
+                this.setErrDesc("Trx is greater then user limit"); 
             } else
             {
-                this.errCode = "9999";
-                this.errDesc = "General Error"; 
+                this.setErrCode("9999");
+                this.setErrDesc("General Error"); 
             }
         }catch(Exception e)
         {
            this.getLogger().debug("Error Authorize Limit User: " + e, e);
-        }       
-        epv.getLimitVal().setErrCode(this.errCode);
-        epv.getLimitVal().setErrDesc(this.errDesc);
-    
-           
+        }
+        limVal = new MasterLimitEtax();
+        limVal.setErrCode(this.errCode);
+        limVal.setErrDesc(this.errDesc);
+        
     }
-    
-    
-    
-    
     
     private String getErrorMessageFromException(Exception ex) {
         Throwable t = ex;
@@ -304,12 +316,12 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
         this.paymentType = paymentType;
     }
 
-    public ETaxInquiryBillingResp getInquiryResp() {
-        return inquiryResp;
+    public ETaxInquiryBillingResp getEtax() {
+        return etax;
     }
 
-    public void setInquiryResp(ETaxInquiryBillingResp inquiryResp) {
-        this.inquiryResp = inquiryResp;
+    public void setEtax(ETaxInquiryBillingResp etax) {
+        this.etax = etax;
     }
 
     public ETaxInquiryBillingReq getInquiryReq() {
@@ -372,7 +384,102 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
         this.glMaster = glMaster;
     }
 
-   
-    
+    /**
+     * @return the epv
+     */
+    public BdsmEtaxPaymXref getEpv() {
+        return epv;
+    }
+
+    /**
+     * @param epv the epv to set
+     */
+    public void setEpv(BdsmEtaxPaymXref epv) {
+        this.epv = epv;
+    }
+
+    /**
+     * @return the idMaintainedBy
+     */
+    public String getIdMaintainedBy() {
+        return idMaintainedBy;
+    }
+
+    /**
+     * @param idMaintainedBy the idMaintainedBy to set
+     */
+    public void setIdMaintainedBy(String idMaintainedBy) {
+        this.idMaintainedBy = idMaintainedBy;
+    }
+
+    /**
+     * @return the idMaintainedSpv
+     */
+    public String getIdMaintainedSpv() {
+        return idMaintainedSpv;
+    }
+
+    /**
+     * @param idMaintainedSpv the idMaintainedSpv to set
+     */
+    public void setIdMaintainedSpv(String idMaintainedSpv) {
+        this.idMaintainedSpv = idMaintainedSpv;
+    }
+
+    /**
+     * @return the amount
+     */
+    public String getAmount() {
+        return amount;
+    }
+
+    /**
+     * @param amount the amount to set
+     */
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    /**
+     * @return the errCode
+     */
+    public String getErrCode() {
+        return errCode;
+    }
+
+    /**
+     * @param errCode the errCode to set
+     */
+    public void setErrCode(String errCode) {
+        this.errCode = errCode;
+    }
+
+    /**
+     * @return the errDesc
+     */
+    public String getErrDesc() {
+        return errDesc;
+    }
+
+    /**
+     * @param errDesc the errDesc to set
+     */
+    public void setErrDesc(String errDesc) {
+        this.errDesc = errDesc;
+    }
+
+    /**
+     * @return the limVal
+     */
+    public MasterLimitEtax getLimVal() {
+        return limVal;
+    }
+
+    /**
+     * @param limVal the limVal to set
+     */
+    public void setLimVal(MasterLimitEtax limVal) {
+        this.limVal = limVal;
+    }
     
 }

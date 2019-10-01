@@ -15,9 +15,10 @@
                     </td>
                     <td>
                         <s:textfield 
-                            name="billCode"
+                            name="epv.refNtb"
                             size="40"
                             cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                            disabled="true"
                             />
                     </td>
                     <td>
@@ -25,9 +26,10 @@
                     </td>
                     <td>
                         <s:textfield 
-                            name="ntpn"
+                            name="epv.refNtpn"
                             size="40"
                             cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                            disabled="true"
                             />
                     </td>
                 </tr>
@@ -37,19 +39,23 @@
                     </td>
                     <td>
                         <s:textfield 
-                            name="tanggalBuku"
+                            name="epv.dtmPost"
                             size="40"
                             cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                            disabled="true"
                             />
                     </td>
                     <td>
                         <s:label id="lbltanggalTransaksi" key="label.etax.tanggalTransaksi" />
                     </td>
+                    <s:hidden name ="epv.limitVal.errCode" />
+                    <s:hidden name ="epv.limitVal.errDesc" />
                     <td>
                         <s:textfield 
-                            name="tanggalTransaksi"
+                            name="epv.dtmTrx"
                             size="40"
                             cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                            disabled="true"
                             />
                     </td>
                 </tr>
@@ -59,9 +65,10 @@
                     </td>
                     <td>
                         <s:textfield 
-                            name="responseCode"
+                            name="epv.errCode"
                             size="40"
                             cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                            disabled="true"
                             />
                     </td>
                     <td>
@@ -69,9 +76,10 @@
                     </td>
                     <td>
                         <s:textfield 
-                            name="stan"
+                            name="epv.codStanId"
                             size="40"
                             cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                            disabled="true"
                             />
                     </td>
                 </tr>
@@ -81,9 +89,10 @@
                     </td>
                     <td>
                         <s:textfield 
-                            name="responseDescription"
+                            name="epv.errDesc"
                             size="40"
                             cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                            disabled="true"
                             />
                     </td>
                     <td>
@@ -91,9 +100,10 @@
                     </td>
                     <td>
                         <s:textfield 
-                            name="noRefTransaksi"
+                            name="epv.refUsrNo"
                             size="40"
                             cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                            disabled="true"
                             />
                     </td>
                 </tr>
@@ -114,5 +124,5 @@
                 </tbody>
             </table>
         </fieldset>
-       <s:token name="paymentToken"/>
+                        <s:token name="payment"/>
     </s:form>

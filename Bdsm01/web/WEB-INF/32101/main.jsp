@@ -787,6 +787,10 @@
             
         </fieldset>
         <div  id="btnPayment">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
         <sj:submit
             id="btnPosting"
             buttonIcon="ui-icon-gear"
@@ -795,7 +799,20 @@
             key="button.payment"
             onBeforeTopics="btnPosting_beforeSubmit"
             />
-            <br>
+                          </td>
+                           <td>
+                            <sj:submit
+                            id="btnCancelPayment"
+                            buttonIcon="ui-icon-gear"
+                            button="true"
+                            targets="ph-main"
+                            key="button.cancel"
+                            onBeforeTopics="btnCancelPayment_beforeSubmit"
+                            />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>    
         <div  id="mpnResponseX">               
             <s:include value="/WEB-INF/32102/main.jsp" > </s:include>
@@ -1468,7 +1485,6 @@
                 var currGlobalState = $("#frmView_globalState").val();
                 
                 $('#frmMain_state').val(globalState);
-                console.log("STATE FORM MAIN"+ $('#frmMain_state').val());
                 var currState = getState();
                 //console.log('currState: ' + currState + ', viewState: ' + viewState + ', currGlobalState: ' + currGlobalState + ', globalState: ' + globalState);
                 if(currState == viewState && currGlobalState == globalState) {
@@ -1747,11 +1763,12 @@
                         })
                         .dialog("open");
                 }
-                if(currentStatus == "0"){
+                if(currentStatus == "0" || currentStatus == ''){
                     $('#mpnResponseX').hide();
                 }else{
                     $('#mpnResponseX').show();
                     $("#btnPosting").button("disable");
+                    $("#btnCancelPayment").button("disable");
                 }
                 
                 $('#btnPayment').hide();
@@ -1782,6 +1799,9 @@
                     } else {
                         $('#formData_billingId').attr('value', $('#frmPayment_billingId').val());
                         $('#formData_paymentType').attr('value', $('#frmPayment_paymentType').val());
+                        $("#btnPosting").button("enable");
+                        $('#mpnResponseX').hide();
+                        $("#btnCancelPayment").button("enable");
                         $('#tempformData').click();
                         var messaging = "Please Waiting Your Request . . . . .";
                         waitingMessage(3, messaging, "divETaxAkhir");
@@ -1845,6 +1865,14 @@
                                     .dialog("destroy");
                         };
                     }
+                });
+                $("#btnCancelPayment").unsubscribe("click");
+                $("#btnCancelPayment").subscribe("click", function (event) {
+                    messageBoxOkCancelClear(3, "divETaxAkhirMess", '<s:text name="32101.cancel.confirmText" />', function () {
+                        setView(0, 0);
+                    }, function() {
+                        // no-op
+                    });
                 });
                 $("#btnCancel").unsubscribe("click");
                 $("#btnCancel").subscribe("click", function (event) {

@@ -88,14 +88,16 @@ public class ETaxService {
     }
 
    
-    public EtaxPaymentXrefResp paymentBilling(EtaxPaymentXrefReq request) throws Exception
+    public BdsmEtaxPaymXref paymentBilling(ETaxInquiryBillingResp etax) throws Exception
     {
-            Map<String, Object> mapData = this.buildInitialData(request, "ETAX_PMT", null); 
+            epv = new BdsmEtaxPaymXref();
+            Date dt =  new Date();
+            epv.setDtmRequest(dt);
+            Map<String, Object> mapData = this.buildInitialDataPaym(etax,"ETAX_PMT", null); 
             LOGGER.debug("ETax WS Endpoin: " + this.URL);
-            LOGGER.debug("ETax Request: " + request.toString());
+            //LOGGER.debug("ETax Request: " + epv.toString());
             LOGGER.debug("ETax mapData: " + mapData);
             Map<String, Object> result;
-            EtaxPaymentXrefResp resp = new EtaxPaymentXrefResp();
             try {
             LOGGER.debug("LOGGER requestWebService: " + mapData);
             result = this.requestWebService(mapData, "payment");
@@ -106,8 +108,149 @@ public class ETaxService {
             result.put("desc_status", "BDSM - " + ex.getMessage());
         }
             
+            LOGGER.debug("LOGGER responWebService: " + result.get("user_ref_no").toString());
             
-            return resp;
+            dt =  new Date();
+            try
+            {
+               epv.setRefUsrNo(etax.getRefNo());
+            }catch(Exception e)
+            {
+                 epv.setRefUsrNo("#####");
+            }
+            try
+            {
+                epv.setBillCode(etax.getBillingInfo().getBillingId());
+            }catch(Exception e)
+            {
+                epv.setBillCode("");
+            }
+            try
+            {
+                epv.setPaymentType(etax.getPmtType());
+            }catch(Exception e)
+            {
+                epv.setPaymentType("");
+            }
+            try
+            {
+                epv.setPaymentType(etax.getPmtType());
+            }catch(Exception e)
+            {
+                epv.setPaymentType("");
+            }
+            try
+            {
+                epv.setTaxCcy(result.get("ccy").toString());
+            }catch(Exception e)
+            {
+                epv.setTaxCcy("");
+            }
+            try
+            {
+                epv.setTaxAmount(etax.getAmount());
+            }catch(Exception e)
+            {
+                epv.setTaxAmount(BigDecimal.ZERO);
+            }
+            try
+            {
+                epv.setCodAcctNo(result.get("acct_no").toString());
+            }catch(Exception e)
+            {
+                epv.setCodAcctNo("");
+            }
+            try
+            {
+                epv.setCodAcctCcy(result.get("ccy").toString());
+            }catch(Exception e)
+            {
+                epv.setCodAcctCcy("");
+            }
+            try
+            {
+                epv.setCodTrxBrn(etax.getBranchCode());
+            }catch(Exception e)
+            {
+                epv.setCodTrxBrn("");
+            }
+            try
+            {
+                epv.setCodCcBrn(etax.getBranchCode());
+            }catch(Exception e)
+            {
+                epv.setCodCcBrn("");
+            }
+            try
+            {
+                epv.setCodUserId(etax.getBranchCode());
+            }catch(Exception e)
+            {
+                epv.setCodUserId("");
+            }
+            try
+            {
+                epv.setCodAuthId(etax.getBranchCode());
+            }catch(Exception e)
+            {
+                epv.setCodAuthId("");
+            }
+            epv.setDtmTrx(dt);
+            epv.setDtmResp(dt);
+            epv.setDtmPost(datF2.parse(datF2.format(dt)));
+            try
+            {
+                epv.setRefNtb(result.get("ntb").toString());
+            }catch(Exception e)
+                    {
+                        epv.setRefNtb("");
+                    }
+             try
+            {
+                epv.setRefNtpn(result.get("ntpn").toString());
+            }catch(Exception e)
+                    {
+                        epv.setRefNtpn("");
+                    }
+             try
+            {
+                epv.setCodStanId(result.get("stan").toString());
+            }catch(Exception e)
+                    {
+                        epv.setCodStanId("");
+                    }
+            try
+            {
+                epv.setCodSspcpNo(result.get("sspcp_no").toString());
+            }catch(Exception e)
+                    {
+                        epv.setCodSspcpNo("");
+                    }
+            try
+            {
+                epv.setErrCode(result.get("code_status").toString());
+            }catch(Exception e)
+                    {
+                        epv.setErrCode("");
+                    }
+            try
+            {
+                epv.setErrDesc(result.get("desc_status").toString());
+            }catch(Exception e)
+                    {
+                        epv.setErrDesc("");
+                    }
+            try
+            {
+                epv.setDtmPost(datF1.parse(dt.toString()));
+            }catch(Exception e)
+            {
+            }
+            if(epv.getErrCode().toString().equalsIgnoreCase("000000"))
+            {
+                (new SaveData(new BdsmEtaxPaymXrefDao(null), epv)).start();
+            }
+            return epv;
     }
     
     public ETaxInquiryBillingResp inquiryBilling(ETaxInquiryBillingReq request) throws Exception {

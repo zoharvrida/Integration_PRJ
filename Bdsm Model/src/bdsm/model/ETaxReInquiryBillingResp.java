@@ -7,7 +7,7 @@ import java.util.Date;
  * @author v00017250
  */
 @SuppressWarnings("serial")
-public class ETaxInquiryBillingResp extends BaseModel {
+public class ETaxReInquiryBillingResp extends BaseModel {
 
     /**
      * @return the ntb
@@ -63,8 +63,6 @@ public class ETaxInquiryBillingResp extends BaseModel {
     private String responseDesc;
     private Date responseTime;
     private String responseTimeString;
-    private String binNo;
-    private String pmtType;
     
     private String accountType;
     private String accountNo;
@@ -96,10 +94,6 @@ public class ETaxInquiryBillingResp extends BaseModel {
     private Long kppnAccountCcyCode;
     private String kppnAccountCcyName;
     private String kppnAccountName;
-    @Override
-    public String toString() {
-        return "ETaxInquiryBillingResp{" + "refNo=" + refNo + ", branchCode=" + branchCode + ", costCenter=" + costCenter + ", userId=" + userId + ", djpTS=" + djpTS + ", billingInfo=" + billingInfo + ", ccy=" + ccy + ", amount=" + amount + ", responseCode=" + responseCode + ", responseDesc=" + responseDesc + ", responseTime=" + responseTime + ", responseTimeString=" + responseTimeString + ", binNo=" + binNo + ", pmtType=" + pmtType + ", cashIdType=" + cashIdType + ", cashBranchGL=" + cashBranchGL + ", cashCustomerType=" + cashCustomerType + ", cashCustomerAddress=" + cashCustomerAddress + ", cashCustomerName=" + cashCustomerName + ", cashCustomerPhone=" + cashCustomerPhone + ", cashIdNo=" + cashIdNo + ", creditAccountName=" + creditAccountName + ", debitAccountName=" + debitAccountName + ", debitAccountNo=" + debitAccountNo + ", description=" + description + ", exchangeRate=" + exchangeRate + ", glAccountName=" + glAccountName + ", glAccountNo=" + glAccountNo + ", nominalLCE=" + nominalLCE + ", creditNominalLCE=" + creditNominalLCE + ", nomorKPPN=" + nomorKPPN + ", trxCurrency=" + trxCurrency + ", kppnAccountNo=" + kppnAccountNo + ", kppnAccountCcyCode=" + kppnAccountCcyCode + ", kppnAccountCcyName=" + kppnAccountCcyName + ", kppnAccountName=" + kppnAccountName + '}';
-    }
     
     protected static String stringMax(String input, int max) {
         if ((input != null) && (input.length() > max)) {
@@ -265,18 +259,6 @@ public class ETaxInquiryBillingResp extends BaseModel {
         this.responseTimeString = responseTimeString;
     }
 
-    public String getBinNo() {
-        return binNo;
-    }
-    public void setBinNo(String binNo) {
-        this.binNo = binNo;
-    }
-    public String getPmtType() {
-        return pmtType;
-    }
-    public void setPmtType(String pmtType) {
-        this.pmtType = pmtType;
-    }
     public String getCashIdType() {
         return cashIdType;
     }
@@ -567,5 +549,37 @@ public class ETaxInquiryBillingResp extends BaseModel {
         this.kppnAccountName = kppnAccountName;
     }
 
+    /**
+     * @return the accountType
+     */
+    public String getAccountType() {
+        return accountType;
+    }
+
+    /**
+     * @param accountType the accountType to set
+     */
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
+
+    /**
+     * @return the accountNo
+     */
+    public String getAccountNo() {
+        return accountNo;
+    }
+
+    /**
+     * @param accountNo the accountNo to set
+     */
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo;
+    }
+
+    @Override
+    public String toString() {
+        return "ETaxInquiryBillingResp{" + "refNo=" + refNo + ", accountType=" + accountType + ", accountNo=" + accountNo + ", branchCode=" + branchCode + ", costCenter=" + costCenter + ", userId=" + userId + ", djpTS=" + djpTS + ", billingInfo=" + billingInfo + ", ccy=" + ccy + ", amount=" + amount + ", responseCode=" + responseCode + ", responseDesc=" + responseDesc + '}';
+    }
 
 }

@@ -14,7 +14,7 @@ import org.hibernate.criterion.Restrictions;
 
 /**
  *
- * @author bdsm
+ * @author v00017250
  */
 public class ETaxCurrencyDao extends BaseDao{
 

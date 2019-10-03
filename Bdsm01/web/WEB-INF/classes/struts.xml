@@ -20,6 +20,7 @@
             </interceptor>
             <interceptor name="validation"
                          class="org.apache.struts2.interceptor.validation.AnnotationValidationInterceptor"/>
+
             <interceptor-stack name="timerStack">
                 <interceptor-ref name="timerInterceptor" />
                 <interceptor-ref name="tokenSession">
@@ -47,10 +48,10 @@
                 <interceptor-ref name="defaultStack" />
             </interceptor-stack>
         </interceptors>
-
+        
         <default-interceptor-ref name="timerStack" />
 
-
+        
         <global-results>
             <result name="title_">/WEB-INF/title.jsp</result>
             <result name="error">/WEB-INF/errorPage.jsp</result>            
@@ -69,7 +70,7 @@
             <result name="error">/WEB-INF/error.jsp</result>
             <result name="loginerror">/WEB-INF/loginerror.jsp</result>
         </action>
-
+        
         <action name="logout" class="bdsm.web.login.LogoutAction">
             <interceptor-ref name="timerStack"></interceptor-ref>
             <result name="success">/WEB-INF/logout.jsp</result>
@@ -192,7 +193,7 @@
             <result name="error">/WEB-INF/error.jsp</result>
         </action>
         <!-- Menu 10304 end -->   
-
+    
         <!-- Menu 12201 start -->
         <action name="12201_*" method="{1}" class="bdsm.rpt.web.Menu12201.Menu12201Action">
             <interceptor-ref name="tokenTimerStack" />
@@ -260,7 +261,7 @@
                 <param name="inputName">fileInputStream</param>
                 <param name="contentDisposition">attachment;filename="${fileName}"</param>
                 <param name="bufferSize">1024</param>
-            </result>            
+            </result>
             <result name="downloaderror" type="stream">
                 <param name="contentType">text/plain</param>
                 <param name="inputName">fileInputStream</param>
@@ -302,7 +303,7 @@
             <!--<result name="schedStatus">/WEB-INF/13301/schedStatus.jsp</result>-->
         </action>
         <!-- Menu 13302 end -->
-
+                
         <!-- Menu 20201 start -->
         <action name="20201_*" method="{1}" class="bdsm.web.menu20201.Menu20201Action">
             <interceptor-ref name="timerStack"></interceptor-ref>
@@ -447,7 +448,7 @@
             <result name="none">/WEB-INF/nosession.jsp</result>
             <result name="error">/WEB-INF/error.jsp</result>
         </action>
-
+        
         <action name="22201Tab_*" method="{1}" class="bdsm.web.menu22201.Menu22201TabAction">
             <interceptor-ref name="timerStack"></interceptor-ref>
             <result name="input">/WEB-INF/22201/tabContent.jsp</result>
@@ -466,7 +467,7 @@
             <result name="none">/WEB-INF/nosession.jsp</result>
             <result name="error">/WEB-INF/error.jsp</result>
         </action>
-
+        
         <action name="23201Tab_*" method="{1}" class="com.opensymphony.xwork2.ActionSupport">
             <interceptor-ref name="timerStack"></interceptor-ref>
             <result name="success">/WEB-INF/23201/tabInquiry.jsp</result>
@@ -525,7 +526,7 @@
             <result name="input">/WEB-INF/23204/tabApproval.jsp</result>
         </action>
         <!-- Menu 23204 end -->
-
+        
         <!-- Menu 23205 start -->
         <action name="23205_*" method="{1}" class="bdsm.web.menu23205.Menu23205Action">
             <interceptor-ref name="tokenTimerStack" />
@@ -542,7 +543,7 @@
             <result name="input">/WEB-INF/23205/tabApproval.jsp</result>
         </action>        
         <!-- Menu 23205 end -->
-
+        
         <!-- Menu 23206 start -->
         <action name="23206_*" method="{1}" class="bdsm.web.menu23206.Menu23206Action">
             <interceptor-ref name="tokenTimerStack" />
@@ -559,7 +560,7 @@
             <result name="input">/WEB-INF/23206/tabDetail.jsp</result>
         </action> 
         <!-- Menu 23206 end -->
-
+        
         <!-- Menu 23207 start -->
         <action name="23207_*" method="{1}" class="bdsm.web.menu23207.Menu23207Action">
             <interceptor-ref name="tokenTimerStack" />
@@ -603,7 +604,7 @@
             <result name="accountNoLookup">/WEB-INF/23301/accountNoLookup.jsp</result>
         </action>
         <!-- Menu 23301 end -->
-
+        
         <!-- Menu 23401 start -->
         <action name="23401_*" method="{1}" class="bdsm.web.menu23401.Menu23401Action">
             <interceptor-ref name="timerStack"></interceptor-ref>
@@ -615,7 +616,7 @@
             <result name="error">/WEB-INF/error.jsp</result>
         </action>    
         <!-- Menu 23401 end -->
-
+                        
         <!-- Menu 23402 start -->
         <action name="23402_*" method="{1}" class="bdsm.web.menu23402.Menu23402Action">
             <interceptor-ref name="timerStack"></interceptor-ref>
@@ -627,7 +628,7 @@
             <result name="error">/WEB-INF/error.jsp</result>
         </action>    
         <!-- Menu 23402 end -->
-
+        
         <!-- Menu 23403 start -->
         <action name="23403_*" method="{1}" class="bdsm.web.menu23403.Menu23403Action">
             <interceptor-ref name="timerStack"></interceptor-ref>
@@ -954,11 +955,13 @@
         </action>
         <!-- Menu 31302 end -->
         
-        <action name="32101_*" method="{1}" class="bdsm.web.menu32101.Menu32101ActionTemp">
+        <!-- Menu 32101 start -->
+        <action name="32101_*" method="{1}" class="bdsm.web.menu32101.Menu32101Action">
             <interceptor-ref name="timerStack"></interceptor-ref>
             <result name="buttons">/WEB-INF/32101/buttons.jsp</result>
             <result name="input">/WEB-INF/32101/main.jsp</result>
             <result name="success">/WEB-INF/32101/inquiryBilling.jsp</result>
+            <result name="reinquiry">/WEB-INF/32101/reInquiryBilling.jsp</result>
             <result name="blank">/WEB-INF/blank.jsp</result>
             <result name="inquiryAcct">/WEB-INF/32101/inquiryAccount.jsp</result>
         </action>
@@ -1419,6 +1422,12 @@
         <action name="30503_*" method="{1}" class="bdsm.web.menu30503.Menu30503Action">
             <result type="json" />
         </action>
+        
+        <action name="32101_*" method="{1}" class="bdsm.dialog.json.Dialog32101Action">
+            <result type="json">
+                <param name="ignoreHierarchy">false</param>
+            </result>
+        </action>   
 
         <action name="SknNgFinInstRoutingAutoCompleter_*" method="{1}" class="bdsm.dialog.json.SknNgFinInstRoutingAutoCompleterAction">
             <result type="json">

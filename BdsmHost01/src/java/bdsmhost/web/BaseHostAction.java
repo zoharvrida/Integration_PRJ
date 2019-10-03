@@ -403,6 +403,7 @@ public abstract class BaseHostAction extends ActionSupport implements ServletCon
                     if (this.tx != null) this.tx.rollback();
                 }
                 finally {
+                    
                     closeSession();
                 }
             }
@@ -415,7 +416,10 @@ public abstract class BaseHostAction extends ActionSupport implements ServletCon
     }
     
     protected void closeSession() {
-        HibernateUtil.closeSession(this.hsession);
+        if (this.hsession.isOpen()){
+        HibernateUtil.closeSession(this.hsession);        
+        }
+    
     }
     
 

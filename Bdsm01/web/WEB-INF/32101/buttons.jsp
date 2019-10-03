@@ -31,11 +31,15 @@
                         //setView(0, 0);
                     }, 
                     function() {
-                        console.log('RDB onChange 2, state: ' + getState() + ', supposed state: ' + getSupposedState());
+                        var _state = getStateReInq();
+                        if(_state == -1) {
+                            _state = 0;
+                        }
+                        console.log('RDB onChange 2, state: ' + _state);
                         changeAction("frmMain", "32101", "_reinquiry");
 
                         $(".cls-row-button").hide();
-                        setView(1, 0);
+                        setView(1, _state);
                     }
                 );
 		

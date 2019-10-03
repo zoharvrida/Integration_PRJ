@@ -15,7 +15,6 @@ import bdsm.model.EtaxPaymentXrefReq;
 import bdsm.model.EtaxPaymentXrefResp;
 import bdsm.model.ETaxReInquiryBillingReq;
 import bdsm.model.ETaxReInquiryBillingResp;
-
 import static bdsm.util.EncryptionUtil.getAES;
 import static bdsm.util.EncryptionUtil.hashSHA256;
 
@@ -63,6 +62,7 @@ public class ETaxService {
     private DecimalFormat decF = new DecimalFormat("#");
     private SimpleDateFormat datF1 = new SimpleDateFormat("yyyyMMddHHmmss");
     private SimpleDateFormat datF2 = new SimpleDateFormat("dd/MMM/yyyy HH:mm:ss");
+    private SimpleDateFormat datF3 = new SimpleDateFormat("MMddyy");
 
     private BdsmEtaxPaymXref epv;
     private MasterLimitEtax limVal;

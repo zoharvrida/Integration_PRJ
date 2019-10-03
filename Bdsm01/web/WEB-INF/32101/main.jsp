@@ -150,10 +150,6 @@
             <hr class="ui-widget-content" />
         </fieldset>
     </s:form>
-
-
-    
-
     
     <div id="divETaxAkhir"></div>
     <div id="divETaxPelunasanMessage"></div>
@@ -1736,7 +1732,6 @@
             }
             function setStateReInq(state) {
                 $("#frmMainReInquiry_state").val(state);
-
             }
             jQuery(document).ready(function () {
                 var currentState = <s:property value="%{state}" />;

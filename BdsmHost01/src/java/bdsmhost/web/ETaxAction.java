@@ -4,6 +4,8 @@ package bdsmhost.web;
 import bdsm.fcr.model.BaCcyCode;
 import bdsm.fcr.model.ChAcctMast;
 import bdsm.fcr.model.GLMaster;
+import bdsm.model.MasterLimitEtax;
+import bdsmhost.dao.MasterLimitEtaxDao;
 import bdsmhost.dao.BdsmEtaxPaymXrefDao;
 import bdsm.model.BdsmEtaxPaymXref;
 import bdsm.fcr.service.AccountService;
@@ -13,7 +15,6 @@ import bdsm.model.ETaxInquiryBillingReq;
 import bdsm.model.ETaxInquiryBillingResp;
 import bdsm.model.ETaxReInquiryBillingReq;
 import bdsm.model.ETaxReInquiryBillingResp;
-import bdsm.model.MasterLimitEtax;
 import bdsm.model.Parameter;
 import bdsmhost.fcr.dao.DataMasterDAO;
 import bdsm.service.ETaxService;
@@ -48,6 +49,8 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
     private ETaxInquiryBillingReq inquiryReq;
     private ETaxInquiryBillingResp etax;
     private MasterLimitEtax limVal;
+    private ETaxReInquiryBillingReq reInquiryReq;
+    private ETaxReInquiryBillingResp reInquiryResp;
     private List currencyList;
     private String accountNo;
     private HashMap accountDetail;
@@ -109,6 +112,32 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
         }
 
         this.getLogger().info("inquiryResp: " + this.etax);
+
+        return SUCCESS;
+    }
+
+    public String reInquiryBilling() {
+        LOGGER.info("BILLING ID: " + getBillingId());
+
+        try {
+            reInquiryReq = new ETaxReInquiryBillingReq();
+            reInquiryReq.setBillingId(billingId);
+            reInquiryReq.setBranchCode("09233");
+            reInquiryReq.setCostCenter("09233");
+            reInquiryReq.setUserId("ebanking");            
+            
+            ETaxService etaxService = new ETaxService(this.getHSession());
+            this.reInquiryResp = etaxService.reinquiryBilling(reInquiryReq);
+            
+            // get credit account
+            //getCreditAccount();
+            
+        } catch (Exception ex) {
+            this.getLogger().info("Exception: " + ex, ex);
+            return this.quitOfError(this.getErrorMessageFromException(ex));
+        }
+
+        this.getLogger().info("reInquiryResp: " + this.reInquiryResp);
 
         return SUCCESS;
     }
@@ -412,6 +441,7 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
         this.glMaster = glMaster;
     }
 
+
     /**
      * @return the epv
      */
@@ -508,6 +538,22 @@ public class ETaxAction extends ModelDrivenBaseHostAction<Object> {
      */
     public void setLimVal(MasterLimitEtax limVal) {
         this.limVal = limVal;
+
+    public ETaxReInquiryBillingReq getReInquiryReq() {
+        return reInquiryReq;
+    }
+
+    public void setReInquiryReq(ETaxReInquiryBillingReq reInquiryReq) {
+        this.reInquiryReq = reInquiryReq;
+    }
+
+    public ETaxReInquiryBillingResp getReInquiryResp() {
+        return reInquiryResp;
+    }
+
+    public void setReInquiryResp(ETaxReInquiryBillingResp reInquiryResp) {
+        this.reInquiryResp = reInquiryResp;
+
     }
     
 }

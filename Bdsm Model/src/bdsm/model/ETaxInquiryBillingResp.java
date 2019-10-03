@@ -72,6 +72,12 @@ public class ETaxInquiryBillingResp extends BaseModel {
     private String ntpn;
     private String stan;
     
+    private String accountType;
+    private String accountNo;
+    private String ntb;
+    private String ntpn;
+    private String stan;
+    
     private String cashIdType;
     private String cashBranchGL;
     private String cashCustomerType;
@@ -567,5 +573,37 @@ public class ETaxInquiryBillingResp extends BaseModel {
         this.kppnAccountName = kppnAccountName;
     }
 
+    /**
+     * @return the accountType
+     */
+    public String getAccountType() {
+        return accountType;
+    }
+
+    /**
+     * @param accountType the accountType to set
+     */
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
+
+    /**
+     * @return the accountNo
+     */
+    public String getAccountNo() {
+        return accountNo;
+    }
+
+    /**
+     * @param accountNo the accountNo to set
+     */
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo;
+    }
+
+    @Override
+    public String toString() {
+        return "ETaxInquiryBillingResp{" + "refNo=" + refNo + ", accountType=" + accountType + ", accountNo=" + accountNo + ", branchCode=" + branchCode + ", costCenter=" + costCenter + ", userId=" + userId + ", djpTS=" + djpTS + ", billingInfo=" + billingInfo + ", ccy=" + ccy + ", amount=" + amount + ", responseCode=" + responseCode + ", responseDesc=" + responseDesc + '}';
+    }
 
 }

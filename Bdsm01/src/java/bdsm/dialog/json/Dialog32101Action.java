@@ -111,7 +111,7 @@ public class Dialog32101Action extends BaseDialogAction {
     public String listCustomerTypes() throws Exception {
         HashMap<String, String> params = new HashMap<String, String>();
         params.put("token", BdsmUtil.generateToken(getTokenKey(), getTzToken()));
-        params.put("master", "WICCustomer");
+        params.put("master", "mpnCustomerType");
         params.put("like", "");
         this.getLogger().info("PARAM " + params);
 

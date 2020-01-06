@@ -65,6 +65,7 @@
     <s:hidden name="mandatory" id="mandatory"></s:hidden>
     <s:hidden name="maxLength" id="maxLength"></s:hidden>
     <s:hidden name="regexp" id="regexp"></s:hidden>
+    <s:hidden name="customQuery" id="customQuery"></s:hidden>
     <s:hidden name="escape" id="escape"></s:hidden>
 
     <s:hidden name="validCo" id="validCo"></s:hidden>

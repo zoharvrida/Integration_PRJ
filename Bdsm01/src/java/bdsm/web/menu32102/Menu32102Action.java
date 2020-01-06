@@ -2,12 +2,21 @@ package bdsm.web.menu32102;
 
 import bdsm.model.BdsmEtaxPaymXref;
 import bdsm.model.ETaxInquiryBillingResp;
+import bdsm.model.EtaxPrint;
 import bdsm.model.MasterLimitEtax;
+import bdsm.util.BdsmUtil;
 import bdsm.util.ClassConverterUtil;
 import bdsm.web.ModelDrivenBaseContentAction;
+import static com.opensymphony.xwork2.Action.ERROR;
 import static com.opensymphony.xwork2.Action.SUCCESS;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.apache.struts2.json.JSONUtil;
 
 /**
@@ -16,39 +25,14 @@ import org.apache.struts2.json.JSONUtil;
  */
 @SuppressWarnings("serial")
 public class Menu32102Action extends ModelDrivenBaseContentAction<Object> {
-private String billCode;
-private String paymentType;
-private String taxPayeeNo;
-private String taxPayeeName;
-private String taxPayeeAddr;
-private String taxCcy;
-private int taxAmount;
-private String taxPayeeAcct;
-private String codAcctNo;
-private String codAcctCcy;
-private String codTrxBrn;
-private String codCcBrn;
-private String refNtb;
-private String refNtpn;
-private String codStanId;
-private String codSspcpNo;
-private String codUserId;
-private String codAuthId;
-private String refUsrNo;
-private Date dtmTrx;
-private Date dtmRequest;
-private Date dtmResp;
-private Date dtmPost;
-private String errCode;
-private String errDesc;
-private BdsmEtaxPaymXref mdp =  new BdsmEtaxPaymXref();
 
-
-    private BdsmEtaxPaymXref epv ;
+    private BdsmEtaxPaymXref epv;
+    private String idTrx;
     private String idMaintainedBy;
     private String idMaintainedSpv;
     private ETaxInquiryBillingResp etax;
     private MasterLimitEtax limVal;
+    private EtaxPrint etaxPrint;
     private String state;
     private String responseStatus;
     private String contentData;
@@ -63,36 +47,106 @@ private BdsmEtaxPaymXref mdp =  new BdsmEtaxPaymXref();
             Map<String, String> requestMap = this.createParameterMapFromHTTPRequest();
             requestMap.put("methodName", "validateLimitUser");
             requestMap.put("idMaintainedBy", this.getIdMaintainedBy());
-            Map<String, ? extends Object> resultMap = this.callHostHTTPRequest("ETAX", "callMethod", requestMap,this.getTokenKey(),this.getTzToken());
+            Map<String, ? extends Object> resultMap = this.callHostHTTPRequest("ETAX", "callMethod", requestMap, this.getTokenKey(), this.getTzToken());
             Map viewData = (Map) resultMap.get("epv");
-            if(viewData == null) {
+            if (viewData == null) {
                 viewData = new HashMap();
             }
             Map limitInfo = (Map) resultMap.get("limVal");
-            
+
             this.epv = new BdsmEtaxPaymXref();
             ClassConverterUtil.MapToClass(viewData, this.epv);
-            
+
             MasterLimitEtax limit = new MasterLimitEtax();
             ClassConverterUtil.MapToClass(limitInfo, limit);
             this.epv.setLimitVal(limit);
-            
+
             this.getLogger().debug("Error Code: " + this.epv.getLimitVal().getErrCode().toString());
             this.getLogger().debug("Error Desc: " + this.epv.getLimitVal().getErrDesc().toString());
-            if(!this.epv.getLimitVal().getErrCode().toString().equalsIgnoreCase("0000")){
+            if (!this.epv.getLimitVal().getErrCode().toString().equalsIgnoreCase("0000")) {
                 setDialogState("0");
                 setResponseStatus("0");
-            }else{
+            } else {
+                if (this.epv.getErrCode().equalsIgnoreCase("000000") || this.epv.getErrCode().equalsIgnoreCase("000050")
+                        || this.epv.getErrCode().equalsIgnoreCase("481050")) {
+                    setResponseStatus("1");
+                    setDialogState("1");
+                } else {
+                    setResponseStatus("2");
+                    setDialogState("1");
+                }
                 this.setContentData(JSONUtil.serialize(this.epv));
-                setResponseStatus("1");
-                setDialogState("1");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            this.getLogger().debug("Error Authorize Limit User: " +getEpv().getLimitVal().getErrDesc().toString()+ e, e);
+            this.getLogger().debug("Error Authorize Limit User: " + getEpv().getLimitVal().getErrDesc().toString() + e, e);
         }
 
         return SUCCESS;
+    }
+
+    public final String reqPrint() {
+        this.getLogger().info("[Begin] Print Request");
+        try {
+            if (isValidSession()) {
+                return this.reqPrint_();
+            } else {
+                return logout();
+            }
+        } catch (Throwable e) {
+            this.getLogger().fatal(e, e);
+            return ERROR;
+        } finally {
+            this.getLogger().info("[ End ] Print Request");
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public String reqPrint_() {
+        try {
+            Map<String, String> requestMap = this.createParameterMapFromHTTPRequest();
+            requestMap.put("methodName", "printBPN");
+            requestMap.put("idTrx", this.getIdTrx());
+
+            Map<String, ? extends Object> resultMap = this.callHostHTTPRequest("ETAX", "callMethod", requestMap);
+            Map viewData = (Map) resultMap.get("etaxPrint");
+            if (viewData == null) {
+                viewData = new HashMap();
+            }
+
+            this.etaxPrint = new EtaxPrint();
+            ClassConverterUtil.MapToClass(viewData, this.etaxPrint);
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            DateFormat dateFormat1 = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date date = dateFormat.parse(this.etaxPrint.getTglBayar());
+            String result = dateFormat1.format(date);
+            this.etaxPrint.setTglBayar(result);
+            this.setContentData(JSONUtil.serialize(this.etaxPrint));
+
+            // Change yyyy-MM-ddTHH:mm:ss into dd MMMM yyyy
+            Pattern pattern = Pattern.compile("\\d{4}[-]\\d{2}[-]\\d{2}T\\d{2}:\\d{2}:\\d{2}");
+            Matcher matcher = pattern.matcher(this.contentData);
+            DateFormat dateFormatter1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            DateFormat dateFormatter2 = new SimpleDateFormat("dd/MM/yyyy", new java.util.Locale("in", "ID"));
+            StringBuffer sb = new StringBuffer();
+
+            while (matcher.find()) {
+                String g = matcher.group();
+                try {
+                    Date d = dateFormatter1.parse(g);
+                    String strReplace = dateFormatter2.format(d);
+
+                    matcher.appendReplacement(sb, strReplace);
+                } catch (ParseException e) {
+                }
+            }
+            matcher.appendTail(sb);
+            this.contentData = sb.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            this.getLogger().debug("Error Print BPN: " + e, e);
+        }
+        return "result";
     }
 
     @Override
@@ -108,361 +162,11 @@ private BdsmEtaxPaymXref mdp =  new BdsmEtaxPaymXref();
     @Override
     public String doDelete() {
         throw new UnsupportedOperationException("Not supported yet.");
-    }   
+    }
 
     @Override
     public Object getModel() {
         return null;
-    }  
-
-    /**
-     * @return the billCode
-     */
-    public String getBillCode() {
-        return billCode;
-    }
-
-    /**
-     * @param billCode the billCode to set
-     */
-    public void setBillCode(String billCode) {
-        this.billCode = billCode;
-    }
-
-    /**
-     * @return the paymentType
-     */
-    public String getPaymentType() {
-        return paymentType;
-    }
-
-    /**
-     * @param paymentType the paymentType to set
-     */
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
-    }
-
-    /**
-     * @return the taxPayeeNo
-     */
-    public String getTaxPayeeNo() {
-        return taxPayeeNo;
-    }
-
-    /**
-     * @param taxPayeeNo the taxPayeeNo to set
-     */
-    public void setTaxPayeeNo(String taxPayeeNo) {
-        this.taxPayeeNo = taxPayeeNo;
-    }
-
-    /**
-     * @return the taxPayeeName
-     */
-    public String getTaxPayeeName() {
-        return taxPayeeName;
-    }
-
-    /**
-     * @param taxPayeeName the taxPayeeName to set
-     */
-    public void setTaxPayeeName(String taxPayeeName) {
-        this.taxPayeeName = taxPayeeName;
-    }
-
-    /**
-     * @return the taxPayeeAddr
-     */
-    public String getTaxPayeeAddr() {
-        return taxPayeeAddr;
-    }
-
-    /**
-     * @param taxPayeeAddr the taxPayeeAddr to set
-     */
-    public void setTaxPayeeAddr(String taxPayeeAddr) {
-        this.taxPayeeAddr = taxPayeeAddr;
-    }
-
-    /**
-     * @return the taxCcy
-     */
-    public String getTaxCcy() {
-        return taxCcy;
-    }
-
-    /**
-     * @param taxCcy the taxCcy to set
-     */
-    public void setTaxCcy(String taxCcy) {
-        this.taxCcy = taxCcy;
-    }
-
-    /**
-     * @return the taxAmount
-     */
-    public int getTaxAmount() {
-        return taxAmount;
-    }
-
-    /**
-     * @param taxAmount the taxAmount to set
-     */
-    public void setTaxAmount(int taxAmount) {
-        this.taxAmount = taxAmount;
-    }
-
-    /**
-     * @return the taxPayeeAcct
-     */
-    public String getTaxPayeeAcct() {
-        return taxPayeeAcct;
-    }
-
-    /**
-     * @param taxPayeeAcct the taxPayeeAcct to set
-     */
-    public void setTaxPayeeAcct(String taxPayeeAcct) {
-        this.taxPayeeAcct = taxPayeeAcct;
-    }
-
-    /**
-     * @return the codAcctNo
-     */
-    public String getCodAcctNo() {
-        return codAcctNo;
-    }
-
-    /**
-     * @param codAcctNo the codAcctNo to set
-     */
-    public void setCodAcctNo(String codAcctNo) {
-        this.codAcctNo = codAcctNo;
-    }
-
-    /**
-     * @return the codAcctCcy
-     */
-    public String getCodAcctCcy() {
-        return codAcctCcy;
-    }
-
-    /**
-     * @param codAcctCcy the codAcctCcy to set
-     */
-    public void setCodAcctCcy(String codAcctCcy) {
-        this.codAcctCcy = codAcctCcy;
-    }
-
-    /**
-     * @return the codTrxBrn
-     */
-    public String getCodTrxBrn() {
-        return codTrxBrn;
-    }
-
-    /**
-     * @param codTrxBrn the codTrxBrn to set
-     */
-    public void setCodTrxBrn(String codTrxBrn) {
-        this.codTrxBrn = codTrxBrn;
-    }
-
-    /**
-     * @return the codCcBrn
-     */
-    public String getCodCcBrn() {
-        return codCcBrn;
-    }
-
-    /**
-     * @param codCcBrn the codCcBrn to set
-     */
-    public void setCodCcBrn(String codCcBrn) {
-        this.codCcBrn = codCcBrn;
-    }
-
-    /**
-     * @return the refNtb
-     */
-    public String getRefNtb() {
-        return refNtb;
-    }
-
-    /**
-     * @param refNtb the refNtb to set
-     */
-    public void setRefNtb(String refNtb) {
-        this.refNtb = refNtb;
-    }
-
-    /**
-     * @return the refNtpn
-     */
-    public String getRefNtpn() {
-        return refNtpn;
-    }
-
-    /**
-     * @param refNtpn the refNtpn to set
-     */
-    public void setRefNtpn(String refNtpn) {
-        this.refNtpn = refNtpn;
-    }
-
-    /**
-     * @return the codStanId
-     */
-    public String getCodStanId() {
-        return codStanId;
-    }
-
-    /**
-     * @param codStanId the codStanId to set
-     */
-    public void setCodStanId(String codStanId) {
-        this.codStanId = codStanId;
-    }
-
-    /**
-     * @return the codSspcpNo
-     */
-    public String getCodSspcpNo() {
-        return codSspcpNo;
-    }
-
-    /**
-     * @param codSspcpNo the codSspcpNo to set
-     */
-    public void setCodSspcpNo(String codSspcpNo) {
-        this.codSspcpNo = codSspcpNo;
-    }
-
-    /**
-     * @return the codUserId
-     */
-    public String getCodUserId() {
-        return codUserId;
-    }
-
-    /**
-     * @param codUserId the codUserId to set
-     */
-    public void setCodUserId(String codUserId) {
-        this.codUserId = codUserId;
-    }
-
-    /**
-     * @return the codAuthId
-     */
-    public String getCodAuthId() {
-        return codAuthId;
-    }
-
-    /**
-     * @param codAuthId the codAuthId to set
-     */
-    public void setCodAuthId(String codAuthId) {
-        this.codAuthId = codAuthId;
-    }
-
-    /**
-     * @return the refUsrNo
-     */
-    public String getRefUsrNo() {
-        return refUsrNo;
-    }
-
-    /**
-     * @param refUsrNo the refUsrNo to set
-     */
-    public void setRefUsrNo(String refUsrNo) {
-        this.refUsrNo = refUsrNo;
-    }
-
-    /**
-     * @return the dtmTrx
-     */
-    public Date getDtmTrx() {
-        return dtmTrx;
-    }
-
-    /**
-     * @param dtmTrx the dtmTrx to set
-     */
-    public void setDtmTrx(Date dtmTrx) {
-        this.dtmTrx = dtmTrx;
-    }
-
-    /**
-     * @return the dtmRequest
-     */
-    public Date getDtmRequest() {
-        return dtmRequest;
-    }
-
-    /**
-     * @param dtmRequest the dtmRequest to set
-     */
-    public void setDtmRequest(Date dtmRequest) {
-        this.dtmRequest = dtmRequest;
-    }
-
-    /**
-     * @return the dtmResp
-     */
-    public Date getDtmResp() {
-        return dtmResp;
-    }
-
-    /**
-     * @param dtmResp the dtmResp to set
-     */
-    public void setDtmResp(Date dtmResp) {
-        this.dtmResp = dtmResp;
-    }
-
-    /**
-     * @return the dtmPost
-     */
-    public Date getDtmPost() {
-        return dtmPost;
-    }
-
-    /**
-     * @param dtmPost the dtmPost to set
-     */
-    public void setDtmPost(Date dtmPost) {
-        this.dtmPost = dtmPost;
-    }
-
-    /**
-     * @return the errCode
-     */
-    public String getErrCode() {
-        return errCode;
-    }
-
-    /**
-     * @param errCode the errCode to set
-     */
-    public void setErrCode(String errCode) {
-        this.errCode = errCode;
-    }
-
-    /**
-     * @return the errDesc
-     */
-    public String getErrDesc() {
-        return errDesc;
-    }
-
-    /**
-     * @param errDesc the errDesc to set
-     */
-    public void setErrDesc(String errDesc) {
-        this.errDesc = errDesc;
     }
 
     /**
@@ -479,7 +183,7 @@ private BdsmEtaxPaymXref mdp =  new BdsmEtaxPaymXref();
         this.idMaintainedSpv = idMaintainedSpv;
     }
 
-        /**
+    /**
      * @return the idMaintainedBy
      */
     public String getIdMaintainedBy() {
@@ -492,6 +196,7 @@ private BdsmEtaxPaymXref mdp =  new BdsmEtaxPaymXref();
     public void setIdMaintainedBy(String idMaintainedBy) {
         this.idMaintainedBy = idMaintainedBy;
     }
+
     /**
      * @return the etax
      */
@@ -589,6 +294,32 @@ private BdsmEtaxPaymXref mdp =  new BdsmEtaxPaymXref();
     public void setDialogState(String dialogState) {
         this.dialogState = dialogState;
     }
-    
-    
+
+    /**
+     * @return the etaxPrint
+     */
+    public EtaxPrint getEtaxPrint() {
+        return etaxPrint;
+    }
+
+    /**
+     * @param etaxPrint the etaxPrint to set
+     */
+    public void setEtaxPrint(EtaxPrint etaxPrint) {
+        this.etaxPrint = etaxPrint;
+    }
+
+    /**
+     * @return the idTrx
+     */
+    public String getIdTrx() {
+        return idTrx;
+    }
+
+    /**
+     * @param idTrx the idTrx to set
+     */
+    public void setIdTrx(String idTrx) {
+        this.idTrx = idTrx;
+    }
 }

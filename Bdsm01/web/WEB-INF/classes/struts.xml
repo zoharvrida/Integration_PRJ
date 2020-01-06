@@ -969,13 +969,16 @@
         </action>
 		<!-- Menu 32101 end -->
 		
+       <!-- Menu 32102 start -->
         <action name="32102_*" method="{1}" class="bdsm.web.menu32102.Menu32102Action">
             <interceptor-ref name="tokenTimerStack" />
             <result name="buttons">/WEB-INF/32102/buttons.jsp</result>
             <result name="input">/WEB-INF/32102/main.jsp</result>
             <result name="success">/WEB-INF/32101/main.jsp</result>
+            <result name="result">/WEB-INF/32102/result.jsp</result>
             <result name="blank">/WEB-INF/blank.jsp</result>
         </action>
+        <!-- Menu 32102 end -->
         
         <!-- Dialog start -->
         <action name="dlg" class="bdsm.dialog.DialogAction">

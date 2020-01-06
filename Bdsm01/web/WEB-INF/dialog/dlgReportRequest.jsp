@@ -49,6 +49,7 @@
     var arrayMax = new Array();
     var arrayMandatory = new Array();
     var arrayFormat = new Array();
+    var arrayCustomQuery = new Array();
     var arraySession = new Array('cdBranch','idTemplate','namUser','idUser','dtBusiness');
     var maximumLength = 100;
     
@@ -65,7 +66,7 @@
         return arrayParams;
         //return param;
     }
-    function getTextField(labelArray,maxlengthArray,mandatory,formating,regExp){
+    function getTextField(labelArray,maxlengthArray,mandatory,formating,regExp,customQuery){
         var mainTab = document.getElementById("frmMain");
         var table = mainTab.getElementsByTagName('table')[1];
         var tRealBody = table.getElementsByTagName('tbody')[0];
@@ -115,6 +116,9 @@
                     spanSep.appendChild(separator);
                 }
                 textfield.setAttribute("id","parameter"+i);
+                if(customQuery[i] != "default"){
+                    textfield.setAttribute("value",customQuery[i]);
+                }
                 textfield.setAttribute("class","ui-widget ui-widget-content");
                 textfield.setAttribute("size", maxlengthArray[i]);
                 textfield.setAttribute("maxLength", maxlengthArray[i]);
@@ -177,7 +181,7 @@
             }
             labelParams = {};
             labelParams.idReport = $(data).jqGrid("getCell", event.originalEvent.id, "IDREPORT");
-            labelParams.onClose = function(parameter,format,mandatory,maxLength,regexp){
+            labelParams.onClose = function(parameter,format,mandatory,maxLength,customQuery,regexp){
                 
                 if(parameter == ""){
                     $("#params").val("");
@@ -189,6 +193,7 @@
                     $("#mandatory").val(mandatory);
                     $("#maxLength").val(maxLength);
                     $("#regexp").val(regexp);
+                    $("#customQuery").val(customQuery);
                 }
                 
                 arrayLab = SeparatorParameter(parameter);
@@ -196,6 +201,7 @@
                 arrayMandatory = SeparatorParameter(mandatory);
                 arrayFormat = SeparatorParameter(format);
                 arrayRegexp = SeparatorParameter(regexp);
+                arrayCustomQuery = SeparatorParameter(customQuery);
                 var counter = 0;
                 for(var i = 0; i < arrayMandatory.length; i++){
                     if(arrayMandatory[i] != "H"){
@@ -203,7 +209,7 @@
                     }
                 }
                 //arrayLab = MandatoryValidation(arrayLab,arrayMandatory);
-                getTextField(arrayLab,arrayMax,arrayMandatory,arrayFormat,arrayRegexp);
+                getTextField(arrayLab,arrayMax,arrayMandatory,arrayFormat,arrayRegexp,arrayCustomQuery);
                 $("#dummy").val(arrayLab.length);
                 $("#dummyNoHide").val(counter);
                 counter = 0;

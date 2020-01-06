@@ -4,6 +4,7 @@
  */
 package bdsmhost.web;
 
+import bdsm.rpt.dao.FixMasterReportDao;
 import bdsm.rpt.dao.FixReportParamDao;
 import bdsm.rpt.dao.FixReportReqMasterDao;
 import bdsm.rpt.dao.FixReportReqParamsDao;
@@ -78,6 +79,7 @@ public class FixReportParamAction extends BaseHostAction {
         FixReportParamDao dao = new FixReportParamDao(getHSession());
 
         setModelList(dao.list(getModel().getCompositeId().getIdReport()));
+        getLogger().info("ID REPORT REQUEST :" +getModel().getCompositeId().getIdReport());
         //List<FixReportParam> lList = dao.list(getModel().getCompositeId().getIdReport());
         //getLogger().info("ModelList = " + lList);
         //getLogger().info("modelnya  = " + lList.get(0));
@@ -128,6 +130,9 @@ public class FixReportParamAction extends BaseHostAction {
         getLogger().info("nama Template :" + getNamTemplate());
         getLogger().info("QID :" + modelQ.getqId());
         
+        FixMasterReportDao masterReportDao = new FixMasterReportDao(this.getHSession());
+        modelR = masterReportDao.get(String.valueOf(modelM.getIdReport()));
+        
         mainParam.append(getIdUser()).append("~");
 
         mainParam.append(getModelQ().getIdScheduler()).append("~");
@@ -158,7 +163,11 @@ public class FixReportParamAction extends BaseHostAction {
             } catch (Exception e) {
 
             }
-            mainParam.append(FileUtil.getDateTimeFormatedString(reportfileresult + "{yyMMdd-HHmmss}")).append("~");
+            if("Y".equalsIgnoreCase(modelR.getTimestamp())){
+                mainParam.append(FileUtil.getDateTimeFormatedString(reportfileresult + "{yyMMdd-HHmmss}")).append("~");
+            }else{
+                mainParam.append(reportfileresult).append("~");
+            }
         }
         mainParam.append(getModelM().getIdReport()).append("~");
         mainParam.append(modelR.getRemarks()).append("~");

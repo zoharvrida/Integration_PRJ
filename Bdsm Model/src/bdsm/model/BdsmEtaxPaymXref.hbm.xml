@@ -1,41 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC 
-"-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
-"classpath://org/hibernate/hibernate-mapping-3.0.dtd" >
-<hibernate-mapping>
-    <class name="bdsm.model.BdsmEtaxPaymXref" table="BDSM_ETAX_PAYM_XREF" lazy="false">        
-        <property name="billCode"        column="BILL_CODE"         type="string" />
-        <property name="paymentType"    column="PAYMENT_TYPE"    type="string" />
-        <property name="taxPayeeNo" column="TAX_PAYEE_NO" type="String"   />
-        <property name="taxPayeeName"     column="TAX_PAYEE_NAME"      type="string"   />
-        <property name="taxPayeeAddr" column="TAX_PAYEE_ADDR" type="string"   />
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>    
+    <class name="bdsm.model.BdsmEtaxPaymXref" table="BDSM_ETAX_PAYM_XREF" lazy="false"> 
+        <composite-id>
+            <key-property name="billCode"        column="BILL_CODE"         type="string" />           
+        </composite-id>   
+        <property name="paymentType"    column="PAYMENT_TYPE"    type="string" />        
         <property name="taxCcy" column="TAX_CCY" type="string"   />
-        <property name="taxAmount" column="TAX_AMOUNT" type="Integer"   />
-        <property name="taxPayeeAcct" column="TAX_PAYEE_ACCT" type="string"   />
+        <property name="taxAmount" column="TAX_AMOUNT" type="big_decimal"   />        
         <property name="codAcctNo" column="COD_ACCT_NO" type="string"   />
         <property name="codAcctCcy" column="COD_ACCT_CCY" type="string"   />
         <property name="codTrxBrn" column="COD_TRX_BRN" type="string"   />
-        <property name="codCcBrn" column="COD_CC_BRN" type="string"   />
-        <property name="refNtb" column="REF_NTB" type="string"   />
-        <property name="refNtpn" column="REF_NTPN" type="string"   />
-        <property name="codStanId" column="COD_STAN_ID" type="string"   />
-        <property name="codSspcpNo" column="COD_SSPCP_NO" type="string"   />
+        <property name="codCcBrn" column="COD_CC_BRN" type="string"   />        
         <property name="codUserId" column="COD_USER_ID" type="string"   />
-        <property name="codAuthId" column="COD_AUTH_ID" type="string"   />
-        <property name="refUsrNo" column="REF_USR_NO" type="string"   />
+        <property name="codAuthId" column="COD_AUTH_ID" type="string"   />        
         <property name="dtmTrx" column="DTM_TRX" type="date"   />
         <property name="dtmRequest" column="DTM_REQUEST" type="date"   />
         <property name="dtmResp" column="DTM_RESP" type="date"   />
         <property name="dtmPost" column="DTM_POST" type="date"   />
-    </class>
-    
-    <query name="MasterLimitEtax#getLimitUser">
-		<![CDATA[
-			SELECT sumLimit
-			  FROM MasterLimitEtax 
-                          where idUser = :pIdUser
-			  
-		]]>
-   </query>
-    
+    </class>   
 </hibernate-mapping>

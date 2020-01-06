@@ -349,6 +349,12 @@ function filterKeysAlphabet() {
     });
 };
 
+function filterKeysAlphabetNumeric() {
+    filterKeys(".cls-alphabet-numeric", function(e, elemText_, char_) {
+        if (!char_.match(/[0-9a-zA-Z ]/))
+            e.preventDefault();
+    });
+};
 function filterKeysAlphabetSpace() {
     filterKeys(".cls-alphabet-spc", function(e, elemText_, char_) {
         if (!char_.match(/[a-z\. ]/i))
@@ -590,6 +596,50 @@ function dateTextToDate(dtText) {
     
     return dt;
 }
+
+function messageBoxOkCancel2(type, element ,message, onOkFunction, onCancelFunction) {
+    var title = "";
+    var icon = "";
+    if (type == 1) {
+        title = "Warning";
+        icon = "ui-icon-alert";
+    }
+    else if (type == 2) {
+        title = "Error";
+        icon = "ui-icon-circle-close";
+    }
+    else if (type == 3) {
+        title = "Information";
+        icon = "ui-icon-info";
+    }    
+    $("#" + element)
+        .html("<p style='text-align: center; vertical-align: middle'>" + message + "</p>")
+        .dialog({
+        open: function() {                         // open event handler
+            $(this)                                // the element being dialogged
+            .parent()                          // get the dialog widget element
+            .find(".ui-dialog-titlebar-close") // find the close button for this dialog
+            .hide();                           // hide it
+        },
+            modal: true,
+            title: '<span class="ui-icon ' + icon + '" style="float:left; margin:0 7px 0px 0;"></span>' + title,
+            resizable: false,
+            autoOpen:false,
+            buttons: {
+                Ok: function() {
+                    if ((onOkFunction != undefined) && (typeof onOkFunction == 'function'))
+                        onOkFunction();
+                    $(this).dialog("close");
+                },
+                Cancel: function() {
+                    if ((onCancelFunction != undefined) && (typeof onCancelFunction == 'function'))
+                        onCancelFunction();
+                    $(this).dialog("close");
+                }
+            }
+        })
+        .dialog("open");
+};
 
 function messageBoxOkCancelClear(type, element ,message, onOkFunction, onCancelFunction, onClearFunction) {
     var title = "";

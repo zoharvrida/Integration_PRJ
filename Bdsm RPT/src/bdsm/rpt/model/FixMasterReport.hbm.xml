@@ -11,6 +11,7 @@
       <property name="reportName"     column="reportName"     type="string"/>
       <property name="paramCount"     column="paramCount"     type="string"/>
       <property name="remarks"        column="remarks"        type="string"/>
+      <property name="timestamp"      column="timestamp"      type="string"/>
    </class>
 </hibernate-mapping>
 

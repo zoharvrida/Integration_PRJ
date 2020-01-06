@@ -914,5 +914,14 @@
 			 ORDER BY ctr_lov_order
 		]]>
 	</sql-query>
-
+    
+    <sql-query name="fcrDataMaster#mpnCustomerType">
+		<![CDATA[
+			SELECT txt_lov_value, txt_lov_name 
+			  FROM bdsm_lov_mast 
+			 WHERE cod_field_tag = 'TXT_MPN_CUST' || :like ||'_TYPE'
+			 ORDER BY ctr_lov_order
+		]]>
+	</sql-query>
+    
 </hibernate-mapping>

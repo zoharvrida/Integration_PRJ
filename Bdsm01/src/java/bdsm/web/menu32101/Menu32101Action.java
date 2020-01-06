@@ -2,12 +2,14 @@ package bdsm.web.menu32101;
 
 import bdsm.model.ETaxBillingInfo;
 import bdsm.model.ETaxInquiryBillingResp;
+import bdsm.model.EtaxPrint;
 import bdsm.util.BdsmUtil;
 import java.util.Map;
 
 import org.apache.struts2.json.JSONUtil;
 
 import bdsm.util.ClassConverterUtil;
+import bdsm.web.Constant;
 import bdsm.web.ModelDrivenBaseContentAction;
 import static com.opensymphony.xwork2.Action.ERROR;
 import static com.opensymphony.xwork2.Action.INPUT;
@@ -40,6 +42,7 @@ public class Menu32101Action extends ModelDrivenBaseContentAction<Object> {
     private ETaxInquiryBillingResp etax;
     private String noAccount;
     private String typeAccount;
+    private String reinqStatus;
 
     public Menu32101Action() {
     }
@@ -115,11 +118,12 @@ public class Menu32101Action extends ModelDrivenBaseContentAction<Object> {
         requestMap.put("methodName", "inquiryBilling");
         requestMap.put("billingId", this.getBillingId());
         requestMap.put("paymentType", String.valueOf(this.paymentType));
+        requestMap.put("codeBranchGl", this.session.get(Constant.C_CODEBRANCH).toString());
 
         try {
             Map<String, ? extends Object> resultMap = this.callHostHTTPRequest("ETAX", "callMethod", requestMap);
             this.getLogger().debug("Result Map: " + resultMap);
-            Map viewData = (Map) resultMap.get("inquiryResp");
+            Map viewData = (Map) resultMap.get("etax");
             if(viewData == null) {
                 viewData = new HashMap();
             }
@@ -242,6 +246,7 @@ public class Menu32101Action extends ModelDrivenBaseContentAction<Object> {
         Map<String, String> requestMap = this.createParameterMapFromHTTPRequest();
         requestMap.put("methodName", "reInquiryBilling");
         requestMap.put("billingId", this.getBillingId());
+        requestMap.put("codeBranchGl", this.session.get(Constant.C_CODEBRANCH).toString());
 
         try {
             Map<String, ? extends Object> resultMap = this.callHostHTTPRequest("ETAX", "callMethod", requestMap);
@@ -254,15 +259,26 @@ public class Menu32101Action extends ModelDrivenBaseContentAction<Object> {
             if (viewData.containsKey("billingInfo")) {
                 billingInfo = (Map) viewData.get("billingInfo");
             }
+            
+            Map printInfo = null;
+            if (viewData.containsKey("etaxPrint")) {
+                printInfo = (Map) viewData.get("etaxPrint");
+            }
             Map objData = (Map) resultMap.get("objData");
             this.getLogger().debug("viewData: " + viewData);
 
             this.etax = new ETaxInquiryBillingResp();
             ClassConverterUtil.MapToClass(viewData, this.etax);
+            
             if (billingInfo != null) {
                 ETaxBillingInfo info = new ETaxBillingInfo();
                 ClassConverterUtil.MapToClass(billingInfo, info);
                 this.etax.setBillingInfo(info);
+            }
+            if (printInfo != null) {
+                EtaxPrint info = new EtaxPrint();
+                ClassConverterUtil.MapToClass(printInfo, info);
+                this.etax.setEtaxPrint(info);
             }
             etax.setExchangeRate(1);
             
@@ -287,6 +303,11 @@ public class Menu32101Action extends ModelDrivenBaseContentAction<Object> {
             }
             this.etax.setCashBranchGL(String.valueOf(session.get("cdBranch")));
             
+            if(this.etax.getResponseDesc().equalsIgnoreCase("SUCCESS")){
+                setReinqStatus("1");
+            }else{
+                setReinqStatus("0");
+            }
             //setAmount(etax.getAmount());
             this.getLogger().debug("etax : " + this.etax);
             this.getLogger().debug("etax response time: " + this.etax.getResponseTimeString());
@@ -444,6 +465,20 @@ public class Menu32101Action extends ModelDrivenBaseContentAction<Object> {
 
     public void setTypeAccount(String typeAccount) {
         this.typeAccount = typeAccount;
+    }
+
+    /**
+     * @return the reinqStatus
+     */
+    public String getReinqStatus() {
+        return reinqStatus;
+    }
+
+    /**
+     * @param reinqStatus the reinqStatus to set
+     */
+    public void setReinqStatus(String reinqStatus) {
+        this.reinqStatus = reinqStatus;
     }
     
 

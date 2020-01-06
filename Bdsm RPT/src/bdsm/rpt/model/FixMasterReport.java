@@ -16,6 +16,7 @@ public class FixMasterReport extends BaseModel {
     private String reportName;
     private String paramCount;
     private String remarks;
+    private String timestamp;
     /**
      * @return the namScheduler
      */
@@ -25,8 +26,9 @@ public class FixMasterReport extends BaseModel {
 
     @Override
     public String toString() {
-        return "FixMasterReport{" + "compositeId=" + compositeId + ", namScheduler=" + namScheduler + ", reportName=" + reportName + ", paramCount=" + paramCount + ", remarks=" + remarks + '}';
+        return "FixMasterReport{" + "compositeId=" + compositeId + ", namScheduler=" + namScheduler + ", reportName=" + reportName + ", paramCount=" + paramCount + ", remarks=" + remarks + ", timestamp=" + timestamp + '}';
     }
+
     
     /**
      * @param namScheduler the namScheduler to set
@@ -89,5 +91,19 @@ public class FixMasterReport extends BaseModel {
      */
     public void setCompositeId(FixMasterReportPK compositeId) {
         this.compositeId = compositeId;
+    }
+
+    /**
+     * @return the timestamp
+     */
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    /**
+     * @param timestamp the timestamp to set
+     */
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 }

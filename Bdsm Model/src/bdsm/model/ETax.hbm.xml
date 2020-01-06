@@ -35,4 +35,122 @@
     </class>
     <!-- Query -->
     
+    <sql-query name="RekeningKoran#getData">
+        <query-param name="acctNo" type="string" />
+        <query-param name="startDate" type="string" />
+        <query-param name="endDate" type="string" />
+        <return-scalar  column="SenderName" type="string" />            
+        <return-scalar  column="ReceiverName" type="string" />
+        <return-scalar  column="CreationDateTime" type="string" />
+        <return-scalar column="MessageIdentifier" type="string" />
+        <return-scalar column="MessageType" type="string" />
+        <return-scalar column="BankCode" type="string" />
+        <return-scalar column="VersionText" type="string" />
+        <return-scalar column="BankAccountNumber" type="string" />
+        <return-scalar column="BankStatementDate" type="string" />
+        <return-scalar column="Currency" type="string" />
+        <return-scalar column="BeginningBalance" type="string" />
+        <return-scalar column="EndingBalance" type="string" />
+        <return-scalar column="LineNumber" type="string" />
+        <return-scalar column="BankTransactionCode" type="string" />
+        <return-scalar column="DebitCredit" type="string" />
+        <return-scalar column="BankReferenceNumber" type="string" />
+        <return-scalar column="TransactionDate" type="string" />
+        <return-scalar column="ValueDate" type="string" />
+        <return-scalar column="OriginalAmount" type="string" />
+        <![CDATA[
+                SELECT 
+                (select STRVAL from parameter where cdparam = 'MPN.RekKoran.SenderName') as SenderName,
+                (select STRVAL from parameter where cdparam = 'MPN.RekKoran.ReceiverName') as ReceiverName,
+                to_char(sysdate,'yyyymmdd:HH24MIss') as CreationDateTime,
+                (select STRVAL from parameter where cdparam = 'DANAMON_BANK_CODE')||'_BS_I_'||(select STRVAL from parameter where cdparam = 'ETAX_KPPN_ACCT_NO1')||'_'||(to_char(sysdate,'yyyymmdd'))||'_'||(to_char(sysdate,'HH24MIss')) as MessageIdentifier,
+                (select STRVAL from parameter where cdparam = 'MPN.RekKoran.MessageType') as MessageType,
+                (select STRVAL from parameter where cdparam = 'DANAMON_BANK_CODE') as BankCode,
+                (select STRVAL from parameter where cdparam = 'MPN.RekKoran.VersionText') as VersionText,
+                (select STRVAL from parameter where cdparam = 'ETAX_KPPN_ACCT_NO1') as BankAccountNumber,
+                to_char(a.dat_post, 'yyyy-mm-dd') as BankStatementDate,
+                (select c.nam_ccy_short from ba_ccy_code c where c.cod_ccy = a.cod_txn_ccy) as Currency,
+                nvl((select d.amt_acct from tmp_casa_ballance d where d.cod_acct_no = a.cod_acct_no and trunc(d.dat_txn) = (select dat_process from ba_bank_mast)),0)as BeginningBalance,
+                nvl((select d.amt_acct from tmp_casa_ballance d where d.cod_acct_no = a.cod_acct_no and trunc(d.dat_txn) = (select dat_process from ba_bank_mast)),0)as EndingBalance,
+                row_number () over (order by a.dat_txn) as LineNumber,
+                a.ref_txn_no as BankTransactionCode,
+                a.cod_drcr as DebitCredit,
+                b.billing_id as BankReferenceNumber,
+                to_char(a.dat_txn, 'yyyy-mm-dd') as  TransactionDate,
+                to_char(a.dat_value, 'yyyy-mm-dd') as  ValueDate,
+                a.amt_txn as OriginalAmount     
+                from           
+                ch_nobook a
+                LEFT JOIN etax_trx b ON trim(a.ref_usr_no) = (b.user_ref_no)  
+                and b.response_desc_etax = 'SUCCESS'
+                and b.response_desc_ncbs = 'SUCCESS'
+                and b.response_desc_djp = 'SUCCESS'
+                where trunc(to_date(to_char(a.dat_txn,'ddMMrr'),'ddMMrr')) between to_date(:startDate,'ddMMrr') and to_date(:endDate,'ddMMrr') 
+                and a.cod_acct_no = cast(:acctNo as char(16))
+                order by a.dat_txn
+        ]]>
+    </sql-query>
+    <sql-query name="LHPREPORT#getData">
+        <query-param name="tanggalBuku" type="string" />
+        <query-param name="ccyCode" type="string" />
+        <return-scalar  column="TanggalBuku" type="string" />            
+        <return-scalar  column="BankCode" type="string" />
+        <return-scalar  column="BankName" type="string" />
+        <return-scalar column="AccountNumber" type="string" />
+        <return-scalar column="CcyCode" type="string" />
+        <return-scalar column="RecordCount" type="string" />
+        <return-scalar column="TotalAmount" type="string" />
+        <return-scalar column="NoSakti" type="string" />
+        <return-scalar column="TotalAmountIDR" type="string" />
+        <![CDATA[
+                SELECT 
+                to_char(a.tanggal_buku,'yyyyMMdd') as TanggalBuku,
+                a.benef_bi_cod as BankCode,
+                (select strval from parameter where cdparam like 'MPN.BankName')as BankName,
+                a.cod_acct_no as AccountNumber,
+                a.ccy_code as CcyCode,
+                a.trx_record_count as RecordCount,
+                a.trx_total_amount as TotalAmount,
+                a.no_sakti as NoSakti,
+                a.trx_total_amount_idr as TotalAmountIDR
+                FROM etax_pelimpahan a
+                WHERE to_char(a.tanggal_buku,'ddMMyyyy') = :tanggalBuku
+                and ccy_code = UPPER(:ccyCode)
+        ]]>
+    </sql-query>
+     <sql-query name="DNPREPORT#getData">
+        <query-param name="tanggalBuku" type="string" />
+        <query-param name="ccyCode" type="string" />
+        <return-scalar column="Strval" type="string" />            
+        <return-scalar column="TrxDateTime" type="string" />
+        <return-scalar column="TrxHourTime" type="string" />
+        <return-scalar column="TanggalBuku" type="string" />
+        <return-scalar column="BillingId" type="string" />
+        <return-scalar column="Ntb" type="string" />
+        <return-scalar column="Ntpn" type="string" />
+        <return-scalar column="JmlSetoran" type="string" />
+        <return-scalar column="MataUang" type="string" />
+        <return-scalar column="NoSk" type="string" />
+        <![CDATA[
+                SELECT
+                (select strval from parameter where cdparam like 'DANAMON_BANK_CODE') as Strval,
+                to_char(a.trx_datetime,'ddMMyy') as TrxDateTime,
+                to_char(a.trx_datetime,'HHMM') as TrxHourTime,
+                to_char(a.tanggal_buku, 'ddMMyy') as TanggalBuku,
+                a.billing_id as BillingId,
+                a.ntb as Ntb,
+                a.ntpn as Ntpn,
+                a.trx_amount as JmlSetoran,
+                b.ccy_code as MataUang,
+                b.no_sakti as NoSk
+                from etax_trx a, etax_pelimpahan b
+                where to_char(a.tanggal_buku, 'ddMMyyyy') = :tanggalBuku
+                and b.ccy_code = UPPER(:ccyCode)
+                and a.id_pelimpahan = b.id_pelimpahan
+                and a.response_desc_etax = 'SUCCESS'
+                and a.response_desc_ncbs = 'SUCCESS'
+                and a.response_desc_djp = 'SUCCESS'
+        ]]>
+    </sql-query>
+    
 </hibernate-mapping>

@@ -74,6 +74,12 @@ public class BDSM_EOD_BOD extends BDSMScheduler2 {
 	protected void execute() {
 		Session session = null;
 		try {
+            try {
+                LOGGER.info("FIX 2 EOD:" + System.getProperty("server.Name"));
+                LOGGER.info("CUSTOM EOD:" + System.getenv("server.Name"));
+            } catch (Exception e) {
+                LOGGER.info("ENVIRONMENT VARIABLE DOESN'T EXIST : EOD");
+            }
 			session = HibernateUtil.getSession();
 			this.eventDAO.setSession(session);
 			this.bankMastDAO.setSession(session);

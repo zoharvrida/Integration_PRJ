@@ -9,8 +9,6 @@ import bdsm.util.HttpUtil;
 import bdsm.rpt.web.BaseContentAction;
 import com.opensymphony.xwork2.ActionSupport;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.apache.struts2.json.JSONException;
 import org.apache.struts2.json.JSONUtil;
@@ -34,6 +32,7 @@ public class Menu12201Action extends BaseContentAction {
 	private String mandatory;
 	private String maxLength;
 	private String regexp;
+        private String customQuery;
 	private String idMaintainedBy;
 	private String idMaintainedSpv;
 	private String user;
@@ -84,6 +83,7 @@ public class Menu12201Action extends BaseContentAction {
 		StringBuilder regExpString = new StringBuilder();
 		StringBuilder mandatoryString = new StringBuilder();
 		StringBuilder maxLengthString = new StringBuilder();
+    	StringBuilder customQueryString = new StringBuilder();
 		getLogger().info("[Begin] Parameter Label Change()");
 		try {
 			if (isValidSession()) {
@@ -98,6 +98,7 @@ public class Menu12201Action extends BaseContentAction {
 				String regExp;
 				String manDatory;
 				String maXLength;
+                String CustomQuery;
 				int paramTemp = 0;
 				int last;
 				String reqResult = null;
@@ -124,6 +125,7 @@ public class Menu12201Action extends BaseContentAction {
 							regExp = (String) mapModel.get("regExp");
 							manDatory = (String) mapModel.get("manDatory");
 							maXLength = (String) mapModel.get("maxLength");
+                            CustomQuery = (String) mapModel.get("customQuery");
 							parameterString.append(temp).append(";");
 							getLogger().info("temp :" + temp);
 							if (forMat == null) {
@@ -142,10 +144,14 @@ public class Menu12201Action extends BaseContentAction {
 							if (regExp == null) {
 								regExp = "default";
 							}
+	                        if (CustomQuery == null ){
+	                                CustomQuery = "default";
+	                        }
 							maxLengthString.append(maXLength).append(";");
 							formatString.append(forMat).append(";");
 							regExpString.append(regExp).append(";");
 							mandatoryString.append(manDatory).append(";");
+                            customQueryString.append(CustomQuery).append(";");
 							getLogger().info("format :" + forMat);
 							getLogger().info("escape :" + regExp);
 						}
@@ -155,6 +161,7 @@ public class Menu12201Action extends BaseContentAction {
 					mandatory = mandatoryString.toString();
 					maxLength = maxLengthString.toString();
 					regexp = regExpString.toString();
+                    setCustomQuery(customQueryString.toString());
 
 					getLogger().info(parameter);
 					getLogger().info(getFormat());
@@ -565,4 +572,18 @@ public class Menu12201Action extends BaseContentAction {
 	public void setNamTemplate(String namTemplate) {
 		this.namTemplate = namTemplate;
 	}
+
+    /**
+     * @return the customQuery
+     */
+    public String getCustomQuery() {
+        return customQuery;
+    }
+
+    /**
+     * @param customQuery the customQuery to set
+     */
+    public void setCustomQuery(String customQuery) {
+        this.customQuery = customQuery;
+    }
 }

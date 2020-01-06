@@ -538,6 +538,16 @@ public final class PropertyPersister {
      */
     public static Integer timeoutHttp;
     
+    public static String cashGlAccountNo;
+    
+    public static String glAccountNo;
+    
+    public static String userId;
+    
+    public static String codAcctNo;
+    
+    public static Map<String, String> ccyCode = new java.util.HashMap<String, String>();
+    
 	static {
 		System.setProperty("javax.xml.parsers.SAXParserFactory",
 				"com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl");
@@ -755,6 +765,12 @@ public final class PropertyPersister {
 		KTPMAX = Integer.parseInt(getValue("ktpMaxQuery", list).toString());
 		sKHTAge = parseKeyAndValueToMap(getValue("SISKOHAT.Haji.Age", list).toString());
         timeoutHttp = Integer.parseInt(getValue("TIMEOUT_HTTP",list).toString());
+        cashGlAccountNo = getValue("MPN.CashGlAccountNo",list).toString();
+        glAccountNo = getValue("MPN.GlAccountNo",list).toString();
+        userId = getValue("MPN.UserId",list).toString();
+        codAcctNo = getValue("MPN.RekKoran.CodAcctNo",list).toString();
+        ccyCode = parseKeyAndValueToMap(getValue("MPN.CcyCode", list).toString());
+                
 		/* Refresh Classes that need to be refreshed */
 		try {
 			ClassLoader CL = Thread.currentThread().getContextClassLoader();

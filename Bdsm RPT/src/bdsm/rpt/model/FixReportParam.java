@@ -17,6 +17,7 @@ public class FixReportParam extends BaseModel {
     private String maxLength;
     private String manDatory;
     private String regExp;
+    private String customQuery;
     
         /**
      * @return title idReport
@@ -99,5 +100,19 @@ public class FixReportParam extends BaseModel {
      */
     public void setRegExp(String regExp) {
         this.regExp = regExp;
+    }
+
+    /**
+     * @return the customQuery
+     */
+    public String getCustomQuery() {
+        return customQuery;
+    }
+
+    /**
+     * @param customQuery the customQuery to set
+     */
+    public void setCustomQuery(String customQuery) {
+        this.customQuery = customQuery;
     }
 }

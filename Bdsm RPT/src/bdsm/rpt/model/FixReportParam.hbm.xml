@@ -11,5 +11,6 @@
     <property column="maxLength" name="maxLength" type="string"/>
     <property column="manDatory" name="manDatory" type="string"/>
     <property column="regExp" name="regExp" type="string"/>
+    <property column="custom_query" name="customQuery" type="string"/>
   </class>
 </hibernate-mapping>

@@ -43,6 +43,12 @@ public class FolderWatcher2 {
 		LOGGER.info("[START] Observing Folder");
 		long sleep = PropertyPersister.fileTimeout;
 		
+        try {
+                LOGGER.info("FIX 2 FILE:" + System.getProperty("server.Name"));
+                LOGGER.info("CUSTOM FILE:" + System.getenv("server.Name"));
+            } catch (Exception e) {
+                LOGGER.info("ENVIRONMENT VARIABLE DOESN'T EXIST : FILE");
+            }
 		// Getting folder list being watched
 		List<FixFolderWatcher> fixFolderWatcherList = this.getFixFolderWatcherList();
 		this.folderWatcherDataMap = new HashMap<File, Map<String, Object>>(fixFolderWatcherList.size());

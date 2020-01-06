@@ -8,6 +8,7 @@ import bdsm.model.BaseModel;
 import bdsm.rpt.model.FixReportParam;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -25,7 +26,23 @@ public class FixReportParamDao extends BaseDao {
         Criteria criteriaQuery = getSession().createCriteria(FixReportParam.class);
         criteriaQuery.add(Restrictions.eq("compositeId.idReport",idReport));
         criteriaQuery.addOrder(Order.asc("compositeId.seq"));
-        return criteriaQuery.list();
+        List<FixReportParam> result = criteriaQuery.list();
+        try {
+            for (FixReportParam fixReportParam : result) {
+                if (fixReportParam.getCustomQuery() != null && fixReportParam.getCustomQuery().length() > 0) {
+                    String tempQuery = fixReportParam.getCustomQuery();
+                    Query query = getSession().createSQLQuery(tempQuery);
+                    try {
+                        fixReportParam.setCustomQuery((String) query.uniqueResult());
+                    } catch (Exception e) {
+                        fixReportParam.setCustomQuery(null);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            
+        }
+        return result;
     }
     
     public FixReportParam get(String idReport) {

@@ -4,13 +4,15 @@
  */
 package bdsm.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  *
  * @author 00030663
  */
-public class MasterLimitEtax {   
+public class MasterLimitEtax implements Serializable {
+
     private String idUser;
     private String idTemplate;
     private Integer sumLimit;
@@ -18,142 +20,147 @@ public class MasterLimitEtax {
     private String idCreatedBy;
     private String idCreatedBySpv;
     private Date dtmCreated;
-    private Date dtmCreatedSpv; 
-    private String ErrCode;
-    private String ErrDesc;
+    private Date dtmCreatedSpv;
+    private String errCode;
+    private String errDesc;
 
     /**
-     * @return the namBank
+     * @return the idUser
      */
-    
-    public String getErrCode() {
-        return ErrCode;
-    }
-
-    /**
-     * @param namBank the namBank to set
-     */
-    public void setErrCode(String ErrCode) {
-        this.ErrCode = ErrCode;
-    }
-    
-    public String getErrDesc() {
-        return ErrDesc;
-    }
-
-    /**
-     * @param namBank the namBank to set
-     */
-    public void setErrDesc(String ErrDesc) {
-        this.ErrDesc = ErrDesc;
-    }
-    
-    public String getidUser() {
+    public String getIdUser() {
         return idUser;
     }
 
     /**
-     * @param namBank the namBank to set
+     * @param idUser the idUser to set
      */
-    public void setidUser(String idUser) {
+    public void setIdUser(String idUser) {
         this.idUser = idUser;
     }
 
     /**
-     * @return the namBankShrt
+     * @return the idTemplate
      */
-    public String getidTemplate() {
+    public String getIdTemplate() {
         return idTemplate;
     }
 
     /**
-     * @param namBankShrt the namBankShrt to set
+     * @param idTemplate the idTemplate to set
      */
-    public void setidTemplate(String idTemplate) {
+    public void setIdTemplate(String idTemplate) {
         this.idTemplate = idTemplate;
     }
-    
+
     /**
-     * @return the namBankShrt
+     * @return the sumLimit
      */
-    public Integer getsumLimit() {
+    public Integer getSumLimit() {
         return sumLimit;
     }
 
     /**
-     * @param namBankShrt the namBankShrt to set
+     * @param sumLimit the sumLimit to set
      */
-    public void setsumLimit(Integer sumLimit) {
+    public void setSumLimit(Integer sumLimit) {
         this.sumLimit = sumLimit;
     }
-    
-     /**
-     * @return the flgmntstatus
+
+    /**
+     * @return the flgMntStatus
      */
-    public String getflgMntStatus() {
+    public String getFlgMntStatus() {
         return flgMntStatus;
     }
 
     /**
-     * @param namBankShrt the flgmntstatus to set
+     * @param flgMntStatus the flgMntStatus to set
      */
-    public void setflgMntStatus(String flgMntStatus) {
+    public void setFlgMntStatus(String flgMntStatus) {
         this.flgMntStatus = flgMntStatus;
     }
-    
-     /**
-     * @return the flgmntstatus
+
+    /**
+     * @return the idCreatedBy
      */
-    public String getidCreatedBy() {
+    public String getIdCreatedBy() {
         return idCreatedBy;
     }
 
     /**
-     * @param namBankShrt the namBankShrt to set
+     * @param idCreatedBy the idCreatedBy to set
      */
-    public void setidCreatedBy(String idCreatedBy) {
+    public void setIdCreatedBy(String idCreatedBy) {
         this.idCreatedBy = idCreatedBy;
     }
-    
+
     /**
-     * @return the flgmntstatus
+     * @return the idCreatedBySpv
      */
-    public String getidCreatedBySpv() {
+    public String getIdCreatedBySpv() {
         return idCreatedBySpv;
     }
 
     /**
-     * @param namBankShrt the namBankShrt to set
+     * @param idCreatedBySpv the idCreatedBySpv to set
      */
-    public void setidCreatedBySpv(String idCreatedBySpv) {
+    public void setIdCreatedBySpv(String idCreatedBySpv) {
         this.idCreatedBySpv = idCreatedBySpv;
     }
 
     /**
-     * @return the datLastProcess
+     * @return the dtmCreated
      */
-    public Date getdtmCreated() {
+    public Date getDtmCreated() {
         return dtmCreated;
     }
 
     /**
-     * @param datLastProcess the datLastProcess to set
+     * @param dtmCreated the dtmCreated to set
      */
-    public void setdtmCreated(Date dtmCreated) {
+    public void setDtmCreated(Date dtmCreated) {
         this.dtmCreated = dtmCreated;
     }
 
     /**
-     * @return the datProcess
+     * @return the dtmCreatedSpv
      */
-    public Date getdtmCreatedSpv() {
+    public Date getDtmCreatedSpv() {
         return dtmCreatedSpv;
     }
 
     /**
-     * @param datProcess the datProcess to set
+     * @param dtmCreatedSpv the dtmCreatedSpv to set
      */
-    public void setdtmCreatedSpv(Date dtmCreatedSpv) {
+    public void setDtmCreatedSpv(Date dtmCreatedSpv) {
         this.dtmCreatedSpv = dtmCreatedSpv;
-    }   
+    }
+
+    /**
+     * @return the errCode
+     */
+    public String getErrCode() {
+        return errCode;
+    }
+
+    /**
+     * @param errCode the errCode to set
+     */
+    public void setErrCode(String errCode) {
+        this.errCode = errCode;
+    }
+
+    /**
+     * @return the errDesc
+     */
+    public String getErrDesc() {
+        return errDesc;
+    }
+
+    /**
+     * @param errDesc the errDesc to set
+     */
+    public void setErrDesc(String errDesc) {
+        this.errDesc = errDesc;
+    }
 }

@@ -28,7 +28,11 @@
         <s:token name="refTokens"/>
     </s:form>
     <sj:a id="tempformDataReInquiry" formIds="formDataReInquiry" targets="ph-temp" cssClass="ui-helper-hidden" onBeforeTopics="beforeSubmitReInquiryBilling"></sj:a>
-    
+    <s:form id="frmRequestPrint" action="32102_reqPrint.action">
+        <s:hidden name="idTrx" />
+        <s:token name="printToken"/>
+    </s:form>
+    <sj:a id="aRequestPrint" formIds="frmRequestPrint" targets="ph-temp" cssClass="ui-helper-hidden" />
     <s:form id="frmDlgAuth" action="dlg">
         <s:hidden name="dialog" value="dlgAuth" />
         <s:hidden name="idMenu" value="%{#session.idMenu}" />
@@ -63,7 +67,9 @@
     <script type="text/javascript">
 		<%@include file="formValidation.js" %>  
     </script>
-        
+    <script type="text/javascript">
+        <%@include file="/WEB-INF/32102/print.js" %>  
+     </script>    
     <s:form id="frmPayment" name="frmPayment" action="32101_inquiryBilling" theme="css_xhtml">
         <fieldset id="fsInquiry" class="ui-widget-content ui-corner-all" style="border: 0px; display: none;">
             <table>
@@ -111,7 +117,6 @@
                         </tr>
                     </tbody>
                 </table>
-
             <s:token />
             <hr class="ui-widget-content" />
         </fieldset>
@@ -471,7 +476,7 @@
                                 name="etax.debitAccountNo"
                                 size="40"
                                 maxlength="12" 
-                                cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                cssClass="cls-numeric ui-widget ui-widget-content"
                                 readonly="false"
                                 onblur="fetchDebitAccount('CASA');"
                                 />
@@ -574,7 +579,7 @@
                                 name="etax.cashCustomerName"
                                 size="40"
                                 maxlength="40" 
-                                cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                cssClass="cls-alphabet-numeric ui-widget ui-widget-content"
                                 readonly="false"
                                 cssStyle="text-transform:uppercase"
                                 />
@@ -617,7 +622,7 @@
                                 name="etax.cashIdNo"
                                 size="40"
                                 maxlength="16" 
-                                cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                cssClass="cls-alphabet-numeric ui-widget ui-widget-content"
                                 readonly="false"
                                 cssStyle="text-transform:uppercase"
                                 />
@@ -648,7 +653,7 @@
                                 name="etax.cashCustomerPhone"
                                 size="40"
                                 maxlength="40" 
-                                cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                cssClass="cls-numeric ui-widget ui-widget-content"
                                 readonly="false"
                                 cssStyle="text-transform:uppercase"
                                 />
@@ -663,7 +668,7 @@
                                 name="etax.cashCustomerAddress"
                                 cols="75"
                                 rows="2" 
-                                cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                cssClass="cls-alphabet-numeric ui-widget ui-widget-content"
                                 readonly="false"
                                 cssStyle="resize: none; text-transform:uppercase;"
                                 />
@@ -748,7 +753,7 @@
                                 name="etax.description"
                                 cols="75"
                                 rows="2" 
-                                cssClass="cls-alphabet-spc ui-widget ui-widget-content"
+                                cssClass="cls-alphabet-numeric ui-widget ui-widget-content"
                                 readonly="false"
                                 cssStyle="resize: none; text-transform:uppercase;"
                                 />
@@ -768,13 +773,13 @@
                     <s:hidden name="dialogState" />
                     <s:hidden name="idMaintainedBy" value="%{#session.idUser}" />
                     <s:hidden name="idMaintainedSpv"  />
-                    
+                    <s:hidden name ="epv.idTrxPrint" />
+                    <s:hidden name ="epv.billingType" />
                     <tr></tr>
                     <tr>
                         <td></td>
                         <td>
                             <sj:a id="btnConfirm" button="true" key="button.confirm">Confirm</sj:a>
-                            <sj:a id="btnSubmit" button="true" key="button.submit">Submit</sj:a>
                             <sj:a id="btnPaymentCancel" button="true" key="button.cancel">Cancel</sj:a>
                         </td>
                     </tr>
@@ -787,14 +792,14 @@
                 <tbody>
                     <tr>
                         <td>
-        <sj:submit
-            id="btnPosting"
-            buttonIcon="ui-icon-gear"
-            button="true"
-            targets="ph-main"
-            key="button.payment"
-            onBeforeTopics="btnPosting_beforeSubmit"
-            />
+                        <sj:submit
+                            id="btnPosting"
+                            buttonIcon="ui-icon-gear"
+                            button="true"
+                            targets="ph-main"
+                            key="button.payment"
+                            onBeforeTopics="btnPosting_beforeSubmit"
+                            />
                           </td>
                            <td>
                             <sj:submit
@@ -993,7 +998,7 @@
                             </td>
                             <td>
                                 <s:textfield 
-                                    name="etax.billingInfo.billingId"
+                                    name="djbcBillingId"
                                     size="40"
                                     maxlength="15" 
                                     cssClass="cls-alphabet-spc ui-widget ui-widget-content"
@@ -1018,7 +1023,7 @@
                             </td>
                             <td>
                                 <s:textfield 
-                                    name="etax.billingInfo.wpName"
+                                    name="djbcwpName"
                                     size="40"
                                     maxlength="40" 
                                     cssClass="cls-alphabet-spc ui-widget ui-widget-content"
@@ -1055,7 +1060,7 @@
                             </td>
                             <td>
                                 <s:textfield 
-                                    name="etax.amount"
+                                    name="djbcAmount"
                                     size="40"
                                     maxlength="40" 
                                     cssClass="cls-alphabet-spc ui-widget ui-widget-content"
@@ -1080,7 +1085,7 @@
                             </td>
                             <td>
                                 <s:textfield 
-                                    name="etax.ccy"
+                                    name="djbcCcy"
                                     size="40"
                                     maxlength="40" 
                                     cssClass="cls-alphabet-spc ui-widget ui-widget-content"
@@ -1105,7 +1110,7 @@
                             </td>
                             <td>
                                 <s:textfield 
-                                    name="etax.responseTimeString"
+                                    name="djbcResponseTimeString"
                                     size="40"
                                     maxlength="40" 
                                     cssClass="cls-alphabet-spc ui-widget ui-widget-content"
@@ -1126,7 +1131,7 @@
                             </td>
                             <td>
                                 <s:textfield 
-                                    name="etax.billingInfo.billingId"
+                                    name="djaBillingId"
                                     size="40"
                                     maxlength="15" 
                                     cssClass="cls-alphabet-spc ui-widget ui-widget-content"
@@ -1151,7 +1156,7 @@
                             </td>
                             <td>
                                 <s:textfield 
-                                    name="etax.billingInfo.wpName"
+                                    name="djawpName"
                                     size="40"
                                     maxlength="40" 
                                     cssClass="cls-alphabet-spc ui-widget ui-widget-content"
@@ -1163,7 +1168,7 @@
                             </td>
                             <td>
                                 <s:textfield 
-                                    name="etax.amount"
+                                    name="djaAmount"
                                     size="40"
                                     maxlength="40" 
                                     cssClass="cls-alphabet-spc ui-widget ui-widget-content"
@@ -1188,7 +1193,7 @@
                             </td>
                             <td>
                                 <s:textfield 
-                                    name="etax.ccy"
+                                    name="djaCcy"
                                     size="40"
                                     maxlength="40" 
                                     cssClass="cls-alphabet-spc ui-widget ui-widget-content"
@@ -1240,6 +1245,7 @@
                                     />
                             </td>
                         </tr>
+                        <s:hidden name="reinqStatus" />
                         <tr>
                             <td>
                                 <s:label id="lblBranchCode" key="label.etax.branch" />
@@ -1346,8 +1352,14 @@
                         <tr>
                             <td></td>
                             <td>
-                                <sj:a id="btnPrintReInq" button="true" key="button.confirm">Cetak BPN</sj:a>
-                                <sj:a id="btnCancelReInq" button="true" key="button.submit">Kembali</sj:a>
+                                <sj:submit
+                                    id="btnPrintReInq"
+                                    buttonIcon="ui-icon-gear"
+                                    button="true"
+                                    targets="ph-main"
+                                    key="button.generate.bpn"
+                                    onBeforeTopics="printReInq_beforeSubmit"
+                                 />
                             </td>
                         </tr>
                     </tbody>
@@ -1362,7 +1374,35 @@
         <s:hidden name="state" value="%{#state}" />
         <s:hidden name="rate" value="%{#etax.exchangeRate}"/>
     </s:form>
-        
+        <s:form id="frmPrint" action="" method="">
+            <s:hidden name="etaxPrint.idTrx" />
+            <s:hidden name="etaxPrint.tglBayar" />
+            <s:hidden name="etaxPrint.tglBuku" />
+            <s:hidden name="etaxPrint.kodeCabang" />
+            <s:hidden name="etaxPrint.ntb" />
+            <s:hidden name="etaxPrint.ntpn" />
+            <s:hidden name="etaxPrint.stan" />
+            <s:hidden name="etaxPrint.kodeBilling" />
+            <s:hidden name="etaxPrint.npwp" />
+            <s:hidden name="etaxPrint.wpName" />
+            <s:hidden name="etaxPrint.wpAddress" />
+            <s:hidden name="etaxPrint.nop" />
+            <s:hidden name="etaxPrint.jmlSetoran" />
+            <s:hidden name="etaxPrint.jenisDokumen" />
+            <s:hidden name="etaxPrint.nomorDokumen" />
+            <s:hidden name="etaxPrint.tglDokumen" />
+            <s:hidden name="etaxPrint.mataAnggaran" />
+            <s:hidden name="etaxPrint.masaPajak" />
+            <s:hidden name="etaxPrint.noKetetapan" />
+            <s:hidden name="etaxPrint.billingType" />
+            <s:hidden name="etaxPrint.mataUang" />
+            <s:hidden name="etaxPrint.terbilang" />
+            <s:hidden name="etaxPrint.jenisSetoran" />
+            <s:hidden name="etaxPrint.kl" />
+            <s:hidden name="etaxPrint.unitEselon" />
+            <s:hidden name="etaxPrint.satuanKerja" />
+            <s:hidden name="etaxPrint.kodeKppbc" />
+        </s:form>
     <%-- Buttons --%>
     <sj:a id="btnLookupHajiType" button="true">...</sj:a>
 
@@ -1480,7 +1520,6 @@
             function setView(viewState, globalState) {
                 var currGlobalState = $("#frmView_globalState").val();
                 
-                $('#frmMain_state').val(globalState);
                 var currState = getState();
                 //console.log('currState: ' + currState + ', viewState: ' + viewState + ', currGlobalState: ' + currGlobalState + ', globalState: ' + globalState);
                 if(currState == viewState && currGlobalState == globalState) {
@@ -1547,7 +1586,7 @@
                     $('#fsInquiry').show();
                     // buttons
                     $('#btnConfirm').hide();
-                    $('#btnSubmit').hide();
+                    //$('#btnSubmit').hide();
                     $('#btnPaymentCancel').hide();
                 } else if(state == 1) {
                     $('#fsDataETax').attr('disabled', 'disabled');
@@ -1562,7 +1601,7 @@
                     
                     // buttons
                     $('#btnConfirm').hide();
-                    $('#btnSubmit').show();
+                    //$('#btnSubmit').show();
                     $('#btnPaymentCancel').show();
                 } else if(state == 99) {
                     //$('#frmPayment').trigger('reset');
@@ -1614,6 +1653,7 @@
                     } else if(paymentType === '3') {
                         $('#fsDebitCASA').hide();
                         $('#fsDebitGL').show();
+                        $('#fsDebitGL').attr('disabled', 'true');
                         $('#fsDebitCash').hide();
                     } else if(paymentType === '1') {
                         $('#fsDebitCASA').hide();
@@ -1627,7 +1667,7 @@
                     
                     // buttons
                     $('#btnConfirm').show();
-                    $('#btnSubmit').hide();
+                    //$('#btnSubmit').hide();
                     $('#btnPaymentCancel').show();
                 }
             }
@@ -1717,6 +1757,12 @@
             function setResponseStatus(responseStatus) {
                 $("#frmMain_responseStatus").val(responseStatus);
             }
+            function getReinqStatus() {
+                return $("#frmMain_reinqStatus").val();
+            }
+            function setReinqStatus(reinqStatus) {
+                $("#frmMain_reinqStatus").val(reinqStatus);
+            }
             function getDialogState() {
                 return $("#frmMain_dialogState").val();
             }
@@ -1726,17 +1772,19 @@
             
             function getSupposedState() {
                 return '1';
-
+            }
             function getStateReInq() {
                 return $("#frmMainReInquiry_state").val();
             }
             function setStateReInq(state) {
                 $("#frmMainReInquiry_state").val(state);
             }
+         
             jQuery(document).ready(function () {
                 var currentState = <s:property value="%{state}" />;
                 var currentStatus = $('#frmMain_responseStatus').val();
                 var currentDialog = $('#frmMain_dialogState').val();
+                var reinqStatus = $('#frmMain_reinqStatus').val();
                 
                 setState(currentState);
                 if(currentDialog == "0"){
@@ -1746,6 +1794,9 @@
                     dlgParams.onSubmit = function() {
                         $("#btnPosting").unsubscribe("btnPosting_beforeSubmit");
                         $("#btnPosting").click();
+                        
+                        var messaging = "Please Waiting Your Request . . . . .";
+                        waitingMessage(3, messaging, "divETaxAkhir");
                     };
                     $("#ph-dlg").dialog("option", "position", "center");
                     $("#ph-dlg").dialog("option", "width", "320");
@@ -1760,16 +1811,82 @@
                 }
                 if(currentStatus == "0" || currentStatus == ''){
                     $('#mpnResponseX').hide();
+                    $("#btnCetak").button("disable");
+                }else if (currentStatus == "1") {
+                    $('#mpnResponseX').show();
+                    $("#btnPosting").button("disable");
+                    $("#btnCancelPayment").button("disable");
+                    $('#fsCredit').attr('disabled', 'true');
+                    // buttons
+                    $('#btnConfirm').button("disable");
+                    $('#btnCetak').button("enable");
+                    $('#btnPaymentCancel').button("disable");
                 }else{
                     $('#mpnResponseX').show();
                     $("#btnPosting").button("disable");
                     $("#btnCancelPayment").button("disable");
+                    $('#fsCredit').attr('disabled', 'true');
+                    // buttons
+                    $('#btnConfirm').button("disable");
+                    $('#btnCetak').button("disable");
+                    $('#btnPaymentCancel').button("disable");
                 }
                 
+                if(reinqStatus == "0" || reinqStatus == ''){
+                    $("#btnPrintReInq").button("disable");
+                }else{
+                    $("#btnPrintReInq").button("enable");
+                }
                 $('#btnPayment').hide();
                 /* === [BEGIN] event hook === */
                 
-                
+                $("#btnCetak")
+			.unsubscribe("print_beforeSubmit")
+			.subscribe("print_beforeSubmit", function(event) {
+				event.originalEvent.options.submit = false;
+                                $('#frmRequestPrint_idTrx').attr('value', $('#frmMain_epv_idTrxPrint').val());
+                                var messaging = "Please Waiting Your Request . . . . .";
+                                waitingMessage(3, messaging, "divETaxAkhir");
+                                $("#aRequestPrint").click();
+                                tempParams = {};
+                                tempParams.onClose = function(print) {
+                                    for(var propt in print) {
+                                       $("#frmPrint_etaxPrint_" + propt).val(print[propt]);
+                                    }
+                                      var ntpn = $.trim($('#frmPrint_etaxPrint_ntpn').val());
+                                      var billType = $.trim($('#frmPrint_etaxPrint_billingType').val());
+                                      generatePDF(billType,ntpn);
+                                      $("div[role='dialog']").find("div[id='divETaxAkhir']")
+                                    .dialog("close")
+                                    .dialog("destroy");
+                                };
+                                $('#btnCetak').button("disable");
+			});
+                        
+                    $("#btnPrintReInq")
+			.unsubscribe("printReInq_beforeSubmit")
+			.subscribe("printReInq_beforeSubmit", function(event) {
+				event.originalEvent.options.submit = false;
+                                $('#frmRequestPrint_idTrx').attr('value', $('#frmPrint_etaxPrint_idTrx').val());
+                                var messaging = "Please Waiting Your Request . . . . .";
+                                waitingMessage(3, messaging, "divETaxAkhir");
+                                $("#aRequestPrint").click();
+                                tempParams = {};
+                                tempParams.onClose = function(print) {
+                                    for(var propt in print) {
+                                       $("#frmPrint_etaxPrint_" + propt).val(print[propt]);
+                                    }
+                                      var ntpn = $.trim($('#frmPrint_etaxPrint_ntpn').val());
+                                      var billType = $.trim($('#frmPrint_etaxPrint_billingType').val());
+                                      generatePDF(billType,ntpn);    
+                                      
+                                     $("div[role='dialog']").find("div[id='divETaxAkhir']")
+                                    .dialog("close")
+                                    .dialog("destroy");
+                                };
+                                $('#btnPrintReInq').button("disable");
+			});
+                        
                 $("#btnOk").unsubscribe("click");
                 $("#btnOk").subscribe("click", function (event) {
                     event.originalEvent.defaultPrevented = true;
@@ -1794,9 +1911,12 @@
                     } else {
                         $('#formData_billingId').attr('value', $('#frmPayment_billingId').val());
                         $('#formData_paymentType').attr('value', $('#frmPayment_paymentType').val());
-                        $("#btnPosting").button("enable");
+                        $("#btnPosting").button("disable");
                         $('#mpnResponseX').hide();
+                        $("#btnConfirm").button("enable");
                         $("#btnCancelPayment").button("enable");
+                        $("#btnPaymentCancel").button("disable");
+                        $("#btnCetak").button("disable");
                         $('#tempformData').click();
                         var messaging = "Please Waiting Your Request . . . . .";
                         waitingMessage(3, messaging, "divETaxAkhir");
@@ -1808,9 +1928,7 @@
                                 // set data
                                 for(var propt1 in etax){
                                     if(propt1 == 'debitAccountNo' ||
-                                            propt1 == 'debitAccountName' ||
-                                            propt1 == 'glAccountNo' ||
-                                            propt1 == 'glAccountName') {
+                                            propt1 == 'debitAccountName') {
                                         continue;
                                     }
                                     console.log("FIELD 1 :" + propt1 + " " + etax[propt1]);
@@ -1863,7 +1981,7 @@
                 });
                 $("#btnCancelPayment").unsubscribe("click");
                 $("#btnCancelPayment").subscribe("click", function (event) {
-                    messageBoxOkCancelClear(3, "divETaxAkhirMess", '<s:text name="32101.cancel.confirmText" />', function () {
+                    messageBoxOkCancel2(3, "divETaxAkhirMess", '<s:text name="32101.cancel.confirmText" />', function () {
                         setView(0, 0);
                     }, function() {
                         // no-op
@@ -1878,28 +1996,77 @@
                 $("#btnPaymentCancel").unsubscribe("click");
                 $("#btnPaymentCancel").subscribe("click", function (event) {
                     event.originalEvent.defaultPrevented = true;
-                    messageBoxOkCancel2(3, "divETaxAkhirMess", '<s:text name="32101.cancel.confirmText" />', function () {
-                        setView(0, 0);
-                    }, function() {
-                        // no-op
-                    });
+                    setViewEnabled();
+                    $("#btnPaymentCancel").button("disable");
+                    
                 });
+                
+                function setViewDisabled() {
+                    $('#fsDataETax').attr('disabled', 'true');
+                    $('#fsDebitCASA').attr('disabled', 'true');
+                    $('#fsDebitGL').attr('disabled', 'true');
+                    $('#fsDebitCash').attr('disabled', 'true');
+                    $('#fsCredit').attr('disabled', 'true');
+                    $('#fsInquiry').attr('disabled', 'true');
+
+                    $('#btnOk').attr('disabled', 'true');
+                    $('#btnCancel').attr('disabled', 'true');
+
+                    // buttons
+                    $('#btnConfirm').button("disable");
+                    $('#btnPaymentCancel').show();
+                    $("#btnPosting").button("enable");
+                }
+                
+                 function setViewDisabledPayment() {
+                    $('#fsDataETax').attr('disabled', 'true');
+                    $('#fsDebitCASA').attr('disabled', 'true');
+                    $('#fsDebitGL').attr('disabled', 'true');
+                    $('#fsDebitCash').attr('disabled', 'true');
+                    $('#fsCredit').attr('disabled', 'true');
+                    $('#fsInquiry').attr('disabled', 'true');
+
+                    // buttons
+                    $('#btnConfirm').button("disable");
+                    $('#btnPaymentCancel').button("disable");
+                    $("#btnPosting").button("disable");
+                }
+                
+                 function setViewEnabled() {
+                    var paymentType = $.trim($('#frmPayment_paymentType').val());
+                    if(paymentType == '1'){
+                        $('#fsDebitCash').removeAttr('disabled');
+                    }
+                    if(paymentType == '2'){
+                        $('#fsDebitCASA').removeAttr('disabled');
+                    }
+                    $('#fsCredit').removeAttr('disabled');
+                    $('#btnConfirm').button("enable");
+                    $('#btnPaymentCancel').show();
+                    $("#btnPosting").button("disable");
+                }
                 
                 $("#btnConfirm").unsubscribe("click");
                 $("#btnConfirm").subscribe("click", function (event) {
                     event.originalEvent.defaultPrevented = true;
                     console.log('btnConfirm triggered');
-                    setView(0, 1);
+                   if (validateForm_frmMainAwal()) {
+                       setViewDisabled();
+                       $("#btnPaymentCancel").button("enable");
+                   }
+                   else{
+                        messageBoxClass(1, "divETaxAkhir", 'Please fill All Mandatory Field', function(){ $("#ph-main").scrollTop(0); });
+                   }
                 });
-                $("#btnSubmit").unsubscribe("click");
-                $("#btnSubmit").subscribe("click", function (event) {
-                    event.originalEvent.defaultPrevented = true;
-                    messageBoxOkCancel2(3, "divETaxAkhirMess", '<s:text name="32101.confirmation.confirmText" />', function () {
-                        console.log('CONFIRM OK');
-                    }, function() {
-                        console.log('CANCEL OK');
-                    });
-                });
+//                $("#btnSubmit").unsubscribe("click");
+//                $("#btnSubmit").subscribe("click", function (event) {
+//                    event.originalEvent.defaultPrevented = true;
+//                    messageBoxOkCancel2(3, "divETaxAkhirMess", '<s:text name="32101.confirmation.confirmText" />', function () {
+//                        console.log('CONFIRM OK');
+//                    }, function() {
+//                        console.log('CANCEL OK');
+//                    });
+//                });
                 
                 
                 $("#btnReinqOk").unsubscribe("click");
@@ -1944,6 +2111,13 @@
                                         $("#frmMainReInquiry_etax_billingInfo_" + propt2).val(billingInfo[propt2]);
                                     }
                                 }
+                                var printInfo = etax['etaxPrint'];
+                                if(printInfo != null) {
+                                    for(var propt3 in printInfo){
+                                        console.log("FIELD 3 :" + propt3 + " " + printInfo[propt3]);
+                                        $("#frmPrint_etaxPrint_" + propt3).val(printInfo[propt3]);
+                                    }
+                                }
                                 var rate = etax['exchangeRate'];
                                 $('#frmMainReInquiry_rate').val(rate);
                                 
@@ -1958,11 +2132,21 @@
                                     case '4':
                                     case '5':
                                     case '6':
+                                        $('#frmMainReInquiry_djbcBillingId').attr('value', $('#frmMainReInquiry_etax_billingInfo_billingId').val());
+                                        $('#frmMainReInquiry_djbcAmount').attr('value', $('#frmMainReInquiry_etax_amount').val());
+                                        $('#frmMainReInquiry_djbcCcy').attr('value', $('#frmMainReInquiry_etax_ccy').val());
+                                        $('#frmMainReInquiry_djbcwpName').attr('value', $('#frmMainReInquiry_etax_billingInfo_wpName').val());
+                                        $('#frmMainReInquiry_djbcResponseTimeString').attr('value', $('#frmMainReInquiry_etax_responseTimeString').val());
                                         setView(1, 12);
                                         break;
                                     case '7':
                                     case '8':
                                     case '9':
+                                        $('#frmMainReInquiry_djaBillingId').attr('value', $('#frmMainReInquiry_etax_billingInfo_billingId').val());
+                                        $('#frmMainReInquiry_djaAmount').attr('value', $('#frmMainReInquiry_etax_amount').val());
+                                        $('#frmMainReInquiry_djaCcy').attr('value', $('#frmMainReInquiry_etax_ccy').val());
+                                        $('#frmMainReInquiry_djawpName').attr('value', $('#frmMainReInquiry_etax_billingInfo_wpName').val());
+                                        $('#frmMainReInquiry_djaResponseTimeString').attr('value', $('#frmMainReInquiry_etax_responseTimeString').val());
                                         setView(1, 13);
                                         break;
                                 }
@@ -1972,7 +2156,7 @@
                                     case '00':
                                         $('#frmMainReInquiry_etax_paymentType').val('Setoran Tunai');
                                         break;
-                                    case '20':
+                                    case '30':
                                         $('#frmMainReInquiry_etax_paymentType').val('Db CASA');
                                         break;
                                     case '40':
@@ -2033,6 +2217,7 @@
                 $("#frmPayment_svdp_statusInq").attr("id", "frmMain_svdp_statusInq"); // change id attribute of statusInq
 
                 filterKeysNumeric();
+                filterKeysAlphabetNumeric();
 
                 //tittle 32101
                 if (currentState == 0) {
@@ -2056,8 +2241,8 @@
 				.subscribe("btnPosting_beforeSubmit", function(event) {
 					event.originalEvent.options.submit = false;
                                         $("#errMsg").html("");
+                                        messageBoxOkCancel2(3, "divETaxAkhirMess", '<s:text name="32101.confirmation.confirmText" />', function () {
                                         if (validateForm_frmMainAwal()) {
-                                            
                                             $("#btnPosting").unsubscribe("btnPosting_beforeSubmit");
                                             $("#btnPosting").click();
                                             $("#frmMain_responseStatus").val(0);
@@ -2069,6 +2254,9 @@
 					else {
 						messageBoxClass(1, "divETaxAkhir", 'Please fill All Mandatory Field', function(){ $("#ph-main").scrollTop(0); });
 					}
+                                        }, function() {
+                                            // no-op
+                                        });
 				});
             });
 
@@ -2105,7 +2293,6 @@
                                 .dialog("open");
                     }
                 };
-            }
-            ;
+            };
     </script>
 </s:if>

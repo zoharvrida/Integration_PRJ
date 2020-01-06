@@ -50,6 +50,9 @@ private ETaxInquiryBillingReq InqBillReq;
 private MasterLimitEtax limitVal;
 private String seterrCode;
 private String seterrDesc;
+private String idTrxPrint;
+private String billingType;
+private String trxTimeString;
 
     /**
      * @return the billCode
@@ -514,10 +517,7 @@ public String getBillCode() {
     /**
      * @return the ntb
      */
-
-    /**
-     * @param ntb the ntb to set
-     */
+   
 
     /**
      * @return the binNo
@@ -531,6 +531,48 @@ public String getBillCode() {
      */
     public void setBinNo(String binNo) {
         this.binNo = binNo;
+    }
+
+    /**
+     * @return the idTrxPrint
+     */
+    public String getIdTrxPrint() {
+        return idTrxPrint;
+    }
+
+    /**
+     * @param idTrxPrint the idTrxPrint to set
+     */
+    public void setIdTrxPrint(String idTrxPrint) {
+        this.idTrxPrint = idTrxPrint;
+    }
+
+    /**
+     * @return the billingType
+     */
+    public String getBillingType() {
+        return billingType;
+    }
+
+    /**
+     * @param billingType the billingType to set
+     */
+    public void setBillingType(String billingType) {
+        this.billingType = billingType;
+    }
+
+    /**
+     * @return the trxTimeString
+     */
+    public String getTrxTimeString() {
+        return trxTimeString;
+    }
+
+    /**
+     * @param trxTimeString the trxTimeString to set
+     */
+    public void setTrxTimeString(String trxTimeString) {
+        this.trxTimeString = trxTimeString;
     }
   
 

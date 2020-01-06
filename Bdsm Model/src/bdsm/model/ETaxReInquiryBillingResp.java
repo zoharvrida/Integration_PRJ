@@ -69,6 +69,7 @@ public class ETaxReInquiryBillingResp extends BaseModel {
     private String ntb;
     private String ntpn;
     private String stan;
+    private String paymentTime;
     
     private String cashIdType;
     private String cashBranchGL;
@@ -88,6 +89,7 @@ public class ETaxReInquiryBillingResp extends BaseModel {
     private BigDecimal creditNominalLCE;
     private String nomorKPPN;
     private String trxCurrency;
+    private EtaxPrint etaxPrint;
     
     // credit account
     private String kppnAccountNo;
@@ -580,6 +582,34 @@ public class ETaxReInquiryBillingResp extends BaseModel {
     @Override
     public String toString() {
         return "ETaxInquiryBillingResp{" + "refNo=" + refNo + ", accountType=" + accountType + ", accountNo=" + accountNo + ", branchCode=" + branchCode + ", costCenter=" + costCenter + ", userId=" + userId + ", djpTS=" + djpTS + ", billingInfo=" + billingInfo + ", ccy=" + ccy + ", amount=" + amount + ", responseCode=" + responseCode + ", responseDesc=" + responseDesc + '}';
+    }
+
+    /**
+     * @return the paymentTime
+     */
+    public String getPaymentTime() {
+        return paymentTime;
+    }
+
+    /**
+     * @param paymentTime the paymentTime to set
+     */
+    public void setPaymentTime(String paymentTime) {
+        this.paymentTime = paymentTime;
+    }
+
+    /**
+     * @return the etaxPrint
+     */
+    public EtaxPrint getEtaxPrint() {
+        return etaxPrint;
+    }
+
+    /**
+     * @param etaxPrint the etaxPrint to set
+     */
+    public void setEtaxPrint(EtaxPrint etaxPrint) {
+        this.etaxPrint = etaxPrint;
     }
 
 }

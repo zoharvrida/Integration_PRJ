@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>    
+    <class name="bdsm.model.EtaxPrint" table="ETAX_PRINT" lazy="false"> 
+        <composite-id>
+            <key-property name="idTrx"        column="ID_TRX"         type="string" />           
+        </composite-id>   
+        <property name="tglBayar"    column="TGL_BAYAR"    type="string" />        
+        <property name="tglBuku" column="TGL_BUKU" type="date"   />
+        <property name="kodeCabang" column="KODE_CABANG" type="string"   />        
+        <property name="ntb" column="NTB" type="string"   />
+        <property name="ntpn" column="NTPN" type="string"   />
+        <property name="stan" column="STAN" type="string"   />
+        <property name="kodeBilling" column="KODE_BILLING" type="string"   />        
+        <property name="npwp" column="NPWP" type="string"   />
+        <property name="wpName" column="WP_NAME" type="string"   />        
+        <property name="wpAddress" column="WP_ADDRESS" type="string"   />
+        <property name="nop" column="NOP" type="string"   />
+        <property name="jmlSetoran" column="JML_SETORAN" type="big_decimal"   />
+        <property name="jenisDokumen" column="JENIS_DOKUMEN" type="string"   />
+        <property name="nomorDokumen" column="NO_DOKUMEN" type="string"   />
+        <property name="tglDokumen" column="TGL_DOKUMEN" type="date"   />
+        <property name="mataAnggaran" column="MATA_ANGGARAN" type="string"   />
+        <property name="masaPajak" column="MASA_PAJAK" type="string"   />
+        <property name="noKetetapan" column="NO_KETETAPAN" type="string"   />
+        <property name="billingType" column="BILLING_TYPE" type="string"   />
+        <property name="mataUang" column="MATA_UANG" type="string"   />
+        <property name="jenisSetoran" column="JENIS_SETORAN" type="string"   />
+        <property name="kl" column="KL" type="string"   />
+        <property name="unitEselon" column="UNIT_ESELON" type="string"   />
+        <property name="satuanKerja" column="SATUAN_KERJA" type="string"   />
+        <property name="kodeKppbc" column="KODE_KPPBC" type="string"   />
+    </class>   
+</hibernate-mapping>

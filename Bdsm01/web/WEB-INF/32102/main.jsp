@@ -4,7 +4,7 @@
 
     <s:set var="requestMethod" scope="request">${pageContext.request.method}</s:set>
 
-    <s:form id="frmMain" name="frmMain"  theme="css_xhtml">
+    <s:form id="frmMain" name="frmMain" theme="css_xhtml">
         <fieldset id="fsDataPayment" class="ui-widget-content ui-corner-all">
 			<legend class="ui-widget-header ui-corner-all"><s:text name="label.etax.fieldset.legend.mpn.response" /></legend>
         <table>
@@ -52,7 +52,7 @@
                     <s:hidden name ="epv.limitVal.errDesc" />
                     <td>
                         <s:textfield 
-                            name="epv.dtmTrx"
+                            name="epv.trxTimeString"
                             size="40"
                             cssClass="cls-alphabet-spc ui-widget ui-widget-content"
                             disabled="true"
@@ -118,6 +118,7 @@
                             targets="ph-main"
                             key="button.generate.bpn"
                             disabled="true"
+                            onBeforeTopics="print_beforeSubmit"
                             />
                         </td>
                     </tr>

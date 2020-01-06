@@ -36,7 +36,7 @@ public class FixMasterReportDeleteAction extends BaseHostAction {
         ReportDeleteDao dao = new ReportDeleteDao(getHSession());
 
         modelList = dao.list(getModel().getReportName(),getModel().getIdTemplate()); 
-        getLogger().info("ModelList = " + getModelList());
+        getLogger().info("ModelList = " + getModelList().toString());
         getLogger().info("list Suceess :" + String.valueOf(getModelList().size()));
         return SUCCESS;
     }

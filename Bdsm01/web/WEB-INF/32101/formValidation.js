@@ -8,7 +8,19 @@ function validateForm_frmMainAwal() {
     var continueValidation = true;
     var paymentType = $.trim($('#frmPayment_paymentType').val());
     //CASA
-    if (paymentType === '2') {
+    if (paymentType === '1'){
+        errors = requiredStringValidation(form, 'etax.cashCustomerName', 'Nama Penyetor cannot be empty', continueValidation) || errors;
+        
+        errors = requiredStringValidation(form, 'etax.cashIdType', 'Jenis Identitas cannot be empty', continueValidation) || errors;
+        
+        errors = requiredStringValidation(form, 'etax.cashIdNo', 'Nomor Identitas cannot be empty', continueValidation) || errors;
+        
+        errors = requiredStringValidation(form, 'etax.cashCustomerType', 'Customer Type cannot be empty', continueValidation) || errors;
+        
+        errors = requiredStringValidation(form, 'etax.cashCustomerPhone', 'No. Telepon Aktif cannot be empty', continueValidation) || errors;
+        
+        errors = requiredStringValidation(form, 'etax.cashCustomerAddress', 'Alamat cannot be empty', continueValidation) || errors;
+    }else if (paymentType === '2') {
         // validator name: requiredstring
         errors = requiredStringValidation(form, 'etax.debitAccountNo', 'Nomor Rekening cannot be empty', continueValidation) || errors;
         

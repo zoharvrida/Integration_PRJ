@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>    
+    <class name="bdsm.model.DetailService" table="DETAIL_SERVICE" lazy="false"> 
+        <composite-id>
+            <key-property name="idScheduler"        column="ID_SCHEDULER"         type="integer" />           
+        </composite-id>   
+        <property name="type"               column="TYPE"               type="string"   />
+        <property name="serviceName"        column="SERVICE_NAME"       type="string" />        
+        <property name="fieldName"          column="FIELD_NAME"         type="string"   />        
+        <property name="head"               column="HEAD"               type="string"   />
+        <property name="requestSource"      column="REQUEST_SOURCE"     type="string"   />
+        <property name="dbFieldName"        column="DB_FIELD_NAME"      type="string"   />
+        <property name="tableName"          column="TABLE_NAME"         type="string"   />
+        <property name="valueType"          column="VALUE_TYPE"         type="string"   />
+        <property name="orderData"          column="ORDER_DATA"         type="string"   />
+        <property name="defaultValue"       column="DEFAULT_VALUE"      type="string"   />
+        <property name="levelData"          column="LEVEL_DATA"         type="string"   />
+        <property name="wsType"             column="WS_TYPE"            type="string"   />
+        <property name="recType"            column="REC_TYPE"           type="string"   />
+        <property name="parent"             column="PARENT"             type="string"   />
+        <property name="appender"           column="APPENDER"           type="string"   />
+        <property name="orientation"        column="ORIENTATION"        type="string"   />
+        <property name="valueAppend"        column="VALUE_APPEND"       type="string"   />
+        <property name="valueLength"        column="VALUE_LENGTH"       type="string"   />
+        <property name="valueOrientation"   column="VALUE_ORIENTATION"  type="string"   />
+        <property name="formatter"          column="FORMATTER"          type="string"   />
+        <property name="patternFormatter"   column="PATTERN_FORMATTER"  type="string"   />
+        <property name="tokenOrder"         column="TOKEN_ORDER"        type="string"   />
+        <property name="apostrhope"         column="APOSTRHOPE"         type="string"   />
+        <property name="query"              column="QUERY"              type="string"   />
+    </class>   
+        
+    <sql-query name="DetailService#getData">
+        <query-param name="idScheduler" type="integer" />
+        <query-param name="type" type="string" />
+        <query-param name="serviceName" type="string" />
+        
+        <return-scalar column="idScheduler" type="integer" />            
+        <return-scalar column="type" type="string" />
+        <return-scalar column="serviceName" type="string" />
+        <return-scalar column="fieldName" type="string" />
+        <return-scalar column="head" type="string" />
+        <return-scalar column="requestSource" type="string" />
+        <return-scalar column="dbFieldName" type="string" />
+        <return-scalar column="tableName" type="string" />
+        <return-scalar column="valueType" type="string" />
+        <return-scalar column="orderData" type="string" />
+        <return-scalar column="defaultValue" type="string" />
+        <return-scalar column="levelData" type="string" />
+        <return-scalar column="wsType" type="string" />
+        <return-scalar column="recType" type="string" />
+        <return-scalar column="parent" type="string" />
+        <return-scalar column="appender" type="string" />
+        <return-scalar column="orientation" type="string" />
+        <return-scalar column="valueAppend" type="string" />
+        <return-scalar column="valueLength" type="string" />
+        <return-scalar column="valueOrientation" type="string" />
+        <return-scalar column="formatter" type="string" />
+        <return-scalar column="patternFormatter" type="string" />
+        <return-scalar column="tokenOrder" type="string" />
+        <return-scalar column="apostrhope" type="string" />
+        <return-scalar column="query" type="string" />
+        <![CDATA[
+                SELECT
+                A.ID_SCHEDULER as idScheduler,
+                A.TYPE as type,
+                A.SERVICE_NAME as serviceName,
+                A.FIELD_NAME as fieldName,
+                A.HEAD as head,
+                A.REQUEST_SOURCE as requestSource,
+                A.DB_FIELD_NAME as dbFieldName,
+                A.TABLE_NAME as tableName,
+                A.VALUE_TYPE as valueType,
+                A.ORDER_DATA as orderData,
+                A.DEFAULT_VALUE as defaultValue,
+                A.LEVEL_DATA as levelData,
+                A.WS_TYPE as wsType,
+                A.REC_TYPE as recType,
+                A.PARENT as parent,
+                A.APPENDER as appender,
+                A.ORIENTATION as orientation,
+                A.VALUE_APPEND as valueAppend,
+                A.VALUE_LENGTH as valueLength,
+                A.VALUE_ORIENTATION as valueOrientation,
+                A.FORMATTER as formatter,
+                A.PATTERN_FORMATTER as patternFormatter,
+                A.TOKEN_ORDER as tokenOrder,
+                A.APOSTRHOPE as apostrhope,
+                A.QUERY as query 
+                FROM DETAIL_SERVICE A
+                WHERE
+                A.ID_SCHEDULER = :idScheduler
+                AND A.TYPE = :type
+                AND A.SERVICE_NAME = :serviceName
+                AND A.TOKEN_ORDER IS NOT NULL 
+                ORDER BY TO_NUMBER(A.TOKEN_ORDER)
+        ]]>
+    </sql-query>
+    
+    <sql-query name="DetailService#getBuildData">
+        <query-param name="idScheduler" type="integer" />
+        <query-param name="type" type="string" />
+        <query-param name="serviceName" type="string" />
+        
+        <return-scalar column="idScheduler" type="integer" />            
+        <return-scalar column="type" type="string" />
+        <return-scalar column="serviceName" type="string" />
+        <return-scalar column="fieldName" type="string" />
+        <return-scalar column="head" type="string" />
+        <return-scalar column="requestSource" type="string" />
+        <return-scalar column="dbFieldName" type="string" />
+        <return-scalar column="tableName" type="string" />
+        <return-scalar column="valueType" type="string" />
+        <return-scalar column="orderData" type="string" />
+        <return-scalar column="defaultValue" type="string" />
+        <return-scalar column="levelData" type="string" />
+        <return-scalar column="wsType" type="string" />
+        <return-scalar column="recType" type="string" />
+        <return-scalar column="parent" type="string" />
+        <return-scalar column="appender" type="string" />
+        <return-scalar column="orientation" type="string" />
+        <return-scalar column="valueAppend" type="string" />
+        <return-scalar column="valueLength" type="string" />
+        <return-scalar column="valueOrientation" type="string" />
+        <return-scalar column="formatter" type="string" />
+        <return-scalar column="patternFormatter" type="string" />
+        <return-scalar column="tokenOrder" type="string" />
+        <return-scalar column="apostrhope" type="string" />
+        <return-scalar column="query" type="string" />
+        <![CDATA[
+                SELECT
+                A.ID_SCHEDULER as idScheduler,
+                A.TYPE as type,
+                A.SERVICE_NAME as serviceName,
+                A.FIELD_NAME as fieldName,
+                A.HEAD as head,
+                A.REQUEST_SOURCE as requestSource,
+                A.DB_FIELD_NAME as dbFieldName,
+                A.TABLE_NAME as tableName,
+                A.VALUE_TYPE as valueType,
+                A.ORDER_DATA as orderData,
+                A.DEFAULT_VALUE as defaultValue,
+                A.LEVEL_DATA as levelData,
+                A.WS_TYPE as wsType,
+                A.REC_TYPE as recType,
+                A.PARENT as parent,
+                A.APPENDER as appender,
+                A.ORIENTATION as orientation,
+                A.VALUE_APPEND as valueAppend,
+                A.VALUE_LENGTH as valueLength,
+                A.VALUE_ORIENTATION as valueOrientation,
+                A.FORMATTER as formatter,
+                A.PATTERN_FORMATTER as patternFormatter,
+                A.TOKEN_ORDER as tokenOrder,
+                A.APOSTRHOPE as apostrhope,
+                A.QUERY as query 
+                FROM DETAIL_SERVICE A
+                WHERE
+                A.ID_SCHEDULER = :idScheduler
+                AND A.TYPE = :type
+                AND A.SERVICE_NAME = :serviceName
+                AND A.TOKEN_ORDER IS NULL
+                ORDER BY TO_NUMBER(A.LEVEL_DATA), TO_NUMBER(A.ORDER_DATA)
+        ]]>
+    </sql-query>
+    
+    
+    <sql-query name="DetailService#getChild">
+        <query-param name="idScheduler" type="integer" />
+        <query-param name="type" type="string" />
+        <query-param name="serviceName" type="string" />
+        <query-param name="parent" type="string" />
+        
+        <return-scalar column="idScheduler" type="integer" />            
+        <return-scalar column="type" type="string" />
+        <return-scalar column="serviceName" type="string" />
+        <return-scalar column="fieldName" type="string" />
+        <return-scalar column="head" type="string" />
+        <return-scalar column="requestSource" type="string" />
+        <return-scalar column="dbFieldName" type="string" />
+        <return-scalar column="tableName" type="string" />
+        <return-scalar column="valueType" type="string" />
+        <return-scalar column="orderData" type="string" />
+        <return-scalar column="defaultValue" type="string" />
+        <return-scalar column="levelData" type="string" />
+        <return-scalar column="wsType" type="string" />
+        <return-scalar column="recType" type="string" />
+        <return-scalar column="parent" type="string" />
+        <return-scalar column="appender" type="string" />
+        <return-scalar column="orientation" type="string" />
+        <return-scalar column="valueAppend" type="string" />
+        <return-scalar column="valueLength" type="string" />
+        <return-scalar column="valueOrientation" type="string" />
+        <return-scalar column="formatter" type="string" />
+        <return-scalar column="patternFormatter" type="string" />
+        <return-scalar column="tokenOrder" type="string" />
+        <return-scalar column="apostrhope" type="string" />
+        <return-scalar column="query" type="string" />
+        <![CDATA[
+                SELECT
+                A.ID_SCHEDULER as idScheduler,
+                A.TYPE as type,
+                A.SERVICE_NAME as serviceName,
+                A.FIELD_NAME as fieldName,
+                A.HEAD as head,
+                A.REQUEST_SOURCE as requestSource,
+                A.DB_FIELD_NAME as dbFieldName,
+                A.TABLE_NAME as tableName,
+                A.VALUE_TYPE as valueType,
+                A.ORDER_DATA as orderData,
+                A.DEFAULT_VALUE as defaultValue,
+                A.LEVEL_DATA as levelData,
+                A.WS_TYPE as wsType,
+                A.REC_TYPE as recType,
+                A.PARENT as parent,
+                A.APPENDER as appender,
+                A.ORIENTATION as orientation,
+                A.VALUE_APPEND as valueAppend,
+                A.VALUE_LENGTH as valueLength,
+                A.VALUE_ORIENTATION as valueOrientation,
+                A.FORMATTER as formatter,
+                A.PATTERN_FORMATTER as patternFormatter,
+                A.TOKEN_ORDER as tokenOrder,
+                A.APOSTRHOPE as apostrhope,
+                A.QUERY as query 
+                FROM DETAIL_sERVICE A
+                WHERE
+                A.ID_SCHEDULER = :idScheduler
+                AND A.TYPE = :type
+                AND A.SERVICE_NAME = :serviceName
+                AND A.PARENT = :parent
+                ORDER BY TO_NUMBER(A.ORDER_DATA)
+        ]]>
+    </sql-query>
+</hibernate-mapping>

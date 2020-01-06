@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>    
+    <class name="bdsm.model.LoggingService" table="LOGGING_SERVICE" lazy="false"> 
+        <composite-id>
+            <key-property name="idScheduler"        column="ID_SCHEDULER"   type="integer" />  
+            <key-property name="refNo"              column="REF_NO"         type="string"   />
+            <key-property name="serviceName"        column="SERVICE_NAME"   type="string" />        
+            <key-property name="type"               column="TYPE"           type="string"   />        
+            <key-property name="status"             column="STATUS"       type="string"   />
+        </composite-id>
+        <property name="clob" type="text">
+            <column name="CLOB" sql-type="CLOB" />
+        </property>
+        <property name="dtmCreated"          column="DTMSTATUS"      type="timestamp"   />
+    </class>   
+</hibernate-mapping>

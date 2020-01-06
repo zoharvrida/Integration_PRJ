@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>    
+    <class name="bdsm.model.MasterService" table="MASTER_SERVICE" lazy="false"> 
+        <composite-id>
+            <key-property name="idScheduler"        column="ID_SCHEDULER"         type="integer" />           
+        </composite-id>   
+        <property name="nameScheduler"  column="NAME_SCHEDULER"     type="string" />        
+        <property name="type"           column="TYPE"               type="string"   />
+        <property name="userName"       column="USERNAME"           type="string"   />        
+        <property name="password"       column="PASSWORD"           type="string"   />
+        <property name="keyAuth"        column="KEY_AUTH"            type="string"   />
+        <property name="encryptType"    column="ENCRYPT_TYPE"       type="string"   />
+        <property name="typeKey"        column="TYPE_KEY"           type="string"   />
+        <property name="flag"           column="FLAG"               type="string"   />
+    </class>   
+</hibernate-mapping>
